@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "node tools/build-obfuscate.mjs",
+    "auth:admin": "node tools/auth-admin-server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:imessage": "node --test test/imessage_offline_regex.test.mjs",
+    "test:link": "node --test test/link_frontend.test.mjs"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.2.5",
+    "javascript-obfuscator": "^4.1.1"
+  }
+}
