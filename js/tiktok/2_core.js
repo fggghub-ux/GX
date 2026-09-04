@@ -6,10 +6,10 @@ function createDefaultTkState() {
     return {
         profile: {
             name: 'User',
-            handle: 'user123',
+            handle: 'user',
             avatar: null,
-            status: '思考中...',
-            bio: '点击添加个人简介',
+            status: 'Thinking...',
+            bio: 'Click to add a bio',
             persona: '',
             following: 0,
             followers: 0,
@@ -18,9 +18,9 @@ function createDefaultTkState() {
             visitors: []
         },
         activity: {
-            newFollowers: '暂无新粉丝',
-            likesSaves: '互动消息',
-            commentsMentions: '互动消息',
+            newFollowers: 'No new followers yet',
+            likesSaves: 'Interactions',
+            commentsMentions: 'Interactions',
             followers: [],
             likes: [],
             saves: [],
