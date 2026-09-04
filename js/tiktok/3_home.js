@@ -490,7 +490,7 @@ ${userBlock}
     }
 
     function tkEnsureFollowerChar(follower = {}, index = 0) {
-        const name = String(follower.authorName || follower.name || `新粉丝${index + 1}`).trim();
+        const name = String(follower.authorName || follower.name || `New Followers${index + 1}`).trim();
         const handle = tkInteractionSlug(follower.handle || follower.authorId || follower.id || name, `follower_${index + 1}`);
         const id = String(follower.authorId || follower.id || `follower_${handle}`);
         let char = window.tkGetChar ? window.tkGetChar(id) : null;
@@ -553,9 +553,9 @@ ${userBlock}
 
     function tkRecordVideoActivity({ followers = 0, followerEntries = [], likes = 0, saves = 0, comments = 0, commentEntries = [], video = null } = {}) {
         tkState.activity = {
-            newFollowers: tkState.activity?.newFollowers || '暂无新粉丝',
-            likesSaves: tkState.activity?.likesSaves || '互动消息',
-            commentsMentions: tkState.activity?.commentsMentions || '互动消息',
+            newFollowers: tkState.activity?.newFollowers || 'No new followers yet',
+            likesSaves: tkState.activity?.likesSaves || 'Interactions',
+            commentsMentions: tkState.activity?.commentsMentions || 'Interactions',
             followers: Array.isArray(tkState.activity?.followers) ? tkState.activity.followers : [],
             likes: Array.isArray(tkState.activity?.likes) ? tkState.activity.likes : [],
             saves: Array.isArray(tkState.activity?.saves) ? tkState.activity.saves : [],
@@ -566,7 +566,7 @@ ${userBlock}
         if (Array.isArray(followerEntries) && followerEntries.length) {
             const followerItems = followerEntries.map((entry, index) => ({
                 id: entry.id || entry.authorId || `follower_activity_${Date.now()}_${index}`,
-                name: entry.name || entry.authorName || `新粉丝${index + 1}`,
+                name: entry.name || entry.authorName || `New Followers${index + 1}`,
                 avatar: entry.avatar || entry.authorAvatar || '',
                 text: '关注了你',
                 createdAt: Date.now() - index
@@ -903,18 +903,18 @@ ${wbContext}
 {
   "replies": [
     {
-      "authorName": "路人A",
+      "authorName": "bagaholic_sz",
       "authorAvatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=a",
-      "text": "这句也太像我刚想说的了，尤其是后半句很准。",
+      "text": "Rose Sakura的Swift皮！！天 这个配置我等了一年半还没消息",
       "translationZh": "",
-      "likes": 18
+      "likes": 2.3K
     }
   ],
   "visitors": [
     {
-      "authorName": "小梨",
+      "authorName": "凯茜",
       "authorAvatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=li",
-      "handle": "xiaoli",
+      "handle": "Cassie",
       "thought": "她评论太会抓重点了想看看主页"
     }
   ]
@@ -1126,7 +1126,7 @@ ${wbContext}
         const tabs = Array.from(document.querySelectorAll('.tk-topbar-tab'));
         if (!tabs.length) return;
         tabs.forEach(tab => tab.classList.remove('active'));
-        const recommendTab = tabs.find(tab => String(tab.textContent || '').includes('推荐')) || tabs[1] || tabs[0];
+        const recommendTab = tabs.find(tab => String(tab.textContent || '').includes('Recommended')) || tabs[1] || tabs[0];
         recommendTab.classList.add('active');
     }
 
@@ -1166,7 +1166,7 @@ ${wbContext}
         
         // Determine active tab
         const activeTabEl = document.querySelector('.tk-topbar-tab.active');
-        const isActiveTabFollowing = activeTabEl && activeTabEl.textContent === '关注';
+        const isActiveTabFollowing = activeTabEl && activeTabEl.textContent === 'Follow';
         
         // Filter videos based on tab
         let displayVideos = [];
@@ -1176,7 +1176,7 @@ ${wbContext}
                 return char && char.isFollowed;
             });
         } else {
-            // "推荐" tab - 过滤掉已关注的视频，只显示未关注的或系统的
+            // "Recommended" tab - 过滤掉已关注的视频，只显示未关注的或系统的
             displayVideos = tkState.videos.filter(v => {
                 const char = window.tkGetChar(v.authorId);
                 return !char || !char.isFollowed;
@@ -1188,7 +1188,7 @@ ${wbContext}
         
         if (displayVideos.length === 0) {
             if (isActiveTabFollowing) {
-                feedContainer.innerHTML = '<div class="tk-empty-feed"><p style="color: #999; font-size: 14px;">暂无关注的内容，快去探索吧</p></div>';
+                feedContainer.innerHTML = '<div class="tk-empty-feed"><p style="color: #999; font-size: 14px;">No followed content yet, go explore</p></div>';
             } else {
                 feedContainer.innerHTML = `
                     <div class="tk-empty-feed">
@@ -1259,7 +1259,7 @@ ${wbContext}
                 // 什么都没有的空视频保底
                 cardContentHtml += `
                     <div style="background: #111111; color: #ffffff; padding: 20px 24px; border-radius: 20px; max-width: 85%; margin: 0 auto; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 16px; line-height: 1.6; word-break: break-word; font-weight: 500; position: relative; z-index: 2; transform: translateY(-5vh);">
-                        暂无内容
+                        No content yet
                     </div>
                 `;
             }
@@ -1908,7 +1908,7 @@ ${wbContext}
             });
         }
 
-        title.textContent = `评论 (${window.tkFormatCount(totalComments)})`;
+        title.textContent = `Comments (${window.tkFormatCount(totalComments)})`;
         list.innerHTML = '';
 
         if (video.comments && video.comments.length > 0) {
@@ -1924,7 +1924,7 @@ ${wbContext}
                 const authorAvatar = commentIdentity.authorAvatar;
                 const commentTranslationId = `tk-comment-translation-${c.id}`;
                 const commentTranslateButton = tkCleanTranslation(c.translationZh)
-                    ? `<span class="tk-comment-translate-btn" data-translation-target="${tkEscapeAttr(commentTranslationId)}">翻译</span>`
+                    ? `<span class="tk-comment-translate-btn" data-translation-target="${tkEscapeAttr(commentTranslationId)}">Translate</span>`
                     : '';
                 const avatarHtml = authorAvatar 
                     ? `<img src="${tkEscapeAttr(authorAvatar)}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` 
@@ -1939,8 +1939,8 @@ ${wbContext}
                         <div class="tk-comment-text" onclick="window.tkReplyToComment('${c.id}', '${c.id}', '${tkEscapeAttr(authorName)}', event)">${renderCommentText(c.text)}</div>
                         ${tkCommentTranslationHtml(c.translationZh, commentTranslationId)}
                         <div class="tk-comment-meta">
-                            <span>刚刚</span>
-                            <span onclick="window.tkReplyToComment('${c.id}', '${c.id}', '${tkEscapeAttr(authorName)}', event)">回复</span>
+                            <span>Just now</span>
+                            <span onclick="window.tkReplyToComment('${c.id}', '${c.id}', '${tkEscapeAttr(authorName)}', event)">Reply</span>
                             ${commentTranslateButton}
                         </div>
                         
@@ -1950,7 +1950,7 @@ ${wbContext}
                         
                         ${c.replies && c.replies.length > 0 ? `
                         <div class="tk-comment-expand" onclick="window.tkToggleReplies('${c.id}', event)" style="font-size: 12px; color: #888; margin-top: 8px; font-weight: 500;">
-                            <span id="expand-text-${c.id}">展开 ${window.tkFormatCount(c.replies.length)} 条回复 <i class="fas fa-chevron-down" style="font-size:10px;"></i></span>
+                            <span id="expand-text-${c.id}">Expand ${window.tkFormatCount(c.replies.length)} reply <i class="fas fa-chevron-down" style="font-size:10px;"></i></span>
                         </div>
                         ` : ''}
                     </div>
@@ -1996,7 +1996,7 @@ ${wbContext}
                         const rText = reply.text || '';
                         const replyTranslationId = `tk-reply-translation-${reply.id}`;
                         const replyTranslateButton = tkCleanTranslation(reply.translationZh)
-                            ? `<span class="tk-comment-translate-btn" data-translation-target="${tkEscapeAttr(replyTranslationId)}">翻译</span>`
+                            ? `<span class="tk-comment-translate-btn" data-translation-target="${tkEscapeAttr(replyTranslationId)}">Translate</span>`
                             : '';
                         
                         rItem.innerHTML = `
@@ -2006,8 +2006,8 @@ ${wbContext}
                                 <div style="font-size:13px; color:#111; line-height:1.4; cursor:pointer;" onclick="window.tkReplyToComment('${c.id}', '${reply.id}', '${tkEscapeAttr(rName)}', event)">${renderCommentText(rText)}</div>
                                 ${tkCommentTranslationHtml(reply.translationZh, replyTranslationId)}
                                 <div class="tk-comment-meta tk-reply-meta">
-                                    <span>刚刚</span>
-                                    <span onclick="window.tkReplyToComment('${c.id}', '${reply.id}', '${tkEscapeAttr(rName)}', event)" style="cursor:pointer;">回复</span>
+                                    <span>Just now</span>
+                                    <span onclick="window.tkReplyToComment('${c.id}', '${reply.id}', '${tkEscapeAttr(rName)}', event)" style="cursor:pointer;">Reply</span>
                                     ${replyTranslateButton}
                                 </div>
                             </div>
@@ -2027,7 +2027,7 @@ ${wbContext}
                 }
             });
         } else {
-            list.innerHTML = '<div style="text-align:center; padding: 40px; color: #999; font-size: 13px;">暂无评论，快来抢沙发吧</div>';
+            list.innerHTML = '<div style="text-align:center; padding: 40px; color: #999; font-size: 13px;">No comments yet</div>';
         }
     }
 
@@ -2051,7 +2051,7 @@ ${wbContext}
         const inputEl = sheetOverlay.querySelector('#tk-comment-input');
         if (inputEl) {
             inputEl.value = '';
-            inputEl.placeholder = '留下你的精彩评论';
+            inputEl.placeholder = 'Leave your brilliant comment';
         }
 
         window.openView(sheetOverlay);
@@ -2102,7 +2102,7 @@ ${wbContext}
                         if (!parentCmt.replies) parentCmt.replies = [];
                         parentCmt.replies.push({
                             id: `reply_${parentCmt.id}_${Date.now()}`,
-                            authorName: window.userState ? window.userState.name : '我',
+                            authorName: window.userState ? window.userState.name : 'Me',
                             authorAvatar: (tkState.profile && tkState.profile.avatar) ? tkState.profile.avatar : null,
                             text: text,
                             likes: 0
@@ -2116,7 +2116,7 @@ ${wbContext}
                                 repliesContainer.style.display = 'block';
                                 const expandText = document.getElementById(`expand-text-${currentReplyToCommentId}`);
                                 if (expandText) {
-                                    expandText.innerHTML = `收起 <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
+                                    expandText.innerHTML = `Collapse <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
                                 }
                             }
                         }, 50);
@@ -2125,7 +2125,7 @@ ${wbContext}
                     // It's a root comment
                     vid.comments.unshift({
                         id: 'cmt_' + Date.now(),
-                        authorName: window.userState ? window.userState.name : '我',
+                        authorName: window.userState ? window.userState.name : 'Me',
                         authorAvatar: (tkState.profile && tkState.profile.avatar) ? tkState.profile.avatar : null,
                         text: text,
                         likes: 0,
@@ -2146,7 +2146,7 @@ ${wbContext}
                 }
 
                 newInputEl.value = '';
-                newInputEl.placeholder = '留下你的精彩评论';
+                newInputEl.placeholder = 'Leave your brilliant comment';
                 currentReplyToCommentId = null; // reset reply target after send
                 window.currentReplyTargetId = null;
                 window.showToast('评论已发送');
@@ -2179,7 +2179,7 @@ ${wbContext}
         
         const inputEl = document.getElementById('tk-comment-input');
         if(inputEl) {
-            inputEl.placeholder = `回复 @${authorName}`;
+            inputEl.placeholder = `Reply @${authorName}`;
             inputEl.value = `@${authorName} `;
             inputEl.focus();
         }
@@ -2214,12 +2214,12 @@ ${wbContext}
 
         if (container.style.display === 'none') {
             container.style.display = 'block';
-            expandText.innerHTML = `收起 <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
+            expandText.innerHTML = `Collapse <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
         } else {
             container.style.display = 'none';
             // Count replies roughly
             const count = container.children.length;
-            expandText.innerHTML = `展开 ${count} 条回复 <i class="fas fa-chevron-down" style="font-size:10px;"></i>`;
+            expandText.innerHTML = `Expand ${count} reply <i class="fas fa-chevron-down" style="font-size:10px;"></i>`;
         }
     };
 
@@ -2232,7 +2232,7 @@ ${wbContext}
         if (!translationEl) return;
         const isHidden = translationEl.style.display === 'none' || !translationEl.style.display;
         translationEl.style.display = isHidden ? 'block' : 'none';
-        button.textContent = isHidden ? '收起翻译' : '翻译';
+        button.textContent = isHidden ? 'Collapse translation' : 'Translate';
     };
     
     // Share functionality
@@ -2600,7 +2600,7 @@ JSON 示例：
     "handle": "user_id",
     "authorAvatar": "https://picsum.photos/150/150?random=101",
     "desc": "刚刚发生的瞬间 #日常 #随手拍",
-    "imagePrompt": "夜晚便利店门口的暖光随手拍，玻璃反光里有人低头笑，手机纪实感",
+    "imagePrompt": "整栋楼只剩这一层还亮着灯，窗外的车都走了，做完这组数据再走",
     "opening": "开头不少于40字，写环境、第一眼看到的动作和氛围，要像画面中央的长气泡文字。",
     "openingTranslationZh": "",
     "middle": "中间不少于40字，写人物反应、冲突或一句很真实的话，保持第三人称和镜头感。",
