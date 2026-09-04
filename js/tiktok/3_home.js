@@ -1126,7 +1126,7 @@ ${wbContext}
         const tabs = Array.from(document.querySelectorAll('.tk-topbar-tab'));
         if (!tabs.length) return;
         tabs.forEach(tab => tab.classList.remove('active'));
-        const recommendTab = tabs.find(tab => String(tab.textContent || '').includes('Recommended')) || tabs[1] || tabs[0];
+        const recommendTab = tabs.find(tab => String(tab.textContent || '').includes('For You')) || tabs[1] || tabs[0];
         recommendTab.classList.add('active');
     }
 
@@ -1166,7 +1166,7 @@ ${wbContext}
         
         // Determine active tab
         const activeTabEl = document.querySelector('.tk-topbar-tab.active');
-        const isActiveTabFollowing = activeTabEl && activeTabEl.textContent === 'Follow';
+        const isActiveTabFollowing = activeTabEl && activeTabEl.textContent === 'Following';
         
         // Filter videos based on tab
         let displayVideos = [];
@@ -1176,7 +1176,7 @@ ${wbContext}
                 return char && char.isFollowed;
             });
         } else {
-            // "Recommended" tab - 过滤掉已关注的视频，只显示未关注的或系统的
+            // "For You" tab - 过滤掉已关注的视频，只显示未关注的或系统的
             displayVideos = tkState.videos.filter(v => {
                 const char = window.tkGetChar(v.authorId);
                 return !char || !char.isFollowed;
@@ -1939,7 +1939,7 @@ ${wbContext}
                         <div class="tk-comment-text" onclick="window.tkReplyToComment('${c.id}', '${c.id}', '${tkEscapeAttr(authorName)}', event)">${renderCommentText(c.text)}</div>
                         ${tkCommentTranslationHtml(c.translationZh, commentTranslationId)}
                         <div class="tk-comment-meta">
-                            <span>Just now</span>
+                            <span>1s ago</span>
                             <span onclick="window.tkReplyToComment('${c.id}', '${c.id}', '${tkEscapeAttr(authorName)}', event)">Reply</span>
                             ${commentTranslateButton}
                         </div>
@@ -1950,7 +1950,7 @@ ${wbContext}
                         
                         ${c.replies && c.replies.length > 0 ? `
                         <div class="tk-comment-expand" onclick="window.tkToggleReplies('${c.id}', event)" style="font-size: 12px; color: #888; margin-top: 8px; font-weight: 500;">
-                            <span id="expand-text-${c.id}">Expand ${window.tkFormatCount(c.replies.length)} reply <i class="fas fa-chevron-down" style="font-size:10px;"></i></span>
+                            <span id="expand-text-${c.id}">View ${window.tkFormatCount(c.replies.length)} replies <i class="fas fa-chevron-down" style="font-size:10px;"></i></span>
                         </div>
                         ` : ''}
                     </div>
@@ -2006,7 +2006,7 @@ ${wbContext}
                                 <div style="font-size:13px; color:#111; line-height:1.4; cursor:pointer;" onclick="window.tkReplyToComment('${c.id}', '${reply.id}', '${tkEscapeAttr(rName)}', event)">${renderCommentText(rText)}</div>
                                 ${tkCommentTranslationHtml(reply.translationZh, replyTranslationId)}
                                 <div class="tk-comment-meta tk-reply-meta">
-                                    <span>Just now</span>
+                                    <span>1s ago</span>
                                     <span onclick="window.tkReplyToComment('${c.id}', '${reply.id}', '${tkEscapeAttr(rName)}', event)" style="cursor:pointer;">Reply</span>
                                     ${replyTranslateButton}
                                 </div>
@@ -2027,7 +2027,7 @@ ${wbContext}
                 }
             });
         } else {
-            list.innerHTML = '<div style="text-align:center; padding: 40px; color: #999; font-size: 13px;">No comments yet</div>';
+            list.innerHTML = '<div style="text-align:center; padding: 40px; color: #999; font-size: 13px;">Comments will appear here</div>';
         }
     }
 
@@ -2051,7 +2051,7 @@ ${wbContext}
         const inputEl = sheetOverlay.querySelector('#tk-comment-input');
         if (inputEl) {
             inputEl.value = '';
-            inputEl.placeholder = 'Leave your comment';
+            inputEl.placeholder = 'Add comment...';
         }
 
         window.openView(sheetOverlay);
@@ -2102,7 +2102,7 @@ ${wbContext}
                         if (!parentCmt.replies) parentCmt.replies = [];
                         parentCmt.replies.push({
                             id: `reply_${parentCmt.id}_${Date.now()}`,
-                            authorName: window.userState ? window.userState.name : 'Me',
+                            authorName: window.userState ? window.userState.name : 'Profile',
                             authorAvatar: (tkState.profile && tkState.profile.avatar) ? tkState.profile.avatar : null,
                             text: text,
                             likes: 0
@@ -2116,7 +2116,7 @@ ${wbContext}
                                 repliesContainer.style.display = 'block';
                                 const expandText = document.getElementById(`expand-text-${currentReplyToCommentId}`);
                                 if (expandText) {
-                                    expandText.innerHTML = `Collapse <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
+                                    expandText.innerHTML = `Hide <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
                                 }
                             }
                         }, 50);
@@ -2125,7 +2125,7 @@ ${wbContext}
                     // It's a root comment
                     vid.comments.unshift({
                         id: 'cmt_' + Date.now(),
-                        authorName: window.userState ? window.userState.name : 'Me',
+                        authorName: window.userState ? window.userState.name : 'Profile',
                         authorAvatar: (tkState.profile && tkState.profile.avatar) ? tkState.profile.avatar : null,
                         text: text,
                         likes: 0,
@@ -2146,7 +2146,7 @@ ${wbContext}
                 }
 
                 newInputEl.value = '';
-                newInputEl.placeholder = 'Leave your comment';
+                newInputEl.placeholder = 'Add comment...';
                 currentReplyToCommentId = null; // reset reply target after send
                 window.currentReplyTargetId = null;
                 window.showToast('评论已发送');
@@ -2214,12 +2214,12 @@ ${wbContext}
 
         if (container.style.display === 'none') {
             container.style.display = 'block';
-            expandText.innerHTML = `Collapse <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
+            expandText.innerHTML = `Hide <i class="fas fa-chevron-up" style="font-size:10px;"></i>`;
         } else {
             container.style.display = 'none';
             // Count replies roughly
             const count = container.children.length;
-            expandText.innerHTML = `Expand ${count} reply <i class="fas fa-chevron-down" style="font-size:10px;"></i>`;
+            expandText.innerHTML = `View ${count} replies <i class="fas fa-chevron-down" style="font-size:10px;"></i>`;
         }
     };
 
@@ -2247,7 +2247,7 @@ ${wbContext}
         shareList.innerHTML = '';
         const followedChars = tkState.chars.filter(c => c.isFollowed);
         if (followedChars.length === 0) {
-            shareList.innerHTML = '<div style="padding: 10px 15px; color: #999; font-size: 13px;">暂无好友可转发</div>';
+            shareList.innerHTML = '<div style="padding: 10px 15px; color: #999; font-size: 13px;">No friends to forward to</div>';
         } else {
             followedChars.forEach(char => {
                 const item = document.createElement('div');
@@ -2316,19 +2316,19 @@ ${wbContext}
             actionsRow.innerHTML = `
                 <div class="tk-share-action-item" onclick="window.tkHandleShareAction('save')">
                     <div class="tk-share-action-icon"><i class="fas fa-bookmark" id="tk-share-save-icon"></i></div>
-                    <span>收藏</span>
+                    <span>Saved</span>
                 </div>
                 <div class="tk-share-action-item" onclick="window.tkHandleShareAction('edit')">
                     <div class="tk-share-action-icon"><i class="fas fa-pen"></i></div>
-                    <span>编辑</span>
+                    <span>Edit post</span>
                 </div>
                 <div class="tk-share-action-item" onclick="window.tkHandleShareAction('delete')">
                     <div class="tk-share-action-icon" style="color: #ff3b30;"><i class="fas fa-trash-alt"></i></div>
-                    <span style="color: #ff3b30;">删除</span>
+                    <span style="color: #ff3b30;">Delete</span>
                 </div>
                 <div class="tk-share-action-item" onclick="window.showToast('链接已复制'); window.closeView(document.getElementById('tk-share-sheet'));">
                     <div class="tk-share-action-icon"><i class="fas fa-link"></i></div>
-                    <span>复制链接</span>
+                    <span>Copy link</span>
                 </div>
             `;
         }
