@@ -65,14 +65,14 @@
         const items = document.querySelectorAll('#tk-activity-list > .tk-activity-item');
         if (!items || items.length < 3) return;
         const activity = {
-            newFollowers: '暂无新粉丝',
-            likesSaves: '互动消息',
-            commentsMentions: '互动消息',
+            newFollowers: 'No new followers yet',
+            likesSaves: 'Interactions',
+            commentsMentions: 'Interactions',
             ...(tkState.activity && typeof tkState.activity === 'object' ? tkState.activity : {})
         };
         [activity.newFollowers, activity.likesSaves, activity.commentsMentions].forEach((text, index) => {
             const desc = items[index]?.querySelector('.tk-activity-desc');
-            if (desc) desc.textContent = text || '互动消息';
+            if (desc) desc.textContent = text || 'Interactions';
         });
     }
 
@@ -303,7 +303,7 @@ JSON example:
                 <div class="tk-follow-plus"><i class="fas fa-plus"></i></div>
             </div>
             ${tkState.profile.status ? `<div class="tk-follow-bubble">${tkState.profile.status}</div>` : ''}
-            <div class="tk-follow-name">我的状态</div>
+            <div class="tk-follow-name">My Status</div>
         `;
         selfItem.addEventListener('click', () => {
             // Trigger profile tab or edit status
@@ -381,7 +381,7 @@ JSON example:
             });
             
             if (tkState.dms.length === 0) {
-                dmsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999; font-size: 13px;">暂无消息记录</div>';
+                dmsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999; font-size: 13px;">No message history yet</div>';
             }
         }
     };
