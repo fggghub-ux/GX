@@ -56,7 +56,7 @@
 
     function tkDmRelationshipLabel(char) {
         if (!char) return '';
-        if (char.isFollowed && char.isFollower) return '互相关注';
+        if (char.isFollowed && char.isFollower) return 'Mutual Follow';
         if (char.isFollower && !char.isFollowed) return '对方是陌生人';
         return '';
     }
