@@ -2051,7 +2051,7 @@ ${wbContext}
         const inputEl = sheetOverlay.querySelector('#tk-comment-input');
         if (inputEl) {
             inputEl.value = '';
-            inputEl.placeholder = 'Leave your brilliant comment';
+            inputEl.placeholder = 'Leave your comment';
         }
 
         window.openView(sheetOverlay);
@@ -2146,7 +2146,7 @@ ${wbContext}
                 }
 
                 newInputEl.value = '';
-                newInputEl.placeholder = 'Leave your brilliant comment';
+                newInputEl.placeholder = 'Leave your comment';
                 currentReplyToCommentId = null; // reset reply target after send
                 window.currentReplyTargetId = null;
                 window.showToast('评论已发送');
