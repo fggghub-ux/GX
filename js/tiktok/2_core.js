@@ -8,7 +8,7 @@ function createDefaultTkState() {
             name: 'User',
             handle: 'user',
             avatar: null,
-            status: 'Thinking...',
+            status: 'No Signa...',
             bio: 'Click to add a bio',
             persona: '',
             following: 0,
