@@ -1,0 +1,1981 @@
+/* =========================================
+   TIKTOK VIEW - LOW SATURATION WHITE THEME
+   ========================================= */
+
+/* Main View Container */
+.tiktok-view {
+    --tk-safe-top: var(--safe-top);
+    --tk-header-height: 44px;
+    --tk-top-offset: calc(var(--tk-safe-top) + var(--tk-header-height));
+    --tk-bottom-nav-height: 52px;
+    --tk-bottom-nav-offset: calc(12px + var(--safe-bottom));
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+    border-radius: 0;
+    overflow: hidden;
+    color: #333333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.tiktok-view.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Tabs System */
+.tk-main-content {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+.tk-tab-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.tk-tab-content.active {
+    /* No longer using display block/none for active */
+}
+
+/* --- BOTTOM NAV (Floating & Low Saturation) --- */
+.tk-bottom-nav-container {
+    position: absolute;
+    bottom: var(--tk-bottom-nav-offset);
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 200;
+}
+
+.tk-bottom-nav {
+    background-color: rgba(255, 255, 255, 0.85);
+    
+    
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    padding: 4px; 
+    border-radius: 40px; 
+    
+    position: relative;
+    width: auto; 
+    min-width: 240px;
+    justify-content: space-between;
+    align-items: stretch; 
+    height: var(--tk-bottom-nav-height);
+    gap: 0; 
+}
+
+.tk-nav-indicator {
+    position: absolute;
+    top: 4px; 
+    bottom: 4px; 
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 36px; 
+    z-index: 0;
+    transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1), width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    left: 4px; 
+}
+
+.tk-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: #8e8e93; 
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 20px;
+    height: 100%;
+    transition: color 0.3s;
+}
+
+.tk-nav-item i {
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+.tk-nav-item span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.tk-nav-item.active {
+    color: #0f0f0f;
+}
+
+/* --- HOME TAB --- */
+.tk-home-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: calc(var(--tk-safe-top) + var(--tk-header-height));
+    padding-top: var(--tk-safe-top);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    z-index: 10;
+    color: #111111;
+}
+
+.tk-topbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #999999;
+}
+
+.tk-topbar-tab.active {
+    color: #111111;
+    position: relative;
+}
+
+.tk-topbar-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background-color: #111111;
+    border-radius: 2px;
+}
+
+.tk-topbar-left i, .tk-topbar-right i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.tk-feed-container {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    padding-top: var(--tk-top-offset);
+    box-sizing: border-box;
+    background: #f8f8f8;
+}
+
+.tk-feed-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tk-empty-feed {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.tk-magic-btn-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    
+    cursor: pointer;
+    border: 1px solid #d0d0d0;
+}
+
+.tk-magic-btn-large i {
+    font-size: 32px;
+}
+
+/* Video Card (Text Based) */
+.tk-video-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tk-video-text-content {
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333333;
+    text-align: center;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    font-weight: 500;
+    
+}
+
+.tk-bubble-flow {
+    position: relative;
+    z-index: 2;
+    width: min(86%, 340px);
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-5vh);
+    pointer-events: none;
+}
+
+.tk-bubble-flow-item {
+    position: absolute;
+    max-width: 100%;
+    color: #fff;
+    background: var(--tk-flow-bg, #111);
+    border-radius: 22px;
+    padding: 18px 22px;
+    font-size: 16px;
+    line-height: 1.62;
+    font-weight: 520;
+    text-align: left;
+    word-break: break-word;
+    
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    animation: tkBubbleFlow var(--tk-flow-total, 10s) ease-in-out infinite;
+    animation-delay: calc(var(--tk-flow-index, 0) * 3.4s);
+}
+
+.tk-bubble-flow-fallback {
+    background: #111;
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 20px;
+    max-width: 85%;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 500;
+    transform: translateY(-5vh);
+}
+
+@keyframes tkBubbleFlow {
+    0%, 7% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+    13%, 30% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    38%, 100% {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.99);
+    }
+}
+
+.tk-feed-visual {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.tk-feed-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tk-feed-image-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.18));
+    pointer-events: none;
+}
+
+.tk-feed-progress {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: calc(72px + var(--safe-bottom));
+    z-index: 6;
+    display: flex;
+    gap: 4px;
+    height: 3px;
+    pointer-events: none;
+}
+
+.tk-feed-progress span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.16);
+    overflow: hidden;
+}
+
+.tk-feed-progress-video span {
+    width: 100%;
+}
+
+.tk-feed-progress-video span::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: rgba(0,0,0,0.72);
+    transform-origin: left center;
+    animation: tkFeedVideoProgress var(--tk-progress-duration, 9500ms) linear infinite;
+}
+
+.tk-feed-progress-segments span {
+    flex: 1;
+    position: relative;
+}
+
+.tk-feed-progress-segments span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(0,0,0,0.72);
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: tkFeedSegmentProgress var(--tk-progress-duration, 9600ms) linear infinite;
+    animation-delay: calc((var(--tk-progress-duration, 9600ms) / var(--tk-segment-count, 3)) * var(--tk-segment-index, 0));
+}
+
+.tk-feed-progress-segments span.active,
+.tk-feed-progress-segments span:first-child {
+    background: rgba(0,0,0,0.16);
+}
+
+@keyframes tkFeedVideoProgress {
+    0% { transform: scaleX(0); }
+    88% { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
+}
+
+@keyframes tkFeedSegmentProgress {
+    0% { transform: scaleX(0); opacity: 1; }
+    24% { transform: scaleX(1); opacity: 1; }
+    30% { transform: scaleX(1); opacity: 1; }
+    31% { transform: scaleX(0); opacity: 0; }
+    100% { transform: scaleX(0); opacity: 0; }
+}
+
+.tk-feed-progress-count-2 span:nth-child(1)::after { animation-name: tkFeedSeg2A; animation-delay: 0ms; }
+.tk-feed-progress-count-2 span:nth-child(2)::after { animation-name: tkFeedSeg2B; animation-delay: 0ms; }
+.tk-feed-progress-count-3 span:nth-child(1)::after { animation-name: tkFeedSeg3A; animation-delay: 0ms; }
+.tk-feed-progress-count-3 span:nth-child(2)::after { animation-name: tkFeedSeg3B; animation-delay: 0ms; }
+.tk-feed-progress-count-3 span:nth-child(3)::after { animation-name: tkFeedSeg3C; animation-delay: 0ms; }
+.tk-feed-progress-count-4 span:nth-child(1)::after { animation-name: tkFeedSeg4A; animation-delay: 0ms; }
+.tk-feed-progress-count-4 span:nth-child(2)::after { animation-name: tkFeedSeg4B; animation-delay: 0ms; }
+.tk-feed-progress-count-4 span:nth-child(3)::after { animation-name: tkFeedSeg4C; animation-delay: 0ms; }
+.tk-feed-progress-count-4 span:nth-child(4)::after { animation-name: tkFeedSeg4D; animation-delay: 0ms; }
+.tk-feed-progress-count-5 span:nth-child(1)::after { animation-name: tkFeedSeg5A; animation-delay: 0ms; }
+.tk-feed-progress-count-5 span:nth-child(2)::after { animation-name: tkFeedSeg5B; animation-delay: 0ms; }
+.tk-feed-progress-count-5 span:nth-child(3)::after { animation-name: tkFeedSeg5C; animation-delay: 0ms; }
+.tk-feed-progress-count-5 span:nth-child(4)::after { animation-name: tkFeedSeg5D; animation-delay: 0ms; }
+.tk-feed-progress-count-5 span:nth-child(5)::after { animation-name: tkFeedSeg5E; animation-delay: 0ms; }
+
+@keyframes tkFeedSeg2A { 0%{transform:scaleX(0);opacity:1;} 46%{transform:scaleX(1);opacity:1;} 50%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg2B { 0%,50%{transform:scaleX(0);opacity:0;} 96%{transform:scaleX(1);opacity:1;} 100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg3A { 0%{transform:scaleX(0);opacity:1;} 30%{transform:scaleX(1);opacity:1;} 33%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg3B { 0%,33%{transform:scaleX(0);opacity:0;} 63%{transform:scaleX(1);opacity:1;} 66%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg3C { 0%,66%{transform:scaleX(0);opacity:0;} 96%{transform:scaleX(1);opacity:1;} 100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg4A { 0%{transform:scaleX(0);opacity:1;} 22%{transform:scaleX(1);opacity:1;} 25%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg4B { 0%,25%{transform:scaleX(0);opacity:0;} 47%{transform:scaleX(1);opacity:1;} 50%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg4C { 0%,50%{transform:scaleX(0);opacity:0;} 72%{transform:scaleX(1);opacity:1;} 75%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg4D { 0%,75%{transform:scaleX(0);opacity:0;} 97%{transform:scaleX(1);opacity:1;} 100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg5A { 0%{transform:scaleX(0);opacity:1;} 18%{transform:scaleX(1);opacity:1;} 20%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg5B { 0%,20%{transform:scaleX(0);opacity:0;} 38%{transform:scaleX(1);opacity:1;} 40%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg5C { 0%,40%{transform:scaleX(0);opacity:0;} 58%{transform:scaleX(1);opacity:1;} 60%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg5D { 0%,60%{transform:scaleX(0);opacity:0;} 78%{transform:scaleX(1);opacity:1;} 80%,100%{transform:scaleX(0);opacity:0;} }
+@keyframes tkFeedSeg5E { 0%,80%{transform:scaleX(0);opacity:0;} 98%{transform:scaleX(1);opacity:1;} 100%{transform:scaleX(0);opacity:0;} }
+
+/* Right Actions */
+.tk-right-actions {
+    position: absolute;
+    right: 12px;
+    bottom: calc(130px + var(--safe-bottom)); /* Moved up */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px; /* Increased gap */
+    z-index: 5;
+}
+
+.tk-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #555555;
+    font-size: 12px;
+    font-weight: 500;
+    gap: 4px;
+}
+
+.tk-action-item i {
+    font-size: 34px; /* Bigger icons */
+    color: #111111;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    transition: transform 0.2s, color 0.2s;
+}
+
+.tk-action-item.liked i {
+    color: #ff4b4b;
+}
+
+/* Avatar with Plus */
+.tk-avatar-action {
+    position: relative;
+    width: 52px; /* Bigger avatar */
+    height: 52px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    border: 2px solid #ffffff;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    
+}
+
+.tk-avatar-action img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tk-avatar-action i.fa-user {
+    font-size: 20px;
+    color: #999;
+}
+
+.tk-action-plus {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #ff4b4b; /* Keep a bit of red for standard TK feel, or use dark grey */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 12px;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.tk-action-plus.followed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) scale(0);
+}
+
+/* Music Disc Rotating */
+.tk-music-disc {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #111;
+    border: 8px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    
+    animation: tk-spin 4s linear infinite;
+}
+
+.tk-music-disc i {
+    font-size: 14px;
+    color: #fff;
+    margin: 0;
+    filter: none;
+}
+
+@keyframes tk-spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* Bottom Info */
+.tk-bottom-info {
+    position: absolute;
+    bottom: calc(90px + var(--safe-bottom));
+    left: 15px;
+    width: calc(100% - 80px);
+    z-index: 5;
+    color: #111111;
+}
+
+.tk-video-author {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.tk-video-desc {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #444444;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* API Gen Button on Video (Removed, using Top Bar instead) */
+
+/* --- COMMON HEADER --- */
+.tk-header, .tk-home-topbar {
+    left: 0;
+    width: 100%;
+    min-height: calc(var(--tk-safe-top) + var(--tk-header-height));
+    padding-top: var(--tk-safe-top);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #ffffff;
+    z-index: 20;
+    border: none;
+    
+}
+
+/* Common floating button wrapper for header icons (used in html) */
+.tk-floating-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    pointer-events: auto; /* Ensure it's clickable in floating header */
+}
+
+.tk-floating-btn:active {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Fallback/Original left/right/center styles */
+.tk-header-left, .tk-header-right {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    color: #111;
+    cursor: pointer;
+}
+
+.tk-header-right {
+    gap: 15px;
+}
+
+.tk-header-center {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+}
+
+/* 彻底解除 Watch Together Bubble 的点击封锁 */
+#tk-watch-together-bubble {
+    pointer-events: auto !important;
+}
+#tk-watch-together-bubble * {
+    pointer-events: auto !important;
+}
+#wt-chat-container {
+    overscroll-behavior: contain; /* 防止内部滚动穿透到视频流 */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Home Topbar overrides */
+.tk-home-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: calc(var(--tk-safe-top) + var(--tk-header-height));
+    padding-top: var(--tk-safe-top);
+    box-sizing: border-box;
+    background: transparent;
+    border-bottom: none;
+    pointer-events: none;
+}
+.tk-home-topbar > * {
+    pointer-events: auto;
+}
+
+.tk-topbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #999999;
+}
+
+.tk-topbar-left, .tk-topbar-right {
+    display: flex;
+    gap: 12px;
+}
+
+
+/* --- CHAT TAB --- */
+.tk-chat-scrollable {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: calc(100px + var(--safe-bottom));
+    padding-top: 8px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Following Bar (Avatars with bubbles) */
+.tk-following-bar-container {
+    padding: 20px 0 10px 15px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.tk-following-bar {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-right: 15px;
+    padding-top: 25px; /* space for bubbles */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tk-following-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.tk-follow-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65px;
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.tk-follow-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.tk-follow-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tk-follow-avatar i.fa-user {
+    font-size: 24px;
+    color: #999;
+}
+
+/* Intersecting Bubble */
+.tk-follow-bubble {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    z-index: 2;
+}
+
+/* The little plus on the avatar */
+.tk-follow-plus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: #333;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    border: 2px solid #fff;
+    z-index: 3;
+}
+
+.tk-follow-name {
+    font-size: 11px;
+    color: #555;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Activity List */
+.tk-activity-list {
+    padding: 10px 0;
+}
+
+.tk-activity-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.tk-activity-item:active {
+    background: #f9f9f9;
+}
+
+.tk-activity-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.tk-activity-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tk-activity-text {
+    flex: 1;
+}
+
+.tk-activity-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.tk-activity-desc {
+    font-size: 13px;
+    color: #888;
+}
+
+.tk-activity-item .arrow {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.tk-chat-section-title {
+    padding: 20px 20px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+}
+
+
+/* --- PROFILE TAB --- */
+.tk-profile-header {
+    min-height: calc(var(--tk-safe-top) + var(--tk-header-height));
+    padding-top: var(--tk-safe-top);
+    box-sizing: border-box;
+    border-bottom: none;
+}
+
+.tk-profile-scrollable {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: calc(100px + var(--safe-bottom));
+    padding-top: 8px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tk-profile-avatar-section {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+#tk-profile-status-bubble {
+    font-size: 15px; /* slightly bigger */
+    top: -28px; /* move higher */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    z-index: 5; /* ensure above avatar */
+    border: 2px solid #fff; /* add border to stand out against avatar */
+    width: max-content;
+    max-width: min(260px, calc(100vw - 48px));
+    height: auto;
+    line-height: 1.35;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+    text-align: center;
+}
+
+#tk-profile-tab .tk-profile-avatar-section {
+    padding-top: 34px;
+    overflow: visible;
+}
+
+/* --- CHAR PROFILE SUB-VIEW (Added for Char Detail) --- */
+.tk-sub-profile-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.tk-sub-profile-view.active {
+    transform: translateX(0);
+}
+
+.tk-profile-avatar-section {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.tk-avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: visible;
+}
+
+.tk-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tk-avatar-wrapper i.fa-user {
+    font-size: 40px;
+    color: #bbb;
+}
+
+.tk-avatar-plus {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    width: 28px;
+    height: 28px;
+    background: #333;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    border: 3px solid #fff;
+    
+}
+
+.tk-profile-name-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.tk-profile-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+}
+
+.tk-profile-handle {
+    font-size: 13px;
+    color: #666;
+}
+
+.tk-profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    padding: 0 40px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.tk-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.tk-stat-num {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.tk-stat-label {
+    font-size: 13px;
+    color: #888;
+}
+
+/* Black/Gray Rounded Action Buttons */
+.tk-profile-actions-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tk-btn-primary {
+    background: #111111;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 35px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.tk-btn-secondary {
+    background: #f1f1f2;
+    color: #111111;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 35px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.tk-btn-icon {
+    background: #f1f1f2;
+    color: #111111;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.tk-profile-bio-container {
+    padding: 0 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.tk-profile-bio-bubble {
+    font-size: 14px;
+    color: #111;
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+/* Tabs */
+.tk-profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+}
+
+.tk-ptab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    position: relative;
+    z-index: 2; /* Ensure clicks register above indicator */
+}
+
+.tk-ptab.active {
+    color: #111;
+}
+
+.tk-ptab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 25%; /* Default for 4 tabs, overridden by inline style for sub profile */
+    height: 2px;
+    background: #111;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smoother animation */
+    z-index: 1;
+}
+
+.tk-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    padding-top: 1px;
+}
+
+.tk-grid-item {
+    aspect-ratio: 3/4;
+    background: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.tk-grid-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.tk-grid-views {
+    position: absolute;
+    bottom: 5px;
+    left: 8px;
+    color: #fff;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+}
+
+#tk-edit-char-sheet .bottom-sheet,
+#tk-edit-char-sheet .detail-sheet-content {
+    background: #ffffff;
+}
+
+#tk-edit-char-sheet .form-group {
+    background: #fff;
+}
+
+.tk-import-list .tk-import-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* Enhanced Share Sheet Styles */
+.tk-share-section-title {
+    font-size: 13px;
+    color: #888;
+    margin: 10px 15px 5px;
+    font-weight: 500;
+}
+
+.tk-share-friends-row {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 15px 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tk-share-friends-row::-webkit-scrollbar {
+    display: none;
+}
+
+.tk-share-friend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 60px;
+    cursor: pointer;
+}
+
+.tk-share-actions-row {
+    display: flex;
+    gap: 20px;
+    padding: 10px 15px 20px;
+    justify-content: flex-start;
+}
+
+.tk-share-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.tk-share-action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #111;
+    transition: background 0.2s;
+}
+
+.tk-share-action-item:active .tk-share-action-icon {
+    background: #e5e5e5;
+}
+
+.tk-share-action-item span {
+    font-size: 11px;
+    color: #555;
+}
+
+
+/* --- BOTTOM SHEETS CUSTOMIZATION --- */
+/* Override default bottom sheet styles for TikTok if needed */
+#tk-video-detail-sheet .bottom-sheet {
+    background-color: #ffffff;
+    padding-bottom: calc(10px + var(--safe-bottom));
+}
+#tk-video-detail-sheet .sheet-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tk-comment-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tk-avatar-small {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.tk-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tk-comment-content {
+    flex: 1;
+}
+
+.tk-comment-name {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.tk-comment-text {
+    font-size: 14px;
+    color: #111;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.tk-comment-translation {
+    font-size: 12px;
+    color: #8e8e93;
+    line-height: 1.45;
+    margin: -2px 0 6px;
+    word-break: break-word;
+}
+
+.tk-comment-meta {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    gap: 15px;
+}
+
+.tk-comment-translate-btn {
+    cursor: pointer;
+    color: #8e8e93;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.tk-reply-meta {
+    margin-top: 4px;
+}
+
+.tk-bubble-translation {
+    margin-top: 8px;
+    padding-top: 7px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 400;
+}
+
+.tk-dm-translatable-bubble {
+    cursor: pointer;
+}
+
+.tk-dm-translation {
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(142, 142, 147, 0.22);
+    font-size: 11px;
+    line-height: 1.4;
+    color: #8e8e93;
+    word-break: break-word;
+}
+
+.tk-dm-translatable-bubble[style*="background: #111"] .tk-dm-translation,
+.tk-dm-translatable-bubble[style*="background:#111"] .tk-dm-translation {
+    border-top-color: rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.tk-comment-like {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888;
+    font-size: 12px;
+    gap: 4px;
+    padding-top: 5px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.tk-comment-like:active { transform: scale(0.9); }
+.tk-comment-like i { font-size: 14px; transition: color 0.2s; }
+.tk-comment-like.liked i { color: #ff4b4b; font-weight: 900; }
+.tk-comment-like.liked span { color: #ff4b4b; }
+
+/* Hashtag Styles */
+.tk-hashtag {
+    color: #111111;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-block;
+    background: rgba(255,255,255,0.8);
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin: 0 2px;
+    
+}
+
+.tk-hashtag-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 550; /* Above normal sub views */
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.tk-hashtag-view.active {
+    transform: translateY(0);
+}
+
+.tk-hashtag-header-content {
+    padding: 60px 20px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tk-hashtag-icon-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    color: #111;
+}
+
+.tk-hashtag-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.tk-hashtag-views {
+    font-size: 13px;
+    color: #888;
+}
+
+/* =========================================
+   NEW OVERRIDES FOR Z-INDEX AND SHADOWS
+   ========================================= */
+
+/* Adjust layers so videos don't cover bottom sheets */
+/* 
+   Z-Index Hierarchy:
+   - Base Views (Home/Chat/Profile Tabs): Default flow
+   - Bottom Nav: z-index 200
+   - Sub Profile View: z-index 300
+   - Fullscreen Video View: z-index 400
+   - Chat View: z-index 400
+   - Hashtag / Music Views: z-index 500
+   - Bottom Sheets (Comments, Share, Create): z-index 600-800
+   - Modals / Popovers: z-index 900+
+*/
+#tk-fullscreen-video-view {
+    z-index: 530 !important;
+}
+
+.tk-sub-profile-view {
+    z-index: 300 !important;
+}
+
+#tk-sub-profile-view {
+    z-index: 520 !important;
+}
+
+/* Adjust sub-views header position */
+.tk-sub-profile-view .tk-header,
+.tk-sub-profile-view .tk-home-topbar {
+    top: 0 !important;
+}
+
+/* Override Chat Row gaps for TK DM */
+#tk-dm-messages-container .chat-row {
+    margin-top: 1px !important; /* Force tight gap for consecutive messages */
+}
+#tk-dm-messages-container .chat-row:not(.has-prev) {
+    margin-top: 5px !important; /* Slight separation when the sender changes */
+}
+
+/* Force text-shadow and box-shadow removal across video views */
+.tk-video-card,
+.tk-video-text-content,
+.tk-video-text-content div,
+.tk-grid-item,
+.tk-grid-text,
+.tk-grid-views,
+.tk-grid-views i,
+#tk-fullscreen-video-view,
+#tk-fullscreen-video-view .tk-right-actions i,
+#tk-fullscreen-video-view .tk-right-actions span,
+#tk-fullscreen-video-view .tk-bottom-info,
+#tk-fullscreen-video-view .tk-bottom-info div {
+    
+    text-shadow: none !important;
+    filter: none !important;
+}
+
+#tk-dm-chat-view {
+    z-index: 540 !important;
+}
+
+#tk-chat-tab > .tk-header,
+#tk-profile-tab > .tk-header,
+#tk-sub-profile-view > .tk-header {
+    position: sticky;
+    top: 0;
+    left: auto;
+    flex-shrink: 0;
+    background: #ffffff !important;
+    pointer-events: auto;
+    z-index: 20;
+}
+
+#tk-profile-tab > .tk-header .tk-floating-btn,
+#tk-sub-profile-view > .tk-header .tk-floating-btn {
+    background-color: rgba(255, 255, 255, 0.55);
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+#tk-profile-tab > .tk-header .tk-floating-btn i,
+#tk-sub-profile-view > .tk-header .tk-floating-btn i {
+    color: #111111 !important;
+}
+
+#tk-home-tab > .tk-home-topbar,
+#tk-dm-chat-view > .tk-header,
+#tk-fullscreen-video-view > .tk-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#tk-dm-chat-view > .tk-header {
+    min-height: calc(var(--tk-safe-top) + 54px) !important;
+    height: calc(var(--tk-safe-top) + 54px) !important;
+    padding: var(--tk-safe-top) 15px 0 !important;
+    box-sizing: border-box;
+    display: flex !important;
+    align-items: center !important;
+    background: #ffffff !important;
+    z-index: 60 !important;
+}
+
+#tk-dm-chat-view > .tk-header .tk-header-left,
+#tk-dm-chat-view > .tk-header .tk-header-right,
+#tk-dm-header-info {
+    height: 54px;
+    margin-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+#tk-dm-header-info {
+    min-width: 0;
+    flex: 1;
+}
+
+#tk-dm-chat-view > .tk-header .tk-header-right {
+    flex-shrink: 0;
+}
+
+#tk-dm-messages-container {
+    padding-top: calc(var(--tk-safe-top) + 78px) !important;
+}
+
+.tiktok-view .bottom-sheet-overlay {
+    /* Base for sheets to override video if inside the same container */
+    z-index: 800;
+}
+
+.tk-search-generate-sheet {
+    height: auto !important;
+    padding-bottom: calc(18px + var(--safe-bottom));
+}
+
+.tk-search-generate-content {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tk-search-generate-box {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f1f2;
+    border-radius: 16px;
+    padding: 0 14px;
+    color: #8e8e93;
+}
+
+.tk-search-generate-box input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #111;
+    font-size: 15px;
+}
+
+.tk-search-generate-hint {
+    display: none;
+}
+
+.tk-search-generate-content .sheet-action {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.tk-search-generate-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 14px;
+    background: #f1f1f2;
+    color: #111;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tk-search-generate-count input {
+    width: 64px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #111;
+    font: inherit;
+    text-align: right;
+}
+
+.tk-dm-profile-intro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 18px 20px;
+    margin: 10px 0 22px;
+    border-bottom: 1px solid #f1f1f2;
+}
+
+.tk-wt-confirm-sheet {
+    height: auto !important;
+    padding-bottom: calc(18px + var(--safe-bottom));
+}
+
+.tk-wt-confirm-content {
+    padding: 4px 16px 16px;
+}
+
+.tk-wt-confirm-copy {
+    color: #111;
+    font-size: 15px;
+    line-height: 1.45;
+    text-align: center;
+    margin: 8px 0 18px;
+}
+
+.tk-wt-confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.tk-wt-confirm-actions .sheet-action {
+    flex: 1;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.tk-visitors-sheet {
+    height: auto !important;
+    max-height: 72%;
+    padding-bottom: calc(18px + var(--safe-bottom));
+    background: #fff !important;
+    color: #111;
+}
+
+.tk-visitors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 14px 16px;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.tk-visitor-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 8px 4px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.tk-visitor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f1f1f2;
+    color: #8e8e93;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.tk-visitor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tk-visitor-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tk-visitor-name {
+    color: #111;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tk-visitor-meta {
+    margin-top: 3px;
+    color: #8e8e93;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tk-visitor-delete-btn {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 17px;
+    background: transparent;
+    color: #c7c7cc;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.tk-visitors-empty {
+    color: #999;
+    font-size: 13px;
+    text-align: center;
+    padding: 34px 0 42px;
+    background: #fff;
+}
+
+.tk-visitor-thought-sheet {
+    height: auto !important;
+    padding: 18px 18px calc(26px + var(--safe-bottom));
+    background: #fff !important;
+    color: #111;
+}
+
+.tk-visitor-thought-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.tk-visitor-thought-avatar {
+    width: 48px;
+    height: 48px;
+}
+
+.tk-visitor-thought-text {
+    margin-top: 16px;
+    padding: 14px 15px;
+    border-radius: 12px;
+    background: #f6f6f7;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.tk-dm-profile-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f1f1f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b0b0b5;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.tk-dm-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tk-dm-profile-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+}
+
+.tk-dm-profile-meta {
+    margin-top: 3px;
+    font-size: 12px;
+    color: #8e8e93;
+}
+
+.tk-dm-profile-home-btn {
+    margin-top: 12px;
+    height: 34px;
+    border: 0;
+    border-radius: 10px;
+    background: #f1f1f2;
+    color: #111;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.tk-dm-empty-state {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+#tk-dm-chat-view .tk-dm-input-area {
+    border-top: 1px solid #f1f1f2 !important;
+    min-width: 0;
+    max-width: 100%;
+}
+
+#tk-dm-chat-view .tk-dm-camera-btn {
+    flex: 0 0 32px;
+}
+
+#tk-dm-chat-view .tk-dm-input-shell {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#tk-dm-chat-view .tk-dm-message-input {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#tk-dm-chat-view .tk-dm-emoji-btn,
+#tk-dm-actions-right,
+#tk-dm-mic-btn,
+#tk-dm-plus-btn,
+#tk-dm-chat-send {
+    flex-shrink: 0;
+}
+
+#tk-dm-actions-right {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+/* Remove shadows from videos in user/char profile */
+.tk-grid-item img {
+    
+}
+.tk-grid-item .tk-grid-text {
+    
+    border: none !important;
+}
+#tk-fullscreen-video-view img {
+    
+}
+.tk-video-text-content div {
+    
+}
+.tk-video-card, .tk-video-text-content {
+    
+}
+
+/* Final topbar alignment overrides: root views fill the frame, headers own safe-area spacing. */
+.tiktok-view {
+    --tk-header-height: 44px;
+    --tk-top-offset: calc(var(--tk-safe-top) + var(--tk-header-height));
+    padding-top: 0 !important;
+}
+
+.tiktok-view .tk-header,
+.tiktok-view .tk-home-topbar {
+    height: var(--tk-top-offset) !important;
+    min-height: var(--tk-top-offset) !important;
+    padding: var(--tk-safe-top) 16px 0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0;
+    align-items: center !important;
+}
+
+#tk-home-tab > .tk-home-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.92);
+    
+    
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+#tk-feed-container {
+    padding-top: 0 !important;
+}
+
+#tk-chat-tab > .tk-header,
+#tk-profile-tab > .tk-header,
+#tk-sub-profile-view > .tk-header {
+    position: sticky;
+    top: 0;
+}
+
+#tk-dm-chat-view > .tk-header,
+#tk-fullscreen-video-view > .tk-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#tk-dm-chat-view > .tk-header {
+    height: var(--tk-top-offset) !important;
+    min-height: var(--tk-top-offset) !important;
+    padding: var(--tk-safe-top) 16px 0 !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+#tk-dm-chat-view > .tk-header .tk-header-left,
+#tk-dm-chat-view > .tk-header .tk-header-right,
+#tk-dm-header-info {
+    height: var(--tk-header-height) !important;
+    margin-top: 0 !important;
+    align-items: center !important;
+}
+
+#tk-dm-messages-container {
+    padding-top: calc(var(--tk-top-offset) + 12px) !important;
+}
+
+#tk-fullscreen-video-view > .tk-header {
+    background: transparent !important;
+    border-bottom: 0 !important;
+}
+
+#tk-feed-container .tk-feed-progress {
+    bottom: calc(var(--tk-bottom-nav-offset) + var(--tk-bottom-nav-height));
+}

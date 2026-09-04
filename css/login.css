@@ -1,0 +1,334 @@
+.u2-login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999996;
+    display: flex;
+    min-width: 320px;
+    min-height: 100%;
+    background: #ffffff;
+    color: #111111;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+    overflow-y: auto;
+}
+
+.u2-login-screen.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.u2-login-screen.is-checking .u2-login-panel {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.u2-login-locked #app {
+    pointer-events: none;
+}
+
+.u2-login-shell {
+    width: 100%;
+    min-height: 100%;
+    display: grid;
+    padding: max(24px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
+}
+
+.u2-login-panel {
+    width: min(100%, 430px);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.u2-login-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.u2-login-mark {
+    width: 70px;
+    height: 70px;
+    border-radius: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: #111111;
+    color: #ffffff;
+}
+
+.u2-login-rabbit {
+    position: relative;
+    width: 44px;
+    height: 46px;
+    display: block;
+}
+
+.u2-login-rabbit-ear {
+    position: absolute;
+    top: 0;
+    width: 13px;
+    height: 30px;
+    border-radius: 999px 999px 10px 10px;
+    background: #ffffff;
+    transform-origin: bottom center;
+}
+
+.u2-login-rabbit-ear-left {
+    left: 9px;
+    transform: rotate(-14deg);
+}
+
+.u2-login-rabbit-ear-right {
+    right: 9px;
+    transform: rotate(14deg);
+}
+
+.u2-login-rabbit-head {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 40px;
+    height: 32px;
+    border-radius: 50% 50% 46% 46%;
+    background: #ffffff;
+    transform: translateX(-50%);
+}
+
+.u2-login-title {
+    margin: 0;
+    color: #111111;
+    font-size: 30px;
+    font-weight: 760;
+    line-height: 1.12;
+}
+
+.u2-login-mode-switch {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-bottom: 14px;
+    padding: 4px;
+    border-radius: 14px;
+    background: #f2f2f7;
+}
+
+.u2-login-mode-switch button {
+    min-height: 40px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #8e8e93;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 680;
+    cursor: pointer;
+}
+
+.u2-login-mode-switch button.is-active {
+    background: #ffffff;
+    color: #111111;
+}
+
+.u2-login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.u2-login-fields {
+    overflow: hidden;
+    border: 1px solid rgba(60, 60, 67, 0.18);
+    border-radius: 18px;
+    background: #ffffff;
+}
+
+.u2-login-field {
+    min-height: 62px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 15px;
+    background: #ffffff;
+}
+
+.u2-login-field + .u2-login-field {
+    border-top: 0.5px solid rgba(60, 60, 67, 0.18);
+}
+
+.u2-login-register-only {
+    display: none;
+}
+
+.u2-login-screen.is-register-mode .u2-login-register-only {
+    display: flex;
+}
+
+.u2-login-code-input {
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.u2-login-input-row {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+}
+
+.u2-login-input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #111111;
+    font: inherit;
+    font-size: 17px;
+    line-height: 1.25;
+}
+
+.u2-login-input::placeholder {
+    color: #c7c7cc;
+}
+
+.u2-login-field.is-invalid .u2-login-input::placeholder {
+    color: #ff3b30;
+}
+
+.u2-login-password-toggle {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #8e8e93;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.u2-login-notice {
+    min-height: 24px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    color: #636366;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.u2-login-notice input {
+    width: 18px;
+    height: 18px;
+    margin: 0 8px 0 0;
+    flex: 0 0 18px;
+    accent-color: #111;
+    cursor: pointer;
+}
+
+.u2-login-notice label { cursor: pointer; }
+.u2-login-notice button { margin: 0; padding: 0; border: 0; background: transparent; color: #111; font: inherit; font-weight: 650; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.u2-login-notice input:focus-visible,
+.u2-login-notice button:focus-visible,
+.u2-login-password-toggle:focus-visible,
+.u2-login-mode-switch button:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+.u2-login-notice.is-invalid,
+.u2-login-notice.is-invalid button { color: #ff3b30; }
+
+.u2-login-error {
+    min-height: 18px;
+    color: #ff3b30;
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.u2-login-error.is-success {
+    color: #248a3d;
+}
+
+.u2-login-submit {
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #111111;
+    color: #ffffff;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 720;
+    cursor: pointer;
+}
+
+.u2-login-submit:active {
+    transform: scale(0.985);
+}
+
+.u2-login-submit:disabled {
+    opacity: 0.48;
+    cursor: default;
+    transform: none;
+}
+
+@media (max-width: 430px) {
+    .u2-login-shell {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .u2-login-brand {
+        margin-bottom: 22px;
+    }
+
+    .u2-login-title {
+        font-size: 28px;
+    }
+}
+
+@media (max-height: 720px) {
+    .u2-login-shell {
+        padding-top: max(16px, env(safe-area-inset-top));
+        padding-bottom: max(14px, env(safe-area-inset-bottom));
+    }
+
+    .u2-login-brand {
+        margin-bottom: 16px;
+    }
+
+    .u2-login-mark {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 12px;
+        border-radius: 18px;
+        transform: scale(0.86);
+    }
+
+    .u2-login-title {
+        font-size: 25px;
+    }
+
+    .u2-login-field {
+        min-height: 54px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .u2-login-form {
+        gap: 11px;
+    }
+}

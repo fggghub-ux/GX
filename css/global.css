@@ -1,0 +1,808 @@
+/* 全局变量：适配 iOS 刘海与小白条 */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* 全局重置与盒模型 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* 禁用移动端点击高亮 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  background-color: #ffffff;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overscroll-behavior: none;
+  overflow: hidden;
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* 禁用文本选择，提升原生 App 体验 */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  background-image: url('../assets/home/bizhi.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.app-header {
+  /* 适配顶部安全区（刘海屏/状态栏） */
+  padding-top: var(--safe-top);
+  height: calc(44px + var(--safe-top));
+  background-color: rgba(255, 255, 255, 0.9);
+  
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid #e5e5ea;
+  color: #111;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  /* 平滑滚动 */
+  -webkit-overflow-scrolling: touch;
+  padding: 20px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.app-content p {
+  margin-bottom: 15px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  
+}
+
+.app-tabbar {
+  /* 适配底部安全区（小白条） */
+  padding-bottom: var(--safe-bottom);
+  height: calc(50px + var(--safe-bottom));
+  background-color: rgba(255, 255, 255, 0.9);
+  
+  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 0;
+  border-top: 1px solid #e5e5ea;
+  color: #8e8e93;
+  font-size: 12px;
+}
+
+.app-tabbar div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 50px;
+  cursor: pointer;
+}
+
+/* ==========================================
+   合并自 iiso/ios_emulator.css 的样式
+   ========================================== */
+
+/* 重新定义局部变量，覆盖 iiso 的根变量以匹配当前上下文 */
+:root {
+    --bg-color: #ffffff;
+    --screen-bg: #ffffff;
+    --home-bg-image: url('../assets/home/bizhi.jpg');
+    --app-icon-bg-image: none;
+    --text-primary: #000000;
+    --text-secondary: #8e8e93;
+    --bubble-bg: #f2f2f7;
+    --icon-gray: #d1d1d6;
+    --accent-color: #000000;
+    --dock-bg: rgba(255, 255, 255, 0.7);
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-icon: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --settings-bg: #f2f2f7;
+    --header-blur: rgba(255, 255, 255, 0.75);
+    --blue-color: #007aff;
+    --separator-color: #c6c6c8;
+    --radius-bubble: 20px;
+    --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --z-base: 1;
+    --z-nav: 100;
+    --z-overlay: 500;
+    --z-modal: 1000;
+    --z-toast: 9999;
+    --z-system: 99999;
+}
+
+/* 移除重复的通用样式定义，保留 iiso 专有的组件样式 */
+
+input, textarea, [contenteditable] {
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+/* Toast Bubble Notification */
+.toast-bubble {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    
+    
+    
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
+    white-space: nowrap;
+    text-align: center;
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toast-bubble.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* iOS Toggle Switch - Global */
+.toggle-switch {
+    position: relative;
+    display: inline-block !important;
+    width: 51px !important;
+    height: 31px !important;
+    min-width: 51px;
+    min-height: 31px;
+    flex-shrink: 0 !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: none !important;
+    align-self: center;
+}
+
+.toggle-switch input[type="checkbox"] {
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: none !important;
+    position: absolute;
+    pointer-events: none;
+}
+
+.toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e9e9ea;
+    transition: .4s;
+    border-radius: 31px;
+}
+
+.toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 27px;
+    width: 27px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: #34c759;
+}
+
+.toggle-switch input:focus + .slider {
+    
+}
+
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Global Assistive API Ball */
+.assistive-api-ball {
+    position: absolute;
+    --assistive-ball-opacity: 0.72;
+    --assistive-ball-size: 58px;
+    left: auto;
+    top: 46%;
+    width: var(--assistive-ball-size);
+    height: var(--assistive-ball-size);
+    border-radius: 50%;
+    z-index: var(--z-system, 99999);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(28, 28, 30, var(--assistive-ball-opacity));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.9);
+    touch-action: none;
+    user-select: none;
+    contain: layout paint;
+    transition: opacity 0.2s ease, transform 0.18s ease, background 0.18s ease;
+    will-change: transform;
+}
+
+.assistive-api-ball.visible {
+    display: flex;
+}
+
+.assistive-api-ball.panel-open {
+    display: none;
+}
+
+.assistive-api-ball:active,
+.assistive-api-ball.dragging {
+    transform: scale(0.96);
+}
+
+.assistive-api-ball.dragging {
+    transition: none;
+}
+
+.assistive-api-ball-inner {
+    width: 59%;
+    height: 59%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: none;
+    font-size: calc(var(--assistive-ball-size) * 0.33);
+}
+
+.assistive-api-ball.has-custom-image {
+    background: transparent;
+    border-color: transparent;
+}
+
+.assistive-api-ball.has-custom-image .assistive-api-ball-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background: transparent;
+}
+
+.assistive-api-ball-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: var(--assistive-ball-opacity);
+    pointer-events: none;
+}
+
+.assistive-api-panel {
+    position: absolute;
+    inset: 0;
+    z-index: calc(var(--z-system, 99999) + 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.26);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.assistive-api-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.assistive-api-panel::before {
+    content: '';
+    width: min(248px, calc(100vw - 72px));
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+    border-radius: 28px;
+    background: rgba(246, 246, 248, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: none;
+    transform: scale(0.96);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.assistive-api-panel.active::before {
+    transform: scale(1);
+}
+
+.assistive-api-panel > * {
+    position: absolute;
+    width: min(216px, calc(100vw - 104px));
+    color: #111;
+}
+
+.assistive-api-panel-title {
+    top: calc(50% - 92px);
+    font-size: 13px;
+    font-weight: 700;
+    color: #6b6b70;
+    text-align: center;
+}
+
+.assistive-api-row {
+    top: calc(50% - 34px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 30px;
+    border-bottom: 0.5px solid rgba(60, 60, 67, 0.16);
+    font-size: 13px;
+}
+
+.assistive-api-row:nth-of-type(2) {
+    top: calc(50% - 34px);
+}
+
+.assistive-api-row span,
+.assistive-api-select-wrap span {
+    width: 42px;
+    flex: 0 0 42px;
+    color: #8e8e93;
+}
+
+.assistive-api-row strong {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.assistive-api-select-wrap {
+    top: calc(50% + 8px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.assistive-api-select-wrap select {
+    flex: 1;
+    min-width: 0;
+    height: 34px;
+    padding: 0 24px 0 10px;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.86);
+    color: var(--blue-color, #007aff);
+    font: inherit;
+    font-weight: 600;
+    text-align: right;
+}
+
+.assistive-api-select-wrap i {
+    position: absolute;
+    right: 9px;
+    color: #8e8e93;
+    font-size: 11px;
+    pointer-events: none;
+}
+
+.assistive-ball-opacity-item,
+.assistive-ball-size-item {
+    justify-content: space-between;
+    border-bottom: none;
+    gap: 10px;
+}
+
+.assistive-ball-opacity-range,
+.assistive-ball-size-range {
+    flex: 0 1 128px;
+    min-width: 96px;
+    accent-color: var(--blue-color, #007aff);
+}
+
+.assistive-ball-opacity-value,
+.assistive-ball-size-value {
+    width: 42px;
+    color: #8e8e93;
+    font-size: 14px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.assistive-ball-image-settings {
+    padding-bottom: 12px;
+}
+
+.assistive-ball-image-url-row,
+.assistive-ball-image-actions {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px 0;
+}
+
+.assistive-ball-image-url-row input {
+    min-width: 0;
+    flex: 1;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--separator-color);
+    border-radius: 10px;
+    background: #f2f2f7;
+    color: #1c1c1e;
+    font-size: 14px;
+}
+
+.assistive-ball-image-url-row button,
+.assistive-ball-image-action {
+    height: 40px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.assistive-ball-image-url-row button {
+    padding: 0 15px;
+    background: var(--blue-color);
+    color: #fff;
+}
+
+.assistive-ball-image-action {
+    flex: 1;
+}
+
+.assistive-ball-image-action i {
+    margin-right: 5px;
+}
+
+.assistive-ball-image-action.upload {
+    background: #f2f2f7;
+    color: var(--blue-color);
+}
+
+.assistive-ball-image-action.reset {
+    background: #ffebee;
+    color: #ff3b30;
+}
+
+/* Global Textarea for Persona, Bios, Descriptions */
+.global-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 16px;
+    font-size: 15px;
+    color: #111;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+    line-height: 1.5;
+}
+.global-textarea::placeholder {
+    color: #8e8e93;
+}
+.global-textarea:focus {
+    background: #ffffff;
+    
+}
+
+/* Specific inputs */
+.form-item input.small-rounded-input {
+    flex: none; 
+    border: 1px solid var(--separator-color, #e5e5ea);
+    border-radius: 8px;
+    padding: 4px;
+    font-size: 15px;
+    background: transparent;
+    color: #111;
+}
+
+.form-item input.small-rounded-input:focus {
+    border-color: var(--blue-color, #007aff);
+}
+
+/* Bottom Sheet Styles */
+.bottom-sheet-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.bottom-sheet-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.bottom-sheet-overlay.u2-android-input-locked {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: 100%;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+}
+
+.bottom-sheet-overlay.u2-android-input-locked .bottom-sheet {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.bottom-sheet-overlay.u2-android-input-locked .detail-sheet-content,
+.bottom-sheet-overlay.u2-android-input-locked :is(.form-group, .settings-group, .form-item, .settings-item) {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.bottom-sheet-overlay.u2-android-input-locked :is(input, textarea, select) {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Android WebViews may pan the layout before the software keyboard changes
+   visualViewport. Scoped input roots stay anchored while that transition runs. */
+.u2-android-focus-locked {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: none;
+}
+
+.u2-android-focus-locked.u2-android-keyboard-open {
+    bottom: auto !important;
+}
+
+.u2-android-focus-locked :is(input, textarea, select, [contenteditable="true"]) {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.detail-sheet-overlay {
+    z-index: 250;
+}
+
+.bottom-sheet {
+    background-color: #f2f2f7;
+    
+    
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 10px 16px 0; /* 移除写死的底部40px间距，让内容去避让安全区 */
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.17, 0.84, 0.44, 1);
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-sheet-content {
+    overflow-y: auto;
+    flex: 1;
+    padding-bottom: max(20px, env(safe-area-inset-bottom)); /* 适配全面屏底部安全区 */
+}
+
+.bottom-sheet-overlay.active .bottom-sheet {
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 36px;
+    height: 5px;
+    background-color: #8e8e93;
+    border-radius: 3px;
+    margin: 8px auto 20px;
+    opacity: 0.8;
+}
+
+.sheet-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8e8e93;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sheet-action {
+    background-color: #ffffff;
+    padding: 14px;
+    border-radius: var(--radius-bubble, 20px);
+    text-align: center;
+    color: var(--blue-color, #007aff);
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.sheet-action:active {
+    background-color: #ffffff;
+}
+
+.sheet-action i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.confirm-action {
+    margin: 0 16px;
+}
+
+/* API Error Popup - iOS Style */
+.api-error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.api-error-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.api-error-modal {
+    background-color: rgba(250, 250, 250, 0.9);
+    
+    
+    border-radius: 14px;
+    width: 270px;
+    max-width: 90%;
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(1.1);
+    transition: transform 0.25s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+.api-error-overlay.show .api-error-modal {
+    transform: scale(1);
+}
+
+.api-error-content {
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.api-error-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.api-error-message {
+    font-size: 13px;
+    color: #3c3c43;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    word-break: break-word;
+}
+
+.api-error-raw-wrapper {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    
+    padding: 8px;
+    max-height: 120px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.api-error-raw {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", monospace;
+    font-size: 11px;
+    color: #1c1c1e;
+    word-break: break-all;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.api-error-button {
+    width: 100%;
+    padding: 11px;
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(60, 60, 67, 0.29);
+    color: #007aff;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+}
+
+.api-error-button:active {
+    background-color: rgba(0, 0, 0, 0.05);
+}
