@@ -1188,7 +1188,7 @@ ${wbContext}
         
         if (displayVideos.length === 0) {
             if (isActiveTabFollowing) {
-                feedContainer.innerHTML = '<div class="tk-empty-feed"><p style="color: #999; font-size: 14px;">No followed content yet, go explore</p></div>';
+                feedContainer.innerHTML = '<div class="tk-empty-feed"><p style="color: #999; font-size: 14px;">No followed content yet, go explore.</p></div>';
             } else {
                 feedContainer.innerHTML = `
                     <div class="tk-empty-feed">
