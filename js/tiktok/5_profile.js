@@ -104,7 +104,7 @@
 
     function tkProfileBoundWorldBookLabel() {
         const ids = new Set(tkProfileGetBoundWorldBookIds().map(id => String(id)));
-        if (!ids.size) return 'Not Mounted';
+        if (!ids.size) return 'not mounted';
         const books = typeof window.getWorldBooks === 'function' ? window.getWorldBooks() : [];
         const names = (Array.isArray(books) ? books : [])
             .filter(book => book && ids.has(String(book.id)))
@@ -136,7 +136,7 @@
                         <div class="settings-item" id="tk-bind-worldbook-btn" style="border-bottom:none; cursor:pointer;">
                             <div class="settings-icon" style="background-color:#1c1c1e;"><i class="fas fa-book"></i></div>
                             <div class="settings-text">挂载世界书</div>
-                            <div id="tk-bound-worldbook-label" style="margin-left:auto; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#8e8e93; font-size:12px; text-align:right;">Not Mounted</div>
+                            <div id="tk-bound-worldbook-label" style="margin-left:auto; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#8e8e93; font-size:12px; text-align:right;">not mounted</div>
                         </div>
                     </div>
                 </div>
