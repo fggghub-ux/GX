@@ -1309,7 +1309,7 @@ JSON shape:
         }
         
         if (items.length === 0) {
-            container.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">No content yet</div>';
+            container.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">no content yet</div>';
             return;
         }
 
