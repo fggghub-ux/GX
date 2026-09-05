@@ -1833,7 +1833,7 @@ class NetflixApp {
     openSaves(mode = 'load') {
         if (this.isBusy) return this.toast('剧情生成期间暂不能操作存档');
         this.saveModalMode = mode === 'save' ? 'save' : 'load';
-        this.saveTitle.textContent = this.saveModalMode === 'save' ? '保存进度' : '读取进度';
+        this.saveTitle.textContent = this.saveModalMode === 'save' ? '保存进度' : 'Load Progress';
         this.renderSaveSlots();
         this.closeSheet(this.menuSheet);
         this.openSheet(this.saveSheet);
@@ -1943,15 +1943,15 @@ class NetflixApp {
     }
 
     showEndings() {
-        this.infoTitle.textContent = 'Ending Collection';
-        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">No endings unlocked yet. Every choice steers the story in a different direction.</div>';
+        this.infoTitle.textContent = 'Collection';
+        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">No endings unlocked yet. Every choice changes the story.</div>';
         this.openSheet(this.infoSheet);
     }
 
     showWorldBooksInfo() {
         const books = this.getWorldBooks();
         this.infoTitle.textContent = 'World Book';
-        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} 条词条</small></span></article>`).join('')}</div><p class="netflix-info-note">世界书会在初始化游戏时选择，并随存档保存独立文本快照。</p>` : '<div class="netflix-empty-state">No world books yet. Please create one in the system settings first.</div>';
+        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} 条词条</small></span></article>`).join('')}</div><p class="netflix-info-note">世界书会在初始化游戏时选择，并随存档保存独立文本快照。</p>` : '<div class="netflix-empty-state">No world book yet, create one in system settings.</div>';
         this.openSheet(this.infoSheet);
     }
 
