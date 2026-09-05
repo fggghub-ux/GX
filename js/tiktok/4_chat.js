@@ -86,7 +86,7 @@
                 <div class="tk-dm-profile-avatar">${avatar}</div>
                 <div class="tk-dm-profile-name">${tkDmEscapeHtml(char?.name || char?.handle || 'User')}</div>
                 <div class="tk-dm-profile-meta">@${tkDmEscapeHtml(char?.handle || char?.id || 'user')} · ${tkDmEscapeHtml([tkDmRelationshipLabel(char), char?.status || 'TikTok'].filter(Boolean).join(' · '))}</div>
-                <button type="button" class="tk-dm-profile-home-btn" id="tk-dm-profile-home-btn">主页</button>
+                <button type="button" class="tk-dm-profile-home-btn" id="tk-dm-profile-home-btn">HOME</button>
             </div>
         `;
     }
@@ -729,12 +729,12 @@ JSON example:
         sheet.innerHTML = `
             <div class="bottom-sheet tk-wt-confirm-sheet">
                 <div class="sheet-handle"></div>
-                <div class="sheet-title">一起看</div>
+                <div class="sheet-title">WATCH TOGETHER</div>
                 <div class="detail-sheet-content tk-wt-confirm-content">
                     <div class="tk-wt-confirm-copy">是否邀请 <span id="tk-wt-confirm-name">TA</span> 一起看视频？</div>
                     <div class="tk-wt-confirm-actions">
-                        <div class="sheet-action" id="tk-wt-confirm-cancel">取消</div>
-                        <div class="sheet-action confirm-action" id="tk-wt-confirm-submit">邀请</div>
+                        <div class="sheet-action" id="tk-wt-confirm-cancel">Cancel</div>
+                        <div class="sheet-action confirm-action" id="tk-wt-confirm-submit">Invite</div>
                     </div>
                 </div>
             </div>
@@ -1467,7 +1467,7 @@ ${tkMountedWorldBookContext ? `\nTikTok Mounted World Book:\n${tkMountedWorldBoo
         if (!dm || dm.messages.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'tk-dm-empty-state';
-            empty.textContent = '打个招呼吧';
+            empty.textContent = 'Say hi';
             messagesContainer.appendChild(empty);
             return;
         }
