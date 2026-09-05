@@ -1943,7 +1943,7 @@ class NetflixApp {
     }
 
     showEndings() {
-        this.infoTitle.textContent = 'Collection';
+        this.infoTitle.textContent = 'Ending Collection';
         this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">No endings unlocked yet. Every choice steers the story in a different direction.</div>';
         this.openSheet(this.infoSheet);
     }
