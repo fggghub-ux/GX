@@ -1943,15 +1943,15 @@ class NetflixApp {
     }
 
     showEndings() {
-        this.infoTitle.textContent = '结局收藏';
-        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">还没有解锁结局。每一个选择都会把故事推向不同方向。</div>';
+        this.infoTitle.textContent = 'Ending Collection';
+        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">No endings unlocked yet. Every choice steers the story in a different direction.</div>';
         this.openSheet(this.infoSheet);
     }
 
     showWorldBooksInfo() {
         const books = this.getWorldBooks();
-        this.infoTitle.textContent = '世界书';
-        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} 条词条</small></span></article>`).join('')}</div><p class="netflix-info-note">世界书会在初始化游戏时选择，并随存档保存独立文本快照。</p>` : '<div class="netflix-empty-state">暂无世界书，请先在系统设置中创建。</div>';
+        this.infoTitle.textContent = 'World Book';
+        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} 条词条</small></span></article>`).join('')}</div><p class="netflix-info-note">世界书会在初始化游戏时选择，并随存档保存独立文本快照。</p>` : '<div class="netflix-empty-state">No world books yet. Please create one in the system settings first.</div>';
         this.openSheet(this.infoSheet);
     }
 
