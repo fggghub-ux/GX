@@ -2024,7 +2024,7 @@
         if (currentChatMember) {
             document.getElementById('bstage-detail-name').textContent = currentChatMember.name;
             const days = Math.floor((Date.now() - currentChatMember.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-            document.getElementById('bstage-detail-days').textContent = `Together for ${days} Day`;
+            document.getElementById('bstage-detail-days').textContent = `Together for ${days} day`;
             
             const avatar = document.getElementById('bstage-detail-avatar');
             const avatarText = document.getElementById('bstage-detail-avatar-text');
@@ -3605,7 +3605,7 @@ ${generationIntent}
         currentChatMember = member; // Set current member
         document.getElementById('bstage-chat-name').textContent = member.name;
         const days = Math.floor((Date.now() - member.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('bstage-chat-days').textContent = `Together for ${days} day`;
+        document.getElementById('bstage-chat-days').textContent = `Together for ${days} Day`;
         
         // Restore Background if saved
         const chatView = document.getElementById('bstage-chat-view');
@@ -3708,7 +3708,7 @@ ${generationIntent}
                 text: txt,
                 time: timeString,
                 timestamp: now,
-                status: 'unread',
+                status: 'Unread',
                 replyTo: pendingChatReply ? { ...pendingChatReply } : null
             };
             member.chatHistory.push(msg);
@@ -3940,16 +3940,16 @@ ${history}
             if (contentContainer) {
                 // Reset user counter and update status text
                 userMsgCountSinceLastReply = 0;
-                // Change all "unread" to "read" status
+                // Change all "Unread" to "Read" status
                 const statusTexts = contentContainer.querySelectorAll('.bstage-msg-status-text');
                 statusTexts.forEach(el => {
-                    if (el.innerHTML === 'unread') el.innerHTML = 'read';
+                    if (el.innerHTML === 'Unread') el.innerHTML = 'Read';
                 });
             }
             
             if (member.chatHistory) {
                 member.chatHistory.forEach(h => {
-                    if (h.isUser && h.status === 'unread') h.status = 'read';
+                    if (h.isUser && h.status === 'Unread') h.status = 'Read';
                 });
             }
 
@@ -5718,7 +5718,7 @@ ${charInfo}
             msgDiv.dataset.msgId = msg.id;
             msgDiv.innerHTML = `
                 <div class="bstage-msg-status">
-                    <div class="bstage-msg-status-text">sent</div>
+                    <div class="bstage-msg-status-text">Sent</div>
                     <div class="bstage-msg-time">${escapeHtml(msg.time || getCurrentChatTimeText(msg.timestamp))}</div>
                 </div>
                 <div class="bstage-chat-bubble">
