@@ -60,7 +60,7 @@
             <div class="bstage-icon-btn" id="bstage-chat-back-btn"><i class="fas fa-chevron-left"></i></div>
             <div class="bstage-chat-header-info">
                 <div class="bstage-chat-name" id="bstage-chat-name">Name</div>
-                <div class="bstage-chat-days" id="bstage-chat-days">已一同 1 天</div>
+                <div class="bstage-chat-days" id="bstage-chat-days">Together for 1 day</div>
             </div>
             <div class="bstage-icon-btn" id="bstage-chat-menu-btn"><i class="fas fa-bars"></i></div>
         </div>
@@ -363,17 +363,17 @@
             <div class="detail-sheet-content bstage-modal-content">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #fff;" id="pop-sub-char-name">Subscribe to Character</h3>
-                    <p style="color: #aaa; font-size: 13px;">开启私密聊天之旅</p>
+                    <p style="color: #aaa; font-size: 13px;">start your private chat journey</p>
                 </div>
                 
                 <div class="bstage-price-options">
                     <div class="bstage-price-option selected" style="border: 1px solid #fff; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; background-color: #2c2c2e;">
-                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">月度订阅</span>
-                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩4,500 / 月</span>
+                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">Monthly</span>
+                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩4,500 / Month</span>
                     </div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-pop-sub-btn" style="background-color: #fff; color: #000; margin-top: 20px; border-radius: 25px;">确认支付</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-pop-sub-btn" style="background-color: #fff; color: #000; margin-top: 20px; border-radius: 25px;">confirm payment</div>
             </div>
         </div>
     `;
@@ -606,8 +606,8 @@
                 <!-- Locker Section -->
                 <div style="padding: 0 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span style="font-size: 14px; font-weight: 600; color: #aaa;">置物柜</span>
-                        <span style="font-size: 14px; color: #fff; cursor: pointer;" id="bstage-locker-see-all-btn">看全部</span>
+                        <span style="font-size: 14px; font-weight: 600; color: #aaa;">LOCKER</span>
+                        <span style="font-size: 14px; color: #fff; cursor: pointer;" id="bstage-locker-see-all-btn">VIEW ALL</span>
                     </div>
                     <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;" id="bstage-locker-preview-list">
                         <!-- Preview Photos -->
@@ -665,7 +665,7 @@
                     <!-- Translation Switch -->
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-language"></i></div>
-                        <div class="bstage-setting-label" style="flex: 1;">实时翻译</div>
+                        <div class="bstage-setting-label" style="flex: 1;">Translate</div>
                         <div class="bstage-switch" id="bstage-trans-switch">
                             <div class="bstage-switch-knob"></div>
                         </div>
@@ -706,7 +706,7 @@
 
                     <div class="bstage-setting-item" style="color: #ff3b30;" id="bstage-chat-exit-btn">
                         <div class="bstage-setting-icon" style="color: #ff3b30 !important;"><i class="fas fa-sign-out-alt"></i></div>
-                        <div class="bstage-setting-label" style="color: #ff3b30 !important;">退出</div>
+                        <div class="bstage-setting-label" style="color: #ff3b30 !important;">Exit</div>
                     </div>
                 </div>
             </div>
@@ -770,7 +770,7 @@
 
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-language"></i></div>
-                        <div class="bstage-setting-label" style="flex: 1;">实时翻译</div>
+                        <div class="bstage-setting-label" style="flex: 1;">Translate</div>
                         <div class="bstage-switch" id="bstage-fan-trans-switch">
                             <div class="bstage-switch-knob"></div>
                         </div>
@@ -778,7 +778,7 @@
 
                     <div class="bstage-setting-item" style="color: #ff3b30;" id="bstage-fan-chat-clear-btn">
                         <div class="bstage-setting-icon" style="color: #ff3b30 !important;"><i class="fas fa-trash-alt"></i></div>
-                        <div class="bstage-setting-label" style="color: #ff3b30 !important;">清空聊天</div>
+                        <div class="bstage-setting-label" style="color: #ff3b30 !important;">Clear chat</div>
                     </div>
                 </div>
             </div>
@@ -794,7 +794,7 @@
     lockerModal.innerHTML = `
         <div class="bottom-sheet" style="height: 90%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">置物柜</div>
+            <div class="sheet-title" style="color: #fff;">LOCKER</div>
             <div class="detail-sheet-content bstage-modal-content">
                 <div class="bstage-locker-grid" id="bstage-locker-grid">
                     <!-- Photos + Add Button -->
@@ -2437,7 +2437,7 @@
                     content.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">聊天记录已清空</div>';
                 }
                 
-                window.showToast('聊天记录已清空');
+                window.showToast('Chat History Cleared');
                 window.closeView(chatDetailSheet);
             }
         });
@@ -2456,7 +2456,7 @@
                     content.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">聊天记录已清空</div>';
                 }
                 
-                window.showToast('聊天记录已清空');
+                window.showToast('Chat History Cleared');
                 window.closeView(chatDetailSheet);
             }
         });
@@ -2614,7 +2614,7 @@
         renderFanChatHistory();
         updateFanSubscriberLabels();
         saveBstageData();
-        window.showToast('粉丝聊天室已清空');
+        window.showToast('Fan Chatroom Cleared');
         window.closeView(fanChatDetailSheet);
     });
 
@@ -3708,7 +3708,7 @@ ${generationIntent}
                 text: txt,
                 time: timeString,
                 timestamp: now,
-                status: 'Unread',
+                status: 'unread',
                 replyTo: pendingChatReply ? { ...pendingChatReply } : null
             };
             member.chatHistory.push(msg);
@@ -3940,16 +3940,16 @@ ${history}
             if (contentContainer) {
                 // Reset user counter and update status text
                 userMsgCountSinceLastReply = 0;
-                // Change all "Unread" to "Read" status
+                // Change all "unread" to "read" status
                 const statusTexts = contentContainer.querySelectorAll('.bstage-msg-status-text');
                 statusTexts.forEach(el => {
-                    if (el.innerHTML === 'Unread') el.innerHTML = 'Read';
+                    if (el.innerHTML === 'unread') el.innerHTML = 'read';
                 });
             }
             
             if (member.chatHistory) {
                 member.chatHistory.forEach(h => {
-                    if (h.isUser && h.status === 'Unread') h.status = 'Read';
+                    if (h.isUser && h.status === 'unread') h.status = 'read';
                 });
             }
 
@@ -5718,7 +5718,7 @@ ${charInfo}
             msgDiv.dataset.msgId = msg.id;
             msgDiv.innerHTML = `
                 <div class="bstage-msg-status">
-                    <div class="bstage-msg-status-text">Sent</div>
+                    <div class="bstage-msg-status-text">sent</div>
                     <div class="bstage-msg-time">${escapeHtml(msg.time || getCurrentChatTimeText(msg.timestamp))}</div>
                 </div>
                 <div class="bstage-chat-bubble">
