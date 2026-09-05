@@ -531,7 +531,7 @@
                     <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">Save changes</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">Save change</div>
                 <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">Delete team</div>
             </div>
         </div>
@@ -1124,7 +1124,7 @@
         return encodeURIComponent(`${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     }
 
-    const bstageEmojiAvatars = ['🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '♟️', '🤍', '❔', '🌷', '🍞', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
+    const bstageEmojiAvatars = ['🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '♟️', '🤍', '❔', '🌷', '🥛', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
     function hashBstageString(value) {
         const text = String(value || 'bstage');
         let hash = 0;
@@ -2196,7 +2196,7 @@
         const list = bstagePresets[currentPresetTab] || [];
 
         if (list.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No Presets Yet</div>';
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">no presets yet</div>';
             return;
         }
 
@@ -4121,7 +4121,7 @@ ${history}
             team.shopCategories = ['All'];
         }
 
-        let activeCategory = 'All';
+        let activeCategory = '全部';
 
         const renderGrid = (filter) => {
             let gridHtml = '';
