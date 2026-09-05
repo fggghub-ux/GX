@@ -104,7 +104,7 @@
 
     function tkProfileBoundWorldBookLabel() {
         const ids = new Set(tkProfileGetBoundWorldBookIds().map(id => String(id)));
-        if (!ids.size) return '未挂载';
+        if (!ids.size) return 'Not Mounted';
         const books = typeof window.getWorldBooks === 'function' ? window.getWorldBooks() : [];
         const names = (Array.isArray(books) ? books : [])
             .filter(book => book && ids.has(String(book.id)))
@@ -130,13 +130,13 @@
         sheet.innerHTML = `
             <div class="bottom-sheet" style="background: #ffffff;">
                 <div class="sheet-handle"></div>
-                <div class="sheet-title">TikTok 设置</div>
+                <div class="sheet-title">TIKTOK SETTINGS</div>
                 <div class="detail-sheet-content" style="padding: 10px 16px 24px; background: #ffffff;">
                     <div class="settings-group fully-rounded" style="margin:0;">
                         <div class="settings-item" id="tk-bind-worldbook-btn" style="border-bottom:none; cursor:pointer;">
                             <div class="settings-icon" style="background-color:#1c1c1e;"><i class="fas fa-book"></i></div>
                             <div class="settings-text">挂载世界书</div>
-                            <div id="tk-bound-worldbook-label" style="margin-left:auto; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#8e8e93; font-size:12px; text-align:right;">未挂载</div>
+                            <div id="tk-bound-worldbook-label" style="margin-left:auto; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#8e8e93; font-size:12px; text-align:right;">Not Mounted</div>
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
         sheet.innerHTML = `
             <div class="bottom-sheet tk-visitors-sheet">
                 <div class="sheet-handle"></div>
-                <div class="sheet-title">主页访客</div>
+                <div class="sheet-title">PROFILE VISITORS</div>
                 <div class="detail-sheet-content tk-visitors-list" id="tk-profile-visitors-list"></div>
             </div>
         `;
@@ -328,7 +328,7 @@
         const visitors = tkCollectProfileVisitors();
 
         if (!visitors.length) {
-            list.innerHTML = '<div class="tk-visitors-empty">暂无访客</div>';
+            list.innerHTML = '<div class="tk-visitors-empty">No Visitors</div>';
         } else {
             list.innerHTML = visitors.map(visitor => `
                 <div class="tk-visitor-item" data-id="${tkProfileEscape(visitor.id)}" data-name="${tkProfileEscape(visitor.name)}" data-handle="${tkProfileEscape(visitor.handle || visitor.id || 'user')}" data-avatar="${tkProfileEscape(visitor.avatar)}" data-thought="${tkProfileEscape(visitor.thought || visitor.reason || '')}" data-created-at="${tkProfileEscape(visitor.createdAt || '')}">
@@ -429,7 +429,7 @@
             if (currentSubCharId) {
                 // Open edit char sheet
                 const title = document.getElementById('tk-char-sheet-title');
-                if (title) title.textContent = '编辑角色';
+                if (title) title.textContent = 'EDIT CHARACTER';
                 
                 const charNameInput = document.getElementById('tk-char-name');
                 const charStatusInput = document.getElementById('tk-char-status');
@@ -1195,7 +1195,7 @@ JSON shape:
                 const charId = window.currentTkSubProfileCharId;
                 if (charId) {
                     const title = document.getElementById('tk-char-sheet-title');
-                    if (title) title.textContent = '编辑角色';
+                    if (title) title.textContent = 'EDIT CHARACTER';
                     
                     const charNameInput = document.getElementById('tk-char-name');
                     const charStatusInput = document.getElementById('tk-char-status');
@@ -1239,7 +1239,7 @@ JSON shape:
     }
 
     if (visitorsBtn) {
-        visitorsBtn.title = '主页访客';
+        visitorsBtn.title = 'PROFILE VISITORS';
         visitorsBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             if (window.tkOpenProfileVisitorsSheet) window.tkOpenProfileVisitorsSheet();
@@ -1247,7 +1247,7 @@ JSON shape:
     }
 
     if (profileSettingsBtn) {
-        profileSettingsBtn.title = 'TikTok 设置';
+        profileSettingsBtn.title = 'TIKTOK SETTINGS';
         profileSettingsBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             const sheet = tkEnsureProfileSettingsSheet();
