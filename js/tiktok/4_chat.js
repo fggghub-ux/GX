@@ -86,7 +86,7 @@
                 <div class="tk-dm-profile-avatar">${avatar}</div>
                 <div class="tk-dm-profile-name">${tkDmEscapeHtml(char?.name || char?.handle || 'User')}</div>
                 <div class="tk-dm-profile-meta">@${tkDmEscapeHtml(char?.handle || char?.id || 'user')} · ${tkDmEscapeHtml([tkDmRelationshipLabel(char), char?.status || 'TikTok'].filter(Boolean).join(' · '))}</div>
-                <button type="button" class="tk-dm-profile-home-btn" id="tk-dm-profile-home-btn">HOME</button>
+                <button type="button" class="tk-dm-profile-home-btn" id="tk-dm-profile-home-btn">Follow</button>
             </div>
         `;
     }
@@ -733,8 +733,8 @@ JSON example:
                 <div class="detail-sheet-content tk-wt-confirm-content">
                     <div class="tk-wt-confirm-copy">是否邀请 <span id="tk-wt-confirm-name">TA</span> 一起看视频？</div>
                     <div class="tk-wt-confirm-actions">
-                        <div class="sheet-action" id="tk-wt-confirm-cancel">Cancel</div>
-                        <div class="sheet-action confirm-action" id="tk-wt-confirm-submit">Invite</div>
+                        <div class="sheet-action" id="tk-wt-confirm-cancel">cancel</div>
+                        <div class="sheet-action confirm-action" id="tk-wt-confirm-submit">invite</div>
                     </div>
                 </div>
             </div>
