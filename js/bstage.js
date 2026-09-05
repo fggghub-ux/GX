@@ -2196,7 +2196,7 @@
         const list = bstagePresets[currentPresetTab] || [];
 
         if (list.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">no presets yet</div>';
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No Presets Yet</div>';
             return;
         }
 
