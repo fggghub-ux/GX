@@ -721,9 +721,9 @@ window.renderWorldBookSelector = function renderWorldBookSelector(selectedIds = 
         selector.style.zIndex = '1150';
         selector.innerHTML = `
             <div class="bottom-sheet wb-selector-panel">
-                <div class="sheet-handle"></div><div class="sheet-title">选择世界书</div>
-                <div class="wb-selector-body"><div class="wb-selector-field"><label for="wb-selector-group-select">选择分组</label><select id="wb-selector-group-select" class="wb-native-select"></select></div><div class="wb-selector-field"><label for="wb-selector-book-select">选择世界书</label><select id="wb-selector-book-select" class="wb-native-select"></select><div id="wb-selector-empty" class="wb-selector-empty"></div></div><div class="wb-selector-preview-head"><span>已挂载</span><span id="wb-selector-mounted-count">0 项</span></div><div id="wb-selector-mounted-list" class="wb-selector-mounted-list"></div></div>
-                <div class="wb-selector-actions"><button type="button" class="sheet-action wb-selector-action-btn" id="wb-selector-cancel-btn">取消</button><button type="button" class="sheet-action confirm-action wb-selector-action-btn" id="wb-selector-confirm-btn">保存</button></div>
+                <div class="sheet-handle"></div><div class="sheet-title">SELECT WORLD BOOK</div>
+                <div class="wb-selector-body"><div class="wb-selector-field"><label for="wb-selector-group-select">选择分组</label><select id="wb-selector-group-select" class="wb-native-select"></select></div><div class="wb-selector-field"><label for="wb-selector-book-select">SELECT WORLD BOOK</label><select id="wb-selector-book-select" class="wb-native-select"></select><div id="wb-selector-empty" class="wb-selector-empty"></div></div><div class="wb-selector-preview-head"><span>已挂载</span><span id="wb-selector-mounted-count">0 项</span></div><div id="wb-selector-mounted-list" class="wb-selector-mounted-list"></div></div>
+                <div class="wb-selector-actions"><button type="button" class="sheet-action wb-selector-action-btn" id="wb-selector-cancel-btn">cancel</button><button type="button" class="sheet-action confirm-action wb-selector-action-btn" id="wb-selector-confirm-btn">save</button></div>
             </div>`;
         (getWbElement('app') || document.body).appendChild(selector);
         selector.addEventListener('click', event => { if (event.target === selector) window.closeView?.(selector); });
