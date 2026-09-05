@@ -1090,15 +1090,15 @@
         const isYesterday = date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth() && date.getFullYear() === yesterday.getFullYear();
 
         if (isSameDay) {
-            return `今天 ${timeStr}`;
+            return `Today ${timeStr}`;
         } else if (isYesterday) {
-            return `昨天 ${timeStr}`;
+            return `Yesterday ${timeStr}`;
         } else {
-            const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             if (diffDays < 7) {
                 return `${days[date.getDay()]} ${timeStr}`;
             } else {
-                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${timeStr}`;
+                return `${date.getFullYear()}Year${date.getMonth() + 1}Month${date.getDate()}Day ${timeStr}`;
             }
         }
     }
@@ -2024,7 +2024,7 @@
         if (currentChatMember) {
             document.getElementById('bstage-detail-name').textContent = currentChatMember.name;
             const days = Math.floor((Date.now() - currentChatMember.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-            document.getElementById('bstage-detail-days').textContent = `已一同 ${days} 天`;
+            document.getElementById('bstage-detail-days').textContent = `Together for ${days} day`;
             
             const avatar = document.getElementById('bstage-detail-avatar');
             const avatarText = document.getElementById('bstage-detail-avatar-text');
@@ -2681,7 +2681,7 @@
         
         // Fill empty slots if less than 4 (optional, or just leave empty)
         if (chatPhotos.length === 0) {
-            container.innerHTML = '<div style="color: #888; font-size: 13px; padding: 10px 0;">暂无照片</div>';
+            container.innerHTML = '<div style="color: #888; font-size: 13px; padding: 10px 0;">No Photos Yet</div>';
         }
     }
 
@@ -3399,7 +3399,7 @@ ${generationIntent}
                     daysText = getFanSubscriberText();
                 } else if (m.isSubscribed && m.subStartDate) {
                     const days = Math.floor((Date.now() - m.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-                    daysText = `已一同 ${days} 天`;
+                    daysText = `Together for ${days} day`;
                 }
 
                 // Action Button Logic
@@ -3408,12 +3408,12 @@ ${generationIntent}
                     actionHtml = '<div class="bstage-pop-status">Fan Chatroom <i class="fas fa-chevron-right"></i></div>';
                 } else if (m.isSubscribed) {
                     if (inGracePeriod) {
-                        actionHtml = '<div class="bstage-pop-sub-btn renew" style="background-color: #ffcc00; color: #000;">续费(缓冲)</div>';
+                        actionHtml = '<div class="bstage-pop-sub-btn renew" style="background-color: #ffcc00; color: #000;">Renew</div>';
                     } else {
-                        actionHtml = '<div class="bstage-pop-status">订阅中 <i class="fas fa-chevron-right"></i></div>';
+                        actionHtml = '<div class="bstage-pop-status">Subscribed <i class="fas fa-chevron-right"></i></div>';
                     }
                 } else {
-                    actionHtml = '<div class="bstage-pop-sub-btn">订阅</div>';
+                    actionHtml = '<div class="bstage-pop-sub-btn">Subscribe</div>';
                 }
                 const roleClass = isUserSelfMember ? 'bstage-pop-role bstage-fan-subscriber-label' : 'bstage-pop-role';
 
@@ -3446,7 +3446,7 @@ ${generationIntent}
                             renewBtn.addEventListener('click', (e) => {
                                 e.stopPropagation();
                                 currentPopSubMember = m;
-                                document.getElementById('pop-sub-char-name').textContent = `续订 ${m.name}`;
+                                document.getElementById('pop-sub-char-name').textContent = `Renew ${m.name}`;
                                 window.openView(popSubModal);
                             });
                         }
@@ -3461,7 +3461,7 @@ ${generationIntent}
                             subBtn.addEventListener('click', (e) => {
                                 e.stopPropagation();
                                 currentPopSubMember = m;
-                                document.getElementById('pop-sub-char-name').textContent = `订阅 ${m.name}`;
+                                document.getElementById('pop-sub-char-name').textContent = `Subscribe ${m.name}`;
                                 window.openView(popSubModal);
                             });
                         }
@@ -3471,7 +3471,7 @@ ${generationIntent}
                 container.appendChild(item);
             });
         } else {
-            container.innerHTML = '<div style="text-align:center; color:#666; padding:20px;">暂无成员</div>';
+            container.innerHTML = '<div style="text-align:center; color:#666; padding:20px;">No Members Yet</div>';
         }
     }
 
@@ -3485,28 +3485,28 @@ ${generationIntent}
                 // Renewal during Grace Period
                 currentPopSubMember.subExpiryDate += oneMonth; // Extend from previous expiry
                 // subStartDate remains unchanged
-                window.showToast(`成功续订 ${currentPopSubMember.name}！`);
+                window.showToast(`Successfully renewed ${currentPopSubMember.name}！`);
             } else {
                 // New Subscription (or re-sub after full expiry)
                 currentPopSubMember.isSubscribed = true;
                 currentPopSubMember.subStartDate = now; // Reset start date
                 currentPopSubMember.subExpiryDate = now + oneMonth;
-                window.showToast(`成功订阅 ${currentPopSubMember.name}！`);
+                window.showToast(`Successfully subscribed ${currentPopSubMember.name}！`);
             }
             
             // Add Order
             const priceEl = popSubModal.querySelector('.selected .bstage-price-amount');
             bstageOrders.unshift({
                 id: Date.now(),
-                title: `订阅 ${currentPopSubMember.name}`,
-                price: priceEl ? priceEl.textContent : '₩4,500 / 月',
+                title: `Subscribe ${currentPopSubMember.name}`,
+                price: priceEl ? priceEl.textContent : '₩4,500 / Month',
                 date: new Date().toLocaleDateString(),
                 type: 'POP'
             });
 
             if (currentTeam) renderTeamPop(currentTeam);
             saveBstageData();
-            window.showToast(`成功订阅 ${currentPopSubMember.name}！`);
+            window.showToast(`Successfully subscribed ${currentPopSubMember.name}！`);
             window.closeView(popSubModal);
         }
     });
@@ -3605,7 +3605,7 @@ ${generationIntent}
         currentChatMember = member; // Set current member
         document.getElementById('bstage-chat-name').textContent = member.name;
         const days = Math.floor((Date.now() - member.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('bstage-chat-days').textContent = `已一同 ${days} 天`;
+        document.getElementById('bstage-chat-days').textContent = `Together for ${days} day`;
         
         // Restore Background if saved
         const chatView = document.getElementById('bstage-chat-view');
@@ -3632,8 +3632,8 @@ ${generationIntent}
         if (!member.chatHistory || !Array.isArray(member.chatHistory)) {
             member.chatHistory = [
                 { type: 'date', text: formatTimeBubble(Date.now()), timestamp: Date.now() },
-                { isUser: false, type: 'text', text: `Hello! I'm ${member.name}.`, trans: `你好！我是${member.name}。`, timestamp: Date.now() },
-                { isUser: false, type: 'text', text: `Thanks for subscribing!`, trans: `谢谢你的订阅！`, timestamp: Date.now() + 100 }
+                { isUser: false, type: 'text', text: `Hello! I'm ${member.name}.`, trans: `Hellow! I'm ${member.name}。`, timestamp: Date.now() },
+                { isUser: false, type: 'text', text: `Thanks for subscribing!`, trans: `Thanks for subscribing！`, timestamp: Date.now() + 100 }
             ];
             saveBstageData();
         }
