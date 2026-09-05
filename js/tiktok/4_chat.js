@@ -349,7 +349,7 @@ JSON example:
                 if (!char) return;
                 
                 const relationLabel = tkDmRelationshipLabel(char);
-                const lastMsg = dm.messages.length > 0 ? dm.messages[dm.messages.length - 1].text : (relationLabel || '开始聊天吧');
+                const lastMsg = dm.messages.length > 0 ? dm.messages[dm.messages.length - 1].text : (relationLabel || 'Start chatting');
 
                 const avatarUrl = tkDmResolveAvatar(char);
                 const charAvatarHtml = avatarUrl
