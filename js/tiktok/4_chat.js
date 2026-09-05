@@ -419,7 +419,7 @@ JSON example:
         createNewBtn.className = 'tk-import-item';
         createNewBtn.innerHTML = `
             <div class="tk-avatar-small" style="background: #333; color: white;"><i class="fas fa-plus"></i></div>
-            <div style="flex: 1; font-weight: 600; color: #111;">创建新角色</div>
+            <div style="flex: 1; font-weight: 600; color: #111;">Create Character</div>
         `;
         createNewBtn.addEventListener('click', () => {
             window.closeView(importSheet);
@@ -438,7 +438,7 @@ JSON example:
             separator.style.color = '#888';
             separator.style.marginTop = '10px';
             separator.style.marginBottom = '5px';
-            separator.textContent = '从信息应用导入:';
+            separator.textContent = 'Import from Messages:';
             importList.appendChild(separator);
 
             imFriends.forEach(friend => {
@@ -505,7 +505,7 @@ JSON example:
         const title = document.getElementById('tk-char-sheet-title');
         
         if (charId) {
-            if(title) title.textContent = '编辑角色';
+            if(title) title.textContent = 'EDIT CHARACTER';
             const char = window.tkGetChar(charId);
             if (char) {
                 if(charNameInput) charNameInput.value = char.name || '';
@@ -520,7 +520,7 @@ JSON example:
                 if(deleteCharBtn) deleteCharBtn.style.display = 'block';
             }
         } else {
-            if(title) title.textContent = '添加新角色';
+            if(title) title.textContent = 'ADD NEW CHARACTER';
             if(charNameInput) charNameInput.value = '';
             if(charStatusInput) charStatusInput.value = '';
             if(charPersonaInput) charPersonaInput.value = '';
