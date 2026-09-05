@@ -633,7 +633,7 @@ class NetflixApp {
                 <div><strong>${endingCount}</strong><span>Endings Unlocked</span></div>
             </div>
             <div class="netflix-profile-actions">
-                <button type="button" data-action="open-load"><i class="fas fa-folder-open"></i><span><strong>Save</strong><small>Manual Saves 6</small></span><i class="fas fa-chevron-right"></i></button>
+                <button type="button" data-action="open-load"><i class="fas fa-folder-open"></i><span><strong>Save</strong><small>Auto Save & 6 Manual Saves</small></span><i class="fas fa-chevron-right"></i></button>
                 <button type="button" data-action="show-endings"><i class="fas fa-trophy"></i><span><strong>Collection</strong><small>Review Endings Reached</small></span><i class="fas fa-chevron-right"></i></button>
                 <button type="button" data-action="show-worldbooks"><i class="fas fa-book"></i><span><strong>World Book</strong><small>Create Independent Snapshot</small></span><i class="fas fa-chevron-right"></i></button>
             </div>`;
