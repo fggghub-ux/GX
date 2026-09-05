@@ -332,7 +332,7 @@
             <div class="detail-sheet-content bstage-modal-content">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #fff;">Team Membership</h3>
-                    <p style="color: #aaa; font-size: 13px;">enjoy exclusive and shopping benefits.</p>
+                    <p style="color: #aaa; font-size: 13px;">enjoy exclusive and shopping benefits</p>
                 </div>
                 
                 <div class="bstage-price-options">
@@ -532,7 +532,7 @@
                 </div>
 
                 <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">save changes</div>
-                <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">delete team</div>
+                <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">Delete team</div>
             </div>
         </div>
     `;
@@ -1124,9 +1124,7 @@
         return encodeURIComponent(`${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     }
 
-    const bstageEmojiAvatars = [
-'🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '💕', '🤍', '❔', '🌷', '🍞', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
-
+    const bstageEmojiAvatars = ['🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '♟️', '🤍', '❔', '🌷', '🍞', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
     function hashBstageString(value) {
         const text = String(value || 'bstage');
         let hash = 0;
