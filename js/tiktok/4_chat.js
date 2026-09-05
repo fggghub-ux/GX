@@ -459,7 +459,7 @@ JSON example:
                         <div style="font-weight: 600; color: #111; font-size: 15px;">${friend.nickname || friend.realName}</div>
                         <div style="color: #888; font-size: 12px; margin-top: 2px;">${friend.signature || ''}</div>
                     </div>
-                    ${alreadyExists ? '<div style="font-size:12px; color:#999;">已添加</div>' : '<i class="fas fa-download" style="color:#111;"></i>'}
+                    ${alreadyExists ? '<div style="font-size:12px; color:#999;">Added</div>' : '<i class="fas fa-download" style="color:#111;"></i>'}
                 `;
 
                 item.addEventListener('click', () => {
