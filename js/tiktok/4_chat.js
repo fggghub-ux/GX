@@ -419,7 +419,7 @@ JSON example:
         createNewBtn.className = 'tk-import-item';
         createNewBtn.innerHTML = `
             <div class="tk-avatar-small" style="background: #333; color: white;"><i class="fas fa-plus"></i></div>
-            <div style="flex: 1; font-weight: 600; color: #111;">Create Character</div>
+            <div style="flex: 1; font-weight: 600; color: #111;">Create character</div>
         `;
         createNewBtn.addEventListener('click', () => {
             window.closeView(importSheet);
@@ -438,7 +438,7 @@ JSON example:
             separator.style.color = '#888';
             separator.style.marginTop = '10px';
             separator.style.marginBottom = '5px';
-            separator.textContent = 'Import from Messages:';
+            separator.textContent = 'Import from messages:';
             importList.appendChild(separator);
 
             imFriends.forEach(friend => {
