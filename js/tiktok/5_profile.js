@@ -480,16 +480,16 @@
     function tkSetSubProfileFollowButton(char) {
         if (!subProfileFollowBtn || !char) return;
         if (char.isFollowed && char.isFollower) {
-            subProfileFollowBtn.textContent = '互相关注';
+            subProfileFollowBtn.textContent = 'Mutual follow';
             subProfileFollowBtn.className = 'tk-btn-secondary';
         } else if (char.isFollowed) {
-            subProfileFollowBtn.textContent = '已关注';
+            subProfileFollowBtn.textContent = 'Following';
             subProfileFollowBtn.className = 'tk-btn-secondary';
         } else if (char.isFollower) {
-            subProfileFollowBtn.textContent = '回关';
+            subProfileFollowBtn.textContent = 'Follow back';
             subProfileFollowBtn.className = 'tk-btn-primary';
         } else {
-            subProfileFollowBtn.textContent = '关注';
+            subProfileFollowBtn.textContent = 'Follow';
             subProfileFollowBtn.className = 'tk-btn-primary';
         }
     }
@@ -504,7 +504,7 @@
         // Render info
         subProfileName.textContent = char.name || 'User';
         subProfileHandle.textContent = '@' + (char.handle || charId);
-        subProfileBio.textContent = char.bio || '暂无简介';
+        subProfileBio.textContent = char.bio || 'No introduction yet';
         
         if (char.status) {
             subProfileStatusBubble.style.display = 'block';
@@ -1309,7 +1309,7 @@ JSON shape:
         }
         
         if (items.length === 0) {
-            container.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">暂无内容</div>';
+            container.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">No content yet</div>';
             return;
         }
 
