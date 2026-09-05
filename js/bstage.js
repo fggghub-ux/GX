@@ -531,7 +531,7 @@
                     <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">save changes</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">Save changes</div>
                 <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">Delete team</div>
             </div>
         </div>
@@ -2196,7 +2196,7 @@
         const list = bstagePresets[currentPresetTab] || [];
 
         if (list.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">暂无预设</div>';
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No Presets Yet</div>';
             return;
         }
 
@@ -2717,7 +2717,7 @@
         const countInput = document.getElementById('bstage-search-member-count');
         if (confirmBtn) {
             confirmBtn.classList.toggle('is-loading', isLoading);
-            confirmBtn.textContent = isLoading ? '生成中...' : '生成团队';
+            confirmBtn.textContent = isLoading ? '生成中...' : 'Generate Team';
         }
         if (loading) loading.style.display = isLoading ? 'flex' : 'none';
         if (queryInput) queryInput.readOnly = isLoading;
@@ -2906,7 +2906,7 @@ ${generationIntent}
             });
 
             if (validFriends.length === 0) {
-                listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#aaa;">暂无可拉取的好友</div>';
+                listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#aaa;">No Friends Available to Invite</div>';
                 return;
             }
 
@@ -2949,10 +2949,10 @@ ${generationIntent}
                     }
                     
                     const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
-                    if(title) title.textContent = '确认成员信息';
+                    if(title) title.textContent = 'MEMBER INFORMATION';
                     
                     const btn = document.getElementById('bstage-confirm-add-char-btn');
-                    if(btn) btn.textContent = '添加';
+                    if(btn) btn.textContent = 'Add';
                     
                     window.closeView(pullFriendSheet);
                     window.openView(addCharSheet);
@@ -2976,9 +2976,9 @@ ${generationIntent}
         document.getElementById('bstage-char-avatar-preview').style.display = 'none';
         
         const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
-        if(title) title.textContent = '添加成员';
+        if(title) title.textContent = 'ADD MEMBER';
         const btn = document.getElementById('bstage-confirm-add-char-btn');
-        if(btn) btn.textContent = '添加';
+        if(btn) btn.textContent = 'Add
 
         window.openView(addCharSheet);
     });
@@ -3066,10 +3066,10 @@ ${generationIntent}
                 }
                 
                 const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
-                if(title) title.textContent = '编辑成员';
+                if(title) title.textContent = 'EDIT MEMBER';
                 
                 const btn = document.getElementById('bstage-confirm-add-char-btn');
-                if(btn) btn.textContent = '保存';
+                if(btn) btn.textContent = 'save';
                 
                 window.openView(addCharSheet);
             });
@@ -3286,12 +3286,12 @@ ${generationIntent}
             document.getElementById('bstage-bottom-nav').style.display = 'none';
             document.getElementById('bstage-content-area').innerHTML = `
                 <div style="height: 100%; display: flex; justify-content: center; align-items: center; color: #333; font-size: 14px;">
-                    请选择或创建一个团队
+                    Please select or create a team
                 </div>
             `;
             isEditingTeam = false;
             window.closeView(editTeamSheet);
-            window.showToast('团队已删除');
+            window.showToast('Team deleted');
         }
     });
 
@@ -3337,7 +3337,7 @@ ${generationIntent}
                     </div>
 
                     <div class="bstage-sub-bubble" id="bstage-home-sub-btn">
-                        <span>${isFixedUserTeam ? 'User Space' : (team.isSubscribed ? '会员已订阅' : '订阅会员')}</span>
+                        <span>${isFixedUserTeam ? 'User Space' : (team.isSubscribed ? 'User Space' : 'Subscribe')}</span>
                         <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
                     </div>
                 </div>
@@ -3405,7 +3405,7 @@ ${generationIntent}
                 // Action Button Logic
                 let actionHtml = '';
                 if (isUserSelfMember) {
-                    actionHtml = '<div class="bstage-pop-status">粉丝聊天室 <i class="fas fa-chevron-right"></i></div>';
+                    actionHtml = '<div class="bstage-pop-status">Fan Chatroom <i class="fas fa-chevron-right"></i></div>';
                 } else if (m.isSubscribed) {
                     if (inGracePeriod) {
                         actionHtml = '<div class="bstage-pop-sub-btn renew" style="background-color: #ffcc00; color: #000;">续费(缓冲)</div>';
@@ -4118,17 +4118,17 @@ ${history}
             team.shopItems = [];
         }
         if (!Array.isArray(team.shopCategories) || team.shopCategories.length === 0) {
-            team.shopCategories = ['全部'];
+            team.shopCategories = ['All'];
         }
 
-        let activeCategory = '全部';
+        let activeCategory = 'All';
 
         const renderGrid = (filter) => {
             let gridHtml = '';
-            const filteredItems = filter === '全部' ? team.shopItems : team.shopItems.filter(i => i.category === filter);
+            const filteredItems = filter === 'All' ? team.shopItems : team.shopItems.filter(i => i.category === filter);
             
             if (filteredItems.length === 0) {
-                gridHtml = '<div style="grid-column:span 2;text-align:center;padding:20px;color:#666;">暂无商品</div>';
+                gridHtml = '<div style="grid-column:span 2;text-align:center;padding:20px;color:#666;">No Products Yet</div>';
             } else {
                 filteredItems.forEach(item => {
                     const img = item.img || createExternalRandomImage(`${team.id || team.name}-shop-${item.id || item.name}`, 600, 600);
@@ -4245,7 +4245,7 @@ ${history}
             // Bind Shop Item Clicks
             contentArea.querySelectorAll('.bstage-shop-item').forEach((el, index) => {
                 el.addEventListener('click', () => {
-                    const filteredItems = activeCategory === '全部' ? team.shopItems : team.shopItems.filter(i => i.category === activeCategory);
+                    const filteredItems = activeCategory === 'All' ? team.shopItems : team.shopItems.filter(i => i.category === activeCategory);
                     if(filteredItems[index]) {
                         openShopDetail(filteredItems[index]);
                     }
@@ -4289,7 +4289,7 @@ ${history}
             return;
         }
         if (!Array.isArray(team.shopItems)) team.shopItems = [];
-        if (!Array.isArray(team.shopCategories)) team.shopCategories = ['全部'];
+        if (!Array.isArray(team.shopCategories)) team.shopCategories = ['All'];
 
         window.showToast('正在生成商品...');
         
@@ -4350,7 +4350,7 @@ ${charInfo}
             if (Array.isArray(newItems)) {
                 newItems.forEach(item => {
                     const itemName = stripGeneratedText(item && item.name, 'New Item');
-                    const itemCategory = stripGeneratedText(item && item.category, category === '全部' ? (requestType || '周边') : category);
+                    const itemCategory = stripGeneratedText(item && item.category, category === 'All' ? (requestType || 'Rim') : category);
                     if (itemCategory && !team.shopCategories.includes(itemCategory)) team.shopCategories.push(itemCategory);
                     team.shopItems.unshift({
                         id: Date.now() + Math.random(),
@@ -4381,10 +4381,10 @@ ${charInfo}
         
         // Init Series
         if (!Array.isArray(team.contentSeries) || team.contentSeries.length === 0) {
-            team.contentSeries = ['全部'];
+            team.contentSeries = ['ALL'];
         }
 
-        let activeSeries = '全部';
+        let activeSeries = 'ALL';
 
         const renderView = () => {
             // Photos Carousel
@@ -4405,8 +4405,8 @@ ${charInfo}
             team.contentSeries.forEach(s => {
                 const activeClass = s === activeSeries ? 'active' : '';
                 let deleteHtml = '';
-                // Allow deleting custom series (not '全部')
-                if (s !== '全部') {
+                // Allow deleting custom series (not 'ALL')
+                if (s !== 'ALL') {
                     deleteHtml = `<div class="bstage-cat-delete" data-del-series="${s}"><i class="fas fa-times"></i></div>`;
                 }
                 seriesHtml += `<div class="bstage-shop-cat-item ${activeClass}" data-series="${s}">${s}${deleteHtml}</div>`;
@@ -4428,10 +4428,10 @@ ${charInfo}
 
             // Filter Videos
             let videosHtml = '';
-            const filteredVideos = activeSeries === '全部' ? team.videos : team.videos.filter(v => v.series === activeSeries || (!v.series && activeSeries === '全部'));
+            const filteredVideos = activeSeries === 'ALL' ? team.videos : team.videos.filter(v => v.series === activeSeries || (!v.series && activeSeries === 'ALL'));
             
             if (filteredVideos.length === 0) {
-                videosHtml = '<div style="text-align:center; color:#666; padding:20px;">暂无视频</div>';
+                videosHtml = '<div style="text-align:center; color:#666; padding:20px;">No Videos Yet</div>';
             } else {
                 filteredVideos.forEach(v => {
                     if (!v.thumb) v.thumb = createExternalRandomImage(`${team.id || team.name}-video-${v.title || Date.now()}`, 800, 450);
@@ -4470,7 +4470,7 @@ ${charInfo}
                             ${magicHtml}
                         </div>
                         
-                        <div class="bstage-section-header">${activeSeries === '全部' ? 'All Videos' : activeSeries}</div>
+                        <div class="bstage-section-header">${activeSeries === 'ALL' ? 'All Videos' : activeSeries}</div>
                         <div class="bstage-video-list">
                             ${videosHtml}
                         </div>
@@ -4525,7 +4525,7 @@ ${charInfo}
                             const s = delBtn.getAttribute('data-del-series');
                             if(confirm(`确定要删除系列 "${s}" 吗？`)) {
                                 team.contentSeries = team.contentSeries.filter(x => x !== s);
-                                if(activeSeries === s) activeSeries = '全部';
+                                if(activeSeries === s) activeSeries = 'ALL';
                                 renderView();
                             }
                         });
@@ -5124,7 +5124,7 @@ ${userComment.replyTo ? `User 正在回复评论：${userComment.replyTo.name}: 
             return;
         }
         if (!Array.isArray(team.videos)) team.videos = [];
-        if (!Array.isArray(team.contentSeries)) team.contentSeries = ['全部'];
+        if (!Array.isArray(team.contentSeries)) team.contentSeries = ['ALL'];
 
         window.showToast('正在生成视频物料...');
         
@@ -5187,7 +5187,7 @@ ${charInfo}
             if (Array.isArray(newItems)) {
                 newItems.forEach(item => {
                     const title = stripGeneratedText(item && item.title, 'New Video');
-                    const itemSeries = stripGeneratedText(item && item.series, series === '全部' ? (requestType || 'vlog') : series);
+                    const itemSeries = stripGeneratedText(item && item.series, series === 'ALL' ? (requestType || 'vlog') : series);
                     if (itemSeries && !team.contentSeries.includes(itemSeries)) team.contentSeries.push(itemSeries);
                     team.videos.unshift({
                         title,
@@ -5264,8 +5264,8 @@ ${charInfo}
         contentArea.innerHTML = `
             <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #666; background-color: #000; gap: 20px;">
                 <i class="fas fa-lock" style="font-size: 40px; opacity: 0.5;"></i>
-                <div>需要订阅会员才能查看 ${title}</div>
-                <div class="bstage-pop-sub-btn" id="bstage-locked-sub-btn" style="background-color: #007aff; color: #fff; padding: 10px 24px;">去订阅</div>
+                <div>Subscribe to view ${title}</div>
+                <div class="bstage-pop-sub-btn" id="bstage-locked-sub-btn" style="background-color: #007aff; color: #fff; padding: 10px 24px;">subscribe</div>
             </div>
         `;
         document.getElementById('bstage-locked-sub-btn').addEventListener('click', openSubModal);
@@ -5446,7 +5446,7 @@ ${charInfo}
         container.innerHTML = '';
         
         if (bstageOrders.length === 0) {
-            container.innerHTML = '<div style="text-align: center; color: #888; padding: 20px;">暂无订单记录</div>';
+            container.innerHTML = '<div style="text-align: center; color: #888; padding: 20px;">No Order History Yet</div>';
             return;
         }
 
@@ -5513,7 +5513,7 @@ ${charInfo}
     }
 
     function getFanSubscriberText() {
-        return `已订阅 ${formatBstageSubscriberCount(getFanSubscriberCount())} 人`;
+        return ` ${formatBstageSubscriberCount(getFanSubscriberCount())} Subscribers`;
     }
 
     function getBstageTotalRevenueCny() {
@@ -5641,7 +5641,7 @@ ${charInfo}
         const detailName = document.getElementById('bstage-fan-detail-name');
         const avatar = document.getElementById('bstage-fan-detail-avatar');
         const avatarIcon = document.getElementById('bstage-fan-detail-avatar-icon');
-        if (detailName) detailName.textContent = `${userName} 的粉丝聊天室`;
+        if (detailName) detailName.textContent = `${userName} 's Fan Chatroom`;
         if (avatar && avatarIcon) {
             if (userAvatar) {
                 avatar.src = userAvatar;
@@ -5766,7 +5766,7 @@ ${charInfo}
 
         if (!Array.isArray(bstageFanChatHistory)) bstageFanChatHistory = [];
         if (bstageFanChatHistory.length === 0) {
-            content.innerHTML = '<div class="bstage-system-notice">粉丝聊天室已开启</div>';
+            content.innerHTML = '<div class="bstage-system-notice">Fan chatroom is on</div>';
         } else {
             bstageFanChatHistory.forEach(msg => appendFanChatMessage(msg, content));
         }
