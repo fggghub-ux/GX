@@ -256,7 +256,7 @@
                 </div>
 
                 <!-- Add Characters -->
-                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px; color: #fff;">添加成员</div>
+                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px; color: #fff;">Add Member</div>
                 <div class="bstage-chars-list-preview" id="bstage-chars-preview-list">
                     <!-- Preview of added chars -->
                 </div>
@@ -280,7 +280,7 @@
     addCharSheet.innerHTML = `
         <div class="bottom-sheet" style="background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">添加成员</div>
+            <div class="sheet-title" style="color: #fff;">ADD MEMBER</div>
             <div class="detail-sheet-content">
                 <div class="bstage-avatar-upload" id="bstage-char-avatar-upload" style="background-color: #2c2c2e; overflow: hidden; position: relative;">
                     <i class="fas fa-user" style="color: #aaa; position: relative; z-index: 1;"></i>
@@ -297,7 +297,7 @@
                         <input type="text" id="bstage-char-role-input" placeholder="简单的描述" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                 </div>
-                <div class="sheet-action confirm-action" id="bstage-confirm-add-char-btn" style="background-color: #fff; color: #000;">添加</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-add-char-btn" style="background-color: #fff; color: #000;">Add</div>
             </div>
         </div>
     `;
@@ -311,7 +311,7 @@
     pullFriendSheet.innerHTML = `
         <div class="bottom-sheet" style="height: 70%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">选择好友</div>
+            <div class="sheet-title" style="color: #fff;">SELECT FRIENDS</div>
             <div class="detail-sheet-content" style="flex: 1; overflow-y: auto;">
                 <div id="bstage-friend-list" style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 20px;">
                     <!-- Friend items injected here -->
@@ -522,7 +522,7 @@
                 </div>
 
                 <!-- Manage Members -->
-                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px; color: #fff;">成员管理</div>
+                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px; color: #fff;">Management</div>
                 <div class="bstage-chars-list-preview" id="bstage-edit-team-members-list">
                     <!-- Members Injected Here -->
                 </div>
@@ -531,7 +531,7 @@
                     <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">changes</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">save changes</div>
                 <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">删除团队</div>
             </div>
         </div>
@@ -728,10 +728,10 @@
                         <img id="bstage-fan-detail-avatar" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
                         <i class="fas fa-user-friends" id="bstage-fan-detail-avatar-icon" style="font-size: 28px; color: #aaa;"></i>
                     </div>
-                    <h2 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 5px;" id="bstage-fan-detail-name">粉丝聊天室</h2>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 5px;" id="bstage-fan-detail-name">Fan Chatroom</h2>
                     <div style="font-size: 13px; color: #aaa; display: flex; align-items: center; justify-content: center; gap: 4px;">
                         <i class="fas fa-heart" style="color: #ff3b30;"></i>
-                        <span id="bstage-fan-detail-subscribers">已订阅 0 人</span>
+                        <span id="bstage-fan-detail-subscribers"> 0 Subscribers</span>
                     </div>
                 </div>
 
@@ -1308,8 +1308,8 @@
             if (team.videos.length !== before) changed = true;
         }
 
-        if (Array.isArray(team.contentSeries) && team.contentSeries.length === 2 && team.contentSeries[0] === '全部' && team.contentSeries[1] === 'vlog' && (!team.videos || team.videos.length === 0)) {
-            team.contentSeries = ['全部'];
+        if (Array.isArray(team.contentSeries) && team.contentSeries.length === 2 && team.contentSeries[0] === 'ALL' && team.contentSeries[1] === 'vlog' && (!team.videos || team.videos.length === 0)) {
+            team.contentSeries = ['ALL'];
             changed = true;
         }
 
@@ -3207,10 +3207,10 @@ ${generationIntent}
                 }
                 
                 const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
-                if(title) title.textContent = '编辑成员';
+                if(title) title.textContent = 'EDIT MEMBER';
                 
                 const btn = document.getElementById('bstage-confirm-add-char-btn');
-                if(btn) btn.textContent = '保存';
+                if(btn) btn.textContent = 'save';
                 
                 window.openView(addCharSheet);
             });
@@ -3228,9 +3228,9 @@ ${generationIntent}
             document.getElementById('bstage-char-avatar-preview').style.display = 'none';
             
             const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
-            if(title) title.textContent = '添加成员';
+            if(title) title.textContent = 'ADD MEMBER';
             const btn = document.getElementById('bstage-confirm-add-char-btn');
-            if(btn) btn.textContent = '添加';
+            if(btn) btn.textContent = 'Add';
 
             window.openView(addCharSheet);
         } else if (e.target.id === 'bstage-edit-team-pull-friend-btn') {
