@@ -2024,7 +2024,7 @@
         if (currentChatMember) {
             document.getElementById('bstage-detail-name').textContent = currentChatMember.name;
             const days = Math.floor((Date.now() - currentChatMember.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-            document.getElementById('bstage-detail-days').textContent = `Together for ${days} day`;
+            document.getElementById('bstage-detail-days').textContent = `Together for ${days} Day`;
             
             const avatar = document.getElementById('bstage-detail-avatar');
             const avatarText = document.getElementById('bstage-detail-avatar-text');
@@ -3485,13 +3485,13 @@ ${generationIntent}
                 // Renewal during Grace Period
                 currentPopSubMember.subExpiryDate += oneMonth; // Extend from previous expiry
                 // subStartDate remains unchanged
-                window.showToast(`Successfully renewed ${currentPopSubMember.name}！`);
+                window.showToast(`Renewed ${currentPopSubMember.name}！`);
             } else {
                 // New Subscription (or re-sub after full expiry)
                 currentPopSubMember.isSubscribed = true;
                 currentPopSubMember.subStartDate = now; // Reset start date
                 currentPopSubMember.subExpiryDate = now + oneMonth;
-                window.showToast(`Successfully subscribed ${currentPopSubMember.name}！`);
+                window.showToast(`Subscribed ${currentPopSubMember.name}！`);
             }
             
             // Add Order
@@ -3506,7 +3506,7 @@ ${generationIntent}
 
             if (currentTeam) renderTeamPop(currentTeam);
             saveBstageData();
-            window.showToast(`Successfully subscribed ${currentPopSubMember.name}！`);
+            window.showToast(`Subscribed ${currentPopSubMember.name}！`);
             window.closeView(popSubModal);
         }
     });
@@ -3605,7 +3605,7 @@ ${generationIntent}
         currentChatMember = member; // Set current member
         document.getElementById('bstage-chat-name').textContent = member.name;
         const days = Math.floor((Date.now() - member.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('bstage-chat-days').textContent = `Together for ${days} day`;
+        document.getElementById('bstage-chat-days').textContent = `Together for ${days} Day`;
         
         // Restore Background if saved
         const chatView = document.getElementById('bstage-chat-view');
