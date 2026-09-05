@@ -201,11 +201,11 @@
             <div class="detail-sheet-content bstage-modal-content">
                 <div class="bstage-search-generate-hint">输入想搜索的团队或明星，AI 会按内容生成团队资料和成员设定；留空则随机生成。</div>
                 <div class="bstage-search-form">
-                    <label class="bstage-search-label" for="bstage-search-query-input">搜索内容</label>
-                    <input type="text" id="bstage-search-query-input" class="bstage-search-input" placeholder="例如：韩系男团、清冷女演员、摇滚乐队；留空随机">
+                    <label class="bstage-search-label" for="bstage-search-query-input">Search Content</label>
+                    <input type="text" id="bstage-search-query-input" class="bstage-search-input" placeholder="e.g.:Kim Kardashian,Anne Hathaway">
                 </div>
                 <div class="bstage-search-form">
-                    <label class="bstage-search-label" for="bstage-search-member-count">团队人数</label>
+                    <label class="bstage-search-label" for="bstage-search-member-count">Team Size</label>
                     <input type="number" id="bstage-search-member-count" class="bstage-search-input" value="1" min="1" max="12" step="1" inputmode="numeric">
                 </div>
                 <div id="bstage-search-loading" class="bstage-search-loading" style="display:none;">
@@ -246,11 +246,11 @@
                 <!-- Team Name & Info -->
                 <div class="bstage-form-group" style="background-color: #2c2c2e; border-color: #333;">
                     <div class="bstage-form-item" style="border-bottom-color: #444;">
-                        <label style="color: #aaa;">团队名</label>
+                        <label style="color: #aaa;">Team Name</label>
                         <input type="text" id="bstage-team-name-input" placeholder="输入团队名称" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                     <div class="bstage-form-item">
-                        <label style="color: #aaa;">团队信息</label>
+                        <label style="color: #aaa;">Information</label>
                         <textarea id="bstage-team-desc-input" placeholder="输入团队简介..." style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px; min-height: 60px;"></textarea>
                     </div>
                 </div>
@@ -289,11 +289,11 @@
                 </div>
                 <div class="bstage-form-group" style="background-color: #2c2c2e; border-color: #333;">
                     <div class="bstage-form-item" style="border-bottom-color: #444;">
-                        <label style="color: #aaa;">名字</label>
+                        <label style="color: #aaa;">Nickname</label>
                         <input type="text" id="bstage-char-name-input" placeholder="成员名字" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                     <div class="bstage-form-item">
-                        <label style="color: #aaa;">人设</label>
+                        <label style="color: #aaa;">Persona</label>
                         <input type="text" id="bstage-char-role-input" placeholder="简单的描述" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                 </div>
@@ -331,22 +331,22 @@
             <div class="sheet-title" style="color: #fff;">MEMBERSHIP</div>
             <div class="detail-sheet-content bstage-modal-content">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #fff;">加入团队会员</h3>
-                    <p style="color: #aaa; font-size: 13px;">享受独家内容与购物特权</p>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #fff;">Team Membership</h3>
+                    <p style="color: #aaa; font-size: 13px;">enjoy exclusive and shopping benefits.</p>
                 </div>
                 
                 <div class="bstage-price-options">
                     <div class="bstage-price-option selected" data-type="year" style="border: 1px solid #fff; border-radius: 12px; margin-bottom: 10px; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background-color: #2c2c2e;">
-                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">年卡会员</span>
-                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩89,000 / 年</span>
+                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">Annual</span>
+                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩89,000 / Year</span>
                     </div>
                     <div class="bstage-price-option" data-type="month" style="border: 1px solid transparent; border-radius: 12px; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background-color: #2c2c2e;">
-                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">月卡会员</span>
-                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩8,900 / 月</span>
+                        <span class="bstage-price-title" style="color: #fff; font-weight: 600;">Monthly</span>
+                        <span class="bstage-price-amount" style="color: #fff; font-weight: 600;">₩8,900 / Month</span>
                     </div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-sub-btn" style="background-color: #fff; color: #000; margin-top: 20px; border-radius: 25px;">立即订阅</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-sub-btn" style="background-color: #fff; color: #000; margin-top: 20px; border-radius: 25px;">subscribe now</div>
             </div>
         </div>
     `;
@@ -508,7 +508,7 @@
                 <!-- Team Name -->
                 <div class="bstage-form-group" style="background-color: #2c2c2e; border-color: #333;">
                     <div class="bstage-form-item" style="border-bottom-color: #444;">
-                        <label style="color: #aaa;">团队名</label>
+                        <label style="color: #aaa;">Team Name</label>
                         <input type="text" id="bstage-edit-team-name-input" placeholder="输入团队名称" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                 </div>
@@ -532,7 +532,7 @@
                 </div>
 
                 <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">save changes</div>
-                <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">删除团队</div>
+                <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">delete team</div>
             </div>
         </div>
     `;
@@ -1124,7 +1124,8 @@
         return encodeURIComponent(`${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     }
 
-    const bstageEmojiAvatars = ['😀', '😎', '🥳', '🤩', '😊', '😺', '🌟', '✨', '🎤', '🎧', '🎵', '🎸', '💿', '📀', '🎬', '📸', '🌈', '🔥', '💜', '💙', '🍒', '🍓', '🍑', '🍋', '🍀', '🌙', '☀️', '⭐', '🪩', '🫶'];
+    const bstageEmojiAvatars = [
+'🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '💕', '🤍', '❔', '🌷', '🍞', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
 
     function hashBstageString(value) {
         const text = String(value || 'bstage');
