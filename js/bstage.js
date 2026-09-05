@@ -1282,9 +1282,9 @@
         }
 
         if (Array.isArray(team.shopCategories) && team.shopCategories.length === 5) {
-            const defaultCats = ['全部', '周边', '票务', '签售', '其他'];
+            const defaultCats = ['All', '周边', '票务', '签售', '其他'];
             if (defaultCats.every((cat, index) => team.shopCategories[index] === cat) && (!team.shopItems || team.shopItems.length === 0)) {
-                team.shopCategories = ['全部'];
+                team.shopCategories = ['All'];
                 changed = true;
             }
         }
@@ -4121,7 +4121,7 @@ ${history}
             team.shopCategories = ['All'];
         }
 
-        let activeCategory = '全部';
+        let activeCategory = 'All';
 
         const renderGrid = (filter) => {
             let gridHtml = '';
@@ -4187,7 +4187,7 @@ ${history}
                         ${magicHtml}
                     </div>
 
-                    <div class="bstage-shop-section-title">${activeCategory === '全部' ? 'ALL ITEMS' : activeCategory}</div>
+                    <div class="bstage-shop-section-title">${activeCategory === 'All' ? 'ALL ITEMS' : activeCategory}</div>
                     <div class="bstage-shop-grid" id="bstage-shop-grid-container">
                         ${renderGrid(activeCategory)}
                     </div>
@@ -5134,7 +5134,7 @@ ${userComment.replyTo ? `User 正在回复评论：${userComment.replyTo.name}: 
                 charInfo += `- ${m.name} (${m.role})\n`;
             });
         } else {
-            charInfo += '- 暂无成员\n';
+            charInfo += '- No members yet\n';
         }
         
         const prompt = `
@@ -5304,7 +5304,7 @@ ${charInfo}
                 type: 'Membership'
             });
 
-            window.showToast('订阅成功！您现在可以访问 Content 和 Shop。');
+            window.showToast('Subscription successful!');
             
             // Refresh current view if it was home to update button text potentially, or just close
             if(document.querySelector('.bstage-nav-item[data-tab="home"]').classList.contains('active')) {
