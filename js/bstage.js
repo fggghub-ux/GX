@@ -23,7 +23,7 @@
                 <div class="bstage-create-btn">
                     <i class="fas fa-plus"></i>
                 </div>
-                <div class="bstage-team-name">创建</div>
+                <div class="bstage-team-name">Create</div>
             </div>
             <!-- Teams will be injected here -->
         </div>
@@ -99,8 +99,8 @@
         <div class="bstage-header chat-header" style="background-color: transparent;">
             <div class="bstage-icon-btn" id="bstage-fan-chat-back-btn"><i class="fas fa-chevron-left"></i></div>
             <div class="bstage-chat-header-info">
-                <div class="bstage-chat-name" id="bstage-fan-chat-name">粉丝聊天室</div>
-                <div class="bstage-chat-days" id="bstage-fan-chat-subtitle">已订阅 0 人</div>
+                <div class="bstage-chat-name" id="bstage-fan-chat-name">Fan Chatroom</div>
+                <div class="bstage-chat-days" id="bstage-fan-chat-subtitle"> 0 Subscribers</div>
             </div>
             <div class="bstage-icon-btn" id="bstage-fan-chat-menu-btn"><i class="fas fa-bars"></i></div>
         </div>
@@ -118,7 +118,7 @@
                 </div>
             </div>
             <div class="bstage-chat-input-wrapper">
-                <input type="text" id="bstage-fan-chat-input" inputmode="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" placeholder="对粉丝说点什么..." style="color: #fff; background-color: transparent; border: none; outline: none;">
+                <input type="text" id="bstage-fan-chat-input" inputmode="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" placeholder="Say something..." style="color: #fff; background-color: transparent; border: none; outline: none;">
                 <div id="bstage-fan-chat-send-btn" class="bstage-chat-action-btn bstage-chat-send-btn" role="button" tabindex="0" aria-label="发送消息" title="发送消息">
                     <i class="fas fa-paper-plane"></i>
                 </div>
@@ -163,7 +163,7 @@
     globalSettingsModal.innerHTML = `
         <div class="bottom-sheet" style="height: 90%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">CSS 预设管理</div>
+            <div class="sheet-title" style="color: #fff;">CSS PRESET</div>
             <div class="detail-sheet-content" style="padding-bottom: 20px;">
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                     <button class="bstage-preset-tab active" data-type="chatCss" style="flex: 1; padding: 8px; background: #fff; color: #000; border-radius: 8px; border: none; font-weight: bold;">聊天界面</button>
@@ -183,7 +183,7 @@
                         <textarea id="bstage-preset-css-input" placeholder="输入 CSS 代码..." style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 8px 0; height: 100px;"></textarea>
                     </div>
                 </div>
-                <div class="sheet-action confirm-action" id="bstage-save-preset-btn" style="background-color: #007aff; color: #fff; margin-top: 15px;">保存为新预设</div>
+                <div class="sheet-action confirm-action" id="bstage-save-preset-btn" style="background-color: #007aff; color: #fff; margin-top: 15px;">save preset</div>
             </div>
         </div>
     `;
@@ -197,7 +197,7 @@
     searchGenerateModal.innerHTML = `
         <div class="bottom-sheet bstage-search-generate-sheet" style="background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">搜索生成团队</div>
+            <div class="sheet-title" style="color: #fff;">SEARCH TEAMS</div>
             <div class="detail-sheet-content bstage-modal-content">
                 <div class="bstage-search-generate-hint">输入想搜索的团队或明星，AI 会按内容生成团队资料和成员设定；留空则随机生成。</div>
                 <div class="bstage-search-form">
@@ -212,7 +212,7 @@
                     <i class="fas fa-spinner"></i>
                     <span>正在生成团队...</span>
                 </div>
-                <div class="sheet-action confirm-action bstage-search-confirm-btn" id="bstage-search-confirm-btn" style="background-color: #fff; color: #000;">生成团队</div>
+                <div class="sheet-action confirm-action bstage-search-confirm-btn" id="bstage-search-confirm-btn" style="background-color: #fff; color: #000;">Generate</div>
             </div>
         </div>
     `;
@@ -226,10 +226,10 @@
     createTeamSheet.innerHTML = `
         <div class="bottom-sheet" style="height: 80%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">创建团队</div>
+            <div class="sheet-title" style="color: #fff;">CREATE TEAM</div>
             <div class="detail-sheet-content">
                 <!-- Team Background -->
-                <div class="sheet-title" style="margin-top: 0; margin-bottom: 10px; color: #aaa; font-size: 14px;">主页背景</div>
+                <div class="sheet-title" style="margin-top: 0; margin-bottom: 10px; color: #aaa; font-size: 14px;">Background</div>
                 <div class="bstage-bg-upload" id="bstage-team-bg-upload" style="background-color: #2c2c2e; border-color: #444; overflow: hidden; position: relative;">
                     <span style="color: #aaa; font-size: 14px; position: relative; z-index: 1;">点击上传背景图</span>
                     <img id="bstage-team-bg-preview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; z-index: 0;">
@@ -265,7 +265,7 @@
                     <div class="bstage-add-char-btn" id="bstage-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-create-btn" style="background-color: #fff; color: #000; margin-top: 30px;">完成创建</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-create-btn" style="background-color: #fff; color: #000; margin-top: 30px;">creation</div>
             </div>
         </div>
     `;
@@ -395,24 +395,24 @@
                 
                 <div class="bstage-profile-stats-container">
                     <div class="bstage-profile-stat-bubble" style="background-color: #2c2c2e; color: #fff; border: none;">
-                        <span class="bstage-stat-label" style="color: #aaa;">POP 订阅</span>
+                        <span class="bstage-stat-label" style="color: #aaa;">POP Plan</span>
                         <span class="bstage-stat-value" id="bstage-profile-pop-sub-count" style="color: #fff;">0</span>
                     </div>
                     <div class="bstage-profile-stat-bubble" style="background-color: #2c2c2e; color: #fff; border: none;">
-                        <span class="bstage-stat-label" style="color: #aaa;">订阅收益</span>
+                        <span class="bstage-stat-label" style="color: #aaa;">Plan Earnings</span>
                         <span class="bstage-stat-value" id="bstage-profile-sub-revenue" style="color: #fff;">￥0.00</span>
                     </div>
                 </div>
 
                 <div class="bstage-profile-actions">
                     <div class="bstage-profile-btn" id="bstage-edit-profile-btn" style="background-color: #2c2c2e; color: #fff; border: none;">
-                        <i class="fas fa-pen"></i> 编辑资料
+                        <i class="fas fa-pen"></i> Edit Profile
                     </div>
                     <div class="bstage-profile-btn" id="bstage-withdraw-revenue-btn" style="background-color: #2c2c2e; color: #fff; border: none;">
-                        <i class="fas fa-wallet"></i> 提现到 Pay
+                        <i class="fas fa-wallet"></i> Withdraw to Pay
                     </div>
                     <div class="bstage-profile-btn" id="bstage-my-orders-btn" style="background-color: #2c2c2e; color: #fff; border: none;">
-                        <i class="fas fa-receipt"></i> 我的订单
+                        <i class="fas fa-receipt"></i> My Orders
                     </div>
                 </div>
             </div>
@@ -427,7 +427,7 @@
     ordersModal.innerHTML = `
         <div class="bottom-sheet" style="height: 70%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">我的订单</div>
+            <div class="sheet-title" style="color: #fff;">My Orders</div>
             <div class="detail-sheet-content">
                 <div id="bstage-orders-list" style="display: flex; flex-direction: column; gap: 10px; padding: 0 16px 20px;">
                     <!-- Orders Injected Here -->
@@ -444,7 +444,7 @@
     editProfileModal.innerHTML = `
         <div class="bottom-sheet" style="background: #1c1c1e; color: #fff;">
             <div class="sheet-handle" style="background-color: #444;"></div>
-            <div class="sheet-title" style="color: #fff;">编辑资料</div>
+            <div class="sheet-title" style="color: #fff;">EDIT PROFILE</div>
             <div class="detail-sheet-content">
                 <div class="bstage-avatar-upload" id="bstage-edit-profile-avatar-upload" style="background-color: #2c2c2e; overflow: hidden; position: relative;">
                     <i class="fas fa-camera" style="color: #aaa; position: relative; z-index: 1;"></i>
@@ -453,15 +453,15 @@
                 </div>
                 <div class="bstage-form-group" style="background-color: #2c2c2e; border-color: #333;">
                     <div class="bstage-form-item" style="border-bottom-color: #444;">
-                        <label style="color: #aaa;">昵称</label>
+                        <label style="color: #aaa;">Nickname</label>
                         <input type="text" id="bstage-edit-profile-name" placeholder="输入昵称" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                     <div class="bstage-form-item">
-                        <label style="color: #aaa;">人设</label>
+                        <label style="color: #aaa;">Persona</label>
                         <input type="text" id="bstage-edit-profile-persona" placeholder="输入你的粉丝人设" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                 </div>
-                <div class="sheet-action confirm-action" id="bstage-save-profile-btn" style="background-color: #fff; color: #000;">保存</div>
+                <div class="sheet-action confirm-action" id="bstage-save-profile-btn" style="background-color: #fff; color: #000;">save</div>
             </div>
         </div>
     `;
@@ -496,7 +496,7 @@
     editTeamSheet.innerHTML = `
         <div class="bottom-sheet" style="height: 80%; background: #1c1c1e; color: #fff;">
             <div class="sheet-handle"></div>
-            <div class="sheet-title">编辑团队</div>
+            <div class="sheet-title">EDIT TEAM</div>
             <div class="detail-sheet-content">
                 <!-- Team Avatar -->
                 <div class="bstage-avatar-upload" id="bstage-edit-team-avatar-upload" style="background-color: #2c2c2e; overflow: hidden; position: relative;">
@@ -514,7 +514,7 @@
                 </div>
 
                 <!-- Team Background -->
-                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px;">主页背景</div>
+                <div class="sheet-title" style="margin-top: 20px; margin-bottom: 10px;">Background</div>
                 <div class="bstage-bg-upload" id="bstage-edit-team-bg-upload" style="background-color: #2c2c2e; border-color: #444; overflow: hidden; position: relative;">
                     <span style="color: #888; font-size: 14px; position: relative; z-index: 1;">点击上传背景图</span>
                     <img id="bstage-edit-team-bg-preview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; z-index: 0;">
@@ -531,7 +531,7 @@
                     <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">保存修改</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">changes</div>
                 <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">删除团队</div>
             </div>
         </div>
