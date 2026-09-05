@@ -1124,7 +1124,7 @@
         return encodeURIComponent(`${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     }
 
-    const bstageEmojiAvatars = ['🐩', '🐇', '🍶', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '♟️', '🤍', '❔', '🌷', '🥛', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
+    const bstageEmojiAvatars = ['🐩', '🐇', '🍽', '🦭', '🦓', '☕️', '🥛', '🦢', '🦩', '🏁', '🐾', '🦪', '🥪', '🦦', '🦥', '🌴', '🥯', '🇺🇸', '♟️', '🤍', '❔', '🌷', '🥛', '🧀', '🫐', '🥥', '🍷', '💕', '🍴', '🍽'];
     function hashBstageString(value) {
         const text = String(value || 'bstage');
         let hash = 0;
@@ -3542,7 +3542,7 @@ ${generationIntent}
             msgDiv.dataset.msgId = msg.id;
             msgDiv.innerHTML = `
                 <div class="bstage-msg-status">
-                    <div class="bstage-msg-status-text">${escapeHtml(msg.status || '已读')}</div>
+                    <div class="bstage-msg-status-text">${escapeHtml(msg.status || 'read')}</div>
                     <div class="bstage-msg-time">${escapeHtml(msg.time || getCurrentChatTimeText(msg.timestamp))}</div>
                 </div>
                 <div class="bstage-chat-bubble">
@@ -3605,7 +3605,7 @@ ${generationIntent}
         currentChatMember = member; // Set current member
         document.getElementById('bstage-chat-name').textContent = member.name;
         const days = Math.floor((Date.now() - member.subStartDate) / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('bstage-chat-days').textContent = `Together for ${days} Day`;
+        document.getElementById('bstage-chat-days').textContent = `Together for ${days} day`;
         
         // Restore Background if saved
         const chatView = document.getElementById('bstage-chat-view');
@@ -3708,7 +3708,7 @@ ${generationIntent}
                 text: txt,
                 time: timeString,
                 timestamp: now,
-                status: '未读',
+                status: 'unread',
                 replyTo: pendingChatReply ? { ...pendingChatReply } : null
             };
             member.chatHistory.push(msg);
@@ -3816,8 +3816,8 @@ ${generationIntent}
 
         // Get realistic current time context
         const now = new Date();
-        const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-        const realTimeContext = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 ${days[now.getDay()]} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const realTimeContext = `${now.getFullYear()}Year${now.getMonth() + 1}Month${now.getDate()}Day ${days[now.getDay()]} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
         const otherFansEnabled = !!member.otherFansEnabled;
         const otherFansPromptBlock = otherFansEnabled ? `
 
@@ -3940,16 +3940,16 @@ ${history}
             if (contentContainer) {
                 // Reset user counter and update status text
                 userMsgCountSinceLastReply = 0;
-                // Change all "未读" to "已读" status
+                // Change all "unread" to "read" status
                 const statusTexts = contentContainer.querySelectorAll('.bstage-msg-status-text');
                 statusTexts.forEach(el => {
-                    if (el.innerHTML === '未读') el.innerHTML = '已读';
+                    if (el.innerHTML === 'unread') el.innerHTML = 'read';
                 });
             }
             
             if (member.chatHistory) {
                 member.chatHistory.forEach(h => {
-                    if (h.isUser && h.status === '未读') h.status = '已读';
+                    if (h.isUser && h.status === 'unread') h.status = 'read';
                 });
             }
 
@@ -5718,7 +5718,7 @@ ${charInfo}
             msgDiv.dataset.msgId = msg.id;
             msgDiv.innerHTML = `
                 <div class="bstage-msg-status">
-                    <div class="bstage-msg-status-text">已发送</div>
+                    <div class="bstage-msg-status-text">sent</div>
                     <div class="bstage-msg-time">${escapeHtml(msg.time || getCurrentChatTimeText(msg.timestamp))}</div>
                 </div>
                 <div class="bstage-chat-bubble">
@@ -5852,8 +5852,8 @@ ${charInfo}
         const afterRoleWorldBookContext = window.getGlobalWorldBookContextByPosition ? window.getGlobalWorldBookContextByPosition('after_role') : '';
 
         const now = new Date();
-        const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-        const realTimeContext = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 ${days[now.getDay()]} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const realTimeContext = `${now.getFullYear()}Year${now.getMonth() + 1}Month${now.getDate()}Day ${days[now.getDay()]} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
 
         const prompt = `
 ${systemDepthWorldBookContext ? `System Depth Rules:\n${systemDepthWorldBookContext}\n\n` : ''}${beforeRoleWorldBookContext ? `Before Role Rules:\n${beforeRoleWorldBookContext}\n\n` : ''}你正在模拟 b.stage 的粉丝聊天室。b.stage 是国际化粉丝互动应用。
