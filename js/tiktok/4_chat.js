@@ -56,7 +56,7 @@
 
     function tkDmRelationshipLabel(char) {
         if (!char) return '';
-        if (char.isFollowed && char.isFollower) return 'Mutual Follow';
+        if (char.isFollowed && char.isFollower) return 'mutual follow';
         if (char.isFollower && !char.isFollowed) return '对方是陌生人';
         return '';
     }
@@ -349,7 +349,7 @@ JSON example:
                 if (!char) return;
                 
                 const relationLabel = tkDmRelationshipLabel(char);
-                const lastMsg = dm.messages.length > 0 ? dm.messages[dm.messages.length - 1].text : (relationLabel || 'Start chatting');
+                const lastMsg = dm.messages.length > 0 ? dm.messages[dm.messages.length - 1].text : (relationLabel || 'start chatting');
 
                 const avatarUrl = tkDmResolveAvatar(char);
                 const charAvatarHtml = avatarUrl
