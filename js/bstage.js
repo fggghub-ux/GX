@@ -606,8 +606,8 @@
                 <!-- Locker Section -->
                 <div style="padding: 0 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span style="font-size: 14px; font-weight: 600; color: #aaa;">LOCKER</span>
-                        <span style="font-size: 14px; color: #fff; cursor: pointer;" id="bstage-locker-see-all-btn">VIEW ALL</span>
+                        <span style="font-size: 14px; font-weight: 600; color: #aaa;">Locker</span>
+                        <span style="font-size: 14px; color: #fff; cursor: pointer;" id="bstage-locker-see-all-btn">View All</span>
                     </div>
                     <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;" id="bstage-locker-preview-list">
                         <!-- Preview Photos -->
@@ -2196,7 +2196,7 @@
         const list = bstagePresets[currentPresetTab] || [];
 
         if (list.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No Presets Yet</div>';
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">no presets yet</div>';
             return;
         }
 
