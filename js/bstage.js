@@ -2196,7 +2196,7 @@
         const list = bstagePresets[currentPresetTab] || [];
 
         if (list.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">no presets yet</div>';
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No Presets Yet</div>';
             return;
         }
 
@@ -2453,7 +2453,7 @@
                 
                 const content = document.getElementById('bstage-chat-content');
                 if (content) {
-                    content.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">聊天记录已清空</div>';
+                    content.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">Chat History Cleared</div>';
                 }
                 
                 window.showToast('Chat History Cleared');
@@ -2681,7 +2681,7 @@
         
         // Fill empty slots if less than 4 (optional, or just leave empty)
         if (chatPhotos.length === 0) {
-            container.innerHTML = '<div style="color: #888; font-size: 13px; padding: 10px 0;">No Photos Yet</div>';
+            container.innerHTML = '<div style="color: #888; font-size: 13px; padding: 10px 0;">no photos yet</div>';
         }
     }
 
