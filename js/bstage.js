@@ -2978,7 +2978,7 @@ ${generationIntent}
         const title = document.querySelector('#bstage-add-char-sheet .sheet-title');
         if(title) title.textContent = 'ADD MEMBER';
         const btn = document.getElementById('bstage-confirm-add-char-btn');
-        if(btn) btn.textContent = 'Add
+        if(btn) btn.textContent = 'Add';
 
         window.openView(addCharSheet);
     });
