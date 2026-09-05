@@ -188,8 +188,8 @@ class NetflixApp {
                 <section class="netflix-panel netflix-profile-panel" data-panel="profile" id="netflix-profile-panel"></section>
             </main>
             <nav class="netflix-bottom-nav" aria-label="Netflix 导航">
-                <button type="button" class="netflix-nav-item is-active" data-tab="home"><i class="fas fa-home"></i><span>首页</span></button>
-                <button type="button" class="netflix-nav-item" data-tab="profile"><i class="fas fa-user-circle"></i><span>我的 Netflix</span></button>
+                <button type="button" class="netflix-nav-item is-active" data-tab="home"><i class="fas fa-home"></i><span>Home</span></button>
+                <button type="button" class="netflix-nav-item" data-tab="profile"><i class="fas fa-user-circle"></i><span>My Netflix</span></button>
             </nav>
 
             <section class="netflix-sheet netflix-detail-sheet" id="netflix-detail-sheet" aria-hidden="true">
@@ -551,7 +551,7 @@ class NetflixApp {
                             <span>${this.escapeHtml(item.category)}</span>
                             <h1>${this.escapeHtml(item.title)}</h1>
                             <p>${this.escapeHtml(item.summary || '开启一段属于你的互动故事。')}</p>
-                            <button type="button" data-catalog-id="${this.escapeAttr(item.id)}"><i class="fas fa-play"></i> 播放</button>
+                            <button type="button" data-catalog-id="${this.escapeAttr(item.id)}"><i class="fas fa-play"></i> Play</button>
                         </div>
                         <div class="netflix-hero-index">0${index + 1}</div>
                     </article>`).join('')}
@@ -562,7 +562,7 @@ class NetflixApp {
 
     renderCatalogRow(title, items, landscape) {
         return `<section class="netflix-row">
-            <header><h2>${this.escapeHtml(title)}</h2><span>${items.length} 部</span></header>
+            <header><h2>${this.escapeHtml(title)}</h2><span>${items.length} Part</span></header>
             <div class="netflix-row-scroll">
                 ${items.map(item => `<button type="button" class="netflix-catalog-card ${landscape ? 'is-landscape' : ''}" data-catalog-id="${this.escapeAttr(item.id)}">
                     <span class="netflix-catalog-cover" style="background-image:url('${this.escapeAttr(item.coverUrl)}')"></span>
@@ -591,8 +591,8 @@ class NetflixApp {
                 <div class="netflix-detail-tags"><b>${this.escapeHtml(item.category)}</b>${(item.tags || []).map(tag => `<span>${this.escapeHtml(tag)}</span>`).join('')}</div>
                 <p>${this.escapeHtml(item.summary || '世界尚未书写，等待你进入故事。')}</p>
                 <div class="netflix-detail-actions">
-                    <button type="button" class="netflix-primary-button" data-action="play-title"><i class="fas fa-play"></i> 播放</button>
-                    <button type="button" class="netflix-delete-title-button" data-action="delete-title"><i class="fas fa-trash-alt"></i> 删除故事</button>
+                    <button type="button" class="netflix-primary-button" data-action="play-title"><i class="fas fa-play"></i> Play</button>
+                    <button type="button" class="netflix-delete-title-button" data-action="delete-title"><i class="fas fa-trash-alt"></i> Delete Story</button>
                 </div>
             </div>`;
         this.openSheet(this.detailSheet);
@@ -626,16 +626,16 @@ class NetflixApp {
         this.profilePanel.innerHTML = `
             <div class="netflix-profile-hero">
                 ${this.renderAvatarMarkup(user, 'netflix-profile-avatar')}
-                <div><span>PLAYER PROFILE</span><h1>${this.escapeHtml(user.name)}</h1><p>${this.escapeHtml(user.persona || '你的选择会写下新的故事。')}</p></div>
+                <div><span>PLAYER PROFILE</span><h1>${this.escapeHtml(user.name)}</h1><p>${this.escapeHtml(user.persona || 'Your choices will write a new story.')}</p></div>
             </div>
             <div class="netflix-profile-stats">
-                <div><strong>${manualCount}</strong><span>手动存档</span></div>
-                <div><strong>${endingCount}</strong><span>已解锁结局</span></div>
+                <div><strong>${manualCount}</strong><span>Manual Save</span></div>
+                <div><strong>${endingCount}</strong><span>Endings Unlocked</span></div>
             </div>
             <div class="netflix-profile-actions">
-                <button type="button" data-action="open-load"><i class="fas fa-folder-open"></i><span><strong>存档管理</strong><small>自动档与 6 个手动档</small></span><i class="fas fa-chevron-right"></i></button>
-                <button type="button" data-action="show-endings"><i class="fas fa-trophy"></i><span><strong>结局收藏</strong><small>回顾已经抵达的故事终点</small></span><i class="fas fa-chevron-right"></i></button>
-                <button type="button" data-action="show-worldbooks"><i class="fas fa-book"></i><span><strong>世界书</strong><small>开局时选择并创建独立快照</small></span><i class="fas fa-chevron-right"></i></button>
+                <button type="button" data-action="open-load"><i class="fas fa-folder-open"></i><span><strong>Save</strong><small>Auto Save 6 Manual Saves</small></span><i class="fas fa-chevron-right"></i></button>
+                <button type="button" data-action="show-endings"><i class="fas fa-trophy"></i><span><strong>Collection</strong><small>Review Endings Reached</small></span><i class="fas fa-chevron-right"></i></button>
+                <button type="button" data-action="show-worldbooks"><i class="fas fa-book"></i><span><strong>World Book</strong><small>Create Independent Snapshot</small></span><i class="fas fa-chevron-right"></i></button>
             </div>`;
         const headerAvatar = this.view.querySelector('.netflix-header-avatar');
         if (headerAvatar) headerAvatar.innerHTML = user.avatar ? `<img src="${this.escapeAttr(user.avatar)}" alt="">` : '<i class="fas fa-user"></i>';
