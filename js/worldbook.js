@@ -1,7 +1,7 @@
 // ==========================================
 // World Book — iOS Notes-style library and editor
 // ==========================================
-const WB_UNGROUPED = '未分组';
+const WB_UNGROUPED = 'Ungrouped';
 let worldBooks = [];
 let wbGroups = [];
 let activeWbGroupName = null;
@@ -744,7 +744,7 @@ window.renderWorldBookSelector = function renderWorldBookSelector(selectedIds = 
         const selected = new Set(selectedBookIds.map(String));
         const books = getBooksInGroup(groupSelect.value).filter(book => !selected.has(String(book.id)));
         bookSelect.disabled = books.length === 0;
-        bookSelect.innerHTML = books.length ? `<option value="">Select World Books to Mount</option>${books.map(book => `<option value="${escapeAttr(book.id)}">${escapeHtml(book.name || '未命名世界书')} · +${getBookTokenCount(book)} Tokens</option>`).join('')}` : '<option value="">No World Books Available to Mount</option>';
+        bookSelect.innerHTML = books.length ? `<option value="">Select Items to Mount</option>${books.map(book => `<option value="${escapeAttr(book.id)}">${escapeHtml(book.name || '未命名世界书')} · +${getBookTokenCount(book)} Tokens</option>`).join('')}` : '<option value="">Nothing Available to Mount</option>';
         empty.textContent = books.length ? '' : 'no mountable ltems in this folder';
     };
     const renderMounted = () => {
