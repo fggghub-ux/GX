@@ -1944,14 +1944,14 @@ class NetflixApp {
 
     showEndings() {
         this.infoTitle.textContent = 'Ending Collection';
-        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">No endings unlocked yet. Every choice steers the story in a different direction.</div>';
+        this.infoBody.innerHTML = this.state.unlockedEndings.length ? `<div class="netflix-ending-list">${this.state.unlockedEndings.map(ending => `<article><span>${this.escapeHtml(ending.type)}</span><h3>${this.escapeHtml(ending.title)}</h3><p>${this.escapeHtml(ending.summary)}</p><small>${this.escapeHtml(ending.storyTitle || '')} · ${new Date(ending.unlockedAt).toLocaleDateString('zh-CN')}</small></article>`).join('')}</div>` : '<div class="netflix-empty-state">When vodka cuts sharply through my throat, I remember the cold wind blowing from Siberia, and your eyes.</div>';
         this.openSheet(this.infoSheet);
     }
 
     showWorldBooksInfo() {
         const books = this.getWorldBooks();
         this.infoTitle.textContent = 'World Book';
-        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} 条词条</small></span></article>`).join('')}</div><p class="netflix-info-note">世界书会在初始化游戏时选择，并随存档保存独立文本快照。</p>` : '<div class="netflix-empty-state">No world book yet, create one in system settings.</div>';
+        this.infoBody.innerHTML = books.length ? `<div class="netflix-book-list">${books.map(book => `<article><i class="fas fa-book"></i><span><strong>${this.escapeHtml(book.name || '未命名世界书')}</strong><small>${Array.isArray(book.entries) ? book.entries.length : 0} Entry</small></span></article>`).join('')}</div><p class="netflix-info-note">Between my consciousness and your lips, there lies a sea without a path.</p>` : '<div class="netflix-empty-state">Tonight, my voice is a train that has been intercepted, and your name is the long national border of Russia.</div>';
         this.openSheet(this.infoSheet);
     }
 
