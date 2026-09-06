@@ -767,7 +767,7 @@
                     const aiMsg = {
                         role: 'system',
                         type: 'text',
-                        text: `你收到了一份礼物: ${itemNames}。价值 ¥${order.total.toFixed(2)}。付款方式是: ${order.method}。请根据你的角色人设对这份礼物做出真实的反应（感谢、惊喜或者调侃等）。`,
+                        text: `Gift Received: ${itemNames}。Value ¥${order.total.toFixed(2)}。Pald via: ${order.method}。请根据你的角色人设对这份礼物做出真实的反应（感谢、惊喜或者失神等）。`,
                         timestamp: Date.now() + 1
                     };
                     await window.imApp.appendFriendMessage(friend.id, aiMsg, { silent: true });
@@ -995,7 +995,7 @@
                             date: new Date().toLocaleString(),
                             items: [...this.cart],
                             total: total,
-                            status: '已付款',
+                            status: 'Paid',
                             method: this.selectedCard.type === 'family' ? `亲属卡 (${this.selectedCard.name})` : 'Pay'
                         });
                         this.saveOrders();
@@ -1004,7 +1004,7 @@
                         this.saveCart();
                         this.renderCart();
                         this.checkoutSheet?.classList.remove('active');
-                        window.showToast ? window.showToast('支付成功') : alert('支付成功');
+                        window.showToast ? window.showToast('Payment Successful.') : alert('Payment Successful.');
                     } else {
                         window.showToast ? window.showToast('支付失败') : alert('支付失败');
                     }
@@ -1020,7 +1020,7 @@
                 const friendName = this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char';
                 
                 // Construct fallback text message
-                const msgText = `[代付请求]\n商品: ${itemNames}\n总价: ¥${total.toFixed(2)}`;
+                const msgText = `[Pay for Me]\n商品: ${itemNames}\n总价: ¥${total.toFixed(2)}`;
                 
                 // Construct HTML Card for modern pipeline
                 const htmlCard = `
@@ -1072,7 +1072,7 @@
                         date: new Date().toLocaleString(),
                         items: [...this.cart],
                         total: total,
-                        status: '代付请求已发送',
+                        status: 'Payment request sent.',
                         method: `代付 (${friendName})`
                     });
                     this.saveOrders();
@@ -1081,7 +1081,7 @@
                     this.saveCart();
                     this.renderCart();
                     this.checkoutSheet?.classList.remove('active');
-                    window.showToast ? window.showToast('代付请求已发送') : alert('代付请求已发送');
+                    window.showToast ? window.showToast('Payment request sent.') : alert('Payment request sent.');
                 } else {
                     window.showToast ? window.showToast('无法发送代付请求') : alert('无法发送代付请求');
                 }
@@ -1196,7 +1196,7 @@
                         <div class="shopping-order-method">${order.method}</div>
                         <div class="shopping-order-price-wrap">
                             <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #ff9bb3; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Gift</button>
-                            <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">Rate product</button>
+                            <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">Review</button>
                             <div class="shopping-order-price">¥${order.total.toFixed(2)}</div>
                         </div>
                     </div>
@@ -1419,7 +1419,7 @@
             reviewsContainerList.innerHTML = '';
 
             if (comments.length === 0) {
-                reviewsContainerList.innerHTML = '<div style="font-size: 14px; color: #8e8e93; text-align: center; padding: 10px 0;">No Reviews Yet</div>';
+                reviewsContainerList.innerHTML = '<div style="font-size: 14px; color: #8e8e93; text-align: center; padding: 10px 0;">no reviews yet</div>';
             }
         }
 
@@ -1539,7 +1539,7 @@
             container.innerHTML = '';
 
             if (comments.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">no reviews yet</div>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">No Reviews Yet</div>';
             } else {
                 comments.forEach(c => {
                     const cEl = document.createElement('div');
