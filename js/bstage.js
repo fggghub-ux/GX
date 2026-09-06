@@ -3632,7 +3632,7 @@ ${generationIntent}
         if (!member.chatHistory || !Array.isArray(member.chatHistory)) {
             member.chatHistory = [
                 { type: 'date', text: formatTimeBubble(Date.now()), timestamp: Date.now() },
-                { isUser: false, type: 'text', text: `Hello! I'm ${member.name}.`, trans: `Hellow! I'm ${member.name}。`, timestamp: Date.now() },
+                { isUser: false, type: 'text', text: `Hello! I'm ${member.name}.`, trans: `Hellow! I'm ${member.name}.`, timestamp: Date.now() },
                 { isUser: false, type: 'text', text: `Thanks for subscribing!`, trans: `Thanks for subscribing！`, timestamp: Date.now() + 100 }
             ];
             saveBstageData();
@@ -4548,7 +4548,7 @@ ${charInfo}
                     openGenerateTypeSheet({
                         title: 'GENERATE VIDEO',
                         label: 'Browse videos',
-                        placeholder: 'e.g.: flight diary, skincare vlog, brand event',
+                        placeholder: 'e.g.: brand event, skincare vlog, flight diary',
                         onConfirm: (request) => triggerContentApi(team, activeSeries, request)
                     });
                 });
@@ -4770,7 +4770,7 @@ ${charInfo}
             openGenerateTypeSheet({
                 title: 'GENERATE VIDEO',
                 label: 'Browse videos',
-                placeholder: 'e.g.: flight diary, skincare vlog, brand event',
+                placeholder: 'e.g.: brand event, skincare vlog, flight diary',
                 onConfirm: (request) => triggerVideoDetailApi(currentVideo, request)
             });
         }
@@ -5876,7 +5876,7 @@ ${history}
 5. 消息要像真实国际化粉丝互动：可以应援、闲聊、提问、刷屏、玩梗、跨语言互动，不要每条都机械回复 User 上一句话。
 6. 可以自然评价 User 的视频物料、讨论已上架周边、期待新物料或询问下一次更新。
 7. 粉丝知道 User 团队的名字、简介和成员，可以自然询问 ${userName} 本人的近况、和其他队友的关系/合作/互动，也可以向 ${userName} 提到或追问别的队友。
-8. 可以使用中文、英文、韩文、日文或其他符合语境的语言；如果 text 不是纯中文，必须在 trans 中提供自然中文翻译。text 是中文时 trans 为空字符串。
+8. 可以使用英语、俄语、阿拉伯语、西班牙语或其他符合语境的语言；如果 text 不是纯中文，必须在 trans 中提供自然中文翻译。text 是中文时 trans 为空字符串。
 9. 你可以回复某条 User 消息；如需回复，请在该对象中填写 replyToId，值只能从这些 User 消息 id 中选择：${validUserReplyIds.length ? validUserReplyIds.join(', ') : '无'}。不回复则省略或填空。
 10. 返回严格 JSON 数组，不要 markdown，不要解释，不要外层对象。
 11. 每条必须包含 name、text、trans。
