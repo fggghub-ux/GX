@@ -2447,7 +2447,7 @@
     if (chatExitBtn) {
         chatExitBtn.addEventListener('click', () => {
             if (!currentChatMember) return;
-            if (confirm(`Confirm clearing the chat history with ${currentChatMember.name} ？`)) {
+            if (confirm(`Confirm clearing the chat history with ${currentChatMember.name}？`)) {
                 currentChatMember.chatHistory = [];
                 saveBstageData();
                 
