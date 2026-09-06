@@ -1121,7 +1121,7 @@
                 const elapsed = (Date.now() - ts) / 1000;
                 const isFood = order.items.some(i => i.isFood);
                 
-                const step1Text = isFood ? 'picked up' : 'shipped';
+                const step1Text = isFood ? 'picked' : 'shipped';
                 const step2Text = isFood ? 'delivery' : 'in transit';
                 const step3Text = 'delivered';
 
@@ -1439,7 +1439,7 @@
                             <i class="fas fa-star" data-val="4" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                             <i class="fas fa-star" data-val="5" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                         </div>
-                        <textarea id="shopping-rating-text" placeholder="Florence à leur fenêtre et la mort sur la table. Si aujourd’hui me trouve si loin de tout, c’est que je n’ai d’autre force que d’aimer et d’admirer. " style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
+                        <textarea id="shopping-rating-text" placeholder="Si aujourd’hui me trouve si loin de tout, c’est que je n’ai d’autre force que d’aimer et d’admirer. " style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
                         <button type="button" id="shopping-rating-submit" style="width: 100%; padding: 16px; background: #111; color: #fff; border-radius: 12px; font-size: 16px; font-weight: 700; border: none; cursor: pointer;">submit review</button>
                     </div>
                 </div>
