@@ -203,7 +203,7 @@ class NetflixApp {
                     <h2 id="netflix-search-title">Generate New Collection</h2>
                     <p>Enter your preferred genre, character dynamic, or story atmosphere. Leave blank for a random generation.</p>
                     <textarea id="netflix-search-input" placeholder="e.g.: One Hundred Years of Solitude, The Red and the Black, Wuthering Heights"></textarea>
-                    <button type="button" class="netflix-primary-button" data-action="confirm-search" id="netflix-search-confirm">生成片库</button>
+                    <button type="button" class="netflix-primary-button" data-action="confirm-search" id="netflix-search-confirm">Generate</button>
                 </div>
             </section>
 
