@@ -70,7 +70,7 @@
         <div class="bstage-chat-input-area">
             <div class="bstage-reply-preview" id="bstage-chat-reply-preview" style="display:none;">
                 <div class="bstage-reply-preview-content">
-                    <div class="bstage-reply-preview-label">正在回复</div>
+                    <div class="bstage-reply-preview-label">Replying</div>
                     <div class="bstage-reply-preview-text" id="bstage-chat-reply-preview-text"></div>
                 </div>
                 <div class="bstage-reply-preview-close" id="bstage-chat-reply-cancel-btn" role="button" tabindex="0" aria-label="取消回复" title="取消回复">
@@ -110,7 +110,7 @@
         <div class="bstage-chat-input-area">
             <div class="bstage-reply-preview" id="bstage-fan-chat-reply-preview" style="display:none;">
                 <div class="bstage-reply-preview-content">
-                    <div class="bstage-reply-preview-label">正在回复</div>
+                    <div class="bstage-reply-preview-label">Replying</div>
                     <div class="bstage-reply-preview-text" id="bstage-fan-chat-reply-preview-text"></div>
                 </div>
                 <div class="bstage-reply-preview-close" id="bstage-fan-chat-reply-cancel-btn" role="button" tabindex="0" aria-label="取消回复" title="取消回复">
@@ -261,8 +261,8 @@
                     <!-- Preview of added chars -->
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <div class="bstage-add-char-btn" id="bstage-add-char-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 手动添加</div>
-                    <div class="bstage-add-char-btn" id="bstage-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
+                    <div class="bstage-add-char-btn" id="bstage-add-char-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ Add Manually</div>
+                    <div class="bstage-add-char-btn" id="bstage-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ Invite Friends</div>
                 </div>
 
                 <div class="sheet-action confirm-action" id="bstage-confirm-create-btn" style="background-color: #fff; color: #000; margin-top: 30px;">creation</div>
@@ -527,11 +527,11 @@
                     <!-- Members Injected Here -->
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <div class="bstage-add-char-btn" id="bstage-edit-team-add-member-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 手动添加</div>
-                    <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ 拉取已有好友</div>
+                    <div class="bstage-add-char-btn" id="bstage-edit-team-add-member-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ Add Manually</div>
+                    <div class="bstage-add-char-btn" id="bstage-edit-team-pull-friend-btn" style="flex: 1; background-color: #2c2c2e; color: #fff; padding: 10px; border-radius: 12px; font-size: 14px;">+ Invite Friends</div>
                 </div>
 
-                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">Save change</div>
+                <div class="sheet-action confirm-action" id="bstage-confirm-edit-team-btn" style="background-color: #fff; color: #000; margin-top: 30px;">save change</div>
                 <div class="sheet-action" id="bstage-delete-team-btn" style="background-color: #ff3b30; color: #fff; margin-top: 10px;">Delete team</div>
             </div>
         </div>
@@ -599,7 +599,7 @@
                     <h2 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 5px;" id="bstage-detail-name">Name</h2>
                     <div style="font-size: 13px; color: #aaa; display: flex; align-items: center; justify-content: center; gap: 4px;">
                         <i class="fas fa-heart" style="color: #ff3b30;"></i>
-                        <span id="bstage-detail-days">已一同 1 天</span>
+                        <span id="bstage-detail-days">Together for 1 day</span>
                     </div>
                 </div>
 
@@ -618,19 +618,19 @@
                 <div class="bstage-settings-list">
                     <div class="bstage-setting-item" id="bstage-setting-nickname">
                         <div class="bstage-setting-icon"><i class="fas fa-user"></i></div>
-                        <div class="bstage-setting-label">昵称设置</div>
+                        <div class="bstage-setting-label">Nickname</div>
                     </div>
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-image"></i></div>
-                        <div class="bstage-setting-label" id="bstage-setting-bg" style="flex:1;">背景设定</div>
-                        <div class="bstage-setting-right-action" id="bstage-reset-bg-btn" style="color: #aaa;">重置</div>
+                        <div class="bstage-setting-label" id="bstage-setting-bg" style="flex:1;">Background</div>
+                        <div class="bstage-setting-right-action" id="bstage-reset-bg-btn" style="color: #aaa;">reset</div>
                         <input type="file" id="bstage-chat-bg-input" accept="image/*" style="display:none;">
                     </div>
 
                     <!-- CSS Presets Settings -->
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-paint-brush"></i></div>
-                        <div class="bstage-setting-label" style="flex:1;">界面 CSS</div>
+                        <div class="bstage-setting-label" style="flex:1;">Chat CSS</div>
                         <select id="bstage-chat-css-select" style="background: #2c2c2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; width: 120px; outline: none;">
                             <option value="">默认</option>
                         </select>
@@ -638,7 +638,7 @@
                     
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-crop-alt"></i></div>
-                        <div class="bstage-setting-label" style="flex:1;">头像框 CSS</div>
+                        <div class="bstage-setting-label" style="flex:1;">Frame CSS</div>
                         <select id="bstage-frame-css-select" style="background: #2c2c2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; width: 120px; outline: none;">
                             <option value="">默认</option>
                         </select>
@@ -646,7 +646,7 @@
                     
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-comment-dots"></i></div>
-                        <div class="bstage-setting-label" style="flex:1;">气泡 CSS</div>
+                        <div class="bstage-setting-label" style="flex:1;">Bubble CSS</div>
                         <select id="bstage-bubble-css-select" style="background: #2c2c2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; width: 120px; outline: none;">
                             <option value="">默认</option>
                         </select>
@@ -655,7 +655,7 @@
                     <!-- Context Setting -->
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-history"></i></div>
-                        <div class="bstage-setting-label" style="flex: 1;">上下文携带</div>
+                        <div class="bstage-setting-label" style="flex: 1;">Context</div>
                         <input type="number" id="bstage-context-count" value="50" style="width: 50px; background: transparent; border: 1px solid #444; color: #fff; text-align: center; border-radius: 4px; margin-right: 10px;">
                         <div class="bstage-switch active" id="bstage-context-switch">
                             <div class="bstage-switch-knob"></div>
@@ -674,7 +674,7 @@
                     <!-- Other Fans Messages Setting -->
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-comments"></i></div>
-                        <div class="bstage-setting-label" style="flex: 1;">查看其他人消息</div>
+                        <div class="bstage-setting-label" style="flex: 1;">View Others'</div>
                         <div class="bstage-switch" id="bstage-other-fans-switch">
                             <div class="bstage-switch-knob"></div>
                         </div>
@@ -684,7 +684,7 @@
                     <div class="bstage-setting-item" style="flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px;">
                         <div style="width: 100%; display: flex; align-items: center;">
                             <div class="bstage-setting-icon"><i class="fas fa-robot"></i></div>
-                            <div class="bstage-setting-label" style="flex: 1;">自主活动</div>
+                            <div class="bstage-setting-label" style="flex: 1;">Independent</div>
                             <div class="bstage-switch" id="bstage-auto-activity-switch">
                                 <div class="bstage-switch-knob"></div>
                             </div>
@@ -738,14 +738,14 @@
                 <div class="bstage-settings-list">
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-image"></i></div>
-                        <div class="bstage-setting-label" id="bstage-fan-setting-bg" style="flex:1;">背景设定</div>
-                        <div class="bstage-setting-right-action" id="bstage-fan-reset-bg-btn" style="color: #aaa;">重置</div>
+                        <div class="bstage-setting-label" id="bstage-fan-setting-bg" style="flex:1;">Background</div>
+                        <div class="bstage-setting-right-action" id="bstage-fan-reset-bg-btn" style="color: #aaa;">reset</div>
                         <input type="file" id="bstage-fan-chat-bg-input" accept="image/*" style="display:none;">
                     </div>
 
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-paint-brush"></i></div>
-                        <div class="bstage-setting-label" style="flex:1;">界面 CSS</div>
+                        <div class="bstage-setting-label" style="flex:1;">Chat CSS</div>
                         <select id="bstage-fan-chat-css-select" style="background: #2c2c2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; width: 120px; outline: none;">
                             <option value="">默认</option>
                         </select>
@@ -753,7 +753,7 @@
 
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-comment-dots"></i></div>
-                        <div class="bstage-setting-label" style="flex:1;">气泡 CSS</div>
+                        <div class="bstage-setting-label" style="flex:1;">Bubble CSS</div>
                         <select id="bstage-fan-bubble-css-select" style="background: #2c2c2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; width: 120px; outline: none;">
                             <option value="">默认</option>
                         </select>
@@ -761,7 +761,7 @@
 
                     <div class="bstage-setting-item">
                         <div class="bstage-setting-icon"><i class="fas fa-history"></i></div>
-                        <div class="bstage-setting-label" style="flex: 1;">上下文携带</div>
+                        <div class="bstage-setting-label" style="flex: 1;">Context</div>
                         <input type="number" id="bstage-fan-context-count" value="50" style="width: 50px; background: transparent; border: 1px solid #444; color: #fff; text-align: center; border-radius: 4px; margin-right: 10px;">
                         <div class="bstage-switch active" id="bstage-fan-context-switch">
                             <div class="bstage-switch-knob"></div>
@@ -887,7 +887,7 @@
                         
                         <div style="width:100%; height:1px; background-color:#222; margin-bottom:24px;"></div>
 
-                        <div class="bstage-shop-detail-desc-title" style="font-size:16px; font-weight:600; margin-bottom:12px;">商品详情</div>
+                        <div class="bstage-shop-detail-desc-title" style="font-size:16px; font-weight:600; margin-bottom:12px;">DETAILS</div>
                         <div class="bstage-shop-detail-desc" id="bstage-shop-detail-desc" style="font-size:14px; color:#ccc; line-height:1.6; white-space: pre-wrap;">
                             Description...
                         </div>
@@ -896,7 +896,7 @@
 
                 <!-- Buy Bar -->
                 <div class="bstage-shop-buy-bar" style="padding:16px 20px; border-top:1px solid #222; background-color:#000;">
-                    <div class="bstage-shop-buy-btn" style="width:100%; background-color:#fff; color:#000; font-weight:700; font-size:16px; height:50px; border-radius:25px; display:flex; justify-content:center; align-items:center; cursor:pointer;">立即购买</div>
+                    <div class="bstage-shop-buy-btn" style="width:100%; background-color:#fff; color:#000; font-weight:700; font-size:16px; height:50px; border-radius:25px; display:flex; justify-content:center; align-items:center; cursor:pointer;">Buy Now</div>
                 </div>
             </div>
         </div>
@@ -1583,7 +1583,7 @@
         }
         if (confirmBtn) {
             confirmBtn.classList.remove('is-loading');
-            confirmBtn.textContent = '确认生成';
+            confirmBtn.textContent = 'confirm generation';
         }
         window.openView(generateTypeSheet);
         setTimeout(() => {
@@ -1599,7 +1599,7 @@
         const wasReadOnly = !!inputEl?.readOnly;
         if (confirmBtn) {
             confirmBtn.classList.add('is-loading');
-            confirmBtn.textContent = '生成中...';
+            confirmBtn.textContent = 'Generating...';
         }
         if (inputEl) {
             inputEl.readOnly = true;
@@ -1615,7 +1615,7 @@
             }
             if (confirmBtn) {
                 confirmBtn.classList.remove('is-loading');
-                confirmBtn.textContent = '确认生成';
+                confirmBtn.textContent = 'confirm generation';
             }
         }
     }
@@ -2528,9 +2528,9 @@
         /* 
            Using window.prompt is simplest but blocks execution. 
            Given the constraints, I'll use it for simplicity unless a dedicated modal is preferred. 
-           Let's use a prompt for "昵称设置".
+           Let's use a prompt for "Nickname".
         */
-        const newName = prompt('请输入新的备注名:', currentChatMember.name);
+        const newName = prompt('Enter a new note:', currentChatMember.name);
         if (newName && newName.trim() !== '') {
             currentChatMember.name = newName.trim();
             // Update UI
@@ -2609,7 +2609,7 @@
     });
 
     document.getElementById('bstage-fan-chat-clear-btn').addEventListener('click', () => {
-        if (!confirm('确定要清空粉丝聊天室记录吗？此操作不可恢复。')) return;
+        if (!confirm('Confirm clearing the fan chat room?')) return;
         bstageFanChatHistory = [];
         renderFanChatHistory();
         updateFanSubscriberLabels();
@@ -2717,7 +2717,7 @@
         const countInput = document.getElementById('bstage-search-member-count');
         if (confirmBtn) {
             confirmBtn.classList.toggle('is-loading', isLoading);
-            confirmBtn.textContent = isLoading ? '生成中...' : 'Generate Team';
+            confirmBtn.textContent = isLoading ? 'Generating...' : 'Generate Team';
         }
         if (loading) loading.style.display = isLoading ? 'flex' : 'none';
         if (queryInput) queryInput.readOnly = isLoading;
@@ -4236,7 +4236,7 @@ ${history}
                     openGenerateTypeSheet({
                         title: 'GENERATE PRODUCT',
                         label: 'Browse products',
-                        placeholder: 'e.g.: Perfume, custom silk scarf, exclusive jewelry',
+                        placeholder: 'e.g.: perfume, custom silk scarf, exclusive jewelry',
                         onConfirm: (request) => triggerShopApi(team, activeCategory, request)
                     });
                 });
@@ -4363,7 +4363,7 @@ ${charInfo}
                 });
                 saveBstageData();
                 renderShop(team); // Refresh
-                window.showToast(`已生成 ${newItems.length} 个商品`);
+                window.showToast(` ${newItems.length} Proucts generated`);
             }
         } catch (e) {
             console.error(e);
@@ -4548,7 +4548,7 @@ ${charInfo}
                     openGenerateTypeSheet({
                         title: 'GENERATE VIDEO',
                         label: 'Browse videos',
-                        placeholder: 'e.g.: Brand event, skincare vlog, flight diary',
+                        placeholder: 'e.g.: flight diary, skincare vlog, brand event',
                         onConfirm: (request) => triggerContentApi(team, activeSeries, request)
                     });
                 });
@@ -4770,7 +4770,7 @@ ${charInfo}
             openGenerateTypeSheet({
                 title: 'GENERATE VIDEO',
                 label: 'Browse videos',
-                placeholder: 'e.g.: Brand event, skincare vlog, flight diary',
+                placeholder: 'e.g.: flight diary, skincare vlog, brand event',
                 onConfirm: (request) => triggerVideoDetailApi(currentVideo, request)
             });
         }
@@ -5200,7 +5200,7 @@ ${charInfo}
                 });
                 saveBstageData();
                 renderContent(team); // Refresh
-                window.showToast(`已生成 ${newItems.length} 个视频`);
+                window.showToast(` ${newItems.length} Videos generated`);
             }
         } catch (e) {
             console.error(e);
