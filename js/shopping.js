@@ -734,7 +734,7 @@
         
         async sendGiftMessage(friend, order) {
             const itemNames = order.items.map(i => i.name).join(', ');
-            const msgText = `[赠送礼物]\n商品: ${itemNames}\n总价: ¥${order.total.toFixed(2)}\n付款方式: ${order.method}`;
+            const msgText = `Pay for me\n: ${itemNames}\nPrice: ¥${order.total.toFixed(2)}\nPayment Method: ${order.method}`;
             
             const htmlCard = `
                 <div style="background: #fff0f3; border-radius: 16px; padding: 16px; min-width: 220px; max-width: 280px; color: #111111; border: 1px solid rgba(255,155,179,0.3); display: inline-block;">
@@ -742,7 +742,7 @@
                         <i class="fas fa-gift"></i> Gift Received
                     </div>
                     <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value ¥${order.total.toFixed(2)}</div>
+                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">value ¥${order.total.toFixed(2)}</div>
                     <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Paid via ${order.method}</div>
                 </div>
             `;
@@ -1004,7 +1004,7 @@
                         this.saveCart();
                         this.renderCart();
                         this.checkoutSheet?.classList.remove('active');
-                        window.showToast ? window.showToast('Payment Successful.') : alert('Payment Successful.');
+                        window.showToast ? window.showToast('Payment successful.') : alert('Payment successful.');
                     } else {
                         window.showToast ? window.showToast('支付失败') : alert('支付失败');
                     }
@@ -1020,7 +1020,7 @@
                 const friendName = this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char';
                 
                 // Construct fallback text message
-                const msgText = `[Pay for Me]\n商品: ${itemNames}\n总价: ¥${total.toFixed(2)}`;
+                const msgText = `Pay for me\n: ${itemNames}\nPrice: ¥${total.toFixed(2)}`;
                 
                 // Construct HTML Card for modern pipeline
                 const htmlCard = `
@@ -1348,7 +1348,7 @@
             
             qaContainer.innerHTML = '';
             if (qaList.length === 0) {
-                qaContainer.innerHTML = '<div style="text-align: center; color: #8e8e93; font-size: 14px; padding: 20px 0;">No Answers Yet</div>';
+                qaContainer.innerHTML = '<div style="text-align: center; color: #8e8e93; font-size: 14px; padding: 20px 0;">no answers yet</div>';
             } else {
                 qaList.forEach(qa => {
                     const el = document.createElement('div');
@@ -1539,7 +1539,7 @@
             container.innerHTML = '';
 
             if (comments.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">No Reviews Yet</div>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">no reviews yet</div>';
             } else {
                 comments.forEach(c => {
                     const cEl = document.createElement('div');
