@@ -2498,7 +2498,7 @@ ${wbContext}
         sheet.innerHTML = `
             <div class="bottom-sheet tk-search-generate-sheet">
                 <div class="sheet-handle"></div>
-                <div class="sheet-title">搜索生成视频</div>
+                <div class="sheet-title">SEARCH VIDEOS</div>
                 <div class="detail-sheet-content tk-search-generate-content">
                     <div class="tk-search-generate-box">
                         <i class="fas fa-search"></i>
