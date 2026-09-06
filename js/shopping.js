@@ -163,7 +163,7 @@
             if (!this.boundWbName) return;
             const boundIds = this.getBoundWorldBookIds();
             if (boundIds.length === 0) {
-                this.boundWbName.textContent = '未绑定';
+                this.boundWbName.textContent = 'Not Mounted';
                 return;
             }
 
@@ -177,7 +177,7 @@
             } else if (boundBooks.length > 1) {
                 this.boundWbName.textContent = `已挂载 ${boundBooks.length} 本`;
             } else {
-                this.boundWbName.textContent = '未绑定';
+                this.boundWbName.textContent = 'Not Mounted';
             }
         }
 
@@ -409,7 +409,7 @@
             }
 
             if (this.searchConfirmBtn) {
-                this.searchConfirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
+                this.searchConfirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
                 this.searchConfirmBtn.disabled = true;
             }
 
@@ -523,7 +523,7 @@
                 window.showToast ? window.showToast('生成失败: ' + e.message) : alert('生成失败: ' + e.message);
             } finally {
                 if (this.searchConfirmBtn) {
-                    this.searchConfirmBtn.innerHTML = '<i class="fas fa-magic"></i> 确认生成';
+                    this.searchConfirmBtn.innerHTML = '<i class="fas fa-magic"></i> Confirm Genration';
                     this.searchConfirmBtn.disabled = false;
                 }
             }
@@ -663,7 +663,7 @@
             if (!this.charSelectionModal || !this.charList) return;
             
             const originalTitle = this.charSelectionModal.querySelector('.wb-centered-modal-title').textContent;
-            this.charSelectionModal.querySelector('.wb-centered-modal-title').textContent = '选择赠送的好友';
+            this.charSelectionModal.querySelector('.wb-centered-modal-title').textContent = 'Select a friend to gift';
             
             this.charList.innerHTML = '';
             
@@ -676,7 +676,7 @@
             }
             
             if (friends.length === 0) {
-                this.charList.innerHTML = '<div style="text-align: center; padding: 20px; color: #73706a;">暂无好友</div>';
+                this.charList.innerHTML = '<div style="text-align: center; padding: 20px; color: #73706a;">no friends yet</div>';
             } else {
                 friends.forEach(friend => {
                     const el = document.createElement('div');
@@ -696,7 +696,7 @@
                                 <div style="font-size: 13px; color: #73706a; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${friend.signature || ''}</div>
                             </div>
                         </div>
-                        <div style="background: #111; color: #fff; padding: 6px 12px; border-radius: 16px; font-size: 13px; font-weight: 600;">赠送</div>
+                        <div style="background: #111; color: #fff; padding: 6px 12px; border-radius: 16px; font-size: 13px; font-weight: 600;">Gift</div>
                     `;
                     
                     el.addEventListener('click', async () => {
@@ -739,11 +739,11 @@
             const htmlCard = `
                 <div style="background: #fff0f3; border-radius: 16px; padding: 16px; min-width: 220px; max-width: 280px; color: #111111; border: 1px solid rgba(255,155,179,0.3); display: inline-block;">
                     <div style="font-size: 12px; color: #ff9bb3; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; font-weight: 700;">
-                        <i class="fas fa-gift"></i> 收到礼物
+                        <i class="fas fa-gift"></i> Gift Received
                     </div>
                     <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">价值 ¥${order.total.toFixed(2)}</div>
-                    <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">由 ${order.method} 支付</div>
+                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value ¥${order.total.toFixed(2)}</div>
+                    <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Paid via ${order.method}</div>
                 </div>
             `;
 
@@ -784,8 +784,8 @@
             }
             
             if (success) {
-                if (window.showToast) window.showToast('赠送成功');
-                else alert('赠送成功');
+                if (window.showToast) window.showToast('Gift sent successfully.');
+                else alert('Gift sent successfully.');
             } else {
                 if (window.showToast) window.showToast('赠送失败');
                 else alert('赠送失败');
@@ -815,7 +815,7 @@
             if (!cards || cards.length === 0) {
                 cards = [
                     { id: 'card1', name: '招商银行储蓄卡', number: '**** **** **** 8888', icon: 'fa-university' },
-                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 1234', icon: 'fa-credit-card' }
+                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 9999', icon: 'fa-credit-card' }
                 ];
             }
 
@@ -843,7 +843,7 @@
                 this.payDesc.textContent = `${this.selectedCard.name} (${this.selectedCard.number.slice(-4)})`;
             }
             if (this.friendDesc) {
-                this.friendDesc.textContent = this.selectedFriend ? (this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char') : '选择好友';
+                this.friendDesc.textContent = this.selectedFriend ? (this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char') : 'select friends';
             }
         }
 
@@ -864,7 +864,7 @@
             if (!cards || cards.length === 0) {
                 cards = [
                     { id: 'card1', name: '招商银行储蓄卡', number: '**** **** **** 8888', icon: 'fa-university' },
-                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 1234', icon: 'fa-credit-card' }
+                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 9999', icon: 'fa-credit-card' }
                 ];
             }
 
@@ -922,7 +922,7 @@
             }
             
             if (friends.length === 0) {
-                this.charList.innerHTML = '<div style="text-align: center; padding: 20px; color: #73706a;">暂无好友</div>';
+                this.charList.innerHTML = '<div style="text-align: center; padding: 20px; color: #73706a;">no friends yet</div>';
             } else {
                 friends.forEach(friend => {
                     const el = document.createElement('div');
@@ -1096,7 +1096,7 @@
                 this.ordersList.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; color: #8e8e93;">
                         <i class="fas fa-receipt" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <div style="font-size: 15px;">暂无订单记录</div>
+                        <div style="font-size: 15px;">No Order History Yet</div>
                     </div>
                 `;
                 return;
@@ -1121,9 +1121,9 @@
                 const elapsed = (Date.now() - ts) / 1000;
                 const isFood = order.items.some(i => i.isFood);
                 
-                const step1Text = isFood ? '已取餐' : '已发货';
-                const step2Text = isFood ? '送餐中' : '运输中';
-                const step3Text = '已送达';
+                const step1Text = isFood ? 'picked up' : 'shipped';
+                const step2Text = isFood ? 'delivery' : 'in transit';
+                const step3Text = 'delivered';
 
                 const progress = Math.min(100, Math.max(0, (elapsed / 16) * 100));
                 // Premium colors
@@ -1195,8 +1195,8 @@
                     <div class="shopping-order-footer">
                         <div class="shopping-order-method">${order.method}</div>
                         <div class="shopping-order-price-wrap">
-                            <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #ff9bb3; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">赠送</button>
-                            <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">评价商品</button>
+                            <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #ff9bb3; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Gift</button>
+                            <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">Rate product</button>
                             <div class="shopping-order-price">¥${order.total.toFixed(2)}</div>
                         </div>
                     </div>
@@ -1205,7 +1205,7 @@
                 const giftBtn = el.querySelector('.shopping-order-gift-btn');
                 if (giftBtn) {
                     if (order.gifted) {
-                        giftBtn.textContent = '已赠送';
+                        giftBtn.textContent = 'Gifted';
                         giftBtn.style.background = '#e5e5ea';
                         giftBtn.style.color = '#8e8e93';
                         giftBtn.style.cursor = 'default';
@@ -1319,7 +1319,7 @@
 
             const qaList = qaObj[productName] || [];
             
-            if (qaSheetTitle) qaSheetTitle.textContent = `问大家 (${qaList.length})`;
+            if (qaSheetTitle) qaSheetTitle.textContent = `Q&A (${qaList.length})`;
             
             if (qaTrigger) {
                 qaTrigger.innerHTML = `
@@ -1330,7 +1330,7 @@
                 `;
                 
                 if (qaList.length === 0) {
-                    qaTrigger.innerHTML += '<div style="font-size: 14px; color: #8e8e93;">暂无问答</div>';
+                    qaTrigger.innerHTML += '<div style="font-size: 14px; color: #8e8e93;">no answers yet</div>';
                 } else {
                     const topQa = qaList.slice(0, 2);
                     topQa.forEach(qa => {
@@ -1348,7 +1348,7 @@
             
             qaContainer.innerHTML = '';
             if (qaList.length === 0) {
-                qaContainer.innerHTML = '<div style="text-align: center; color: #8e8e93; font-size: 14px; padding: 20px 0;">暂无问答数据</div>';
+                qaContainer.innerHTML = '<div style="text-align: center; color: #8e8e93; font-size: 14px; padding: 20px 0;">No Answers Yet</div>';
             } else {
                 qaList.forEach(qa => {
                     const el = document.createElement('div');
@@ -1379,13 +1379,13 @@
                 oldContainer.style.display = 'none';
             }
 
-            // find the "Reviews (128)" or "外卖评价 (458)" element
+            // find the "Reviews (128)" or "DELIVERY REVIEW (458)" element
             let reviewsContainerList;
             let titleEl;
             if (isFood) {
                 const allDivs = sheet.querySelectorAll('div');
                 for (let div of allDivs) {
-                    if (div.textContent.includes('外卖评价') && div.style.fontSize === '15px') {
+                    if (div.textContent.includes('DELIVERY REVIEW') && div.style.fontSize === '15px') {
                         titleEl = div;
                         reviewsContainerList = div.parentElement.lastElementChild;
                         break;
@@ -1413,13 +1413,13 @@
             const comments = commentsObj[productName] || [];
             
             if (titleEl) {
-                titleEl.textContent = isFood ? `外卖评价 (${comments.length})` : `Reviews (${comments.length})`;
+                titleEl.textContent = isFood ? `DELIVERY REVIEW (${comments.length})` : `Reviews (${comments.length})`;
             }
 
             reviewsContainerList.innerHTML = '';
 
             if (comments.length === 0) {
-                reviewsContainerList.innerHTML = '<div style="font-size: 14px; color: #8e8e93; text-align: center; padding: 10px 0;">暂无评价</div>';
+                reviewsContainerList.innerHTML = '<div style="font-size: 14px; color: #8e8e93; text-align: center; padding: 10px 0;">No Reviews Yet</div>';
             }
         }
 
@@ -1430,7 +1430,7 @@
             <div class="bottom-sheet-overlay detail-sheet-overlay" id="shopping-rating-sheet" style="z-index: 1200;">
                 <div class="bottom-sheet" style="height: auto; max-height: 70%; padding-bottom: max(20px, env(safe-area-inset-bottom, 0px)); background: #ffffff;">
                     <div class="sheet-handle"></div>
-                    <div class="sheet-title" id="shopping-rating-title">商品评价</div>
+                    <div class="sheet-title" id="shopping-rating-title">PRODUCT REVIEWS</div>
                     <div class="detail-sheet-content" style="padding: 16px;">
                         <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 24px;" id="shopping-rating-stars">
                             <i class="fas fa-star" data-val="1" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
@@ -1439,8 +1439,8 @@
                             <i class="fas fa-star" data-val="4" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                             <i class="fas fa-star" data-val="5" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                         </div>
-                        <textarea id="shopping-rating-text" placeholder="写点评价吧，你的评价对其他买家有很大帮助..." style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
-                        <button type="button" id="shopping-rating-submit" style="width: 100%; padding: 16px; background: #111; color: #fff; border-radius: 12px; font-size: 16px; font-weight: 700; border: none; cursor: pointer;">提交评价</button>
+                        <textarea id="shopping-rating-text" placeholder="Florence à leur fenêtre et la mort sur la table. Si aujourd’hui me trouve si loin de tout, c’est que je n’ai d’autre force que d’aimer et d’admirer. " style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
+                        <button type="button" id="shopping-rating-submit" style="width: 100%; padding: 16px; background: #111; color: #fff; border-radius: 12px; font-size: 16px; font-weight: 700; border: none; cursor: pointer;">submit review</button>
                     </div>
                 </div>
             </div>`;
@@ -1498,8 +1498,8 @@
                 
                 durableStorage.setItem('shopping_comments', JSON.stringify(commentsObj));
                 
-                if (window.showToast) window.showToast('评价发表成功');
-                else alert('评价发表成功');
+                if (window.showToast) window.showToast('Comment posted successfully.');
+                else alert('Comment posted successfully.');
                 
                 this.ratingSheet.classList.remove('active');
                 
@@ -1533,13 +1533,13 @@
             const comments = commentsObj[productName] || [];
             
             if (titleEl) {
-                 titleEl.textContent = isFood ? `外卖评价 (${comments.length})` : `Reviews (${comments.length})`;
+                 titleEl.textContent = isFood ? `DELIVERY REVIEW (${comments.length})` : `Reviews (${comments.length})`;
             }
 
             container.innerHTML = '';
 
             if (comments.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">暂无评价</div>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8e8e93;">no reviews yet</div>';
             } else {
                 comments.forEach(c => {
                     const cEl = document.createElement('div');
