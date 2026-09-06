@@ -722,7 +722,7 @@ window.renderWorldBookSelector = function renderWorldBookSelector(selectedIds = 
         selector.innerHTML = `
             <div class="bottom-sheet wb-selector-panel">
                 <div class="sheet-handle"></div><div class="sheet-title">SELECT WORLD BOOK</div>
-                <div class="wb-selector-body"><div class="wb-selector-field"><label for="wb-selector-group-select">选择分组</label><select id="wb-selector-group-select" class="wb-native-select"></select></div><div class="wb-selector-field"><label for="wb-selector-book-select">SELECT WORLD BOOK</label><select id="wb-selector-book-select" class="wb-native-select"></select><div id="wb-selector-empty" class="wb-selector-empty"></div></div><div class="wb-selector-preview-head"><span>已挂载</span><span id="wb-selector-mounted-count">0 项</span></div><div id="wb-selector-mounted-list" class="wb-selector-mounted-list"></div></div>
+                <div class="wb-selector-body"><div class="wb-selector-field"><label for="wb-selector-group-select">SELECT GROUP</label><select id="wb-selector-group-select" class="wb-native-select"></select></div><div class="wb-selector-field"><label for="wb-selector-book-select">SELECT WORLD BOOK</label><select id="wb-selector-book-select" class="wb-native-select"></select><div id="wb-selector-empty" class="wb-selector-empty"></div></div><div class="wb-selector-preview-head"><span>MOUNTED</span><span id="wb-selector-mounted-count">0 LTEMS</span></div><div id="wb-selector-mounted-list" class="wb-selector-mounted-list"></div></div>
                 <div class="wb-selector-actions"><button type="button" class="sheet-action wb-selector-action-btn" id="wb-selector-cancel-btn">Cancel</button><button type="button" class="sheet-action confirm-action wb-selector-action-btn" id="wb-selector-confirm-btn">Save</button></div>
             </div>`;
         (getWbElement('app') || document.body).appendChild(selector);
@@ -744,16 +744,16 @@ window.renderWorldBookSelector = function renderWorldBookSelector(selectedIds = 
         const selected = new Set(selectedBookIds.map(String));
         const books = getBooksInGroup(groupSelect.value).filter(book => !selected.has(String(book.id)));
         bookSelect.disabled = books.length === 0;
-        bookSelect.innerHTML = books.length ? `<option value="">选择要挂载的世界书</option>${books.map(book => `<option value="${escapeAttr(book.id)}">${escapeHtml(book.name || '未命名世界书')} · +${getBookTokenCount(book)} Tokens</option>`).join('')}` : '<option value="">暂无可挂载世界书</option>';
-        empty.textContent = books.length ? '' : '此文件夹没有可挂载的世界书';
+        bookSelect.innerHTML = books.length ? `<option value="">Select World Books to Mount</option>${books.map(book => `<option value="${escapeAttr(book.id)}">${escapeHtml(book.name || '未命名世界书')} · +${getBookTokenCount(book)} Tokens</option>`).join('')}` : '<option value="">No World Books Available to Mount</option>';
+        empty.textContent = books.length ? '' : 'no mountable ltems in this folder';
     };
     const renderMounted = () => {
-        mountedCount.textContent = `${selectedBookIds.length} 项`;
+        mountedCount.textContent = `${selectedBookIds.length} LTEMS`;
         mountedList.innerHTML = selectedBookIds.length ? selectedBookIds.map(id => {
             const book = getBook(id);
             if (!book) return '';
             return `<div class="wb-selector-mounted-card"><div class="wb-selector-mounted-icon"><i class="fas fa-book"></i></div><div class="wb-selector-mounted-info"><div class="wb-selector-mounted-name">${escapeHtml(book.name || '未命名世界书')}</div><div class="wb-selector-mounted-meta">${escapeHtml(normalizeGroupName(book.group))} · +${getBookTokenCount(book)} Tokens</div></div><button type="button" class="wb-selector-remove-btn" data-id="${escapeAttr(id)}" aria-label="移除"><i class="fas fa-times"></i></button></div>`;
-        }).join('') : '<div class="wb-selector-mounted-empty">还没有挂载世界书</div>';
+        }).join('') : '<div class="wb-selector-mounted-empty">Not Mounted Yet</div>';
         mountedList.querySelectorAll('.wb-selector-remove-btn').forEach(button => button.addEventListener('click', () => {
             selectedBookIds = selectedBookIds.filter(id => String(id) !== String(button.dataset.id));
             renderMounted(); renderBooks();
