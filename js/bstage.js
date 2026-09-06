@@ -199,7 +199,7 @@
             <div class="sheet-handle" style="background-color: #444;"></div>
             <div class="sheet-title" style="color: #fff;">SEARCH TEAMS</div>
             <div class="detail-sheet-content bstage-modal-content">
-                <div class="bstage-search-generate-hint">Enter a team or star, and AI will generate the profile and settings.Leave blank for a random genration.</div>
+                <div class="bstage-search-generate-hint">Enter a team or star you want to search for, and AI will generate the profile and settings.</div>
                 <div class="bstage-search-form">
                     <label class="bstage-search-label" for="bstage-search-query-input">Search Content</label>
                     <input type="text" id="bstage-search-query-input" class="bstage-search-input" placeholder="e.g.:Kim Kardashian,Anne Hathaway">
