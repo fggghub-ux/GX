@@ -2502,14 +2502,14 @@ ${wbContext}
                 <div class="detail-sheet-content tk-search-generate-content">
                     <div class="tk-search-generate-box">
                         <i class="fas fa-search"></i>
-                        <input id="tk-search-generate-input" type="text" placeholder="想看什么？留空随机生成">
+                        <input id="tk-search-generate-input" type="text" placeholder="Your name is Russia’s long international line.">
                     </div>
                     <label class="tk-search-generate-count" for="tk-search-generate-count-input">
-                        <span>生成数量</span>
+                        <span>Quantity</span>
                         <input id="tk-search-generate-count-input" type="number" min="1" max="10" step="1" value="3" inputmode="numeric" aria-label="生成视频数量">
                     </label>
-                    <div class="sheet-action confirm-action" id="tk-search-generate-confirm">生成</div>
-                    <div class="sheet-action" id="tk-search-generate-cancel">取消</div>
+                    <div class="sheet-action confirm-action" id="tk-search-generate-confirm">Generate</div>
+                    <div class="sheet-action" id="tk-search-generate-cancel">Cancel</div>
                 </div>
             </div>
         `;
