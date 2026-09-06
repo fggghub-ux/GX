@@ -200,7 +200,7 @@ class NetflixApp {
                 <div class="netflix-modal-card netflix-search-card" role="dialog" aria-modal="true" aria-labelledby="netflix-search-title">
                     <button type="button" class="netflix-modal-close" data-action="close-search" aria-label="关闭"><i class="fas fa-times"></i></button>
                     <span class="netflix-eyebrow">DISCOVER</span>
-                    <h2 id="netflix-search-title">Generate New Collection</h2>
+                    <h2 id="netflix-search-title">New Collection</h2>
                     <p>Enter your preferred genre, character dynamic, or story atmosphere. Leave blank for a random generation.</p>
                     <textarea id="netflix-search-input" placeholder="e.g.: One Hundred Years of Solitude, The Red and the Black, Wuthering Heights"></textarea>
                     <button type="button" class="netflix-primary-button" data-action="confirm-search" id="netflix-search-confirm">Generate</button>
