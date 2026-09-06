@@ -626,7 +626,7 @@ class NetflixApp {
         this.profilePanel.innerHTML = `
             <div class="netflix-profile-hero">
                 ${this.renderAvatarMarkup(user, 'netflix-profile-avatar')}
-                <div><span>PLAYER PROFILE</span><h1>${this.escapeHtml(user.name)}</h1><p>${this.escapeHtml(user.persona || 'Your choices will write a new story.')}</p></div>
+                <div><span>PLAYER PROFILE</span><h1>${this.escapeHtml(user.name)}</h1><p>${this.escapeHtml(user.persona || 'My muse of desire.')}</p></div>
             </div>
             <div class="netflix-profile-stats">
                 <div><strong>${manualCount}</strong><span>Manual Save</span></div>
