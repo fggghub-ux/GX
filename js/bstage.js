@@ -483,7 +483,7 @@
                         <input type="text" id="bstage-generate-type-input" placeholder="留空则随机生成" style="color: #fff; background-color: transparent; border: none; outline: none; width: 100%; padding: 4px 0; margin-top: 4px;">
                     </div>
                 </div>
-                <div class="sheet-action confirm-action" id="bstage-generate-type-confirm-btn" style="background-color: #fff; color: #000;">确认生成</div>
+                <div class="sheet-action confirm-action" id="bstage-generate-type-confirm-btn" style="background-color: #fff; color: #000;">confirm generation</div>
             </div>
         </div>
     `;
@@ -4234,9 +4234,9 @@ ${history}
             if(magicBtn) {
                 magicBtn.addEventListener('click', () => {
                     openGenerateTypeSheet({
-                        title: '生成商品',
-                        label: '想看什么类型的商品',
-                        placeholder: '例如：应援棒、签售周边、冬季套装；留空则随机',
+                        title: 'GENERATE PRODUCT',
+                        label: 'Browse products',
+                        placeholder: 'e.g.: Perfume, custom silk scarf, exclusive jewelry',
                         onConfirm: (request) => triggerShopApi(team, activeCategory, request)
                     });
                 });
@@ -4546,9 +4546,9 @@ ${charInfo}
             if(magicBtn) {
                 magicBtn.addEventListener('click', () => {
                     openGenerateTypeSheet({
-                        title: '生成视频内容',
-                        label: '想看什么类型的视频内容',
-                        placeholder: '例如：练习室、旅行 vlog、后台花絮；留空则随机',
+                        title: 'GENERATE VIDEO',
+                        label: 'Browse videos',
+                        placeholder: 'e.g.: Brand event, skincare vlog, flight diary',
                         onConfirm: (request) => triggerContentApi(team, activeSeries, request)
                     });
                 });
@@ -4634,15 +4634,15 @@ ${charInfo}
         // Or just rely on user knowing to click. Let's rely on click for now as requested.
         
         // Description (Mock if empty)
-        const desc = video.description || `这是 ${currentTeam.name} 的精彩视频内容。\n请大家多多支持，不要忘记点赞评论哦！`;
+        const desc = video.description || ` ${currentTeam.name} Vlog | \nCity walk`;
         document.getElementById('bstage-vid-description').textContent = desc;
 
         // Init Comments if needed
         if (!video.comments) {
             video.comments = [
-                { id: 1, name: 'User123', text: '太棒了！😍', time: '1m ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-User123') },
-                { id: 2, name: 'K-Pop Fan', text: 'Love this team!!!', time: '5m ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-K-Pop Fan') },
-                { id: 3, name: 'Stan', text: '❤️❤️❤️', time: '1h ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-Stan') }
+                { id: 1, name: 'angela_llx', text: 'My gorgeous bsf', time: '1m ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-angela_llx') },
+                { id: 2, name: '1_hsjm', text: 'Living angel😍😍', time: '5m ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-1_hsjm') },
+                { id: 3, name: 'ngrxce', text: 'so prettyyyy', time: '1h ago', avatar: null, avatarEmoji: getStableEmojiAvatar('video-comment-ngrxce') }
             ];
         }
 
@@ -4701,7 +4701,7 @@ ${charInfo}
                 
                 // Refresh Detail View
                 document.getElementById('bstage-vid-detail-title').textContent = newTitle;
-                document.getElementById('bstage-vid-description').textContent = newDesc || `这是 ${currentTeam.name} 的精彩视频内容...`; // Fallback
+                document.getElementById('bstage-vid-description').textContent = newDesc || ` ${currentTeam.name} Vlog 丨 ...`; // Fallback
                 
                 // Refresh Player Placeholder BG
                 const playerPlaceholder = videoDetailModal.querySelector('.bstage-video-player-placeholder');
@@ -4768,9 +4768,9 @@ ${charInfo}
     document.getElementById('bstage-video-detail-magic-btn').addEventListener('click', () => {
         if (currentVideo) {
             openGenerateTypeSheet({
-                title: '生成视频详情',
-                label: '想看什么类型的视频细节',
-                placeholder: '例如：后台互动、开箱、舞台花絮；留空则随机',
+                title: 'GENERATE VIDEO',
+                label: 'Browse videos',
+                placeholder: 'e.g.: Brand event, skincare vlog, flight diary',
                 onConfirm: (request) => triggerVideoDetailApi(currentVideo, request)
             });
         }
