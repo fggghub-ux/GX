@@ -838,7 +838,7 @@
 
                     <!-- Comments Section -->
                     <div class="bstage-comments-section">
-                        <div class="bstage-comments-header" id="bstage-vid-comments-header">评论 (0)</div>
+                        <div class="bstage-comments-header" id="bstage-vid-comments-header">Comment (0)</div>
                         <div class="bstage-comment-list" id="bstage-vid-comments-list">
                             <!-- Comments injected here -->
                         </div>
@@ -854,7 +854,7 @@
                         </div>
                     </div>
                     <div class="bstage-user-avatar-small" id="bstage-comment-user-avatar"></div>
-                    <input type="text" class="bstage-comment-input" id="bstage-vid-comment-input" inputmode="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" placeholder="添加评论..." style="color: #fff; background-color: transparent; border: none; outline: none; flex: 1;">
+                    <input type="text" class="bstage-comment-input" id="bstage-vid-comment-input" inputmode="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" placeholder="Add comment..." style="color: #fff; background-color: transparent; border: none; outline: none; flex: 1;">
                     <i class="fas fa-paper-plane bstage-comment-send-btn disabled" id="bstage-vid-comment-send-btn" style="color: #aaa;"></i>
                 </div>
             </div>
@@ -2447,7 +2447,7 @@
     if (chatExitBtn) {
         chatExitBtn.addEventListener('click', () => {
             if (!currentChatMember) return;
-            if (confirm(`确定要清空与 ${currentChatMember.name} 的聊天记录吗？此操作不可恢复。`)) {
+            if (confirm(`Confirm clearing the chat history with ${currentChatMember.name} ？`)) {
                 currentChatMember.chatHistory = [];
                 saveBstageData();
                 
