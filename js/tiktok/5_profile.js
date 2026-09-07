@@ -166,7 +166,7 @@
 
     function tkFormatVisitorTime(value) {
         const time = Number(value);
-        if (!Number.isFinite(time) || time <= 0) return '刚刚访问';
+        if (!Number.isFinite(time) || time <= 0) return 'Just visited';
         return new Date(time).toLocaleString('zh-CN', {
             month: '2-digit',
             day: '2-digit',
@@ -227,7 +227,7 @@
                     <div>
                         <div class="tk-visitor-name" id="tk-visitor-thought-name">Visitor</div>
                         <div class="tk-visitor-meta" id="tk-visitor-thought-handle">@visitor</div>
-                        <div class="tk-visitor-meta tk-visitor-thought-time" id="tk-visitor-thought-time">刚刚访问</div>
+                        <div class="tk-visitor-meta tk-visitor-thought-time" id="tk-visitor-thought-time">Just visited</div>
                     </div>
                 </div>
                 <div class="tk-visitor-thought-text" id="tk-visitor-thought-text"></div>
@@ -557,9 +557,9 @@
                 if (window.tkPersistState) window.tkPersistState();
                 tkSetSubProfileFollowButton(char);
                 if (char.isFollowed) {
-                    window.showToast('已关注');
+                    window.showToast('Following');
                 } else {
-                    window.showToast('已取消关注');
+                    window.showToast('Unfollowed');
                 }
                 if (window.tkRenderHome) window.tkRenderHome();
                 if (window.tkRenderChat) window.tkRenderChat();
@@ -594,7 +594,7 @@
         const char = window.tkGetChar(charId);
         if(!char) return;
 
-        window.showToast('正在生成角色主页内容...');
+        window.showToast('Generating character profile...');
         
         let wbContext = '';
         
@@ -972,9 +972,9 @@ JSON shape:
             e.stopPropagation();
             if (window.showCustomModal) {
                 window.showCustomModal({
-                    title: '设置状态',
+                    title: 'SET STATUS',
                     type: 'prompt',
-                    placeholder: '输入你的当前状态...',
+                    placeholder: 'Enter Your Current Status',
                     defaultValue: tkState.profile.status,
                     onConfirm: (val) => {
                         tkState.profile.status = val;
@@ -984,7 +984,7 @@ JSON shape:
                     }
                 });
             } else {
-                const ns = prompt('输入你的当前状态:', tkState.profile.status);
+                const ns = prompt('Enter Your Current Status:', tkState.profile.status);
                 if (ns !== null) {
                     tkState.profile.status = ns;
                     if (window.tkPersistState) window.tkPersistState();
@@ -1021,7 +1021,7 @@ JSON shape:
                     if (window.tkPersistState) window.tkPersistState();
                     window.tkRenderProfile();
                     if (window.tkRenderChat) window.tkRenderChat();
-                    window.showToast('头像已更新');
+                    window.showToast('Updated');
                 };
                 reader.readAsDataURL(file);
             }
@@ -1115,7 +1115,7 @@ JSON shape:
                 window.tkRenderProfile();
                 const sheet = document.getElementById('tk-edit-profile-sheet');
                 if(sheet) window.closeView(sheet);
-                window.showToast('资料已保存');
+                window.showToast('Profile saved');
             }
             
             // 2. Profile Create Trigger (the little caret)
