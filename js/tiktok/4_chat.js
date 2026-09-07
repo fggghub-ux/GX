@@ -731,7 +731,7 @@ JSON example:
                 <div class="sheet-handle"></div>
                 <div class="sheet-title">WATCH TOGETHER</div>
                 <div class="detail-sheet-content tk-wt-confirm-content">
-                    <div class="tk-wt-confirm-copy">是否邀请 <span id="tk-wt-confirm-name">TA</span> 一起看视频？</div>
+                    <div class="tk-wt-confirm-copy">Invite <span id="tk-wt-confirm-name">TA</span> to watch the video?</div>
                     <div class="tk-wt-confirm-actions">
                         <div class="sheet-action" id="tk-wt-confirm-cancel">cancel</div>
                         <div class="sheet-action confirm-action" id="tk-wt-confirm-submit">invite</div>
@@ -764,7 +764,7 @@ JSON example:
 
         wtChatHistory = [];
         if (wtChatContainer) {
-            wtChatContainer.innerHTML = '<div style="text-align: center; color: rgba(0,0,0,0.5); font-size: 10px; margin-top: 5px;">点击对方头像可以进行互动</div>';
+            wtChatContainer.innerHTML = '<div style="text-align: center; color: rgba(0,0,0,0.5); font-size: 10px; margin-top: 5px;">Tap the avatar to interact</div>';
         }
 
         if (wtUserAvatar) wtUserAvatar.src = tkState.profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User';
@@ -781,7 +781,7 @@ JSON example:
 
         window.closeView(chatView);
         document.querySelector('.tk-bottom-nav .tk-nav-item[data-target="tk-home-tab"]')?.click();
-        if(window.showToast) window.showToast(`已连接 ${char.name || char.handle}`);
+        if(window.showToast) window.showToast(`Connected with ${char.name || char.handle}`);
     };
 
     window.tkOpenWatchTogetherConfirm = function() {
@@ -892,7 +892,7 @@ JSON example:
             const char = window.tkGetChar(charId);
             
             if (wtChatHistory.length === 0) {
-                if(wtHistoryContent) wtHistoryContent.innerHTML = '<div style="text-align: center; color: #999; margin-top: 20px;">暂无聊天记录</div>';
+                if(wtHistoryContent) wtHistoryContent.innerHTML = '<div style="text-align: center; color: #999; margin-top: 20px;">No Chat History Yet</div>';
             } else {
                 wtChatHistory.forEach(m => {
                     const isSelf = m.sender === 'user';
@@ -962,7 +962,7 @@ JSON example:
 
         if (isWtGenerating) {
             console.log("[一起看] 拦截: 正在生成中");
-            if (window.showToast) window.showToast('对方正在回复中...');
+            if (window.showToast) window.showToast('Replying...');
             return;
         }
 
@@ -1121,7 +1121,7 @@ JSON example:
             msgDiv.style.borderRadius = '12px 12px 12px 2px';
             msgDiv.style.fontSize = '12px';
             msgDiv.style.maxWidth = '85%';
-            msgDiv.textContent = '正在回复中...';
+            msgDiv.textContent = 'Replying...';
             row.appendChild(msgDiv);
             wtChatContainer.appendChild(row);
             wtChatContainer.scrollTop = wtChatContainer.scrollHeight;
@@ -1140,9 +1140,9 @@ ${chatHistoryStr}
 ${afterRoleWorldBookContext ? `\nAfter Role Rules:\n${afterRoleWorldBookContext}\n` : ''}
 要求：
 1. 请读取已挂载的世界书，深度扮演 ${char.name} 的身份人设与user开始沉浸式聊天。
-2. 读取视频内容、文案、评论区以及我刚才的话（如果有），作出合理回应。可以吐槽视频、回复我的话、玩梗，或者分享你的感受。
-3. 一句一发，将你想说的话拆分成 3 到 5 条简短的微信式气泡。
-4. 绝对不要发 emoji，也绝对不要使用句号结尾，要有十足的"活人感"和"网感"。语言自然连贯。禁止扮演user的身份发抖音和评论，你只能是除了user以外的人。
+2. 读取视频内容、文案、评论区以及我刚才的话（如果有），作出符合 ${char.name} 性格与表达方式的自然回应，可以评价视频、回应我的话，或者分享你的感受。
+3. 一句一发，将你想说的话拆分成 3 到 5 条简短的iMessage式气泡。
+4. 禁止发 emoji，也绝对不要使用句号结尾，要求自然、符合 ${char.name} 性格的"活人感"或"网感"。语言自然连贯。禁止扮演user的身份发抖音和评论，你只能是除了user以外的人。
 5. 国际化翻译规则：回复可以使用符合角色国籍、人设和上下文的任意语言；如果 text 不是中文，必须填写 translationZh 作为自然中文翻译；如果 text 是中文，translationZh 必须是空字符串。
 6. 必须返回严格的 JSON 数组格式（不要带有 markdown 代码块标记），格式如下：
 [
@@ -1268,7 +1268,7 @@ ${afterRoleWorldBookContext ? `\nAfter Role Rules:\n${afterRoleWorldBookContext}
         }
         dm.messages.push({
             sender: 'system',
-            text: '一起看视频已结束',
+            text: 'Watch together has ended',
             timestamp: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
         });
         if (window.tkPersistState) window.tkPersistState();
@@ -1333,7 +1333,7 @@ ${afterRoleWorldBookContext ? `\nAfter Role Rules:\n${afterRoleWorldBookContext}
         }
 
         const now = new Date();
-        const timeStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+        const timeStr = `${now.getFullYear()}Year${now.getMonth()+1}Month${now.getDate()}Day ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
 
         let chatHistoryStr = "";
         wtChatHistory.forEach(m => {
@@ -1353,9 +1353,10 @@ ${tkMountedWorldBookContext ? `\nTikTok Mounted World Book:\n${tkMountedWorldBoo
 
 要求：
 1. 提取真实的互动时间和内容。
-2. 用精练、自然的第三人称日记视角来写（例如："2024年X月X日 XX:XX，我和某某一起连麦刷了会儿视频，聊了聊关于..."）。
-3. 绝对不要胡编乱造没有发生过的事情，如果没有特定细节就一笔带过。真实的啥简化啥。
-4. 返回严格的 JSON 格式，包含一个 summary 字段，不要有 markdown。格式：
+2. 用精练、自然的第三人称日记视角来写（例如："09/08/2026 5:40 PM \n昨天..."）。
+3. 自然描述那天，要求当下的感情细腻真实，加入剖析Character内心世界，直接呈现日记内容即可。
+4. 禁止胡编乱造没有发生过的事情，如果没有特定细节就一笔带过。真实的什么简化什么。
+5. 返回严格的 JSON 格式，包含一个 summary 字段，不要有 markdown。格式：
 { "summary": "总结内容" }
 `;
 
@@ -1387,7 +1388,7 @@ ${tkMountedWorldBookContext ? `\nTikTok Mounted World Book:\n${tkMountedWorldBoo
             
             if (parsed.summary) {
                 if (window.autoSaveSummaryToWorldBook) {
-                    window.autoSaveSummaryToWorldBook(`和${char.name}的一起看记录 (${timeStr})`, parsed.summary);
+                    window.autoSaveSummaryToWorldBook(`Watch Together History with ${char.name} (${timeStr})`, parsed.summary);
                 } else {
                     window.showToast('总结完成，但未保存');
                 }
