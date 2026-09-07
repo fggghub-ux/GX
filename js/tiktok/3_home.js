@@ -1043,7 +1043,7 @@ ${wbContext}
                 }
                 
                 window.closeView(document.getElementById('tk-edit-single-video-sheet'));
-                window.showToast('已保存修改');
+                window.showToast('Changes saved.');
             }
         });
     }
@@ -1477,7 +1477,7 @@ ${wbContext}
             
             window.openView(document.getElementById('tk-edit-single-video-sheet'));
         } else if (action === 'delete') {
-            if (confirm('确定要彻底删除这个视频吗？')) {
+            if (confirm('Are you sure you want to delete the video?')) {
                 const vId = window.currentShareVideoId;
                 tkState.videos = tkState.videos.filter(v => v.id !== vId);
                 if (tkState.profile && tkState.profile.posts) {
@@ -1496,7 +1496,7 @@ ${wbContext}
                 if (fsView && fsView.classList.contains('active') && fsView.dataset.videoId === vId) {
                     fsView.classList.remove('active');
                 }
-                window.showToast('已删除');
+                window.showToast('Delete.');
             }
         }
     };
