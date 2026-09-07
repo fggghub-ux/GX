@@ -404,8 +404,8 @@
             // If empty, generate random items based on the current tab
             if (!userInput) {
                 userInput = targetTab === 'food' 
-                    ? "随机生成一些高质量的外卖美食和饮品" 
-                    : "随机生成一些高品质的商城百货和数码日常用品";
+                    ? "随机生成一些高质量的米其林餐或雪茄吧饮品" 
+                    : "随机生成一些高品质的奢侈品牌商品或酒";
             }
 
             if (this.searchConfirmBtn) {
@@ -414,11 +414,11 @@
             }
 
             let systemPrompt = `你现在是一个商品、评价及问答生成器。根据用户的输入，生成不少于10个商品。每个商品生成5-10条用户评价，以及5-10条问答(Q&A)。
-当前分类是 ${targetTab === 'food' ? 'Food(外卖美食)' : 'Mall(商城百货)'}。
+当前分类是 ${targetTab === 'food' ? 'Food(米其林餐)' : 'Mall(奢侈品牌商品)'}。
 
 **关键要求**：
-1. **评价(Reviews)**：必须非常真实、接地气，包含好评、中评甚至差评。语气要幽默、调侃或者夸张（比如：“好吃是好吃，就是吃完对象跑了”、“衣服很仙，但穿上像个成了精的拖把”）。
-2. **问答(Q&A)**：这是买家向已经买过的买家提问的板块（类似淘宝的“问大家”）。回答者**绝对不要**像官方客服，而是真实的、充满个性的普通买家。回答可以很搞笑、无厘头、甚至带点互坑的成分（比如 Q：“吃完能变帅吗？” A：“别做梦了，看脸” 或 Q：“好用吗？” A：“买回来积灰挺好的，建议入手”）。
+1. **评价(Reviews)**：必须非常真实、接地气，包含好评、中评甚至差评。语气要幽默、调侃或者夸张（比如：“全球住了七家安缦，纽约这家的餐厅终于没让我失望。怀石料理做得很有水准，空间设计也是一贯的安缦极简风，呼吸都变慢了。”、“作为在东京吃过银座级别omakase的人，Mase确实能打，但说实话同等价位在东京能吃两顿。纽约溢价太狠了。”）。
+2. **问答(Q&A)**：这是买家向已经买过的买家提问的板块（类似淘宝的“问大家”）。回答者**绝对不要**像官方客服，而是真实的、充满个性的普通买家。回答可以很搞笑、无厘头、甚至带点互坑的成分（比如 Q：“真的需要配货才能买到吗？配货比例大概多少？” A：“我的经验是1:1.5到1.2不等，看你和SA的关系。有人说直接走进去就买到了，我只能说投胎是门技术活。” 或 Q：“日常戴会不会太夸张了？” A：“看款式，基础款其实挺低调，密镶钻那款确实闪。但姐妹，花了十几万买的东西不就是为了让人看到吗？”）。
 
 \n\n`;
 
@@ -439,7 +439,7 @@
 [
   {
     "name": "商品名称",
-    "price": "商品价格(包含¥符号，如¥45)",
+    "price": "商品价格(包含¥符号，如¥4800)",
     "desc": "商品简短描述",
     "iconClass": "fontawesome图标类名(例如 fa-burger)",
     "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
@@ -734,7 +734,7 @@
         
         async sendGiftMessage(friend, order) {
             const itemNames = order.items.map(i => i.name).join(', ');
-            const msgText = `Pay for me\n: ${itemNames}\nPrice: ¥${order.total.toFixed(2)}\nPayment Method: ${order.method}`;
+            const msgText = `Pay for me\n: ${itemNames}\n Price: ¥${order.total.toFixed(2)}\n Payment Method: ${order.method}`;
             
             const htmlCard = `
                 <div style="background: #fff0f3; border-radius: 16px; padding: 16px; min-width: 220px; max-width: 280px; color: #111111; border: 1px solid rgba(255,155,179,0.3); display: inline-block;">
@@ -742,7 +742,7 @@
                         <i class="fas fa-gift"></i> Gift Received
                     </div>
                     <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">value ¥${order.total.toFixed(2)}</div>
+                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value ¥${order.total.toFixed(2)}</div>
                     <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Paid via ${order.method}</div>
                 </div>
             `;
@@ -1020,7 +1020,7 @@
                 const friendName = this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char';
                 
                 // Construct fallback text message
-                const msgText = `Pay for me\n: ${itemNames}\nPrice: ¥${total.toFixed(2)}`;
+                const msgText = `Pay for me\n: ${itemNames}\n Price: ¥${total.toFixed(2)}`;
                 
                 // Construct HTML Card for modern pipeline
                 const htmlCard = `
@@ -1073,7 +1073,7 @@
                         items: [...this.cart],
                         total: total,
                         status: 'Payment request sent.',
-                        method: `代付 (${friendName})`
+                        method: `pay for me (${friendName})`
                     });
                     this.saveOrders();
                     
