@@ -57,7 +57,7 @@
     function tkDmRelationshipLabel(char) {
         if (!char) return '';
         if (char.isFollowed && char.isFollower) return 'mutual follow';
-        if (char.isFollower && !char.isFollowed) return '对方是陌生人';
+        if (char.isFollower && !char.isFollowed) return 'Strange';
         return '';
     }
 
@@ -144,7 +144,7 @@
 
         isIncomingDmsGenerating = true;
         tkDmSetGenerateButtonLoading(true);
-        if (window.showToast) window.showToast('正在生成 TikTok 私信...');
+        if (window.showToast) window.showToast('Generating TikTok DMs...');
 
         const userPersonaParts = [
             tkState.profile?.persona ? `TikTok profile persona: ${tkState.profile.persona}` : '',
@@ -246,7 +246,7 @@ JSON example:
                         name,
                         handle,
                         avatar,
-                        status: user.status || '刚刚发来私信',
+                        status: user.status || 'Just Sent You a DM',
                         persona: user.persona || `TikTok 私信联系人：${name}`,
                         isFollower: true,
                         isFollowed: false
@@ -270,7 +270,7 @@ JSON example:
 
             if (window.tkPersistState) window.tkPersistState();
             if (window.tkRenderChat) window.tkRenderChat();
-            if (window.showToast) window.showToast(`收到 ${created.length} 位新联系人私信`);
+            if (window.showToast) window.showToast(`Received ${created.length} DMs`);
         } catch (error) {
             console.error('TikTok incoming DM generation failed:', error);
             if (window.showToast) window.showToast('无法生成 TikTok 私信，请检查 API 或返回格式');
@@ -482,7 +482,7 @@ JSON example:
                             name: friend.nickname || friend.realName,
                             handle: (friend.realName || friend.nickname || 'user').toLowerCase().replace(/\s+/g, '') + '_' + Math.floor(Math.random()*100),
                             avatar: friend.avatarUrl,
-                            status: friend.signature || '刚来到 TikTok',
+                            status: friend.signature || 'Just arrived TikTok',
                             persona: friend.persona || '',
                             isFollowed: true,
                             isFollower: true,
@@ -491,7 +491,7 @@ JSON example:
                     window.tkSaveChar(charData);
                     window.tkRenderChat();
                     window.closeView(importSheet);
-                    window.showToast('导入成功');
+                    window.showToast('Import successful');
                 });
                 importList.appendChild(item);
             });
@@ -616,7 +616,7 @@ JSON example:
             if (window.tkPersistState) window.tkPersistState();
             window.tkRenderChat();
             window.closeView(editCharSheet);
-            window.showToast('已保存');
+            window.showToast('Saved');
         });
     }
     
@@ -624,12 +624,12 @@ JSON example:
     if (deleteCharBtn) {
         deleteCharBtn.addEventListener('click', () => {
             if (editingCharId) {
-                if (confirm('确定删除此角色吗？')) {
+                if (confirm('Delete this character?')) {
                     tkState.chars = tkState.chars.filter(c => c.id !== editingCharId);
                     if (window.tkPersistState) window.tkPersistState();
                     window.tkRenderChat();
                     window.closeView(editCharSheet);
-                    window.showToast('已删除');
+                    window.showToast('Delete');
                 }
             }
         });
@@ -670,7 +670,7 @@ JSON example:
 
         if (btnClearHistory) {
             btnClearHistory.addEventListener('click', () => {
-                if (currentChatCharId && confirm('确定清空聊天记录吗？')) {
+                if (currentChatCharId && confirm('Clear chat?')) {
                     const dm = tkState.dms.find(d => d.charId === currentChatCharId);
                     if (dm) {
                         dm.messages = [];
@@ -679,14 +679,14 @@ JSON example:
                         if (window.tkRenderChat) window.tkRenderChat();
                     }
                     window.closeView(chatSettingsSheet);
-                    if (window.showToast) window.showToast('已清空聊天记录');
+                    if (window.showToast) window.showToast('Chat cleared');
                 }
             });
         }
 
         if (btnBlock) {
             btnBlock.addEventListener('click', () => {
-                if (currentChatCharId && confirm('确定拉黑此用户吗？')) {
+                if (currentChatCharId && confirm('Block this user?')) {
                     tkState.chars = tkState.chars.filter(c => c.id !== currentChatCharId);
                     tkState.dms = tkState.dms.filter(d => d.charId !== currentChatCharId);
                     if (window.tkPersistState) window.tkPersistState();
@@ -694,14 +694,14 @@ JSON example:
                     window.closeView(chatView);
                     if (window.tkRenderChat) window.tkRenderChat();
                     currentChatCharId = null;
-                    if (window.showToast) window.showToast('已拉黑该用户');
+                    if (window.showToast) window.showToast('User blocked');
                 }
             });
         }
 
         if (btnDelete) {
             btnDelete.addEventListener('click', () => {
-                if (currentChatCharId && confirm('确定删除此好友吗？')) {
+                if (currentChatCharId && confirm('Remove this friend?')) {
                     tkState.chars = tkState.chars.filter(c => c.id !== currentChatCharId);
                     tkState.dms = tkState.dms.filter(d => d.charId !== currentChatCharId);
                     if (window.tkPersistState) window.tkPersistState();
@@ -709,7 +709,7 @@ JSON example:
                     window.closeView(chatView);
                     if (window.tkRenderChat) window.tkRenderChat();
                     currentChatCharId = null;
-                    if (window.showToast) window.showToast('已删除好友');
+                    if (window.showToast) window.showToast('Friend removed');
                 }
             });
         }
@@ -1681,7 +1681,7 @@ ${tkMountedWorldBookContext ? `\nTikTok Mounted World Book:\n${tkMountedWorldBoo
             if (!currentChatCharId) return;
 
             if (isChatGenerating) {
-                if (window.showToast) window.showToast('对方正在输入中...');
+                if (window.showToast) window.showToast('He is typing...');
                 return;
             }
             
@@ -1701,7 +1701,7 @@ ${tkMountedWorldBookContext ? `\nTikTok Mounted World Book:\n${tkMountedWorldBoo
                 tkState.dms.push(dm);
             }
 
-            window.showToast('对方正在输入...');
+            window.showToast('He is typing...');
 
             // Assemble Chat History (last 15 msgs)
             const recentMsgs = dm.messages.slice(-15);
