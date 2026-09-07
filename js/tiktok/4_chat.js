@@ -670,7 +670,7 @@ JSON example:
 
         if (btnClearHistory) {
             btnClearHistory.addEventListener('click', () => {
-                if (currentChatCharId && confirm('Clear chat?')) {
+                if (currentChatCharId && confirm('Are you sure you want to clear?')) {
                     const dm = tkState.dms.find(d => d.charId === currentChatCharId);
                     if (dm) {
                         dm.messages = [];
