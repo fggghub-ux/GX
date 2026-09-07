@@ -1194,9 +1194,9 @@ ${wbContext}
                     <div class="tk-empty-feed">
                         <div class="tk-magic-btn-large" id="tk-api-generate-btn-empty" onclick="window.tkTriggerApiGenerate(event)">
                             <i class="fas fa-search"></i>
-                            <span>生成内容</span>
+                            <span>Generate content</span>
                         </div>
-                        <p style="color: #999; font-size: 13px; margin-top: 10px;">点击搜索生成 TikTok 视频流</p>
+                        <p style="color: #999; font-size: 13px; margin-top: 10px;">search generated tiktok videos.</p>
                     </div>
                 `;
             }
@@ -1454,7 +1454,7 @@ ${wbContext}
         if (action === 'save') {
             video.isSaved = !video.isSaved;
             if (window.tkPersistState) window.tkPersistState();
-            window.showToast(video.isSaved ? '已收藏' : '已取消收藏');
+            window.showToast(video.isSaved ? 'Saved' : 'Removed from favorites.');
         } else if (action === 'edit') {
             currentEditingVideoId = window.currentShareVideoId;
             const bgImgEl = document.getElementById('tk-edit-video-bg-img');
@@ -1779,7 +1779,7 @@ ${wbContext}
                     handle: authorId,
                     avatar: video.authorAvatar || null,
                     status: '',
-                    persona: '谢谢你的关注',
+                    persona: 'Thanks for following.',
                     isFollowed: false
                 });
                 if (window.tkOpenSubProfile) {
@@ -1797,7 +1797,7 @@ ${wbContext}
             if (window.tkPersistState) window.tkPersistState();
             window.tkRenderHome();
             if (window.tkRenderChat) window.tkRenderChat(); // Update following bar
-            window.showToast('已关注');
+            window.showToast('Following');
         } else if (!char) {
             // Auto create char if not exists
             const video = tkState.videos.find(v => v.authorId === authorId);
@@ -1807,13 +1807,13 @@ ${wbContext}
                     name: video.authorName,
                     handle: authorId,
                     avatar: video.authorAvatar || null,
-                    status: '刚刚发布了视频',
-                    persona: '谢谢你的关注',
+                    status: 'just posted a video',
+                    persona: 'Thanks for following.',
                     isFollowed: true
                 });
                 window.tkRenderHome();
                 if (window.tkRenderChat) window.tkRenderChat();
-                window.showToast('已关注');
+                window.showToast('Following');
             }
         }
     };
@@ -2149,7 +2149,7 @@ ${wbContext}
                 newInputEl.placeholder = 'Add comment...';
                 currentReplyToCommentId = null; // reset reply target after send
                 window.currentReplyTargetId = null;
-                window.showToast('评论已发送');
+                window.showToast('Comment sent.');
             };
 
             sendBtnRef.addEventListener('click', sendComment);
@@ -2264,7 +2264,7 @@ ${wbContext}
                 `;
                 
                 item.addEventListener('click', () => {
-                    window.showToast('已转发给 ' + (char.name || char.handle));
+                    window.showToast('Shared with ' + (char.name || char.handle));
                     window.closeView(document.getElementById('tk-share-sheet'));
                     
                     // Add mock message to DM with sharedVideoId
@@ -2275,7 +2275,7 @@ ${wbContext}
                     }
                     dm.messages.push({
                         sender: 'user',
-                        text: '[分享了视频]',
+                        text: '[Shared a Video]',
                         sharedVideoId: window.currentShareVideoId
                     });
 
@@ -2286,7 +2286,7 @@ ${wbContext}
                         // update UI if on home feed
                         const shareCountEl = document.getElementById(`share-count-${video.id}`);
                         if (shareCountEl) {
-                            shareCountEl.innerHTML = `已分享`;
+                            shareCountEl.innerHTML = `Shared`;
                             shareCountEl.style.color = '#ffb300';
                             shareCountEl.previousElementSibling.style.color = '#ffb300';
                         }
@@ -2326,7 +2326,7 @@ ${wbContext}
                     <div class="tk-share-action-icon" style="color: #ff3b30;"><i class="fas fa-trash-alt"></i></div>
                     <span style="color: #ff3b30;">Delete</span>
                 </div>
-                <div class="tk-share-action-item" onclick="window.showToast('链接已复制'); window.closeView(document.getElementById('tk-share-sheet'));">
+                <div class="tk-share-action-item" onclick="window.showToast('Link copied'); window.closeView(document.getElementById('tk-share-sheet'));">
                     <div class="tk-share-action-icon"><i class="fas fa-link"></i></div>
                     <span>Copy link</span>
                 </div>
@@ -2398,7 +2398,7 @@ ${wbContext}
                 gridEl.appendChild(el);
             });
         } else {
-            gridEl.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">暂无相关视频</div>';
+            gridEl.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">No Related Videos Yet</div>';
         }
         
         window.openView(hashtagView);
@@ -2444,7 +2444,7 @@ ${wbContext}
                 gridEl.appendChild(el);
             });
         } else {
-            gridEl.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">暂无相关视频</div>';
+            gridEl.innerHTML = '<div style="grid-column: span 3; padding: 40px 0; text-align: center; color: #999; font-size: 13px;">No Related Videos Yet</div>';
         }
         
         window.openView(musicView);
@@ -2643,7 +2643,7 @@ ${userPersonaContext}
 `;
 
         try {
-            window.showToast(topic ? '正在按搜索生成内容...' : '正在随机生成内容...');
+            window.showToast(topic ? 'Searching to generate content...' : 'Generating content randomly...');
             const response = await fetch(tkResolveApiEndpoint(), {
                 method: 'POST',
                 headers: {
@@ -2691,7 +2691,7 @@ ${userPersonaContext}
                     if (feedContainer) feedContainer.scrollTop = 0;
                 });
             }
-            window.showToast('已生成内容');
+            window.showToast('Content Generated');
         } catch (error) {
             console.error('Search Gen Error:', error);
             window.showToast('生成失败，请检查 API 或返回格式');
