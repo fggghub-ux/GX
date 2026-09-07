@@ -594,7 +594,7 @@
         const char = window.tkGetChar(charId);
         if(!char) return;
 
-        window.showToast('Generating character profile...');
+        window.showToast('Generating profile...');
         
         let wbContext = '';
         
@@ -972,7 +972,7 @@ JSON shape:
             e.stopPropagation();
             if (window.showCustomModal) {
                 window.showCustomModal({
-                    title: 'SET STATUS',
+                    title: 'STATUS',
                     type: 'prompt',
                     placeholder: 'Enter Your Current Status',
                     defaultValue: tkState.profile.status,
