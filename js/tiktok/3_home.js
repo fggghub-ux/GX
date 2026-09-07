@@ -626,7 +626,7 @@ ${userBlock}
             return;
         }
 
-        if (window.showToast) window.showToast(isAuto ? 'AI 正在生成视频互动...' : 'AI 正在生成互动数据...');
+        if (window.showToast) window.showToast(isAuto ? 'Generating video interaction...' : 'Generating engagement data...');
 
         const followedChars = (tkState.chars || []).filter(c => c.isFollowed).slice(0, 6);
         const followedCharsContext = followedChars.length
