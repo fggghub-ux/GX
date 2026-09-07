@@ -52,7 +52,7 @@
         if (messageEl) messageEl.textContent = options.message || '';
         
         if (cancelBtn) {
-            cancelBtn.textContent = options.cancelText || 'cancel';
+            cancelBtn.textContent = options.cancelText || '取消';
             cancelBtn.onclick = () => {
                 window.closeView(overlay);
                 if (options.onCancel) options.onCancel();
@@ -60,7 +60,7 @@
         }
         
         if (confirmBtn) {
-            confirmBtn.textContent = options.confirmText || 'confirm';
+            confirmBtn.textContent = options.confirmText || '确定';
             if (options.confirmTone === 'dark') {
                 confirmBtn.style.color = '#fff';
                 confirmBtn.style.background = '#111';
@@ -89,7 +89,7 @@
             if (confirmBtn) confirmBtn.style.display = 'none';
             if (promptConfirmBtn) {
                 promptConfirmBtn.style.display = 'block';
-                promptConfirmBtn.textContent = options.confirmText || 'confirm';
+                promptConfirmBtn.textContent = options.confirmText || '确定';
                 promptConfirmBtn.style.background = options.confirmTone === 'dark' ? '#111' : '#007aff';
                 promptConfirmBtn.style.color = '#fff';
                 promptConfirmBtn.onclick = () => {
