@@ -163,7 +163,7 @@
             if (!this.boundWbName) return;
             const boundIds = this.getBoundWorldBookIds();
             if (boundIds.length === 0) {
-                this.boundWbName.textContent = 'Not Mounted';
+                this.boundWbName.textContent = 'not mounted';
                 return;
             }
 
@@ -177,7 +177,7 @@
             } else if (boundBooks.length > 1) {
                 this.boundWbName.textContent = `已挂载 ${boundBooks.length} 本`;
             } else {
-                this.boundWbName.textContent = 'Not Mounted';
+                this.boundWbName.textContent = 'not mounted';
             }
         }
 
