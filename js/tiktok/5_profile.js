@@ -594,7 +594,7 @@
         const char = window.tkGetChar(charId);
         if(!char) return;
 
-        window.showToast('Generating profile...');
+        window.showToast('Generating character profile...');
         
         let wbContext = '';
         
