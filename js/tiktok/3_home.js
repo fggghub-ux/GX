@@ -1454,7 +1454,7 @@ ${wbContext}
         if (action === 'save') {
             video.isSaved = !video.isSaved;
             if (window.tkPersistState) window.tkPersistState();
-            window.showToast(video.isSaved ? 'Saved' : 'Removed from favorites.');
+            window.showToast(video.isSaved ? 'Saved' : 'Removed from favorites');
         } else if (action === 'edit') {
             currentEditingVideoId = window.currentShareVideoId;
             const bgImgEl = document.getElementById('tk-edit-video-bg-img');
@@ -2149,7 +2149,7 @@ ${wbContext}
                 newInputEl.placeholder = 'Add comment...';
                 currentReplyToCommentId = null; // reset reply target after send
                 window.currentReplyTargetId = null;
-                window.showToast('Comment sent.');
+                window.showToast('Comment sent');
             };
 
             sendBtnRef.addEventListener('click', sendComment);
