@@ -2502,7 +2502,7 @@ ${wbContext}
                 <div class="detail-sheet-content tk-search-generate-content">
                     <div class="tk-search-generate-box">
                         <i class="fas fa-search"></i>
-                        <input id="tk-search-generate-input" type="text" placeholder="Your name is Russia’s long international line.">
+                        <input id="tk-search-generate-input" type="text" placeholder="Think about how to profit from what you love.">
                     </div>
                     <label class="tk-search-generate-count" for="tk-search-generate-count-input">
                         <span>Quantity</span>
