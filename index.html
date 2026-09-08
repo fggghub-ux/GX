@@ -6038,10 +6038,10 @@
                             <!-- Main Content Wrapper -->
                             <div id="wt-main-content" style="display: flex; flex-direction: column; width: 100%; border-radius: 24px; overflow: hidden;">
                                 <div id="wt-chat-container" style="overflow-y: auto; padding: 5px 12px; display: flex; flex-direction: column; gap: 8px; height: 75px;">
-                                    <div style="text-align: center; color: rgba(0,0,0,0.5); font-size: 10px; margin-top: 5px;">点击对方头像可以进行互动</div>
+                                    <div style="text-align: center; color: rgba(0,0,0,0.5); font-size: 10px; margin-top: 5px;">Tap the avatar to interact</div>
                                 </div>
                                 <div style="padding: 10px 12px; border-top: 1px solid rgba(255, 255, 255, 0.4); display: flex; gap: 8px; align-items: center;">
-                                    <input type="text" id="wt-chat-input" placeholder="说点什么..." style="flex: 1; background: rgba(0, 0, 0, 0.05); border: none; border-radius: 16px; padding: 8px 12px; color: #111; font-size: 12px; outline: none;">
+                                    <input type="text" id="wt-chat-input" placeholder="Say something..." style="flex: 1; background: rgba(0, 0, 0, 0.05); border: none; border-radius: 16px; padding: 8px 12px; color: #111; font-size: 12px; outline: none;">
                                     <div id="wt-magic-btn" style="width: 32px; height: 32px; border-radius: 50%; background: #333; display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0;" title="让 AI 回复当前视频" onclick="if(window.tkTriggerWtApi) window.tkTriggerWtApi(event)">
                                         <i class="fas fa-magic" style="color: white; font-size: 14px;"></i>
                                     </div>
@@ -6053,14 +6053,14 @@
 
                             <!-- Exit Options Overlay -->
                             <div id="wt-exit-menu" style="display: none; flex-direction: column; padding: 15px; gap: 10px; background: rgba(255,255,255,0.8); height: 120px; box-sizing: border-box; justify-content: center; border-radius: 24px;">
-                                <div id="wt-exit-summary-btn" style="background: #111; color: #fff; text-align: center; padding: 10px; border-radius: 16px; font-size: 13px; cursor: pointer; font-weight: 500;">总结并退出</div>
-                                <div id="wt-exit-direct-btn" style="background: rgba(0,0,0,0.05); color: #ff3b30; text-align: center; padding: 10px; border-radius: 16px; font-size: 13px; cursor: pointer; font-weight: 500;">直接退出</div>
+                                <div id="wt-exit-summary-btn" style="background: #111; color: #fff; text-align: center; padding: 10px; border-radius: 16px; font-size: 13px; cursor: pointer; font-weight: 500;">Summarize</div>
+                                <div id="wt-exit-direct-btn" style="background: rgba(0,0,0,0.05); color: #ff3b30; text-align: center; padding: 10px; border-radius: 16px; font-size: 13px; cursor: pointer; font-weight: 500;">Exit Directly</div>
                             </div>
                             
                             <!-- Loading Overlay -->
                             <div id="wt-loading-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 10; justify-content: center; align-items: center; flex-direction: column; border-radius: 24px;">
                                 <i class="fas fa-spinner fa-spin" style="color: #111; font-size: 20px; margin-bottom: 8px;"></i>
-                                <span style="color: #333; font-size: 11px;" id="wt-loading-text">正在总结...</span>
+                                <span style="color: #333; font-size: 11px;" id="wt-loading-text">Summarizing....</span>
                             </div>
                         </div>
 
@@ -6068,7 +6068,7 @@
                         <div id="wt-history-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; align-items: flex-end; justify-content: center;">
                             <div id="wt-history-sheet" style="width: 100%; height: 60%; background: #fff; border-radius: 20px 20px 0 0; display: flex; flex-direction: column;">
                                 <div style="padding: 15px; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; position: relative;">
-                                    全部聊天记录
+                                    All HISTORY
                                     <i class="fas fa-times" id="wt-history-close" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999; cursor: pointer;"></i>
                                 </div>
                                 <div id="wt-history-content" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
