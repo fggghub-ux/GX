@@ -480,13 +480,13 @@
     function tkSetSubProfileFollowButton(char) {
         if (!subProfileFollowBtn || !char) return;
         if (char.isFollowed && char.isFollower) {
-            subProfileFollowBtn.textContent = 'Mutual follow';
+            subProfileFollowBtn.textContent = 'Following';
             subProfileFollowBtn.className = 'tk-btn-secondary';
         } else if (char.isFollowed) {
             subProfileFollowBtn.textContent = 'Following';
             subProfileFollowBtn.className = 'tk-btn-secondary';
         } else if (char.isFollower) {
-            subProfileFollowBtn.textContent = 'Follow back';
+            subProfileFollowBtn.textContent = 'Follow';
             subProfileFollowBtn.className = 'tk-btn-primary';
         } else {
             subProfileFollowBtn.textContent = 'Follow';
