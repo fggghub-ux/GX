@@ -4218,7 +4218,7 @@ ${history}
                         reader.onload = (ev) => {
                             team.shopBanner = ev.target.result;
                             renderView(); // Re-render to update bg
-                            window.showToast('Shop 背景已更新');
+                            window.showToast('Shop cover updated');
                         };
                         reader.readAsDataURL(file);
                     }
