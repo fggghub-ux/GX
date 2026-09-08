@@ -777,7 +777,7 @@ window.autoSaveSummaryToWorldBook = function autoSaveSummaryToWorldBook(title, s
     });
     saveWorldBooksData();
     renderWorldBooks({ force: true });
-    window.showToast?.('已自动生成全局世界书');
+    window.showToast?.('World Book Generated');
 };
 
 function initializeWorldBookUi() {
