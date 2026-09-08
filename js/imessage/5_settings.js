@@ -4011,7 +4011,7 @@
 
         if (chatLanguageSelect) {
             const language = String(friend.language || 'zh').trim() || 'zh';
-            const standardLanguages = new Set(['zh', 'ko', 'ja', 'en', 'fr', 'yue', 'ru']);
+            const standardLanguages = new Set(['zh', 'en', 'ru', 'yue', 'it', 'es', 'ar']);
             const isCustomLanguage = !standardLanguages.has(language);
             chatLanguageSelect.value = isCustomLanguage ? '__custom__' : language;
             if (chatCustomLanguageRow) chatCustomLanguageRow.style.display = isCustomLanguage ? 'flex' : 'none';
@@ -4258,7 +4258,7 @@
     const chatLanguageSelect = document.getElementById('chat-language-select');
     const chatCustomLanguageRow = document.getElementById('chat-custom-language-row');
     const chatCustomLanguageInput = document.getElementById('chat-custom-language-input');
-    const standardChatLanguages = new Set(['zh', 'ko', 'ja', 'en', 'fr', 'yue', 'ru']);
+    const standardChatLanguages = new Set(['zh', 'en', 'ru', 'yue', 'it', 'es', 'ar']);
     if (chatLanguageSelect) {
         chatLanguageSelect.addEventListener('change', async (e) => {
             if (window.imData.currentSettingsFriend) {
