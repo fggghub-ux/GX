@@ -1043,7 +1043,7 @@ ${wbContext}
                 }
                 
                 window.closeView(document.getElementById('tk-edit-single-video-sheet'));
-                window.showToast('Changes saved.');
+                window.showToast('Changes saved');
             }
         });
     }
