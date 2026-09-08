@@ -1005,7 +1005,7 @@ JSON example:
 
         console.log("[一起看] 准备调用 API, Char:", char.name);
         isWtGenerating = true;
-        if (window.showToast) window.showToast('准备互动中...');
+        if (window.showToast) window.showToast('Preparing Interaction...');
 
         // Get Current Video Context dynamically based on scroll position
         let currentVideo = null;
