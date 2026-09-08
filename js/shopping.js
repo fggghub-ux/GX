@@ -1439,7 +1439,7 @@
                             <i class="fas fa-star" data-val="4" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                             <i class="fas fa-star" data-val="5" style="font-size: 32px; color: #ff9500; cursor: pointer;"></i>
                         </div>
-                        <textarea id="shopping-rating-text" placeholder="Assets bring cash inflows; liabilities cause cash outflows." style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
+                        <textarea id="shopping-rating-text" placeholder="If you want to create something of value, be prepared to be judged." style="width: 100%; height: 120px; border: none; background: #f7f7f5; border-radius: 12px; padding: 16px; font-size: 15px; resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;"></textarea>
                         <button type="button" id="shopping-rating-submit" style="width: 100%; padding: 16px; background: #111; color: #fff; border-radius: 12px; font-size: 16px; font-weight: 700; border: none; cursor: pointer;">submit review</button>
                     </div>
                 </div>
