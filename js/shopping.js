@@ -435,7 +435,7 @@
                 }
             }
             
-            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。格式：字符串内如需强调词语、菜名、品牌名或俚语，一律使用单引号 ' 包裹（例如 the 'wagyu' course），name 字段本身禁止添加任何引号。禁止在字符串内使用双引号 " ，否则破坏 JSON 结构导致解析失败。tags 数组长度严格为2。格式要求：\n
+            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。格式：字符串内如需强调词语、菜名、品牌名或俚语，一律使用单引号 ' 包裹（例如 the 'wagyu' course），禁止在字符串内使用双引号 " ，否则破坏 JSON 结构导致解析失败。tags 数组长度严格为2。格式要求：\n
 
 [
   {
@@ -443,7 +443,7 @@
     "price": "Product price(including $ symbol，e.g. $2200)",
     "desc": "Short product description",
     "iconClass": "fontawesome icon class name(e.g. fa-utensils)",
-    "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #0A1128 0%, #C41E5C 100%) 避免荧光/卡通色（正红/正绿/亮蓝/亮紫/亮粉），色调偏向高端、品牌感强)",
+    "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #0A1128 0%, #C41E5C 100%) 色调需偏向高端品牌)",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
       { "user": "User A", "text": "Review content", "rating": 5 },
