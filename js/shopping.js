@@ -1691,7 +1691,7 @@
         }
 
         switchTab(tab, options = {}) {
-            const targetTab = this.tabs.includes(tab) ? tab : 'Food';
+            const targetTab = this.tabs.includes(tab) ? tab : 'food';
             const shouldScroll = options.scroll !== false;
             this.currentTab = targetTab;
 
