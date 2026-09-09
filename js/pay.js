@@ -7,23 +7,23 @@
         {
             id: 'bank_1',
             type: 'bank',
-            name: '招商银行',
+            name: 'AMERICAN EXPRESS',
             icon: 'fas fa-university',
-            cardType: '储蓄卡',
-            number: '**** **** **** 8888',
-            balance: 1000.00,
-            logo: '银联',
+            cardType: '',
+            number: '**** **** **** 9898',
+            balance: 38,742.16,
+            logo: '27',
             styleClass: '', // Default white card
             transactions: []
         },
         {
             id: 'bank_2',
             type: 'bank',
-            name: 'VISA 信用卡',
+            name: 'J.P. Morgan',
             icon: 'fas fa-globe',
             cardType: 'Credit',
-            number: '**** **** **** 9999',
-            balance: 50000.00,
+            number: '**** **** **** 8888',
+            balance: 27,591.84,
             logo: 'VISA',
             styleClass: 'bank-card-blue',
             transactions: []
@@ -103,7 +103,7 @@
         renderPayUI();
 
         if (window.showToast) {
-            window.showToast(type === 'income' ? `已到账 ￥${safeAmount.toFixed(2)}` : `已支付 ￥${safeAmount.toFixed(2)}`);
+            window.showToast(type === 'income' ? `Received $${safeAmount.toFixed(2)}` : `Payment $${safeAmount.toFixed(2)}`);
         }
 
         return true;
@@ -235,7 +235,7 @@
             familyListEl.innerHTML = '';
             const familyCards = cards.filter(c => c.type === 'family');
             if (familyCards.length === 0) {
-                familyListEl.innerHTML = '<div class="pay-empty-card-state">暂无亲属卡</div>';
+                familyListEl.innerHTML = '<div class="pay-empty-card-state">No Family Cards Yet</div>';
             } else {
                 familyCards.forEach(c => {
                     const el = document.createElement('div');
@@ -251,8 +251,8 @@
                     const unbindBtn = document.createElement('button');
                     unbindBtn.type = 'button';
                     unbindBtn.className = 'pay-family-card-unbind';
-                    unbindBtn.textContent = '解绑';
-                    unbindBtn.setAttribute('aria-label', `解绑${c.name}`);
+                    unbindBtn.textContent = 'Unbind';
+                    unbindBtn.setAttribute('aria-label', `Unbind${c.name}`);
                     unbindBtn.addEventListener('click', (event) => {
                         event.stopPropagation();
                         confirmRemoveFamilyCard(c);
@@ -303,7 +303,7 @@
         if (billListEl) {
             billListEl.innerHTML = '';
             if (filteredTxs.length === 0) {
-                billListEl.innerHTML = '<div class="pay-empty-state">暂无交易记录</div>';
+                billListEl.innerHTML = '<div class="pay-empty-state">No Transaction Yet</div>';
             } else {
                 filteredTxs.forEach(tx => {
                     const el = document.createElement('div');
@@ -363,7 +363,7 @@
             const newCard = {
                 id: cardId,
                 type: 'family',
-                name: '亲属卡 - ' + (friendName || '好友'),
+                name: 'Family - ' + (friendName || '好友'),
                 icon: 'fas fa-heart',
                 cardType: 'Family Card',
                 number: '**** **** **** ' + Math.floor(1000 + Math.random() * 9000),
@@ -401,19 +401,19 @@
     function confirmRemoveFamilyCard(card) {
         const doRemove = () => {
             if (!removeFamilyCard(card.id)) return;
-            if (window.showToast) window.showToast('亲属卡已解绑');
+            if (window.showToast) window.showToast('Family card unliked');
         };
 
         if (typeof window.showCustomModal === 'function') {
             window.showCustomModal({
-                title: '解绑亲属卡',
-                message: `解绑后将删除${card.name}，且无法恢复。`,
-                confirmText: '解绑',
-                cancelText: '取消',
+                title: 'Unlink Family Card',
+                message: `Unlinking will delete${card.name}，and cannot be undone.`,
+                confirmText: 'unlink',
+                cancelText: 'cancel',
                 isDestructive: true,
                 onConfirm: doRemove
             });
-        } else if (window.confirm(`解绑后将删除${card.name}，且无法恢复。`)) {
+        } else if (window.confirm(`Unlinking will delete${card.name}，and cannot be undone.`)) {
             doRemove();
         }
     }
@@ -421,7 +421,7 @@
     function openTransferInModal() {
         const bankCards = cards.filter(card => card.type === 'bank');
         if (bankCards.length === 0 || !transferInModal) {
-            if (window.showToast) window.showToast('暂无可转入的银行卡');
+            if (window.showToast) window.showToast('No bank cards available for transfer');
             return;
         }
 
@@ -488,7 +488,7 @@
             event.preventDefault();
             const amount = Number(transferInAmountInput?.value);
             if (!Number.isFinite(amount) || amount <= 0) {
-                if (window.showToast) window.showToast('请输入大于 0 的转入金额');
+                if (window.showToast) window.showToast('Enter an amount greater than 0');
                 transferInAmountInput?.focus();
                 return;
             }
@@ -496,11 +496,11 @@
             const targetCardId = transferInTargetEl?.value;
             const targetCard = cards.find(card => card.id === targetCardId && card.type === 'bank');
             if (!targetCard) {
-                if (window.showToast) window.showToast('请选择银行卡');
+                if (window.showToast) window.showToast('Select Bank Card');
                 return;
             }
 
-            const success = window.addPayTransaction(amount, '账户转入', 'income', targetCard.id);
+            const success = window.addPayTransaction(amount, 'Transfer to Account', 'income', targetCard.id);
             if (!success) {
                 if (window.showToast) window.showToast('转入失败，请重试');
                 return;
