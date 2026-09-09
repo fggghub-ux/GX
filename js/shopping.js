@@ -443,7 +443,7 @@
     "price": "Product price(including $ symbol，e.g. $2200)",
     "desc": "Short product description",
     "iconClass": "fontawesome icon class name(e.g. fa-utensils)",
-    "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #0A1128 0%, #C41E5C 100%) 避免饱和度>80%的荧光/卡通色（正红/正绿/亮紫/亮粉），色调偏冷偏暗，暖色也需压沉)",
+    "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #0A1128 0%, #C41E5C 100%) 避免饱和度过高的荧光/卡通色（正红/正绿/亮紫/亮粉）)",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
       { "user": "User A", "text": "Review content", "rating": 5 },
