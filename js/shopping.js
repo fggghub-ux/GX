@@ -442,7 +442,7 @@
     "price": "Product price(including $ symbol，e.g. $2200)",
     "desc": "Short product description",
     "iconClass": "fontawesome icon class name(e.g. fa-burger)",
-    "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
+    "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #161729 0%, #d0425a 100%))",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
       { "user": "User A", "text": "评价内容", "rating": 5 },
