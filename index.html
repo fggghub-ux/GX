@@ -4655,7 +4655,7 @@
                 </button>
                 <div class="pay-heading">
                     <span>PAY</span>
-                    <h1>我的资产</h1>
+                    <h1>ASSETS</h1>
                 </div>
                 <div class="pay-header-mark" aria-hidden="true">WALLET</div>
             </div>
@@ -4669,36 +4669,36 @@
                     <div class="pay-total-card" id="pay-main-card">
                         <div class="pay-card-topline">
                             <div>
-                                <div class="pay-card-eyebrow">当前账户 · CURRENT</div>
-                                <div class="pay-card-title" id="pay-main-card-title"><i class="fas fa-university"></i> 招商银行</div>
-                                <div class="pay-card-type" id="pay-main-card-type">储蓄卡</div>
+                                <div class="pay-card-eyebrow"> </div>
+                                <div class="pay-card-title" id="pay-main-card-title"><i class="fas fa-university"></i> AMERICAN EXPRESS</div>
+                                <div class="pay-card-type" id="pay-main-card-type"> </div>
                             </div>
-                            <div class="pay-card-logo" id="pay-main-card-logo">银联</div>
+                            <div class="pay-card-logo" id="pay-main-card-logo">27</div>
                         </div>
                         <div class="pay-balance-block">
-                            <span>可用余额</span>
+                            <span> </span>
                             <div class="pay-card-amount"><small>¥</small><span id="pay-total-amount">0.00</span></div>
                         </div>
-                        <div class="pay-card-number" id="pay-main-card-number">**** **** **** 8888</div>
+                        <div class="pay-card-number" id="pay-main-card-number">**** **** **** 9898</div>
                     </div>
 
                     <!-- 快捷功能区 -->
                     <div class="pay-quick-actions" aria-label="快捷操作">
                         <button type="button" class="pay-action-btn" id="pay-action-scan">
                             <span class="pay-action-icon"><i class="fas fa-qrcode"></i></span>
-                            <span class="pay-action-copy"><strong>收付款</strong><small>PAY</small></span>
+                            <span class="pay-action-copy"><strong>Payment</strong><small>PAY</small></span>
                         </button>
                         <button type="button" class="pay-action-btn" id="pay-action-cards">
                             <span class="pay-action-icon"><i class="fas fa-credit-card"></i></span>
-                            <span class="pay-action-copy"><strong>卡包</strong><small>CARDS</small></span>
+                            <span class="pay-action-copy"><strong>Wallet</strong><small>CARDS</small></span>
                         </button>
                         <button type="button" class="pay-action-btn" id="pay-action-family">
                             <span class="pay-action-icon"><i class="fas fa-users"></i></span>
-                            <span class="pay-action-copy"><strong>亲属卡</strong><small>FAMILY</small></span>
+                            <span class="pay-action-copy"><strong>Family</strong><small>FAMILY</small></span>
                         </button>
                         <button type="button" class="pay-action-btn" id="pay-action-transfer-in">
                             <span class="pay-action-icon"><i class="fas fa-arrow-down"></i></span>
-                            <span class="pay-action-copy"><strong>转入</strong><small>ADD MONEY</small></span>
+                            <span class="pay-action-copy"><strong>Transfer</strong><small>ADD MONEY</small></span>
                         </button>
                     </div>
 
@@ -4707,21 +4707,21 @@
                         <div class="pay-section-header">
                             <div>
                                 <span class="pay-section-kicker">RECENT</span>
-                                <h3 class="pay-section-title">最近账单</h3>
+                                <h3 class="pay-section-title">RECENT BILLS</h3>
                             </div>
-                            <span class="pay-section-more">交易明细</span>
+                            <span class="pay-section-more">TRANSACTION</span>
                         </div>
                         
                         <!-- 新增：账单筛选按钮 -->
                         <div class="pay-bill-filters">
-                            <button type="button" class="pay-filter-btn active" data-filter="all">全部</button>
-                            <button type="button" class="pay-filter-btn" data-filter="income">收入</button>
-                            <button type="button" class="pay-filter-btn" data-filter="expense">支出</button>
+                            <button type="button" class="pay-filter-btn active" data-filter="all">All</button>
+                            <button type="button" class="pay-filter-btn" data-filter="income">Income</button>
+                            <button type="button" class="pay-filter-btn" data-filter="expense">Expenses</button>
                         </div>
 
                         <div class="pay-bill-list" id="pay-bill-list">
                             <!-- 账单条目将通过 JS 动态注入 -->
-                            <div class="pay-empty-state">暂无交易记录</div>
+                            <div class="pay-empty-state">No Transaction Yet</div>
                         </div>
                     </div>
                 </div>
@@ -4731,7 +4731,7 @@
             <div class="pay-modal-overlay" id="pay-scan-modal">
                 <div class="pay-scan-container">
                     <div class="pay-scan-header">
-                        <div><small>QUICK PAY</small><span>向商家付款</span></div>
+                        <div><small>QUICK PAY</small><span>Show payment</span></div>
                         <button type="button" id="pay-scan-close" aria-label="关闭收付款"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="pay-scan-barcode"></div>
@@ -4739,7 +4739,7 @@
                         <i class="fas fa-qrcode"></i>
                     </div>
                     <div class="pay-scan-refresh">
-                        <i class="fas fa-sync-alt"></i> 每分钟自动刷新
+                        <i class="fas fa-sync-alt"></i> refresh every minute
                     </div>
                 </div>
             </div>
@@ -4748,20 +4748,20 @@
             <div class="pay-modal-overlay" id="pay-transfer-in-modal" aria-hidden="true">
                 <form class="pay-transfer-in-container" id="pay-transfer-in-form">
                     <div class="pay-transfer-in-header">
-                        <div><small>ADD MONEY</small><span>转入账户</span></div>
+                        <div><small>ADD MONEY</small><span>Transfer-in</span></div>
                         <button type="button" id="pay-transfer-in-close" aria-label="关闭转入"><i class="fas fa-times"></i></button>
                     </div>
-                    <label class="pay-transfer-in-target" for="pay-transfer-in-target">转入至
+                    <label class="pay-transfer-in-target" for="pay-transfer-in-target">Transfer in
                         <select id="pay-transfer-in-target" aria-label="选择转入银行卡"></select>
                     </label>
                     <label class="pay-transfer-in-field" for="pay-transfer-in-amount">
-                        <span>转入金额</span>
-                        <div><small>¥</small><input id="pay-transfer-in-amount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="请输入金额" autocomplete="off" required></div>
+                        <span>transfer amount</span>
+                        <div><small>＄</small><input id="pay-transfer-in-amount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="请输入金额" autocomplete="off" required></div>
                     </label>
-                    <p class="pay-transfer-in-hint">仅可转入银行卡，亲属卡不支持转入。</p>
+                    <p class="pay-transfer-in-hint">Bank card deposits only</p>
                     <div class="pay-transfer-in-actions">
-                        <button type="button" id="pay-transfer-in-cancel">取消</button>
-                        <button type="submit">确认转入</button>
+                        <button type="button" id="pay-transfer-in-cancel">cancel</button>
+                        <button type="submit">confirm</button>
                     </div>
                 </form>
             </div>
@@ -4770,14 +4770,14 @@
             <div class="bottom-sheet-overlay detail-sheet-overlay" id="pay-cards-sheet">
                 <div class="bottom-sheet pay-sheet">
                     <div class="sheet-handle"></div>
-                    <div class="pay-sheet-heading"><span>CARDS</span><h2>我的卡包</h2></div>
+                    <div class="pay-sheet-heading"><span>CARDS</span><h2>My Wallet</h2></div>
                     <div class="detail-sheet-content pay-sheet-content">
                         <div id="pay-bank-list">
                             <!-- 银行卡列表动态渲染 -->
                         </div>
                         
                         <button type="button" class="pay-sheet-add">
-                            <i class="fas fa-plus"></i> 添加银行卡
+                            <i class="fas fa-plus"></i> Add Bank Card
                         </button>
                     </div>
                 </div>
@@ -4787,14 +4787,14 @@
             <div class="bottom-sheet-overlay detail-sheet-overlay" id="pay-family-sheet">
                 <div class="bottom-sheet pay-sheet">
                     <div class="sheet-handle"></div>
-                    <div class="pay-sheet-heading"><span>FAMILY</span><h2>亲属卡</h2></div>
+                    <div class="pay-sheet-heading"><span>FAMILY</span><h2>FAMILY</h2></div>
                     <div class="detail-sheet-content pay-sheet-content">
                         <div id="pay-family-list">
                             <!-- 亲属卡列表动态渲染 -->
                         </div>
                         
                         <button type="button" class="pay-sheet-add">
-                            <i class="fas fa-plus"></i> 赠送亲属卡
+                            <i class="fas fa-plus"></i> Gift a family card
                         </button>
                     </div>
                 </div>
