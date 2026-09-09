@@ -996,7 +996,7 @@
                             items: [...this.cart],
                             total: total,
                             status: 'Paid',
-                            method: this.selectedCard.type === 'family' ? `亲属卡 (${this.selectedCard.name})` : 'Pay'
+                            method: this.selectedCard.type === 'family' ? `Family (${this.selectedCard.name})` : 'Pay'
                         });
                         this.saveOrders();
                         
