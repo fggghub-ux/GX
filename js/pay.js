@@ -11,7 +11,7 @@
             icon: 'fas fa-university',
             cardType: '',
             number: '**** **** **** 9898',
-            balance: 38747.90,
+            balance: 10000.00,
             logo: '27',
             styleClass: '', // Default white card
             transactions: []
@@ -21,9 +21,9 @@
             type: 'bank',
             name: 'J.P. Morgan',
             icon: 'fas fa-globe',
-            cardType: 'Credit',
+            cardType: '',
             number: '**** **** **** 8888',
-            balance: 27591.84,
+            balance: 88888.00,
             logo: 'VISA',
             styleClass: 'bank-card-blue',
             transactions: []
@@ -235,7 +235,7 @@
             familyListEl.innerHTML = '';
             const familyCards = cards.filter(c => c.type === 'family');
             if (familyCards.length === 0) {
-                familyListEl.innerHTML = '<div class="pay-empty-card-state">No Family Cards Yet</div>';
+                familyListEl.innerHTML = '<div class="pay-empty-card-state">no family cards yet</div>';
             } else {
                 familyCards.forEach(c => {
                     const el = document.createElement('div');
