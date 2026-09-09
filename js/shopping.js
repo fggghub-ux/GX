@@ -438,15 +438,15 @@
             systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。格式要求：\n
 [
   {
-    "name": "商品名称",
-    "price": "商品价格(包含¥符号，如¥4800)",
-    "desc": "商品简短描述",
-    "iconClass": "fontawesome图标类名(例如 fa-burger)",
-    "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
-    "tags": ["标签1", "标签2"],
+    "name": "Product name",
+    "price": "Product price(including $ symbol，e.g. $2200)",
+    "desc": "Short product description",
+    "iconClass": "fontawesome icon class name(e.g. fa-burger)",
+    "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
+    "tags": ["Tag 1", "Tag 2"],
     "reviews": [
-      { "user": "用户A", "text": "评价内容", "rating": 5 },
-      { "user": "用户B", "text": "评价内容", "rating": 4 }
+      { "user": "User A", "text": "评价内容", "rating": 5 },
+      { "user": "User B", "text": "评价内容", "rating": 4 }
     ],
     "qa": [
       { "q": "问题内容1", "a": "回答内容1" },
