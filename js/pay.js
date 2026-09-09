@@ -11,7 +11,7 @@
             icon: 'fas fa-university',
             cardType: '',
             number: '**** **** **** 9898',
-            balance: 1000.00,
+            balance: 10000.00,
             logo: '27',
             styleClass: '', // Default white card
             transactions: []
@@ -23,7 +23,7 @@
             icon: 'fas fa-globe',
             cardType: '',
             number: '**** **** **** 8888',
-            balance: 8000.00,
+            balance: 50000.00,
             logo: 'VISA',
             styleClass: 'bank-card-blue',
             transactions: []
