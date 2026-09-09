@@ -23,7 +23,7 @@
             icon: 'fas fa-globe',
             cardType: '',
             number: '**** **** **** 8888',
-            balance: 50000.00,
+            balance: 80000.00,
             logo: 'VISA',
             styleClass: 'bank-card-blue',
             transactions: []
