@@ -439,7 +439,7 @@
 [
   {
     "name": "商品名称",
-    "price": "商品价格(包含¥符号，如¥4800)",
+    "price": "商品价格(包含$符号，如$4800)",
     "desc": "商品简短描述",
     "iconClass": "fontawesome图标类名(例如 fa-burger)",
     "bgGrad": "CSS渐变背景(例如 linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
@@ -640,13 +640,13 @@
             if (product.classList.contains('shopping-food-card')) {
                 isFood = true;
                 name = product.querySelector('strong')?.textContent || 'Food Item';
-                price = product.querySelector('.shopping-card-topline span')?.textContent || '¥0';
+                price = product.querySelector('.shopping-card-topline span')?.textContent || '$0';
                 desc = product.querySelector('p')?.textContent || '';
                 iconHtml = product.querySelector('.shopping-food-media')?.innerHTML || '';
                 mediaBg = product.querySelector('.shopping-food-media').style.background || window.getComputedStyle(product.querySelector('.shopping-food-media')).background;
             } else {
                 name = product.querySelector('strong')?.textContent || 'Product';
-                price = product.querySelector('span')?.textContent.split('·')[0].trim() || '¥0';
+                price = product.querySelector('span')?.textContent.split('·')[0].trim() || '$0';
                 // For generated mall items, desc is in the hidden span
                 const spans = product.querySelectorAll('span');
                 desc = (spans.length > 1) ? spans[1].textContent : '';
@@ -734,7 +734,7 @@
         
         async sendGiftMessage(friend, order) {
             const itemNames = order.items.map(i => i.name).join(', ');
-            const msgText = `Pay for me\n: ${itemNames}\n Price: ¥${order.total.toFixed(2)}\n Payment Method: ${order.method}`;
+            const msgText = `Pay for me\n: ${itemNames}\n Price: $${order.total.toFixed(2)}\n Payment Method: ${order.method}`;
             
             const htmlCard = `
                 <div style="background: #fff0f3; border-radius: 16px; padding: 16px; min-width: 220px; max-width: 280px; color: #111111; border: 1px solid rgba(255,155,179,0.3); display: inline-block;">
@@ -742,7 +742,7 @@
                         <i class="fas fa-gift"></i> Gift Received
                     </div>
                     <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value ¥${order.total.toFixed(2)}</div>
+                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value $${order.total.toFixed(2)}</div>
                     <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Paid via ${order.method}</div>
                 </div>
             `;
@@ -767,7 +767,7 @@
                     const aiMsg = {
                         role: 'system',
                         type: 'text',
-                        text: `Gift Received: ${itemNames}。Value ¥${order.total.toFixed(2)}。Pald via: ${order.method}。请根据你的角色人设对这份礼物做出真实的反应（感谢、惊喜或者失神等）。`,
+                        text: `Gift Received: ${itemNames}。Value $${order.total.toFixed(2)}。Pald via: ${order.method}。请根据你的角色人设对这份礼物做出真实的反应（感谢、惊喜或者失神等）。`,
                         timestamp: Date.now() + 1
                     };
                     await window.imApp.appendFriendMessage(friend.id, aiMsg, { silent: true });
@@ -814,8 +814,8 @@
             }
             if (!cards || cards.length === 0) {
                 cards = [
-                    { id: 'card1', name: '招商银行储蓄卡', number: '**** **** **** 8888', icon: 'fa-university' },
-                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 9999', icon: 'fa-credit-card' }
+                    { id: 'card1', name: 'AMERICAN EXPRESS', number: '**** **** **** 9898', icon: 'fa-university' },
+                    { id: 'card2', name: 'J.P. Morgan', number: '**** **** **** 8888', icon: 'fa-credit-card' }
                 ];
             }
 
@@ -863,13 +863,13 @@
             
             if (!cards || cards.length === 0) {
                 cards = [
-                    { id: 'card1', name: '招商银行储蓄卡', number: '**** **** **** 8888', icon: 'fa-university' },
-                    { id: 'card2', name: '工商银行信用卡', number: '**** **** **** 9999', icon: 'fa-credit-card' }
+                    { id: 'card1', name: 'AMERICAN EXPRESS', number: '**** **** **** 9898', icon: 'fa-university' },
+                    { id: 'card2', name: 'J.P. Morgan', number: '**** **** **** 8888', icon: 'fa-credit-card' }
                 ];
             }
 
             if (this.cardBalance) {
-                this.cardBalance.textContent = `¥${balance.toFixed(2)}`;
+                this.cardBalance.textContent = `$${balance.toFixed(2)}`;
             }
 
             cards.forEach(card => {
@@ -984,7 +984,7 @@
                 if (cardBalance >= total) {
                     let paymentSuccess = true;
                     if (typeof window.addPayTransaction === 'function') {
-                        paymentSuccess = window.addPayTransaction(total, '购物消费', 'expense', this.selectedCard.id);
+                        paymentSuccess = window.addPayTransaction(total, 'Shopping', 'expense', this.selectedCard.id);
                     }
                     
                     if (paymentSuccess) {
@@ -1020,7 +1020,7 @@
                 const friendName = this.selectedFriend.name || this.selectedFriend.nickname || 'Unknown Char';
                 
                 // Construct fallback text message
-                const msgText = `Pay for me\n: ${itemNames}\n Price: ¥${total.toFixed(2)}`;
+                const msgText = `Pay for me\n: ${itemNames}\n Price: $${total.toFixed(2)}`;
                 
                 // Construct HTML Card for modern pipeline
                 const htmlCard = `
@@ -1029,7 +1029,7 @@
                             <i class="fas fa-bag-shopping" style="color: #a97642;"></i> Shop Request
                         </div>
                         <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                        <div style="font-size: 24px; font-weight: 800; color: #111111; margin-top: 14px; margin-bottom: 16px;">¥${total.toFixed(2)}</div>
+                        <div style="font-size: 24px; font-weight: 800; color: #111111; margin-top: 14px; margin-bottom: 16px;">$${total.toFixed(2)}</div>
                         <div style="background: #a97642; color: #ffffff; text-align: center; padding: 10px 0; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">Pay Now</div>
                     </div>
                 `;
@@ -1197,7 +1197,7 @@
                         <div class="shopping-order-price-wrap">
                             <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #ff9bb3; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Gift</button>
                             <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">Review</button>
-                            <div class="shopping-order-price">¥${order.total.toFixed(2)}</div>
+                            <div class="shopping-order-price">$${order.total.toFixed(2)}</div>
                         </div>
                     </div>
                 `;
@@ -1264,8 +1264,8 @@
             if (isFood) {
                 if (this.foodDetailName) this.foodDetailName.textContent = product.name;
                 if (this.foodDetailPrice) {
-                    const val = product.price.replace('¥', '');
-                    this.foodDetailPrice.innerHTML = `<span style="font-size: 16px;">¥</span>${val}`;
+                    const val = product.price.replace('$', '');
+                    this.foodDetailPrice.innerHTML = `<span style="font-size: 16px;">$</span>${val}`;
                 }
                 if (this.foodBottomPrice) this.foodBottomPrice.textContent = product.price;
                 if (this.foodDetailDesc) this.foodDetailDesc.textContent = product.desc;
@@ -1600,7 +1600,7 @@
 
         addToCart(product) {
             // Parse price
-            const priceVal = parseFloat(product.price.replace('¥', '')) || 0;
+            const priceVal = parseFloat(product.price.replace('$', '')) || 0;
             this.cart.push({
                 ...product,
                 priceVal: priceVal,
@@ -1664,9 +1664,9 @@
                 this.cartList.appendChild(itemEl);
             });
 
-            if (this.cartSubtotal) this.cartSubtotal.textContent = `¥${subtotal.toFixed(2)}`;
+            if (this.cartSubtotal) this.cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
             const deliveryFee = 5;
-            if (this.cartTotal) this.cartTotal.textContent = `¥${(subtotal + deliveryFee).toFixed(2)}`;
+            if (this.cartTotal) this.cartTotal.textContent = `$${(subtotal + deliveryFee).toFixed(2)}`;
         }
 
         open() {
@@ -1691,7 +1691,7 @@
         }
 
         switchTab(tab, options = {}) {
-            const targetTab = this.tabs.includes(tab) ? tab : 'food';
+            const targetTab = this.tabs.includes(tab) ? tab : 'Food';
             const shouldScroll = options.scroll !== false;
             this.currentTab = targetTab;
 
