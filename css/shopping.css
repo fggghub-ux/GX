@@ -311,8 +311,8 @@
 
 .product-media-ivory { background: linear-gradient(145deg, #251424, #0F0110, #500651); }
 .product-media-charcoal { background: linear-gradient(145deg, #A07300, #7B4715, #DCA524); }
-.product-media-stone { background: linear-gradient(145deg, #161616, #232232, #424242); }
-.product-media-moss { background: linear-gradient(145deg, #880028, #4D014C, #CB0276); }
+.product-media-stone { background: linear-gradient(145deg, #161616, #424242, #232232); }
+.product-media-moss { background: linear-gradient(145deg, #880028, #CB0276, #4D014C); }
 
 .shopping-product-card strong,
 .shopping-product-card span {
