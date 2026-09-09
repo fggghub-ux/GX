@@ -435,22 +435,22 @@
                 }
             }
 
-            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。格式要求：\n
+            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。注意：name、desc、tags 字段需使用英文。格式要求：\n
 [
   {
     "name": "Product name",
     "price": "Product price(including $ symbol，e.g. $2200)",
     "desc": "Short product description",
-    "iconClass": "fontawesome icon class name(e.g. fa-burger)",
-    "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #161729 0%, #d0425a 100%))",
+    "iconClass": "fontawesome icon class name(e.g. Omakase)",
+    "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
-      { "user": "User A", "text": "评价内容", "rating": 5 },
-      { "user": "User B", "text": "评价内容", "rating": 4 }
+      { "user": "User A", "text": "Review content", "rating": 5 },
+      { "user": "User B", "text": "Review content", "rating": 4 }
     ],
     "qa": [
-      { "q": "问题内容1", "a": "回答内容1" },
-      { "q": "问题内容2", "a": "回答内容2" }
+      { "q": "Question 1", "a": "Answer 1" },
+      { "q": "Question 2", "a": "Answer 2" }
     ]
   }
 ]`;
