@@ -435,13 +435,13 @@
                 }
             }
 
-            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。注意：name、desc、tags 字段需使用英文。格式要求：\n
-[
+            systemPrompt += `输出必须为纯 JSON 数组格式，不要任何多余文本或 markdown 标签。格式铁律：所有字符串内容中，如需强调、引用某个词语、菜名、品牌名或俚语，一律使用单引号 ' 包裹（例如 the 'wagyu' course），绝对禁止在字符串值内部使用双引号 " ，因为这会破坏 JSON 结构导致解析失败。格式要求：\n
+            
   {
     "name": "Product name",
     "price": "Product price(including $ symbol，e.g. $2200)",
     "desc": "Short product description",
-    "iconClass": "fontawesome icon class name(e.g. Omakase)",
+    "iconClass": "fontawesome icon class name(e.g. fa-utensils)",
     "bgGrad": "CSS gradient background(e.g. linear-gradient(135deg, #f093fb 0%, #f5576c 100%))",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
