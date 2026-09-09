@@ -442,7 +442,7 @@
     "name": "Product name",
     "price": "Product price including $ symbol, e.g. $2200",
     "desc": "Short product description",
-    "iconClass": "FontAwesome icon class name, e.g. fa-utensils",
+    "iconClass": "FontAwesome icon class name, e.g. Omakase",
     "bgGrad": "CSS gradient background, e.g. linear-gradient(135deg, #161729 0%, #d0425a 100%)",
     "tags": ["Tag 1", "Tag 2"],
     "reviews": [
