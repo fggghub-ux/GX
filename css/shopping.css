@@ -237,7 +237,7 @@
 }
 
 .food-media-rose { background: linear-gradient(145deg, #334456, #B4B9BF); }
-.food-media-gold { background: linear-gradient(135deg, #120F2E 0%, #262545 100%); }
+.food-media-gold { background: linear-gradient(180deg, #120F2E, #262545); }
 
 .shopping-food-copy {
     min-width: 0;
