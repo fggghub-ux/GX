@@ -1621,7 +1621,7 @@
             || /^https?:\/\//i.test(value)
             || DEFAULT_PHOTO_IMAGE_SRCS.includes(value)
             || value === DEFAULT_WIDGET_IMAGE_ASSET
-            || value === DEFAULT_PET_IMAGE_SRC;
+            || value === DEFAULT_PET_IMAGE_SRC
             || value === DEFAULT_NOTIFICATION_AVATAR_SRC
             || value === DEFAULT_COUPLE_LEFT_IMAGE_SRC
             || value === DEFAULT_COUPLE_RIGHT_IMAGE_SRC;
