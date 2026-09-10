@@ -400,7 +400,7 @@
                     </div>
                     <div class="bstage-profile-stat-bubble" style="background-color: #2c2c2e; color: #fff; border: none;">
                         <span class="bstage-stat-label" style="color: #aaa;">Plan Earnings</span>
-                        <span class="bstage-stat-value" id="bstage-profile-sub-revenue" style="color: #fff;">￥0.00</span>
+                        <span class="bstage-stat-value" id="bstage-profile-sub-revenue" style="color: #fff;">$0.00</span>
                     </div>
                 </div>
 
@@ -5530,7 +5530,7 @@ ${charInfo}
     }
 
     function formatBstageCny(value) {
-        return `￥${Math.max(0, Number(value) || 0).toFixed(2)}`;
+        return `$${Math.max(0, Number(value) || 0).toFixed(2)}`;
     }
 
     function updateBstageProfileStats() {
