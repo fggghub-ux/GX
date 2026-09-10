@@ -16,6 +16,9 @@
     ];
     const DEFAULT_PET_IMAGE_SRC = 'assets/home/pet-default.jpg';
     const DEFAULT_WIDGET_IMAGE_ASSET = 'assets/home/widget-default-320.jpg';
+    const DEFAULT_NOTIFICATION_AVATAR_SRC = 'assets/home/notification-default.jpg';
+    const DEFAULT_COUPLE_LEFT_IMAGE_SRC = 'assets/home/couple-default-left.jpg';
+    const DEFAULT_COUPLE_RIGHT_IMAGE_SRC = 'assets/home/couple-default-right.jpg';
     const OPTIMIZED_DEFAULT_IMAGE_SOURCES = new Map([
         [DEFAULT_WIDGET_IMAGE_SRC, DEFAULT_WIDGET_IMAGE_ASSET],
         ['assets/home/photo-default-1.jpg', DEFAULT_PHOTO_IMAGE_SRCS[0]],
@@ -1288,6 +1291,7 @@
                 photo3: DEFAULT_PHOTO_IMAGE_SRCS[2]
             };
         }
+        if (type === 'notification') return { avatar: DEFAULT_NOTIFICATION_AVATAR_SRC };
         return {};
     }
 
@@ -1618,6 +1622,9 @@
             || DEFAULT_PHOTO_IMAGE_SRCS.includes(value)
             || value === DEFAULT_WIDGET_IMAGE_ASSET
             || value === DEFAULT_PET_IMAGE_SRC;
+            || value === DEFAULT_NOTIFICATION_AVATAR_SRC
+            || value === DEFAULT_COUPLE_LEFT_IMAGE_SRC
+            || value === DEFAULT_COUPLE_RIGHT_IMAGE_SRC;
     }
 
     function getPrimaryWidgetText(config) {
