@@ -50,22 +50,22 @@
     const OLD_PHOTO_BODY_DEFAULTS = new Set(['2 x 4', 'Drop your favorite picture here']);
 
     const DEFAULT_WIDGET_TEXT = {
-        profileTitle: 'name @iisonyoung',
-        profilePosts: '0',
-        profileFollowers: '1314',
-        profileFollowing: '520',
-        petText: 'oxo',
-        musicTitle: 'oode...',
-        musicArtist: '- Maximillian',
-        musicLyric1: 'u2phone',
-        musicLyric2: 'sonokoiomoiiyo',
-        musicLyric3: 'The rain of destiny',
-        coupleLeft: '銋犮厾',
-        coupleRight: '銋庛厧',
-        photoTitle: 'iisonyoung',
+        profileTitle: 'i 🤍uuu so..@kendall',
+        profilePosts: '19',
+        profileFollowers: '7119.1K',
+        profileFollowing: '8',
+        petText: 'irrelevant',
+        musicTitle: 'But...',
+        musicArtist: '- Drake',
+        musicLyric1: 'Whit no makeup she a ten',
+        musicLyric2: 'And she the best with that head',
+        musicLyric3: 'Even better than Karrine',
+        coupleLeft: '-.-',
+        coupleRight: 'TT',
+        photoTitle: 'callmekim',
         photoBody: '',
-        notificationTitle: 'u2phone',
-        notificationDesc: 'I was with you in a happy, translucent, endless dream. In contrast to my usual dreams.'
+        notificationTitle: 'Entanglement',
+        notificationDesc: 'If it’s not mine, it’s not special.'
     };
 
     let appEl;
