@@ -255,11 +255,11 @@
 
                     <!-- Apps and Pet Widget (Bottom) -->
                     <div class="app-item" id="app-pay-btn" style="cursor: pointer;" onclick="document.getElementById('pay-view').classList.add('active'); document.getElementById('pay-view').style.display='flex';">
-                        <div class="app-icon icon-placeholder" id="app-icon-1" style="border: 1px solid #e5e5ea;"><img src="assets/app-icons/pay.jpg" alt="Pay"></div>
+                        <div class="app-icon icon-placeholder" id="app-icon-1" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 28px;"><i class="fas fa-wallet"></i></div>
                         <span class="app-name" data-u2-i18n="home.app.pay">Pay</span>
                     </div>
                     <div class="app-item tiktok-app" id="app-tiktok-btn" style="cursor: pointer;">
-                        <div class="app-icon icon-placeholder" id="app-icon-2" style="border: 1px solid #e5e5ea;"><img src="assets/app-icons/tiktok.jpg" alt="TikTok"></div>
+                        <div class="app-icon icon-placeholder" id="app-icon-2" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 30px;"><i class="fab fa-tiktok"></i></div>
                         <span class="app-name" data-u2-i18n="home.app.tiktok">TikTok</span>
                     </div>
                     
@@ -278,14 +278,14 @@
 
                     <!-- More Apps (2 slots) -->
                     <div class="app-item bstage-app" id="app-bstage-btn" style="cursor: pointer;">
-                        <div class="app-icon icon-placeholder" id="app-icon-3" style="border: 1px solid #e5e5ea;">
-                            <img src="assets/app-icons/bstage.jpg" alt="b.stage">
+                        <div class="app-icon icon-placeholder" id="app-icon-3" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 26px;">
+                            <i class="fas fa-layer-group"></i>
                         </div>
                         <span class="app-name" data-u2-i18n="home.app.bstage">b.stage</span>
                     </div>
                     <div class="app-item x-app" id="app-x-btn" style="cursor: pointer;">
-                        <div class="app-icon icon-placeholder" id="app-icon-4" style="border: 1px solid #e5e5ea;">
-                            <img src="assets/app-icons/x.jpg" alt="X">
+                        <div class="app-icon icon-placeholder" id="app-icon-4" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 26px;">
+                            <i class="fa-brands fa-x-twitter"></i>
                         </div>
                         <span class="app-name" data-u2-i18n="home.app.x">X</span>
                     </div>
@@ -358,12 +358,12 @@
                     <!-- App 1 & App 2 (Left side of Row 3) -->
                     <div class="app-item shopping-app" id="app-shopping-btn" style="cursor: pointer;">
                         <div class="app-icon icon-placeholder shopping-home-icon" id="app-icon-5">
-                            <img src="assets/app-icons/shop.jpg" alt="Shop">
+                            <i class="fas fa-shopping-bag"></i>
                         </div>
                         <span class="app-name" data-u2-i18n="home.app.shop">Shop</span>
                     </div>
                     <div class="app-item library-app-item" id="app-phone-btn" style="cursor: pointer;">
-                        <div class="app-icon icon-placeholder library-home-icon" id="app-icon-6"><img src="assets/app-icons/library.jpg" alt="Library"></div>
+                        <div class="app-icon icon-placeholder library-home-icon" id="app-icon-6"><i class="fas fa-book-open"></i></div>
                         <span class="app-name" data-u2-i18n="home.app.library">Library</span>
                     </div>
 
@@ -388,14 +388,14 @@
 
                     <!-- App 3 & App 4 (Left side of Row 4) -->
                     <div class="app-item netflix-app" id="app-netflix-btn" style="cursor: pointer;" onclick="if(window.netflixApp && typeof window.netflixApp.open === 'function') window.netflixApp.open(); else { const v = document.getElementById('netflix-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
-                        <div class="app-icon icon-placeholder" id="app-icon-7" style="border: 1px solid #e5e5ea;" onclick="event.stopPropagation(); if(window.netflixApp && typeof window.netflixApp.open === 'function') window.netflixApp.open(); else { const v = document.getElementById('netflix-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
-                            <img src="assets/app-icons/netflix.jpg" alt="Netflix">
+                        <div class="app-icon icon-placeholder" id="app-icon-7" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 900; font-family: Arial, sans-serif; letter-spacing: -1px;" onclick="event.stopPropagation(); if(window.netflixApp && typeof window.netflixApp.open === 'function') window.netflixApp.open(); else { const v = document.getElementById('netflix-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
+                            N
                         </div>
                         <span class="app-name" data-u2-i18n="home.app.netflix">Netflix</span>
                     </div>
                     <div class="app-item loves-app" id="app-loves-btn" style="cursor: pointer;" onclick="if(window.lovesApp && typeof window.lovesApp.open === 'function') window.lovesApp.open(); else { const v = document.getElementById('loves-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
-                        <div class="app-icon icon-placeholder" id="app-icon-8" style="border: 1px solid #e5e5ea;" onclick="event.stopPropagation(); if(window.lovesApp && typeof window.lovesApp.open === 'function') window.lovesApp.open(); else { const v = document.getElementById('loves-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
-                            <img src="assets/app-icons/loves.jpg" alt="Loves">
+                        <div class="app-icon icon-placeholder" id="app-icon-8" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 28px;" onclick="event.stopPropagation(); if(window.lovesApp && typeof window.lovesApp.open === 'function') window.lovesApp.open(); else { const v = document.getElementById('loves-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
+                            <i class="fas fa-heart"></i>
                         </div>
                         <span class="app-name" data-u2-i18n="home.app.loves">Loves</span>
                     </div>
@@ -438,20 +438,20 @@
         <div class="dock-container">
             <div class="dock" id="dock">
                 <div class="app-item" id="dock-icon-settings" style="cursor: pointer;">
-                    <div class="app-icon icon-placeholder" style="border: 1px solid #e5e5ea;">
-                        <img src="assets/app-icons/settings.jpg" alt="设置">
+                    <div class="app-icon" style="background: #ffffff; font-size: 32px; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center;">
+                        <i class="fas fa-cog"></i>
                     </div>
                     <span class="app-name">设置</span>
                 </div>
                 <div class="app-item imessage-app" id="dock-icon-imessage" style="cursor: pointer;" onclick="document.getElementById('imessage-view').style.display='flex'">
-                    <div class="app-icon icon-placeholder" style="border: 1px solid #e5e5ea;">
-                        <img src="assets/app-icons/imessage.jpg" alt="信息">
+                    <div class="app-icon" style="background: #ffffff; font-size: 32px; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center;">
+                        <i class="fas fa-comment"></i>
                     </div>
                     <span class="app-name">信息</span>
                 </div>
                 <div class="app-item youtube-app" id="dock-icon-youtube" style="cursor: pointer;">
-                    <div class="app-icon icon-placeholder" style="border: 1px solid #e5e5ea;">
-                        <img src="assets/app-icons/youtube.jpg" alt="YouTube">
+                    <div class="app-icon" style="background: #ffffff; color: #1c1c1e; font-size: 38px; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center;">
+                        <i class="fab fa-youtube"></i>
                     </div>
                         <span class="app-name" data-u2-i18n="home.app.youtube">YouTube</span>
                 </div>
@@ -7236,7 +7236,7 @@
                     <div class="loves-intro">
                         <span>TOGETHER</span>
                         <h2>Dedicated to Your Romance</h2>
-                        <p>I could see the East River from here, but my mind was nowhere near California anymore.</p>
+                        <p>I could see the East River from here, but my mind was nowhere near Californian anymore.</p>
                     </div>
                     <div class="loves-list-heading">
                         <h3>RELYON</h3>
@@ -7310,8 +7310,8 @@
                             </div>
                             <div id="lovers-moments-empty" class="lovers-panel-empty">
                                 <i class="far fa-comment-dots"></i>
-                                <strong> </strong>
-                                <span>Then I must have drowned long ago.Because if your eyes are an ocean, I was born to sink.</span>
+                                <strong>还没有动态</strong>
+                                <span>记录今天发生的小事吧</span>
                             </div>
                         </div>
                         <!-- 设备面板 -->
