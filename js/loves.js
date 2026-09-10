@@ -2590,7 +2590,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             container.innerHTML = `
                 <div class="loves-placeholder">
                     <i class="fas fa-heart-crack"></i>
-                    <p>Cease your longing for water that has passed</p>
+                    <p>Cease longing for water that has passed</p>
                 </div>
             `;
             return;
