@@ -16,6 +16,9 @@
     ];
     const DEFAULT_PET_IMAGE_SRC = 'assets/home/pet-default.jpg';
     const DEFAULT_WIDGET_IMAGE_ASSET = 'assets/home/widget-default-320.jpg';
+    const DEFAULT_NOTIFICATION_AVATAR_SRC = 'assets/home/notification-default.jpg';
+    const DEFAULT_COUPLE_LEFT_IMAGE_SRC = 'assets/home/couple-default-left.jpg';
+    const DEFAULT_COUPLE_RIGHT_IMAGE_SRC = 'assets/home/couple-default-right.jpg';
     const OPTIMIZED_DEFAULT_IMAGE_SOURCES = new Map([
         [DEFAULT_WIDGET_IMAGE_SRC, DEFAULT_WIDGET_IMAGE_ASSET],
         ['assets/home/photo-default-1.jpg', DEFAULT_PHOTO_IMAGE_SRCS[0]],
@@ -47,22 +50,22 @@
     const OLD_PHOTO_BODY_DEFAULTS = new Set(['2 x 4', 'Drop your favorite picture here']);
 
     const DEFAULT_WIDGET_TEXT = {
-        profileTitle: 'i 🤍uuu so..@kendall',
-        profilePosts: '19',
-        profileFollowers: '7119.1K',
-        profileFollowing: '8',
-        petText: 'irrelevant',
-        musicTitle: 'But...',
-        musicArtist: '- Drake',
-        musicLyric1: 'Whit no makeup she a ten',
-        musicLyric2: 'And she the best with that head',
-        musicLyric3: 'Even better than Karrine',
-        coupleLeft: '-.-',
-        coupleRight: 'TT',
-        photoTitle: 'callmekim',
+        profileTitle: 'name @iisonyoung',
+        profilePosts: '0',
+        profileFollowers: '1314',
+        profileFollowing: '520',
+        petText: 'oxo',
+        musicTitle: 'oode...',
+        musicArtist: '- Maximillian',
+        musicLyric1: 'u2phone',
+        musicLyric2: 'sonokoiomoiiyo',
+        musicLyric3: 'The rain of destiny',
+        coupleLeft: '銋犮厾',
+        coupleRight: '銋庛厧',
+        photoTitle: 'iisonyoung',
         photoBody: '',
-        notificationTitle: 'Entanglement',
-        notificationDesc: 'If it’s not mine, it’s not special.'
+        notificationTitle: 'u2phone',
+        notificationDesc: 'I was with you in a happy, translucent, endless dream. In contrast to my usual dreams.'
     };
 
     let appEl;
@@ -1277,19 +1280,20 @@
     }
 
     function getDefaultWidgetImages(type) {
-        if (type === 'profile') return { avatar: DEFAULT_WIDGET_IMAGE_ASSET };
-        if (type === 'pet') return { pet: DEFAULT_PET_IMAGE_SRC };
-        if (type === 'music') return { cover: DEFAULT_WIDGET_IMAGE_ASSET };
-        if (type === 'couple') return { left: DEFAULT_WIDGET_IMAGE_ASSET, right: DEFAULT_WIDGET_IMAGE_ASSET };
-        if (type === 'photo') {
-            return {
-                photo: DEFAULT_PHOTO_IMAGE_SRCS[0],
-                photo2: DEFAULT_PHOTO_IMAGE_SRCS[1],
-                photo3: DEFAULT_PHOTO_IMAGE_SRCS[2]
-            };
-        }
-        return {};
+    if (type === 'profile') return { avatar: DEFAULT_WIDGET_IMAGE_ASSET };
+    if (type === 'pet') return { pet: DEFAULT_PET_IMAGE_SRC };
+    if (type === 'music') return { cover: DEFAULT_WIDGET_IMAGE_ASSET };
+    if (type === 'couple') return { left: DEFAULT_COUPLE_LEFT_IMAGE_SRC, right: DEFAULT_COUPLE_RIGHT_IMAGE_SRC };
+    if (type === 'photo') {
+        return {
+            photo: DEFAULT_PHOTO_IMAGE_SRCS[0],
+            photo2: DEFAULT_PHOTO_IMAGE_SRCS[1],
+            photo3: DEFAULT_PHOTO_IMAGE_SRCS[2]
+        };
     }
+    if (type === 'notification') return { avatar: DEFAULT_NOTIFICATION_AVATAR_SRC };
+    return {};
+}
 
     function mergeWidgetImagesWithDefaults(type, images = {}) {
         const merged = { ...(images || {}) };
@@ -1617,7 +1621,10 @@
             || /^https?:\/\//i.test(value)
             || DEFAULT_PHOTO_IMAGE_SRCS.includes(value)
             || value === DEFAULT_WIDGET_IMAGE_ASSET
-            || value === DEFAULT_PET_IMAGE_SRC;
+            || value === DEFAULT_PET_IMAGE_SRC
+            || value === DEFAULT_NOTIFICATION_AVATAR_SRC
+            || value === DEFAULT_COUPLE_LEFT_IMAGE_SRC
+            || value === DEFAULT_COUPLE_RIGHT_IMAGE_SRC;
     }
 
     function getPrimaryWidgetText(config) {
