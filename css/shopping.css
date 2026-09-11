@@ -236,8 +236,9 @@
     font-size: 30px;
 }
 
-.food-media-rose { background: linear-gradient(145deg, #334456, #B4B9BF); }
-.food-media-gold { background: linear-gradient(180deg, #0A1128, #C41E5C); }
+.food-media-ash { background: linear-gradient(145deg, #334456, #B4B9BF); }
+.food-media-rose { background: linear-gradient(135deg, #0A1128 30%, #C41E5C 100%); }
+.food-media-noir { background: linear-gradient(145deg, #07060B, #1E1137); }
 
 .shopping-food-copy {
     min-width: 0;
