@@ -5424,7 +5424,7 @@ ${charInfo}
             window.showToast('Pay 暂不可用，请稍后重试');
             return;
         }
-        const success = window.addPayTransaction(amount, 'b.stage POP 订阅收益', 'income');
+        const success = window.addPayTransaction(amount, 'Subscription', 'income');
         if (!success) {
             window.showToast('提现失败，请稍后重试');
             return;
