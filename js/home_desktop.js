@@ -17,6 +17,7 @@
     const DEFAULT_PET_IMAGE_SRC = 'assets/home/pet-default.jpg';
     const DEFAULT_WIDGET_IMAGE_ASSET = 'assets/home/widget-default-320.jpg';
     const DEFAULT_NOTIFICATION_AVATAR_SRC = 'assets/home/notification-default.jpg';
+    const DEFAULT_MUSIC_COVER_IMAGE_SRC = 'assets/home/music-cover-default.jpg';
     const DEFAULT_COUPLE_LEFT_IMAGE_SRC = 'assets/home/couple-default-left.jpg';
     const DEFAULT_COUPLE_RIGHT_IMAGE_SRC = 'assets/home/couple-default-right.jpg';
     const OPTIMIZED_DEFAULT_IMAGE_SOURCES = new Map([
@@ -1282,7 +1283,7 @@
     function getDefaultWidgetImages(type) {
     if (type === 'profile') return { avatar: DEFAULT_WIDGET_IMAGE_ASSET };
     if (type === 'pet') return { pet: DEFAULT_PET_IMAGE_SRC };
-    if (type === 'music') return { cover: DEFAULT_WIDGET_IMAGE_ASSET };
+    if (type === 'music') return { cover: DEFAULT_MUSIC_COVER_IMAGE_SRC };
     if (type === 'couple') return { left: DEFAULT_COUPLE_LEFT_IMAGE_SRC, right: DEFAULT_COUPLE_RIGHT_IMAGE_SRC };
     if (type === 'photo') {
         return {
@@ -1623,6 +1624,7 @@
             || value === DEFAULT_WIDGET_IMAGE_ASSET
             || value === DEFAULT_PET_IMAGE_SRC
             || value === DEFAULT_NOTIFICATION_AVATAR_SRC
+            || value === DEFAULT_MUSIC_COVER_IMAGE_SRC
             || value === DEFAULT_COUPLE_LEFT_IMAGE_SRC
             || value === DEFAULT_COUPLE_RIGHT_IMAGE_SRC;
     }
