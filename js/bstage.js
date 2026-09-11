@@ -3008,7 +3008,7 @@ ${generationIntent}
                     // Update Temp Members during creation
                     renderTempMembers();
                 }
-                window.showToast(`已更新成员: ${name}`);
+                window.showToast(`Updated member: ${name}`);
                 currentEditingMember = null;
             } else {
                 // Add new
@@ -3029,7 +3029,7 @@ ${generationIntent}
                     if (document.querySelector('.bstage-nav-item[data-tab="pop"]').classList.contains('active')) {
                         renderTeamPop(currentTeam);
                     }
-                    window.showToast(`已添加成员: ${name}`);
+                    window.showToast(`Member added: ${name}`);
                 } else {
                     tempMembers.push(newChar);
                     renderTempMembers();
@@ -3268,7 +3268,7 @@ ${generationIntent}
             }
             isEditingTeam = false;
             window.closeView(editTeamSheet);
-            window.showToast('团队信息已更新');
+            window.showToast('Team information updated');
         }
     });
 
@@ -3278,7 +3278,7 @@ ${generationIntent}
             window.showToast('User 团队为固定团队，不能删除');
             return;
         }
-        if (confirm('确定要删除这个团队吗？')) {
+        if (confirm('Delete this team?')) {
             teams = teams.filter(t => t.id !== currentTeam.id);
             currentTeam = null;
             saveBstageData(); // Explicitly save to ensure persistence
@@ -5404,7 +5404,7 @@ ${charInfo}
         }
         
         window.closeView(editProfileModal);
-        window.showToast('资料已更新');
+        window.showToast('Profile updated');
     });
 
     // Orders Logic
