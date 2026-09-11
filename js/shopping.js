@@ -1005,7 +1005,7 @@
                         this.saveCart();
                         this.renderCart();
                         this.checkoutSheet?.classList.remove('active');
-                        window.showToast ? window.showToast('Payment successful.') : alert('Payment successful.');
+                        window.showToast ? window.showToast('Payment successful.') : alert('Payment successful');
                     } else {
                         window.showToast ? window.showToast('支付失败') : alert('支付失败');
                     }
