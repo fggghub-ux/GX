@@ -151,21 +151,36 @@
         }
     ];
 
+    const APP_ICON_BASE = 'assets/app-icons/';
+    const DEFAULT_APP_ICONS = {
+        'app-icon-1': APP_ICON_BASE + 'pay.jpg',
+        'app-icon-2': APP_ICON_BASE + 'tiktok.jpg',
+        'app-icon-3': APP_ICON_BASE + 'bstage.jpg',
+        'app-icon-4': APP_ICON_BASE + 'x.jpg',
+        'app-icon-5': APP_ICON_BASE + 'shop.jpg',
+        'app-icon-6': APP_ICON_BASE + 'library.jpg',
+        'app-icon-7': APP_ICON_BASE + 'netflix.jpg',
+        'app-icon-8': APP_ICON_BASE + 'loves.jpg',
+        'dock-icon-settings': APP_ICON_BASE + 'settings.jpg',
+        'dock-icon-imessage': APP_ICON_BASE + 'imessage.jpg',
+        'dock-icon-youtube': APP_ICON_BASE + 'youtube.jpg'
+    };
+
     let themeState = {
         bgUrl: null,
         uiChineseEnabled: false,
         apps: [
-            { id: 'app-icon-1', name: 'Pay', icon: null },
-            { id: 'app-icon-2', name: 'TikTok', icon: null },
-            { id: 'app-icon-3', name: 'b.stage', icon: null },
-            { id: 'app-icon-4', name: 'X', icon: null },
-            { id: 'app-icon-5', name: 'Shop', icon: null },
-            { id: 'app-icon-6', name: 'Library', icon: null },
-            { id: 'app-icon-7', name: 'Netflix', icon: null },
-            { id: 'app-icon-8', name: 'Loves', icon: null },
-            { id: 'dock-icon-settings', name: '设置', icon: null },
-            { id: 'dock-icon-imessage', name: '信息', icon: null },
-            { id: 'dock-icon-youtube', name: 'YouTube', icon: null }
+            { id: 'app-icon-1', name: 'Pay', icon: DEFAULT_APP_ICONS['app-icon-1'] },
+            { id: 'app-icon-2', name: 'TikTok', icon: DEFAULT_APP_ICONS['app-icon-2'] },
+            { id: 'app-icon-3', name: 'b.stage', icon: DEFAULT_APP_ICONS['app-icon-3'] },
+            { id: 'app-icon-4', name: 'X', icon: DEFAULT_APP_ICONS['app-icon-4'] },
+            { id: 'app-icon-5', name: 'Shop', icon: DEFAULT_APP_ICONS['app-icon-5'] },
+            { id: 'app-icon-6', name: 'Library', icon: DEFAULT_APP_ICONS['app-icon-6'] },
+            { id: 'app-icon-7', name: 'Netflix', icon: DEFAULT_APP_ICONS['app-icon-7'] },
+            { id: 'app-icon-8', name: 'Loves', icon: DEFAULT_APP_ICONS['app-icon-8'] },
+            { id: 'dock-icon-settings', name: '设置', icon: DEFAULT_APP_ICONS['dock-icon-settings'] },
+            { id: 'dock-icon-imessage', name: '信息', icon: DEFAULT_APP_ICONS['dock-icon-imessage'] },
+            { id: 'dock-icon-youtube', name: 'YouTube', icon: DEFAULT_APP_ICONS['dock-icon-youtube'] }
         ],
         fontMode: 'preset', // 'preset' or 'saved'
         fontPresetKey: 'system-default',
@@ -259,7 +274,7 @@
                     savedThemeState.apps.forEach(savedApp => {
                         const existingApp = themeState.apps.find(a => a.id === savedApp.id);
                         if (existingApp) {
-                            existingApp.icon = savedApp.icon;
+                            if (savedApp.icon) existingApp.icon = savedApp.icon; // 空值不覆盖默认图
                             if (savedApp.id === 'app-icon-6') {
                                 existingApp.name = 'Library';
                             } else if (savedApp.id === 'app-icon-8' && savedApp.name === 'Diary') {
@@ -3489,7 +3504,7 @@
         
         if (resetAllIconsBtn) {
             resetAllIconsBtn.addEventListener('click', () => {
-                themeState.apps.forEach(app => { app.icon = null; });
+                themeState.apps.forEach(app => { app.icon = DEFAULT_APP_ICONS[app.id] || null; });
                 commitThemeAppIconChanges('应用图标已全部重置');
             });
         }
@@ -3561,7 +3576,7 @@
                 const resetBtn = item.querySelector('.reset-single-app-btn');
                 resetBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    themeState.apps[index].icon = null;
+                    themeState.apps[index].icon = DEFAULT_APP_ICONS[app.id] || null;
                     commitThemeAppIconChanges(`${app.name} 图标已重置`);
                 });
         
