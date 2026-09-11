@@ -26,6 +26,19 @@
             ]
         },
         {
+            id: 'September 7, 2026',
+            date: 'September 7, 2026',
+            summary: ' ',
+            sections: [
+                {
+                    title: ' ',
+                    items: [
+                        'Sol',
+                    ]
+                }
+            ]
+        },
+        {
             id: 'August 15, 2026',
             date: 'August 15, 2026',
             summary: ' ',
@@ -34,19 +47,6 @@
                     title: ' ',
                     items: [
                         'Updated',
-                    ]
-                }
-            ]
-        },
-        {
-            id: 'September 7, 2026',
-            date: 'September 7, 2026',
-            summary: ' ',
-            sections: [
-                {
-                    title: ' ',
-                    items: [
-                        'sol',
                     ]
                 }
             ]
