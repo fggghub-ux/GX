@@ -13,269 +13,89 @@
     const confirmButton = document.getElementById('about-info-modal-confirm');
     const CHANGELOG_ENTRIES = [
         {
-            id: '2026-08-15',
-            date: '2026年8月15日',
-            summary: 'X、数据管理、聊天与线上生图功能更新。',
+            id: 'September 4, 2026',
+            date: 'September 4, 2026',
+            summary: ' ',
             sections: [
                 {
-                    title: 'X',
+                    title: ' ',
                     items: [
-                        '新增切换账号功能。',
-                        '优化运行性能。'
-                    ]
-                },
-                {
-                    title: '数据管理',
-                    items: [
-                        '新增图片压缩功能。'
-                    ]
-                },
-                {
-                    title: '聊天',
-                    items: [
-                        '新增自定义 Home 界面 CSS。',
-                        '新增转发聊天记录功能。'
-                    ]
-                },
-                {
-                    title: '线上生图',
-                    items: [
-                        '新增单独重 Roll 功能。'
+                        'IHG',
                     ]
                 }
             ]
         },
         {
-            id: '2026-08-13',
-            date: '2026年8月13日',
-            summary: '单聊线下生图、线下聊天 TXT 导出、聊天记忆优化与自动锁脸修复。',
+            id: 'August 15, 2026',
+            date: 'August 15, 2026',
+            summary: ' ',
             sections: [
                 {
-                    title: '聊天记忆',
+                    title: ' ',
                     items: [
-                        '短期记忆和长期记忆均新增“读取条数”设置，可按聊天单独调整 AI 的相关记忆召回数量。',
-                        '短期记忆支持多选归纳为一条长期记忆；确认保存后会自动移除已归纳的短期条目。'
-                    ]
-                },
-                {
-                    title: '单聊与线下模式',
-                    items: [
-                        '单聊线下设定新增“线下自动生图”开关，开启后沿用线上生图提示词与自动锁脸。',
-                        '线下聊天新增全部聊天记录 TXT 导出。'
-                    ]
-                },
-                {
-                    title: '问题修复',
-                    items: [
-                        '修复线上自动生图的自动锁脸；已上传角色参考脸时，开启“自动锁脸”即可使用。'
+                        'Updated',
                     ]
                 }
             ]
         },
         {
-            id: '2026-08-12',
-            date: '2026年8月12日',
-            summary: '数据管理、世界书与群聊设置优化，Pay 和表情包能力更新。',
+            id: 'September 7, 2026',
+            date: 'September 7, 2026',
+            summary: ' ',
             sections: [
                 {
-                    title: '界面与内容',
+                    title: ' ',
                     items: [
-                        '优化数据管理与世界书的界面体验。',
-                        '表情包贴图支持添加描述。'
-                    ]
-                },
-                {
-                    title: 'Pay 与群聊',
-                    items: [
-                        'Pay 新增充值功能，亲属卡支持解绑。',
-                        '群聊新增“允许角色私聊”与“允许角色和角色好友私聊”开关。'
-                    ]
-                },
-                {
-                    title: '线下模式',
-                    items: [
-                        '进行线下性能小优化。'
+                        'sol',
                     ]
                 }
             ]
         },
         {
-            id: '2026-08-11',
-            date: '2026年8月11日',
-            summary: 'AI 兼容性、Netflix 玩法、TTS 与聊天记忆优化。',
+            id: 'July 1, 2026',
+            date: 'July 1, 2026',
+            summary: ' ',
             sections: [
                 {
-                    title: '功能更新',
+                    title: ' ',
                     items: [
-                        '兼容 iOS 16.4 以下系统无法调用 AI 接口的问题。',
-                        '重构 Netflix 玩法，未完善，测试中。',
-                        '优化 TTS，增加更多服务商。',
-                        '群聊增加 TTS。',
-                        'X 和单聊记忆互通，未完善，测试中。'
-                    ]
-                },
-                {
-                    title: '线下模式',
-                    items: [
-                        '优化总结，增加总结楼层。',
-                        '增加两个由 haru宝宝提供的单楼回顾条目，可在提示词中开启；注意 CoT 也要一并开启。'
+                        'leo',
                     ]
                 }
             ]
         },
         {
-            id: '2026-08-10',
-            date: '2026年8月10日',
-            summary: '识图、X 与朋友圈权限上线，并修复语言播放和排序问题',
+            id: 'January 13, 2026',
+            date: 'January 13, 2026',
+            summary: ' ',
             sections: [
                 {
-                    title: '新增功能',
+                    title: ' ',
                     items: [
-                        '新增识图能力。',
-                        '接入 X。',
-                        '朋友圈新增“谁可以看见”权限设置。',
-                        '角色发布朋友圈后，仅其关系网内的角色可以互动。'
-                    ]
-                },
-                {
-                    title: '问题修复',
-                    items: [
-                        '修复上移功能异常的问题。',
-                        '修复粤语和自定义语言无法播放的问题。'
+                        'zy',
                     ]
                 }
             ]
         },
         {
-            id: '2026-08-07',
-            date: '2026年8月7日',
-            summary: '接口、聊天兼容性与多项新能力优化',
+            id: 'June 9, 2025',
+            date: 'June 9, 2025',
+            summary: ' ',
             sections: [
                 {
-                    title: '功能更新',
+                    title: ' ',
                     items: [
-                        '优化接口兼容性。',
-                        '支持聊天最小/最大气泡条数。',
-                        '优化回车兼容性。',
-                        '新增自动生图。',
-                        '支持外接向量记忆。',
-                        '新增中文 UI。'
+                        '4o',
                     ]
                 }
             ]
         },
-        {
-            id: '2026-08-04',
-            date: '2026年8月4日',
-            summary: '线下模式、世界书与群聊体验优化',
-            sections: [
-                {
-                    title: '性能与翻译',
-                    items: [
-                        '优化线下模式性能与世界书体验。',
-                        '修复 Loves 动态双语翻译。'
-                    ]
-                },
-                {
-                    title: '群聊与美化',
-                    items: [
-                        '支持群聊 ID 切换。',
-                        '新增群聊美化与美化方案导入。'
-                    ]
-                }
-            ]
-        },
-        {
-            id: '2026-08-03',
-            date: '2026年8月3日',
-            summary: '整体性能、备份与聊天显示优化',
-            sections: [
-                {
-                    title: '体验优化',
-                    items: [
-                        '优化整体运行性能。',
-                        '优化备份流程与聊天内容显示。'
-                    ]
-                }
-            ]
-        },
-        {
-            id: '2026-08-02',
-            date: '2026年8月2日',
-            summary: '聊天体验优化与多项功能新增',
-            sections: [
-                {
-                    title: '性能与体验',
-                    items: [
-                        '优化整体性能、线上 CoT 与群通话体验。',
-                        '聊天页面内不再弹出消息通知。'
-                    ]
-                },
-                {
-                    title: '新增功能',
-                    items: [
-                        '新增生图与单次回复条数设置。',
-                        '支持默认语言自定义。',
-                        '支持群聊翻译自动展开。',
-                        '新增匿名问答。'
-                    ]
-                }
-            ]
-        },
-        {
-            id: '2026-08-01',
-            date: '2026年8月1日',
-            summary: '登录、兼容性与聊天能力优化',
-            sections: [
-                {
-                    title: '性能与兼容',
-                    items: [
-                        '优化整体性能、登录以及导入导出备份流程。',
-                        '修复 YTB 私信问题并提升 Edge 兼容性。'
-                    ]
-                },
-                {
-                    title: '聊天与模型',
-                    items: [
-                        '优化线上 CoT、心声自定义与报错处理。',
-                        '单聊支持翻译自动展开。',
-                        '群聊支持 U 头像。'
-                    ]
-                }
-            ]
-        },
-        {
-            id: '2026-07-31',
-            date: '2026年7月31日',
-            summary: '性能问题修复与多设备登录支持',
-            sections: [
-                {
-                    title: '性能与界面',
-                    items: [
-                        '修复全局字体调整引起的卡顿，并改善界面适配。'
-                    ]
-                },
-                {
-                    title: '问题修复',
-                    items: [
-                        '修复 Bstage 与聊天记录搜索页面问题。',
-                        '修复 U 人设未被读取的问题，并优化心声提示词。'
-                    ]
-                },
-                {
-                    title: '登录',
-                    items: [
-                        '账密登录支持多设备同时使用。'
-                    ]
-                }
-            ]
-        }
     ];
     const LATEST_CHANGELOG_ENTRY_ID = CHANGELOG_ENTRIES[0]?.id || '';
     const AUTO_CHANGELOG_DELAY_MS = 250;
     const ACKNOWLEDGEMENT_DELAY_MS = 3000;
     // Version the key so accounts that saw an earlier release receive this one once.
-    const CHANGELOG_NOTICE_STORAGE_PREFIX = 'u2_changelog_notice_seen:20260815-v1:';
+    const CHANGELOG_NOTICE_STORAGE_PREFIX = 'u2_changelog_notice_seen:September 4, 2026-v1:';
     let returnFocus = null;
     let previousBodyOverflow = '';
     let activeChangelogTrigger = null;
