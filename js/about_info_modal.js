@@ -59,7 +59,7 @@
                 {
                     title: ' ',
                     items: [
-                        'leo',
+                        'Leo',
                     ]
                 }
             ]
