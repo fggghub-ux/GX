@@ -88,11 +88,11 @@ window.lovesApp = {
     },
 
     showDeleteConfirm: function(text, onConfirm) {
-        const result = window.confirm('确定要删除 "' + text + '" 吗？');
+        const result = window.confirm('Confirm deletion of "' + text + '" 吗？');
         if (result) {
             Promise.resolve(onConfirm()).then(() => {
             });
-            if (window.showToast) window.showToast('已删除');
+            if (window.showToast) window.showToast('Delete');
         }
     },
 
@@ -172,7 +172,7 @@ window.lovesApp = {
                 if (!translation) return;
                 const expanded = control.getAttribute('aria-expanded') === 'true';
                 control.setAttribute('aria-expanded', String(!expanded));
-                control.textContent = expanded ? '翻译' : '收起';
+                control.textContent = expanded ? 'Translate' : 'Collapse';
                 translation.hidden = expanded;
             };
             control.addEventListener('click', toggle);
@@ -723,8 +723,8 @@ window.lovesApp = {
     formatDiaryDateLabel: function(dateKey) {
         const date = this.parseDateKey(dateKey);
         const todayKey = this.getLocalDateKey(new Date());
-        const weekNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        const prefix = dateKey === todayKey ? '今天' : (date.getMonth() + 1) + '月' + date.getDate() + '日';
+        const weekNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const prefix = dateKey === todayKey ? 'Today' : (date.getMonth() + 1) + 'Month' + date.getDate() + 'Day';
         return prefix + ' · ' + weekNames[date.getDay()];
     },
 
@@ -760,8 +760,8 @@ window.lovesApp = {
         const selectedDateStr = this.getLocalDateKey(baseDate);
 
         if (yearDisplay && monthDisplay) {
-            yearDisplay.textContent = baseDate.getFullYear() + '年';
-            monthDisplay.textContent = (baseDate.getMonth() + 1) + '月';
+            yearDisplay.textContent = baseDate.getFullYear() + 'Year';
+            monthDisplay.textContent = (baseDate.getMonth() + 1) + 'Month';
         }
 
         if (monthPicker) {
@@ -777,7 +777,7 @@ window.lovesApp = {
             };
         }
 
-        const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         let datesHtml = '';
         for (let i = -15; i <= 15; i++) {
             const d = new Date(baseDate);
@@ -792,8 +792,8 @@ window.lovesApp = {
             ].filter(Boolean).join(' ');
             datesHtml += [
                 '<button type="button" class="', stateClasses, '" data-date="', dateStr, '" aria-label="',
-                d.getMonth() + 1, '月', d.getDate(), '日" aria-pressed="', String(isSelected), '">',
-                '<small>', isToday ? '今' : dayNames[d.getDay()], '</small>',
+                d.getMonth() + 1, 'Month', d.getDate(), 'Day" aria-pressed="', String(isSelected), '">',
+                '<small>', isToday ? 'To' : dayNames[d.getDay()], '</small>',
                 '<strong>', d.getDate(), '</strong>',
                 '</button>'
             ].join('');
@@ -823,8 +823,8 @@ window.lovesApp = {
             listContainer.innerHTML = [
                 '<div class="lovers-diary-empty">',
                 '<i class="far fa-pen-to-square"></i>',
-                '<strong>', selectedDateStr === this.getLocalDateKey(today) ? '今天还没有日记' : '这天还没有日记', '</strong>',
-                '<span>点击右下角 +，让 TA 生成行程日记</span>',
+                '<strong>', selectedDateStr === this.getLocalDateKey(today) ? 'She sees is a snowflake.' : 'She sees is a snowflake.', '</strong>',
+                '<span>But what I saw was not snow. It was her. It was my wife.</span>',
                 '</div>'
             ].join('');
             return;
@@ -842,7 +842,7 @@ window.lovesApp = {
                 '<div class="lovers-diary-card">',
                 '<div class="lovers-diary-card-head">',
                 '<strong>', safeTitle, '</strong>',
-                '<button type="button" class="lovers-diary-delete">删除</button>',
+                '<button type="button" class="lovers-diary-delete">Delete</button>',
                 '</div>',
                 '<span class="lovers-diary-location"><i class="fas fa-map-marker-alt"></i>', safeLocation, '</span>',
                 '<p>', safeDiary, '</p>',
@@ -1187,7 +1187,7 @@ window.lovesApp = {
         empty.style.display = 'none';
         
         const userAvatar = window.userState?.avatarUrl || window.imData?.profile?.avatarUrl;
-        const userName = window.userState?.name || window.imData?.profile?.name || '我';
+        const userName = window.userState?.name || window.imData?.profile?.name || 'Me';
         const safeUserName = this.escapeHTML(userName);
         
         let html = '';
@@ -1404,12 +1404,12 @@ window.lovesApp = {
         if (!m || !m.comments || !m.comments[cIdx]) return;
         
         const targetComment = m.comments[cIdx];
-        const targetName = targetComment.isChar ? (this.currentFriend.nickname || this.currentFriend.realname || 'TA') : '我';
+        const targetName = targetComment.isChar ? (this.currentFriend.nickname || this.currentFriend.realname || 'TA') : 'Me';
         
-        const replyText = prompt(`回复 ${targetName}：`);
+        const replyText = prompt(`Reply ${targetName}：`);
         if (replyText !== null && replyText.trim() !== '') {
             m.comments.push({
-                text: `回复 @${targetName} : ${replyText.trim()}`,
+                text: `Reply @${targetName} : ${replyText.trim()}`,
                 isChar: false,
                 timestamp: Date.now()
             });
@@ -1469,7 +1469,7 @@ window.lovesApp = {
 
         moment._charReplyPendingCount = Math.max(0, Number(moment._charReplyPendingCount) || 0) + 1;
         moment._charReplyPending = true;
-        if (window.showToast) window.showToast(options.reason === 'user_comment' ? 'TA 正在回复...' : '正在生成评论...');
+        if (window.showToast) window.showToast(options.reason === 'user_comment' ? 'They are replying...' : '正在生成评论...');
 
         try {
             if (window.imApp?.ensureFriendMessagesLoaded) {
@@ -1900,7 +1900,7 @@ window.lovesApp = {
         const savings = this.ensureSavingsData();
         const summary = this.getSavingsSummary(savings);
         const friendName = this.currentFriend.nickname || this.currentFriend.realname || 'TA';
-        const userName = window.userState?.name || window.imData?.profile?.name || '我';
+        const userName = window.userState?.name || window.imData?.profile?.name || 'Me';
         const percent = savings.goal > 0 ? Math.min(100, Math.round((summary.total / savings.goal) * 100)) : 0;
 
         const totalEl = document.getElementById('lovers-savings-total');
@@ -1917,14 +1917,14 @@ window.lovesApp = {
         const listEl = document.getElementById('lovers-savings-records');
 
         if (totalEl) totalEl.textContent = this.formatMoney(summary.total);
-        if (goalEl) goalEl.textContent = `目标 ${this.formatMoney(savings.goal)}`;
+        if (goalEl) goalEl.textContent = `Goal: ${this.formatMoney(savings.goal)}`;
         if (percentEl) percentEl.textContent = `${percent}%`;
         if (progressEl) progressEl.style.width = `${percent}%`;
         if (userAmountEl) userAmountEl.textContent = this.formatMoney(summary.user);
         if (charAmountEl) charAmountEl.textContent = this.formatMoney(summary.char);
         if (userNameEl) userNameEl.textContent = userName;
         if (charNameEl) charNameEl.textContent = friendName;
-        if (leftEl) leftEl.textContent = summary.total >= savings.goal ? '目标已达成' : `还差 ${this.formatMoney(savings.goal - summary.total)}`;
+        if (leftEl) leftEl.textContent = summary.total >= savings.goal ? 'Goal Achieved' : `${this.formatMoney(savings.goal - summary.total)} Remaining`;
 
         if (dateFilter && !dateFilter.value) {
             dateFilter.value = this.getLocalDateKey();
@@ -1933,7 +1933,7 @@ window.lovesApp = {
         const selectedDate = dateFilter?.value || this.getLocalDateKey();
         const selectedDateObj = this.parseDateKey(selectedDate);
         if (selectedDateLabel) {
-            selectedDateLabel.textContent = `${selectedDateObj.getMonth() + 1}月${selectedDateObj.getDate()}日`;
+            selectedDateLabel.textContent = `${selectedDateObj.getMonth() + 1}Month${selectedDateObj.getDate()}Day`;
         }
 
         const depositRecords = savings.records
@@ -1958,7 +1958,7 @@ window.lovesApp = {
             listEl.innerHTML = `
                 <div class="lovers-savings-empty">
                     <i class="fas fa-piggy-bank"></i>
-                    <div>这天还没有存入记录</div>
+                    <div>I'm willing, the pricier the better.</div>
                 </div>
             `;
             return;
@@ -1980,13 +1980,13 @@ window.lovesApp = {
                     </div>
                     <div class="lovers-savings-record-main">
                         <div class="lovers-savings-record-top">
-                            <span>${isWithdrawal ? '提款到 Pay' : this.escapeHTML(actorName)}</span>
+                            <span>${isWithdrawal ? 'Withdraw to Pay' : this.escapeHTML(actorName)}</span>
                             <strong>${isWithdrawal ? '-' : ''}${this.formatMoney(record.amount)}</strong>
                         </div>
                         <div class="lovers-savings-record-meta">
                             <span>${time}</span>
                             ${isWithdrawal
-                                ? `<span>${this.escapeHTML(record.reason || '存钱罐提款')}</span>`
+                                ? `<span>${this.escapeHTML(record.reason || 'Withdraw')}</span>`
                                 : (record.note ? `<span>${this.escapeHTML(record.note)}</span>` : '')}
                         </div>
                     </div>
@@ -2015,7 +2015,7 @@ window.lovesApp = {
         if (noteInput) noteInput.value = '';
         if (actorInput) {
             actorInput.innerHTML = `
-                <option value="user">我</option>
+                <option value="user">Me</option>
                 <option value="char">${this.escapeHTML(friendName)}</option>
             `;
             actorInput.value = defaultActor === 'char' ? 'char' : 'user';
@@ -2356,7 +2356,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 targetName: userName,
                 cardTitle: titleStr,
                 payStatus: 'completed',
-                content: `[亲属卡] ${titleStr} ¥${amount.toFixed(2)}`,
+                content: `[Family] ${titleStr} ¥${amount.toFixed(2)}`,
                 timestamp
             };
         }
