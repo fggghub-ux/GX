@@ -4077,7 +4077,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         </div>
                         ` : `
                         <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: center; color: #8e8e93; font-size: 14px;">
-                            No data available. Generate it in Settings.
+                            Account not registered
                         </div>
                         `}
                     `;
@@ -4196,7 +4196,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             });
                         }, 50);
                     } else {
-                        tagsList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No file data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
+                        tagsList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No File Data Yet<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
             };
@@ -4308,7 +4308,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             }
                         }, 50);
                     } else {
-                        historyList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No search data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
+                        historyList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No Search Data Yet<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
 
@@ -4354,7 +4354,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             }
                         }, 50);
                     } else {
-                        privateHistoryList.innerHTML = '<div style="padding: 30px; text-align: center; color: #666; font-size: 14px;">No private browsing data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
+                        privateHistoryList.innerHTML = '<div style="padding: 30px; text-align: center; color: #666; font-size: 14px;">No Private Browsing Data Yet<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
             };
@@ -4433,7 +4433,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     let musicData = friend.musicData;
                     
                     if (!musicData || !musicData.top || musicData.top.length === 0) {
-                        musicContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">No music data available<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">Generate it in settings</span></div>';
+                        musicContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">No Msic Data Yet<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">Generate it in settings</span></div>';
                     } else {
                         const topListHTML = (musicData.top || []).map((song, index) => `
                             <div class="music-history-item" data-idx="${index}" style="display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer;">
