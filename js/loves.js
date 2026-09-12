@@ -823,8 +823,8 @@ window.lovesApp = {
             listContainer.innerHTML = [
                 '<div class="lovers-diary-empty">',
                 '<i class="far fa-pen-to-square"></i>',
-                '<strong>', selectedDateStr === this.getLocalDateKey(today) ? 'She sees is a snowflake.' : 'She sees is a snowflake.', '</strong>',
-                '<span>But what I saw was not snow. \nIt was her. It was my wife.</span>',
+                '<strong>', selectedDateStr === this.getLocalDateKey(today) ? 'she sees is a snowflake' : 'she sees is a snowflake', '</strong>',
+                '<span>But what I saw was not snow.<br>It was her. It was my wife.</span>',
                 '</div>'
             ].join('');
             return;
@@ -1187,7 +1187,7 @@ window.lovesApp = {
         empty.style.display = 'none';
         
         const userAvatar = window.userState?.avatarUrl || window.imData?.profile?.avatarUrl;
-        const userName = window.userState?.name || window.imData?.profile?.name || 'Me';
+        const userName = window.userState?.name || window.imData?.profile?.name || 'My';
         const safeUserName = this.escapeHTML(userName);
         
         let html = '';
@@ -1900,7 +1900,7 @@ window.lovesApp = {
         const savings = this.ensureSavingsData();
         const summary = this.getSavingsSummary(savings);
         const friendName = this.currentFriend.nickname || this.currentFriend.realname || 'TA';
-        const userName = window.userState?.name || window.imData?.profile?.name || 'Me';
+        const userName = window.userState?.name || window.imData?.profile?.name || 'My';
         const percent = savings.goal > 0 ? Math.min(100, Math.round((summary.total / savings.goal) * 100)) : 0;
 
         const totalEl = document.getElementById('lovers-savings-total');
@@ -2015,7 +2015,7 @@ window.lovesApp = {
         if (noteInput) noteInput.value = '';
         if (actorInput) {
             actorInput.innerHTML = `
-                <option value="user">Me</option>
+                <option value="user">My</option>
                 <option value="char">${this.escapeHTML(friendName)}</option>
             `;
             actorInput.value = defaultActor === 'char' ? 'char' : 'user';
