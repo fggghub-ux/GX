@@ -1917,7 +1917,7 @@ window.lovesApp = {
         const listEl = document.getElementById('lovers-savings-records');
 
         if (totalEl) totalEl.textContent = this.formatMoney(summary.total);
-        if (goalEl) goalEl.textContent = `Goal: ${this.formatMoney(savings.goal)}`;
+        if (goalEl) goalEl.textContent = `${this.formatMoney(savings.goal)} Goal`;
         if (percentEl) percentEl.textContent = `${percent}%`;
         if (progressEl) progressEl.style.width = `${percent}%`;
         if (userAmountEl) userAmountEl.textContent = this.formatMoney(summary.user);
@@ -2519,7 +2519,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
                     <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
                 </div>
-                <div style="font-size:13px; color:#333; line-height:1.4;">She's spoiled and willful, but she's still mine.<</div>
+                <div style="font-size:13px; color:#333; line-height:1.4;">The one I love is the vivid, living her. Chaotic, beautiful, flawed. Her.</div>
             </div>`,
             text: '【Loves】I accepted your invitation.',
             timestamp: acceptedAt - 100, // 稍微提早一点以便排在前面
@@ -2646,7 +2646,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 };
             } else {
                 actionBtn.type = 'button';
-                actionBtn.textContent = 'Invite';
+                actionBtn.textContent = 'invite';
                 actionBtn.setAttribute('aria-label', `Invite ${friend.nickname || friend.realname || '好友'} to create a couple’s space`);
                 actionBtn.classList.add('loves-note-action-invite');
                 actionBtn.onclick = (e) => {
@@ -3210,12 +3210,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     </div>
                     <button type="button" id="friend-phone-device-item" class="lovers-feature-row">
                         <span class="lovers-feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                        <span class="lovers-feature-copy"><strong>${safeFriendName} ’s Phone</strong><small>Online · Battery 91%</small></span>
+                        <span class="lovers-feature-copy"><strong>${safeFriendName} 's Phone</strong><small>Online · Battery 91%</small></span>
                         <i class="fas fa-chevron-right lovers-feature-chevron"></i>
                     </button>
                     <button type="button" id="friend-computer-device-item" class="lovers-feature-row">
                         <span class="lovers-feature-icon"><i class="fas fa-laptop"></i></span>
-                        <span class="lovers-feature-copy"><strong>${safeFriendName} ’s Computer</strong><small>Online · Work Mode</small></span>
+                        <span class="lovers-feature-copy"><strong>${safeFriendName} 's Computer</strong><small>Online · Work Mode</small></span>
                         <i class="fas fa-chevron-right lovers-feature-chevron"></i>
                     </button>
                 `;
