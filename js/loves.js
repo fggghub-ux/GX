@@ -599,7 +599,7 @@ window.lovesApp = {
 
     formatMoney: function(amount) {
         const value = Number(amount) || 0;
-        return '¥' + value.toLocaleString('zh-CN', {
+        return '$' + value.toLocaleString('zh-CN', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
@@ -1647,14 +1647,14 @@ window.lovesApp = {
     },
 
     ensureSavingsData: function(friend = this.currentFriend) {
-        if (!friend) return { goal: 5200, records: [], withdrawals: [] };
+        if (!friend) return { goal: 88888, records: [], withdrawals: [] };
         if (!friend.lovesData) friend.lovesData = {};
         if (!friend.lovesData.savings || typeof friend.lovesData.savings !== 'object') {
             friend.lovesData.savings = {};
         }
         const savings = friend.lovesData.savings;
         if (!Number.isFinite(Number(savings.goal)) || Number(savings.goal) <= 0) {
-            savings.goal = 5200;
+            savings.goal = 1111;
         } else {
             savings.goal = Number(savings.goal);
         }
@@ -2043,7 +2043,7 @@ window.lovesApp = {
 
         const savings = this.ensureSavingsData();
         const goalInput = document.getElementById('lovers-savings-goal-input');
-        if (goalInput) goalInput.value = String(savings.goal || 5200);
+        if (goalInput) goalInput.value = String(savings.goal || 88888);
 
         const cancelBtn = document.getElementById('lovers-savings-settings-cancel');
         if (cancelBtn) cancelBtn.onclick = () => this.closeSavingsSheet(sheet);
@@ -2078,7 +2078,7 @@ window.lovesApp = {
         this.persistFriendState();
         this.renderSavingsJar();
         this.closeSavingsSheet(sheet);
-        if (window.showToast) window.showToast('目标已更新');
+        if (window.showToast) window.showToast('Goal update');
     },
 
     openSavingsWithdrawSheet: function() {
@@ -2165,7 +2165,7 @@ window.lovesApp = {
         const prompt = `你现在扮演 Char，需要处理情侣共享存钱罐的一次提款请求。
 
 【提款请求】
-User 想从存钱罐提款：¥${amount.toFixed(2)}
+User 想从存钱罐提款：$${amount.toFixed(2)}
 提款理由：${reason}
 
 【存钱罐状态】
@@ -2476,11 +2476,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
-                                    <div style="font-size:14px; font-weight:700;">邀请已接受</div>
+                                    <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
                                 </div>
-                                <div style="font-size:13px; color:#333; line-height:1.4;">TA 已接受了你的情侣空间邀请。</div>
+                                <div style="font-size:13px; color:#333; line-height:1.4;">TA accepted your invitation.</div>
                             </div>`,
-                            text: '【邀请已接受】TA 已接受了你的情侣空间邀请。',
+                            text: '【Invitation Accepted】TA accepted your invitation.',
                             timestamp: Date.now(),
                             time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false }),
                             type: 'html'
@@ -2517,11 +2517,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
-                    <div style="font-size:14px; font-weight:700;">邀请已接受</div>
+                    <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
                 </div>
-                <div style="font-size:13px; color:#333; line-height:1.4;">我已经接受了你的情侣空间邀请，现在我们可以一起使用了。</div>
+                <div style="font-size:13px; color:#333; line-height:1.4;">She's spoiled and willful, but she's still mine.<</div>
             </div>`,
-            text: '【情侣空间】我接受了你的邀请',
+            text: '【Loves】I accepted your invitation.',
             timestamp: acceptedAt - 100, // 稍微提早一点以便排在前面
             type: 'html'
         };
@@ -2638,7 +2638,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             actionBtn.className = 'loves-note-action';
             
             if (friend.hasLovesSpace) {
-                actionBtn.textContent = '进入空间';
+                actionBtn.textContent = 'Enter Space';
                 actionBtn.classList.add('loves-note-action-enter');
                 note.onclick = (e) => {
                     e.stopPropagation();
@@ -2646,8 +2646,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 };
             } else {
                 actionBtn.type = 'button';
-                actionBtn.textContent = '邀请';
-                actionBtn.setAttribute('aria-label', `邀请 ${friend.nickname || friend.realname || '好友'} 建立恋人空间`);
+                actionBtn.textContent = 'Invite';
+                actionBtn.setAttribute('aria-label', `Invite ${friend.nickname || friend.realname || '好友'} to create a couple’s space`);
                 actionBtn.classList.add('loves-note-action-invite');
                 actionBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -2678,12 +2678,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                     <div style="width:28px; height:28px; border-radius:8px; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
-                    <div style="font-size:14px; font-weight:700;">Loves 邀请</div>
+                    <div style="font-size:14px; font-weight:700;">Loves Invitation</div>
                 </div>
-                <div style="font-size:13px; color:#333; line-height:1.4; margin-bottom:8px;">我向你发送了情侣空间的邀请，快来接受吧！</div>
-                <div style="font-size:11px; color:#8e8e93;">点击接受进入专属空间</div>
+                <div style="font-size:13px; color:#333; line-height:1.4; margin-bottom:8px;">Love is the eternal romanticism.</div>
+                <div style="font-size:11px; color:#8e8e93;">Enter private space</div>
             </div>`,
-            text: '【情侣空间邀请】我向你发送了情侣空间的邀请，快来接受吧！',
+            text: '【Loves Invitation】Love is the eternal romanticism.',
             timestamp: Date.now(),
             time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false }),
             type: 'html'
@@ -2706,7 +2706,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         await this.persistFriendState(friend, { metaOnly: true });
         
         if (window.showToast) {
-            window.showToast('已向 ' + (friend.nickname || friend.realname) + ' 发送邀请！');
+            window.showToast('Invitation sent to ' + (friend.nickname || friend.realname) + '!');
         }
         
         // 动态更新列表中的按钮状态（仅模拟，实际上需要对方接受）
@@ -2816,9 +2816,9 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     },
 
     getCurrentRealTimeContext: function(date = new Date()) {
-        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const pad = value => String(value).padStart(2, '0');
-        return `${date.getFullYear()}年${pad(date.getMonth() + 1)}月${pad(date.getDate())}日 ${weekdays[date.getDay()]} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+        return `${date.getFullYear()}Yewr${pad(date.getMonth() + 1)}Month${pad(date.getDate())}Day ${weekdays[date.getDay()]} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
     },
 
     getRecentSingleChatRounds: function(messages, roundLimit = 20) {
@@ -3205,17 +3205,17 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 devicesList.innerHTML = `
                     <div class="lovers-feature-row is-static">
                         <span class="lovers-feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                        <span class="lovers-feature-copy"><strong>我的手机</strong><small>在线 · 电量 87%</small></span>
+                        <span class="lovers-feature-copy"><strong>My Phone</strong><small>Online · Battery 87%</small></span>
                         <span class="lovers-device-status is-online">ONLINE</span>
                     </div>
                     <button type="button" id="friend-phone-device-item" class="lovers-feature-row">
                         <span class="lovers-feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                        <span class="lovers-feature-copy"><strong>${safeFriendName} 的手机</strong><small>在线 · 电量 91%</small></span>
+                        <span class="lovers-feature-copy"><strong>${safeFriendName} ’s Phone</strong><small>Online · Battery 91%</small></span>
                         <i class="fas fa-chevron-right lovers-feature-chevron"></i>
                     </button>
                     <button type="button" id="friend-computer-device-item" class="lovers-feature-row">
                         <span class="lovers-feature-icon"><i class="fas fa-laptop"></i></span>
-                        <span class="lovers-feature-copy"><strong>${safeFriendName} 的电脑</strong><small>在线 · 工作模式</small></span>
+                        <span class="lovers-feature-copy"><strong>${safeFriendName} ’s Computer</strong><small>Online · Work Mode</small></span>
                         <i class="fas fa-chevron-right lovers-feature-chevron"></i>
                     </button>
                 `;
@@ -4922,7 +4922,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                                         <div>
                                             <div style="font-size: 11px; color: ${subtitleColor}; margin-bottom: 4px; font-weight: 500;">当前金额</div>
-                                            <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">¥ ${c.amount}</div>
+                                            <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">$ ${c.amount}</div>
                                         </div>
                                         <i class="fab fa-cc-visa" style="font-size: 28px; color: ${textColor}; opacity: 0.7;"></i>
                                     </div>
