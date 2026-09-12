@@ -2638,7 +2638,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             actionBtn.className = 'loves-note-action';
             
             if (friend.hasLovesSpace) {
-                actionBtn.textContent = 'Enter Space';
+                actionBtn.textContent = 'Date';
                 actionBtn.classList.add('loves-note-action-enter');
                 note.onclick = (e) => {
                     e.stopPropagation();
