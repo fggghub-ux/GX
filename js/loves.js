@@ -3476,7 +3476,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             desktop.style.backgroundImage = value ? `url("${String(value).replace(/"/g, '%22')}")` : '';
         }
         await this.persistFriendState(this.currentFriend);
-        window.showToast?.(value ? '桌面背景已更新' : '已恢复默认背景');
+        window.showToast?.(value ? 'Desktop background updated' : 'Default background restored');
         this.openFriendComputerApp('settings');
     },
 
@@ -3938,9 +3938,9 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                 const fixedNameOf = chat => String(chat?.contactNameTranslationZh || chat?.contactName || '').trim();
                                 const orderedChats = isAlt
                                     ? [
-                                        sourceChats.find(chat => fixedNameOf(chat) === '备忘录'),
-                                        sourceChats.find(chat => fixedNameOf(chat) === '文件传输助手'),
-                                        ...sourceChats.filter(chat => !['备忘录', '文件传输助手'].includes(fixedNameOf(chat)))
+                                        sourceChats.find(chat => fixedNameOf(chat) === 'Notes'),
+                                        sourceChats.find(chat => fixedNameOf(chat) === 'File Transfer'),
+                                        ...sourceChats.filter(chat => !['Notes', 'File Transfer'].includes(fixedNameOf(chat)))
                                     ].filter(Boolean)
                                     : sourceChats;
                                 return orderedChats.slice(0, limit)
@@ -3955,7 +3955,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                     chats: normalizeChats(parsed.imessage.mainAccount?.chats, genCounts.imessageMain)
                                 },
                                 altAccount: {
-                                    name: parsed.imessage.altAccount?.name || '小号',
+                                    name: parsed.imessage.altAccount?.name || 'Alt ID',
                                     ...(parsed.imessage.altAccount || {}),
                                     chats: normalizeChats(parsed.imessage.altAccount?.chats, genCounts.imessageAlt, true)
                                 }
@@ -4011,7 +4011,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         friend.phoneBg = ev.target.result;
                         this.persistFriendState(friend);
                         phoneView.style.backgroundImage = `url(${friend.phoneBg})`;
-                        if (window.showToast) window.showToast('已更换 TA 的主屏幕背景');
+                        if (window.showToast) window.showToast('Desktop background updated');
                         if (window.closeView) window.closeView(settingsSheet);
                     };
                     reader.readAsDataURL(file);
@@ -4026,7 +4026,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 phoneView.style.backgroundImage = 'url("assets/bizhi.jpg")';
                 if (bgUpload) bgUpload.value = '';
                 await this.persistFriendState(friend);
-                if (window.showToast) window.showToast('已恢复默认背景');
+                if (window.showToast) window.showToast('Default background restored');
             };
         }
         
@@ -4052,10 +4052,10 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 const listEl = document.getElementById('friend-imsg-accounts-list');
                 if (listEl) {
                     const mainName = friend.nickname || friend.realname || 'TA';
-                    let altName = '小号';
+                    let altName = 'Alt ID';
                     let hasAlt = false;
                     if (friend.imessageData && !Array.isArray(friend.imessageData) && friend.imessageData.altAccount) {
-                        altName = friend.imessageData.altAccount.name || '小号';
+                        altName = friend.imessageData.altAccount.name || 'Alt ID';
                         hasAlt = true;
                     }
 
@@ -4063,7 +4063,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         <div style="padding: 15px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.lovesApp.switchImsgAccount('main', true)">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e5ea; display: flex; justify-content: center; align-items: center; color: #8e8e93;"><i class="fas fa-user"></i></div>
-                                <span style="font-size: 16px; font-weight: 500; color: #000;">${mainName} (主账号)</span>
+                                <span style="font-size: 16px; font-weight: 500; color: #000;">${mainName} (Apple ID)</span>
                             </div>
                             ${this.currentImsgAccount === 'main' ? '<i class="fas fa-check" style="color: #007aff;"></i>' : ''}
                         </div>
@@ -4071,13 +4071,13 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.lovesApp.switchImsgAccount('alt', true)">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e5ea; display: flex; justify-content: center; align-items: center; color: #8e8e93;"><i class="fas fa-user-secret"></i></div>
-                                <span style="font-size: 16px; font-weight: 500; color: #000;">${altName} (小号)</span>
+                                <span style="font-size: 16px; font-weight: 500; color: #000;">${altName} (Alt ID)</span>
                             </div>
                             ${this.currentImsgAccount === 'alt' ? '<i class="fas fa-check" style="color: #007aff;"></i>' : ''}
                         </div>
                         ` : `
                         <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: center; color: #8e8e93; font-size: 14px;">
-                            暂无小号数据，请在生成设置中重新生成
+                            No data available. Generate it in Settings.
                         </div>
                         `}
                     `;
@@ -4196,7 +4196,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             });
                         }, 50);
                     } else {
-                        tagsList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">暂无文件数据<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">请在设置中生成</span></div>';
+                        tagsList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No file data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
             };
@@ -4308,7 +4308,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             }
                         }, 50);
                     } else {
-                        historyList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">暂无搜索数据<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">请在设置中生成</span></div>';
+                        historyList.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No search data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
 
@@ -4354,7 +4354,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             }
                         }, 50);
                     } else {
-                        privateHistoryList.innerHTML = '<div style="padding: 30px; text-align: center; color: #666; font-size: 14px;">暂无无痕搜索数据<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">请在设置中生成</span></div>';
+                        privateHistoryList.innerHTML = '<div style="padding: 30px; text-align: center; color: #666; font-size: 14px;">No private browsing data available<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     }
                 }
             };
@@ -4408,7 +4408,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 const data = this.getFriendWeiboData(friend);
                 if (this.currentWeiboAccount === 'main') {
                     if (!data.altAccount) {
-                        if (window.showToast) window.showToast('暂无微博小号数据，请在生成设置中生成微博');
+                        if (window.showToast) window.showToast('No Weibo alt account registered');
                         return;
                     }
                     this.currentWeiboAccount = 'alt';
@@ -4416,7 +4416,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     this.currentWeiboAccount = 'main';
                 }
                 this.renderFriendWeibo(friend);
-                if (window.showToast) window.showToast(this.currentWeiboAccount === 'alt' ? '已切换到微博小号' : '已切换到微博大号');
+                if (window.showToast) window.showToast(this.currentWeiboAccount === 'alt' ? 'Switched to Alt Account' : 'Switched to Main Account');
             };
         }
         const weiboBackBtn = document.getElementById('friend-weibo-back-btn');
@@ -4433,7 +4433,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     let musicData = friend.musicData;
                     
                     if (!musicData || !musicData.top || musicData.top.length === 0) {
-                        musicContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">暂无音乐数据<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">请在设置中生成</span></div>';
+                        musicContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">No music data available<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">Generate it in settings</span></div>';
                     } else {
                         const topListHTML = (musicData.top || []).map((song, index) => `
                             <div class="music-history-item" data-idx="${index}" style="display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer;">
@@ -4451,26 +4451,26 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 
                         musicContent.innerHTML = `
                         <div style="padding: 20px 16px; background: #fff;">
-                            <div style="font-size: 28px; font-weight: 800; color: #111; margin-bottom: 20px; letter-spacing: -0.5px;">音乐库</div>
+                            <div style="font-size: 28px; font-weight: 800; color: #111; margin-bottom: 20px; letter-spacing: -0.5px;">APPLE</div>
                             <div style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px;">
                                 <div style="min-width: 140px; display: flex; flex-direction: column; gap: 10px;">
                                     <div style="width: 140px; height: 140px; border-radius: 12px; background: #f4f4f5; display: flex; justify-content: center; align-items: center; color: #111; font-size: 30px; ">
                                         <i class="fas fa-history"></i>
                                     </div>
-                                    <div style="font-size: 15px; font-weight: 700; color: #111;">最近播放</div>
-                                    <div style="font-size: 13px; color: #8e8e93;">${musicData.recent ? musicData.recent.length : 0} 首歌曲</div>
+                                    <div style="font-size: 15px; font-weight: 700; color: #111;">Recently</div>
+                                    <div style="font-size: 13px; color: #8e8e93;">${musicData.recent ? musicData.recent.length : 0} Songs</div>
                                 </div>
                                 <div style="min-width: 140px; display: flex; flex-direction: column; gap: 10px;">
                                     <div style="width: 140px; height: 140px; border-radius: 12px; background: #111; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 30px; ">
                                         <i class="fas fa-heart"></i>
                                     </div>
-                                    <div style="font-size: 15px; font-weight: 700; color: #111;">最爱</div>
-                                    <div style="font-size: 13px; color: #8e8e93;">${musicData.favorites ? musicData.favorites.length : 0} 首歌曲</div>
+                                    <div style="font-size: 15px; font-weight: 700; color: #111;">Favorites</div>
+                                    <div style="font-size: 13px; color: #8e8e93;">${musicData.favorites ? musicData.favorites.length : 0} Songs</div>
                                 </div>
                             </div>
                         </div>
                         <div style="padding: 10px 16px 30px; background: #fff; border-top: 1px solid #f0f0f0;">
-                            <div style="font-size: 22px; font-weight: 700; color: #111; margin-bottom: 15px; margin-top: 10px;">听歌排行</div>
+                            <div style="font-size: 22px; font-weight: 700; color: #111; margin-bottom: 15px; margin-top: 10px;">RANKINGS</div>
                             <div style="display: flex; flex-direction: column; gap: 5px;">
                                 ${topListHTML}
                             </div>
@@ -4505,21 +4505,21 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                 <div style="width: 32px; height: 32px; border-radius: 8px; background: #fff; display: flex; justify-content: center; align-items: center; color: #111;">
                                                     <i class="fas fa-redo-alt" style="font-size: 14px;"></i>
                                                 </div>
-                                                <span style="font-size: 15px; font-weight: 600; color: #111;">循环次数</span>
+                                                <span style="font-size: 15px; font-weight: 600; color: #111;">Repeated</span>
                                             </div>
                                             <div style="font-size: 20px; font-weight: 800; color: #111;">${loops} <span style="font-size: 13px; font-weight: 500; color: #8e8e93;">次</span></div>
                                         </div>
 
                                         <div style="background: #111; border-radius: 16px; padding: 20px; border-left: 4px solid #fff;">
                                             <div style="font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                                                <i class="fas fa-headphones-alt" style="color: #fff;"></i> 听歌心声
+                                                <i class="fas fa-headphones-alt" style="color: #fff;"></i> THOUGHTS
                                             </div>
                                             <div style="color: #ccc; line-height: 1.6; font-size: 14px; font-style: italic;">
                                                 “${window.lovesApp.renderFriendPhoneLocalized(song, 'thoughts', { fallback: thoughts, id: 'song-thoughts' })}”
                                             </div>
                                         </div>
                                     `;
-                                    window.lovesApp.showDetailModal('单曲详情', content);
+                                    window.lovesApp.showDetailModal('SINGLE', content);
                                 });
                                 window.lovesApp.bindLongPress(el, function() {
                                     const idx = el.getAttribute('data-idx');
@@ -4676,9 +4676,9 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         }
                     }, 50);
                 } else if (listRecent) {
-                    listRecent.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">暂无通话记录<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">请在设置中生成</span></div>';
+                    listRecent.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No Contacts Yet<br><span style="font-size: 12px; margin-top: 5px; display: inline-block;">Generate it in settings</span></div>';
                     if (listContacts) {
-                        listContacts.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">暂无联系人</div>';
+                        listContacts.innerHTML = '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 14px;">No call history available</div>';
                     }
                 }
             };
@@ -4695,7 +4695,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 const healthContent = document.getElementById('friend-health-content');
                 if (healthContent) {
                     if (!friend.healthData) {
-                        healthContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">暂无健康数据<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">请在设置中生成</span></div>';
+                        healthContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">No Health Data Yet<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">Generate it in settings</span></div>';
                     } else {
                     const healthHistory = Array.isArray(friend.healthData.history) && friend.healthData.history.length ? friend.healthData.history : [friend.healthData];
                     const healthIndex = Math.min(Number(this._healthHistoryIndex) || 0, healthHistory.length - 1);
@@ -4825,7 +4825,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     const payIndex = Math.min(Number(this._payHistoryIndex) || 0, Math.max(0, payHistory.length - 1));
                     let payData = payHistory[payIndex] || friend.payData;
                     if (!payData) {
-                        payContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">暂无钱包数据<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">请在设置中生成</span></div>';
+                        payContent.innerHTML = '<div style="padding: 50px 20px; text-align: center; color: #8e8e93; font-size: 15px;">No Wallet Data Yet<br><span style="font-size: 13px; margin-top: 8px; display: inline-block;">Generate it in settings</span></div>';
                     } else {
                     const payHistoryOptions = payHistory.map((snapshot, index) => `<option value="${index}" ${index === payIndex ? 'selected' : ''}>${this.escapeHTML(this.formatFriendPhoneGeneratedAt(snapshot.generatedAt) || `旧记录 ${index + 1}`)}</option>`).join('');
                     let cards = payData.cards;
@@ -4837,7 +4837,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         cards = [
                             {
                                 id: 'card1',
-                                bankName: '黑金储蓄卡',
+                                bankName: 'AMERICA EXPRESS',
                                 cardType: 'Debit',
                                 cardNumber: '**** **** **** 1995',
                                 amount: (total * 0.6).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}),
@@ -4845,7 +4845,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             },
                             {
                                 id: 'card2',
-                                bankName: '白金信用卡',
+                                bankName: 'J.P. Morgan',
                                 cardType: 'Credit',
                                 cardNumber: '**** **** **** 0113',
                                 amount: (total * 0.4).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}),
@@ -4853,7 +4853,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             },
                             {
                                 id: 'card3',
-                                bankName: '虚拟支付卡',
+                                bankName: 'Virtual Card',
                                 cardType: 'Prepaid',
                                 cardNumber: '**** **** **** 9999',
                                 amount: '0.00',
@@ -4945,7 +4945,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                 </div>
                                 <div style="font-size: 16px; font-weight: 700; color: #111;">${tx.isIncome ? '+' : ''}${tx.amount}</div>
                             </div>
-                        `).join('') : '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 13px;">暂无交易记录</div>';
+                        `).join('') : '<div style="padding: 30px; text-align: center; color: #8e8e93; font-size: 13px;">No Transactions Yet</div>';
 
                         // 高度计算：基于堆叠的最底下一张卡片的 translateY 加上露出部分
                         const maxTranslateY = 50 + (Math.max(0, cards.length - 2) * 20);
