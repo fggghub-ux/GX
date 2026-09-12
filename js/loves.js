@@ -158,7 +158,7 @@ window.lovesApp = {
         const text = String(translation || '').trim();
         if (!text) return '';
         const safeTargetId = this.escapeHTML(targetId);
-        return `<button type="button" class="loves-moment-translate-toggle" aria-expanded="false" aria-controls="${safeTargetId}" data-loves-translation-target="${safeTargetId}">翻译</button><div class="loves-moment-translation" id="${safeTargetId}" hidden>${this.escapeHTML(text).replace(/\n/g, '<br>')}</div>`;
+        return `<button type="button" class="loves-moment-translate-toggle" aria-expanded="false" aria-controls="${safeTargetId}" data-loves-translation-target="${safeTargetId}">Translate</button><div class="loves-moment-translation" id="${safeTargetId}" hidden>${this.escapeHTML(text).replace(/\n/g, '<br>')}</div>`;
     },
 
     bindLovesMomentTranslationControls: function(container) {
@@ -212,7 +212,7 @@ window.lovesApp = {
         const translation = this.escapeHTML(this.getFriendPhoneTranslation(record, field)).replace(/\n/g, '<br>');
         if (!translation) return original;
         const id = `friend-phone-translation-${String(record?.batchId || 'legacy')}-${String(options.id || field)}-${Math.random().toString(36).slice(2, 8)}`;
-        return `${original}<span class="friend-phone-translate-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="${id}">翻译</span><span class="friend-phone-translation" id="${id}" hidden>${translation}</span>`;
+        return `${original}<span class="friend-phone-translate-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="${id}">Translate</span><span class="friend-phone-translation" id="${id}" hidden>${translation}</span>`;
     },
 
     renderFriendPhoneGeneratedTime: function(record, className = '') {
@@ -849,7 +849,7 @@ window.lovesApp = {
                 '</div>',
                 '</article>'
             ].join('');
-        }).join('') + '<div class="lovers-diary-end">这一天的日记已全部显示</div>';
+        }).join('') + '<div class="lovers-diary-end">i miss u</div>';
 
         listContainer.querySelectorAll('.lovers-diary-delete').forEach(btn => {
             btn.onclick = (e) => {
@@ -891,7 +891,7 @@ window.lovesApp = {
                 const count = this.getDiaryGenerationCount();
                 const originalText = generateBtn.textContent;
                 generateBtn.disabled = true;
-                generateBtn.textContent = '生成中...';
+                generateBtn.textContent = 'Generating...';
                 try {
                     const entries = await this.requestDiaryEntries(dateKey, count);
                     const diaries = this.ensureDiaryData();
@@ -902,7 +902,7 @@ window.lovesApp = {
                     this.currentDiaryDate = this.parseDateKey(dateKey);
                     this.renderDiary();
                     if (window.closeView) window.closeView(generatorView);
-                    if (window.showToast) window.showToast('已生成 ' + entries.length + ' 条日记');
+                    if (window.showToast) window.showToast(entries.length + ' Journal Entries Generated');
                 } catch (error) {
                     console.error('[Loves Diary] generate failed', error);
                     const message = String(error?.message || '日记生成失败').slice(0, 80);
@@ -910,7 +910,7 @@ window.lovesApp = {
                     else alert(message);
                 } finally {
                     generateBtn.disabled = false;
-                    generateBtn.textContent = originalText || '生成';
+                    generateBtn.textContent = originalText || 'Generate';
                 }
             };
         }
@@ -1130,7 +1130,7 @@ window.lovesApp = {
                 this.currentFriend.lovesData.moments.unshift(moment);
                 
                 this.persistFriendState();
-                if (window.showToast) window.showToast('发布成功');
+                if (window.showToast) window.showToast('Posted successfully');
                 if (window.closeView) window.closeView(publishView);
                 
                 this.renderLovesMoments();
@@ -1228,7 +1228,7 @@ window.lovesApp = {
                     commentsHtml += `
                         <div class="loves-moment-comment ${c.isChar ? 'is-char' : ''}">
                             <div class="loves-moment-comment-copy" onclick="window.lovesApp.replyToComment(${idx}, ${cIdx})"><div><span class="loves-moment-comment-author">${safeAuthor}</span>：${safeCommentText}</div>${commentTranslationHtml}</div>
-                            <button type="button" class="loves-moment-comment-delete" onclick="window.lovesApp.deleteComment(${idx}, ${cIdx})">删除</button>
+                            <button type="button" class="loves-moment-comment-delete" onclick="window.lovesApp.deleteComment(${idx}, ${cIdx})">Delete</button>
                         </div>
                     `;
                 });
@@ -1250,8 +1250,8 @@ window.lovesApp = {
                     <div class="loves-moment-actions">
                         <button type="button" class="loves-moment-more" aria-label="动态选项" onclick="window.lovesApp.toggleMomentMenu(${idx})"><i class="fas fa-ellipsis-h"></i></button>
                         <div id="loves-moment-menu-${idx}" class="loves-moment-menu">
-                            <button type="button" onclick="window.lovesApp.requestCharComment(${idx})"><i class="fas fa-comment-dots"></i><span>让 TA 评论</span></button>
-                            <button type="button" class="is-danger" onclick="window.lovesApp.deleteMoment(${idx})"><i class="fas fa-trash-alt"></i><span>删除动态</span></button>
+                            <button type="button" onclick="window.lovesApp.requestCharComment(${idx})"><i class="fas fa-comment-dots"></i><span>Their comment</span></button>
+                            <button type="button" class="is-danger" onclick="window.lovesApp.deleteMoment(${idx})"><i class="fas fa-trash-alt"></i><span>Delete post</span></button>
                         </div>
                     </div>
                 </div>
@@ -1269,8 +1269,8 @@ window.lovesApp = {
                     <div class="loves-moment-composer-avatar">
                         ${userAvatar ? `<img src="${safeUserAvatar}" alt="${safeUserName}">` : `<i class="fas fa-user"></i>`}
                     </div>
-                    <input type="text" class="loves-moment-comment-input" data-moment-idx="${idx}" inputmode="text" enterkeyhint="send" autocomplete="off" placeholder="${m.isChar ? '评论 TA 的动态...' : '添加评论...'}">
-                    <button type="button" class="loves-moment-comment-send" data-moment-idx="${idx}">发送</button>
+                    <input type="text" class="loves-moment-comment-input" data-moment-idx="${idx}" inputmode="text" enterkeyhint="send" autocomplete="off" placeholder="${m.isChar ? 'Comment on post...' : 'Add comment...'}">
+                    <button type="button" class="loves-moment-comment-send" data-moment-idx="${idx}">sent</button>
                 </div>
             </article>
             `;
@@ -1361,7 +1361,7 @@ window.lovesApp = {
 
         let commentText = String(presetText || '').trim();
         if (!commentText) {
-            const prompted = prompt(m.isChar ? '评论 TA 的动态：' : '添加评论：');
+            const prompted = prompt(m.isChar ? 'Comment on post：' : 'Add comment：');
             if (prompted === null) return;
             commentText = prompted.trim();
         }
@@ -1469,7 +1469,7 @@ window.lovesApp = {
 
         moment._charReplyPendingCount = Math.max(0, Number(moment._charReplyPendingCount) || 0) + 1;
         moment._charReplyPending = true;
-        if (window.showToast) window.showToast(options.reason === 'user_comment' ? 'They are replying...' : '正在生成评论...');
+        if (window.showToast) window.showToast(options.reason === 'user_comment' ? 'They are replying...' : 'Generating comment...');
 
         try {
             if (window.imApp?.ensureFriendMessagesLoaded) {
@@ -1616,7 +1616,7 @@ window.lovesApp = {
                 this.currentFriend = friend;
                 this.renderLovesMoments();
             }
-            if (window.showToast) window.showToast(privateMessages.length > 0 ? '评论与消息发送成功' : '回复已生成');
+            if (window.showToast) window.showToast(privateMessages.length > 0 ? 'Comment sent' : 'Reply generated');
             return true;
         } catch (error) {
             console.error('Comment API Error:', error);
@@ -1654,7 +1654,7 @@ window.lovesApp = {
         }
         const savings = friend.lovesData.savings;
         if (!Number.isFinite(Number(savings.goal)) || Number(savings.goal) <= 0) {
-            savings.goal = 1111;
+            savings.goal = 88888;
         } else {
             savings.goal = Number(savings.goal);
         }
@@ -1917,14 +1917,14 @@ window.lovesApp = {
         const listEl = document.getElementById('lovers-savings-records');
 
         if (totalEl) totalEl.textContent = this.formatMoney(summary.total);
-        if (goalEl) goalEl.textContent = `${this.formatMoney(savings.goal)} Goal`;
+        if (goalEl) goalEl.textContent = `Goal ${this.formatMoney(savings.goal)}`;
         if (percentEl) percentEl.textContent = `${percent}%`;
         if (progressEl) progressEl.style.width = `${percent}%`;
         if (userAmountEl) userAmountEl.textContent = this.formatMoney(summary.user);
         if (charAmountEl) charAmountEl.textContent = this.formatMoney(summary.char);
         if (userNameEl) userNameEl.textContent = userName;
         if (charNameEl) charNameEl.textContent = friendName;
-        if (leftEl) leftEl.textContent = summary.total >= savings.goal ? 'Goal Achieved' : `${this.formatMoney(savings.goal - summary.total)} Remaining`;
+        if (leftEl) leftEl.textContent = summary.total >= savings.goal ? 'Goal Achieved' : `Remaining ${this.formatMoney(savings.goal - summary.total)}`;
 
         if (dateFilter && !dateFilter.value) {
             dateFilter.value = this.getLocalDateKey();
@@ -2101,7 +2101,7 @@ window.lovesApp = {
         const sendBtn = document.getElementById('lovers-savings-withdraw-send');
         if (sendBtn) {
             sendBtn.disabled = false;
-            sendBtn.textContent = '发送请求';
+            sendBtn.textContent = 'Send request';
             sendBtn.onclick = () => this.sendSavingsWithdrawRequest();
         }
 
@@ -2286,7 +2286,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             if (window.showToast) window.showToast('提款请求发送失败，请重试');
             if (sendBtn) {
                 sendBtn.disabled = false;
-                sendBtn.textContent = '发送请求';
+                sendBtn.textContent = 'Send request';
             }
         }
     },
@@ -2310,10 +2310,10 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 
         modal.classList.toggle('is-approved', approved);
         modal.classList.toggle('is-rejected', !approved);
-        if (titleEl) titleEl.textContent = approved ? 'TA 已同意' : 'TA 已拒绝';
+        if (titleEl) titleEl.textContent = approved ? 'They Approved' : 'They Declined';
         if (amountEl) amountEl.textContent = this.formatMoney(result?.amount || 0);
-        if (labelEl) labelEl.textContent = approved ? '同意理由' : '拒绝理由';
-        if (reasonEl) reasonEl.textContent = result?.reason || (approved ? 'TA 同意了这次提款。' : 'TA 拒绝了这次提款。');
+        if (labelEl) labelEl.textContent = approved ? 'Reason for Approval' : 'Reason for Rejection';
+        if (reasonEl) reasonEl.textContent = result?.reason || (approved ? 'They approved this withdrawal.' : 'They rejected this withdrawal.');
         if (iconEl) {
             iconEl.innerHTML = `<i class="fas ${approved ? 'fa-check' : 'fa-xmark'}"></i>`;
         }
@@ -2417,7 +2417,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         this.persistFriendState();
         this.renderSavingsJar();
         this.closeSavingsSheet(sheet);
-        if (window.showToast) window.showToast('已存入存钱罐');
+        if (window.showToast) window.showToast('Deposited into Fund');
     },
 
     open: function() {
@@ -2519,7 +2519,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
                     <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
                 </div>
-                <div style="font-size:13px; color:#333; line-height:1.4;">The one I love is the vivid, living her. Chaotic, beautiful, flawed. Her.</div>
+                <div style="font-size:13px; color:#333; line-height:1.4;">She’s willful. Spoiled. Infuriating.But she’s still mine.</div>
             </div>`,
             text: '【Loves】I accepted your invitation.',
             timestamp: acceptedAt - 100, // 稍微提早一点以便排在前面
@@ -2638,7 +2638,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             actionBtn.className = 'loves-note-action';
             
             if (friend.hasLovesSpace) {
-                actionBtn.textContent = 'Enter Space';
+                actionBtn.textContent = 'Enter space';
                 actionBtn.classList.add('loves-note-action-enter');
                 note.onclick = (e) => {
                     e.stopPropagation();
@@ -3205,12 +3205,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 devicesList.innerHTML = `
                     <div class="lovers-feature-row is-static">
                         <span class="lovers-feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                        <span class="lovers-feature-copy"><strong>My Phone</strong><small>Online · Battery 87%</small></span>
+                        <span class="lovers-feature-copy"><strong>My Phone</strong><small>Online · 87% Battery</small></span>
                         <span class="lovers-device-status is-online">ONLINE</span>
                     </div>
                     <button type="button" id="friend-phone-device-item" class="lovers-feature-row">
                         <span class="lovers-feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                        <span class="lovers-feature-copy"><strong>${safeFriendName} 's Phone</strong><small>Online · Battery 91%</small></span>
+                        <span class="lovers-feature-copy"><strong>${safeFriendName} 's Phone</strong><small>Online · 91% Battery</small></span>
                         <i class="fas fa-chevron-right lovers-feature-chevron"></i>
                     </button>
                     <button type="button" id="friend-computer-device-item" class="lovers-feature-row">
@@ -3310,7 +3310,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         this.currentFriend = friend;
         const name = friend.nickname || friend.realname || friend.realName || friend.name || 'TA';
         const owner = document.getElementById('friend-mac-owner-name');
-        if (owner) owner.textContent = `${name} 的 Mac`;
+        if (owner) owner.textContent = `${name} 's Mac`;
         const desktop = document.getElementById('friend-mac-desktop');
         if (desktop) {
             desktop.classList.toggle('has-custom-background', !!friend.computerBg);
@@ -3345,7 +3345,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     },
 
     openFriendComputerApp: function(app) {
-        const titles = { resume: '简历', mail: '邮件', calendar: '日历', notes: '备忘录', files: '文件', settings: '系统设置' };
+        const titles = { resume: 'RESUME', mail: 'MAIL', calendar: 'CALENDAR', notes: 'NOTES', files: 'FILES', settings: 'SETTINGS' };
         const win = document.getElementById('friend-mac-window');
         const title = document.getElementById('friend-mac-window-title');
         const content = document.getElementById('friend-mac-window-content');
@@ -3371,31 +3371,31 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     renderFriendComputerResume: function(resume) {
         const e = value => this.escapeHTML(String(value || ''));
         if (!resume.title && !resume.summary && resume.experience.length === 0) {
-            return '<div class="friend-mac-empty"><i class="fas fa-id-card"></i><strong>还没有简历</strong><p>在系统设置中生成符合 Char 人设的职业资料。</p></div>';
+            return '<div class="friend-mac-empty"><i class="fas fa-id-card"></i><strong>No Resume</strong><p>Generate Char’s professional profile in System Settings.</p></div>';
         }
         const section = (title, items, renderer) => items.length ? `<section><h3>${title}</h3>${items.map(renderer).join('')}</section>` : '';
         const avatar = resume.avatarUrl ? `<img src="${e(resume.avatarUrl)}" alt="">` : '<i class="fas fa-user"></i>';
         const personalInfo = [
-            ['真实姓名', resume.realName], ['性别', resume.gender], ['年龄', resume.age], ['出生日期', resume.birthday],
-            ['身高', resume.height], ['体重', resume.weight], ['民族', resume.ethnicity], ['国籍', resume.nationality]
+            ['Name', resume.realName], ['Gender', resume.gender], ['Age', resume.age], ['Date of.Birth', resume.birthday],
+            ['Height', resume.height], ['Weight', resume.weight], ['Ethnicity', resume.ethnicity], ['Nationality', resume.nationality]
         ].filter(([, value]) => value);
         return `<article class="friend-mac-resume">
             <header><div class="friend-mac-resume-avatar">${avatar}</div><div><h1>${e(resume.name)}</h1><h2>${e(resume.title)}</h2><p>${[resume.email, resume.phone, resume.location].filter(Boolean).map(e).join(' · ')}</p></div></header>
-            ${personalInfo.length ? `<section><h3>个人信息</h3><div class="friend-mac-personal-grid">${personalInfo.map(([label, value]) => `<div><span>${label}</span><strong>${e(value)}</strong></div>`).join('')}</div></section>` : ''}
-            ${resume.summary ? `<section><h3>个人简介</h3><p>${e(resume.summary)}</p></section>` : ''}
-            ${section('专业技能', resume.skills, item => `<span class="friend-mac-skill">${e(typeof item === 'string' ? item : item.name)}</span>`)}
-            ${section('工作经历', resume.experience, item => `<div class="friend-mac-resume-item"><b>${e(item.role || item.title)}</b><time>${e(item.period)}</time><strong>${e(item.company)}</strong><p>${e(item.description)}</p></div>`)}
-            ${section('项目经历', resume.projects, item => `<div class="friend-mac-resume-item"><b>${e(item.name)}</b><time>${e(item.period)}</time><p>${e(item.description)}</p></div>`)}
-            ${section('教育经历', resume.education, item => `<div class="friend-mac-resume-item"><b>${e(item.school)}</b><time>${e(item.period)}</time><p>${e(item.degree || item.major)}</p></div>`)}
-            ${section('证书', resume.certificates, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : item.name)}</span>`)}
-            ${section('语言', resume.languages, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : `${item.name} · ${item.level || ''}`)}</span>`)}
+            ${personalInfo.length ? `<section><h3>INFORMATION</h3><div class="friend-mac-personal-grid">${personalInfo.map(([label, value]) => `<div><span>${label}</span><strong>${e(value)}</strong></div>`).join('')}</div></section>` : ''}
+            ${resume.summary ? `<section><h3>PROFILE</h3><p>${e(resume.summary)}</p></section>` : ''}
+            ${section('PROFESSION', resume.skills, item => `<span class="friend-mac-skill">${e(typeof item === 'string' ? item : item.name)}</span>`)}
+            ${section('Work Experience', resume.experience, item => `<div class="friend-mac-resume-item"><b>${e(item.role || item.title)}</b><time>${e(item.period)}</time><strong>${e(item.company)}</strong><p>${e(item.description)}</p></div>`)}
+            ${section('Project Experience', resume.projects, item => `<div class="friend-mac-resume-item"><b>${e(item.name)}</b><time>${e(item.period)}</time><p>${e(item.description)}</p></div>`)}
+            ${section('Education', resume.education, item => `<div class="friend-mac-resume-item"><b>${e(item.school)}</b><time>${e(item.period)}</time><p>${e(item.degree || item.major)}</p></div>`)}
+            ${section('Certifications', resume.certificates, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : item.name)}</span>`)}
+            ${section('Languages', resume.languages, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : `${item.name} · ${item.level || ''}`)}</span>`)}
         </article>`;
     },
 
     renderFriendComputerCollection: function(type, items) {
         const e = value => this.escapeHTML(String(value || ''));
-        if (!items.length) return `<div class="friend-mac-empty"><i class="fas fa-${type === 'mail' ? 'envelope' : type === 'calendar' ? 'calendar-alt' : type === 'notes' ? 'sticky-note' : 'folder'}"></i><strong>暂无内容</strong><p>在系统设置中生成这项工作数据。</p></div>`;
-        const labels = { mail: '收件箱', calendar: '工作日程', notes: '全部备忘录', files: '工作文件' };
+        if (!items.length) return `<div class="friend-mac-empty"><i class="fas fa-${type === 'mail' ? 'envelope' : type === 'calendar' ? 'calendar-alt' : type === 'notes' ? 'sticky-note' : 'folder'}"></i><strong>No Content</strong><p>Generate this work data in System Settings.</p></div>`;
+        const labels = { mail: 'Inbox', calendar: 'Schedule', notes: 'All Notes', files: 'Work Files' };
         return `<div class="friend-mac-split"><aside><h2>${labels[type]}</h2>${items.map((item, index) => `<button type="button" class="friend-mac-list-item${index === 0 ? ' active' : ''}" data-computer-item="${index}"><b>${e(item.subject || item.title || item.name)}</b><span>${e(item.sender || item.date || item.modifiedAt || item.time)}</span><small>${e(item.preview || item.folder || item.type || item.location)}</small></button>`).join('')}</aside><article id="friend-mac-detail"></article></div>`;
     },
 
@@ -3436,12 +3436,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         const counts = this.getFriendComputerGenCounts(this.currentFriend);
         const selected = Array.isArray(this.currentFriend?.computerGenApps) ? this.currentFriend.computerGenApps : ['resume', 'mail', 'calendar', 'notes', 'files'];
         const rows = [
-            ['resume', '简历', 'id-card', null], ['mail', '邮件', 'envelope', counts.mail], ['calendar', '日历', 'calendar-alt', counts.calendar],
-            ['notes', '备忘录', 'sticky-note', counts.notes], ['files', '文件', 'folder', counts.files]
+            ['resume', 'RESUME', 'id-card', null], ['mail', 'MAIL', 'envelope', counts.mail], ['calendar', 'CALENDAR', 'calendar-alt', counts.calendar],
+            ['notes', 'NOTES', 'sticky-note', counts.notes], ['files', 'FILES', 'folder', counts.files]
         ];
-        return `<div class="friend-mac-settings"><header><span>APPEARANCE</span><h1>桌面与数据</h1><p>管理这台 Mac 的桌面背景和工作内容。</p></header>
-            <section class="friend-mac-wallpaper-settings"><h2>桌面背景</h2><div class="friend-mac-wallpaper-row"><input type="url" id="friend-computer-bg-url" placeholder="粘贴图片 URL" value="${this.escapeHTML(this.currentFriend?.computerBg?.startsWith('http') ? this.currentFriend.computerBg : '')}"><button type="button" id="friend-computer-bg-url-apply">应用</button></div><div class="friend-mac-wallpaper-actions"><label><i class="fas fa-arrow-up-from-bracket"></i><span>上传图片</span><input type="file" id="friend-computer-bg-upload" accept="image/*" hidden></label><button type="button" id="friend-computer-bg-reset"><i class="fas fa-rotate-left"></i><span>恢复默认</span></button></div></section>
-            <div class="friend-mac-settings-heading"><span>GENERATOR</span><h2>生成工作数据</h2><p>仅覆盖选中的应用。</p></div><label class="friend-real-time-option friend-mac-real-time"><span><i class="fas fa-clock"></i><strong>使用真实时间</strong><small>加入当前日期、星期与准确时间</small></span><input type="checkbox" id="friend-computer-real-time-toggle" ${this.currentFriend?.computerIncludeRealTime !== false ? 'checked' : ''}></label><div class="friend-mac-settings-list">${rows.map(([key, label, icon, count]) => `<label><input type="checkbox" class="computer-gen-checkbox" value="${key}" ${selected.includes(key) ? 'checked' : ''}><i class="fas fa-${icon}"></i><strong>${label}</strong>${count ? `<input type="number" class="computer-gen-count" data-count-key="${key}" min="1" max="${key === 'mail' || key === 'files' ? 12 : 10}" value="${count}">` : '<span>完整模板</span>'}</label>`).join('')}</div><button type="button" id="friend-computer-generate-btn" class="friend-mac-generate"><i class="fas fa-wand-magic-sparkles"></i><span>生成选中的应用数据</span></button><small class="friend-mac-generated-at">${this.currentFriend?.computerData?.generatedAt ? `上次生成：${this.escapeHTML(this.currentFriend.computerData.generatedAt)}` : '尚未生成电脑数据'}</small></div>`;
+        return `<div class="friend-mac-settings"><header><span>APPEARANCE</span><h1>Desktop Data</h1><p>Manage the work content on this Mac.</p></header>
+            <section class="friend-mac-wallpaper-settings"><h2>Background</h2><div class="friend-mac-wallpaper-row"><input type="url" id="friend-computer-bg-url" placeholder="Raste Image URL" value="${this.escapeHTML(this.currentFriend?.computerBg?.startsWith('http') ? this.currentFriend.computerBg : '')}"><button type="button" id="friend-computer-bg-url-apply">APPS</button></div><div class="friend-mac-wallpaper-actions"><label><i class="fas fa-arrow-up-from-bracket"></i><span>Upload</span><input type="file" id="friend-computer-bg-upload" accept="image/*" hidden></label><button type="button" id="friend-computer-bg-reset"><i class="fas fa-rotate-left"></i><span>Default</span></button></div></section>
+            <div class="friend-mac-settings-heading"><span>GENERATOR</span><h2>Work Data</h2><p>Only overwrite selected apps.</p></div><label class="friend-real-time-option friend-mac-real-time"><span><i class="fas fa-clock"></i><strong>Real Time</strong><small>current time, day of the week, and exact time</small></span><input type="checkbox" id="friend-computer-real-time-toggle" ${this.currentFriend?.computerIncludeRealTime !== false ? 'checked' : ''}></label><div class="friend-mac-settings-list">${rows.map(([key, label, icon, count]) => `<label><input type="checkbox" class="computer-gen-checkbox" value="${key}" ${selected.includes(key) ? 'checked' : ''}><i class="fas fa-${icon}"></i><strong>${label}</strong>${count ? `<input type="number" class="computer-gen-count" data-count-key="${key}" min="1" max="${key === 'mail' || key === 'files' ? 12 : 10}" value="${count}">` : '<span>Template</span>'}</label>`).join('')}</div><button type="button" id="friend-computer-generate-btn" class="friend-mac-generate"><i class="fas fa-wand-magic-sparkles"></i><span>Generate app data</span></button><small class="friend-mac-generated-at">${this.currentFriend?.computerData?.generatedAt ? `上次生成：${this.escapeHTML(this.currentFriend.computerData.generatedAt)}` : '尚未生成电脑数据'}</small></div>`;
     },
 
     applyFriendComputerBackgroundUrl: function() {
