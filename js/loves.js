@@ -3376,7 +3376,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         const section = (title, items, renderer) => items.length ? `<section><h3>${title}</h3>${items.map(renderer).join('')}</section>` : '';
         const avatar = resume.avatarUrl ? `<img src="${e(resume.avatarUrl)}" alt="">` : '<i class="fas fa-user"></i>';
         const personalInfo = [
-            ['Name', resume.realName], ['Gender', resume.gender], ['Age', resume.age], ['Date of.Birth', resume.birthday],
+            ['Name', resume.realName], ['Gender', resume.gender], ['Age', resume.age], ['DOB', resume.birthday],
             ['Height', resume.height], ['Weight', resume.weight], ['Ethnicity', resume.ethnicity], ['Nationality', resume.nationality]
         ].filter(([, value]) => value);
         return `<article class="friend-mac-resume">
@@ -3384,10 +3384,10 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             ${personalInfo.length ? `<section><h3>INFORMATION</h3><div class="friend-mac-personal-grid">${personalInfo.map(([label, value]) => `<div><span>${label}</span><strong>${e(value)}</strong></div>`).join('')}</div></section>` : ''}
             ${resume.summary ? `<section><h3>PROFILE</h3><p>${e(resume.summary)}</p></section>` : ''}
             ${section('PROFESSION', resume.skills, item => `<span class="friend-mac-skill">${e(typeof item === 'string' ? item : item.name)}</span>`)}
-            ${section('Work Experience', resume.experience, item => `<div class="friend-mac-resume-item"><b>${e(item.role || item.title)}</b><time>${e(item.period)}</time><strong>${e(item.company)}</strong><p>${e(item.description)}</p></div>`)}
-            ${section('Project Experience', resume.projects, item => `<div class="friend-mac-resume-item"><b>${e(item.name)}</b><time>${e(item.period)}</time><p>${e(item.description)}</p></div>`)}
-            ${section('Education', resume.education, item => `<div class="friend-mac-resume-item"><b>${e(item.school)}</b><time>${e(item.period)}</time><p>${e(item.degree || item.major)}</p></div>`)}
-            ${section('Certifications', resume.certificates, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : item.name)}</span>`)}
+            ${section('WORK EXPERIENCE', resume.experience, item => `<div class="friend-mac-resume-item"><b>${e(item.role || item.title)}</b><time>${e(item.period)}</time><strong>${e(item.company)}</strong><p>${e(item.description)}</p></div>`)}
+            ${section('PROJECT EXPERIENCE', resume.projects, item => `<div class="friend-mac-resume-item"><b>${e(item.name)}</b><time>${e(item.period)}</time><p>${e(item.description)}</p></div>`)}
+            ${section('EDUCATION', resume.education, item => `<div class="friend-mac-resume-item"><b>${e(item.school)}</b><time>${e(item.period)}</time><p>${e(item.degree || item.major)}</p></div>`)}
+            ${section('CERTIFICATIONS', resume.certificates, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : item.name)}</span>`)}
             ${section('Languages', resume.languages, item => `<span class="friend-mac-line-item">${e(typeof item === 'string' ? item : `${item.name} · ${item.level || ''}`)}</span>`)}
         </article>`;
     },
@@ -3395,7 +3395,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     renderFriendComputerCollection: function(type, items) {
         const e = value => this.escapeHTML(String(value || ''));
         if (!items.length) return `<div class="friend-mac-empty"><i class="fas fa-${type === 'mail' ? 'envelope' : type === 'calendar' ? 'calendar-alt' : type === 'notes' ? 'sticky-note' : 'folder'}"></i><strong>No Content</strong><p>Generate this work data in System Settings.</p></div>`;
-        const labels = { mail: 'Inbox', calendar: 'Schedule', notes: 'All Notes', files: 'Work Files' };
+        const labels = { mail: 'Inbox', calendar: 'Agenda', notes: 'Notes', files: 'Files' };
         return `<div class="friend-mac-split"><aside><h2>${labels[type]}</h2>${items.map((item, index) => `<button type="button" class="friend-mac-list-item${index === 0 ? ' active' : ''}" data-computer-item="${index}"><b>${e(item.subject || item.title || item.name)}</b><span>${e(item.sender || item.date || item.modifiedAt || item.time)}</span><small>${e(item.preview || item.folder || item.type || item.location)}</small></button>`).join('')}</aside><article id="friend-mac-detail"></article></div>`;
     },
 
@@ -3441,7 +3441,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         ];
         return `<div class="friend-mac-settings"><header><span>APPEARANCE</span><h1>DESKTOP</h1><p>Manage the work content on this Mac.</p></header>
             <section class="friend-mac-wallpaper-settings"><h2>Background</h2><div class="friend-mac-wallpaper-row"><input type="url" id="friend-computer-bg-url" placeholder="Raste image URL" value="${this.escapeHTML(this.currentFriend?.computerBg?.startsWith('http') ? this.currentFriend.computerBg : '')}"><button type="button" id="friend-computer-bg-url-apply">APPS</button></div><div class="friend-mac-wallpaper-actions"><label><i class="fas fa-arrow-up-from-bracket"></i><span>Upload</span><input type="file" id="friend-computer-bg-upload" accept="image/*" hidden></label><button type="button" id="friend-computer-bg-reset"><i class="fas fa-rotate-left"></i><span>Default</span></button></div></section>
-            <div class="friend-mac-settings-heading"><span>GENERATOR</span><h2>WORK DATA</h2><p>only overwrite selected apps.</p></div><label class="friend-real-time-option friend-mac-real-time"><span><i class="fas fa-clock"></i><strong>Real Time</strong><small>current time, day of the week, and exact time</small></span><input type="checkbox" id="friend-computer-real-time-toggle" ${this.currentFriend?.computerIncludeRealTime !== false ? 'checked' : ''}></label><div class="friend-mac-settings-list">${rows.map(([key, label, icon, count]) => `<label><input type="checkbox" class="computer-gen-checkbox" value="${key}" ${selected.includes(key) ? 'checked' : ''}><i class="fas fa-${icon}"></i><strong>${label}</strong>${count ? `<input type="number" class="computer-gen-count" data-count-key="${key}" min="1" max="${key === 'mail' || key === 'files' ? 12 : 10}" value="${count}">` : '<span>Template</span>'}</label>`).join('')}</div><button type="button" id="friend-computer-generate-btn" class="friend-mac-generate"><i class="fas fa-wand-magic-sparkles"></i><span>GENERATE</span></button><small class="friend-mac-generated-at">${this.currentFriend?.computerData?.generatedAt ? `上次生成：${this.escapeHTML(this.currentFriend.computerData.generatedAt)}` : 'no computer data available'}</small></div>`;
+            <div class="friend-mac-settings-heading"><span>GENERATOR</span><h2>WORK</h2><p>only overwrite selected apps.</p></div><label class="friend-real-time-option friend-mac-real-time"><span><i class="fas fa-clock"></i><strong>Real Time</strong><small>current time, day of the week, and exact time</small></span><input type="checkbox" id="friend-computer-real-time-toggle" ${this.currentFriend?.computerIncludeRealTime !== false ? 'checked' : ''}></label><div class="friend-mac-settings-list">${rows.map(([key, label, icon, count]) => `<label><input type="checkbox" class="computer-gen-checkbox" value="${key}" ${selected.includes(key) ? 'checked' : ''}><i class="fas fa-${icon}"></i><strong>${label}</strong>${count ? `<input type="number" class="computer-gen-count" data-count-key="${key}" min="1" max="${key === 'mail' || key === 'files' ? 12 : 10}" value="${count}">` : '<span>Template</span>'}</label>`).join('')}</div><button type="button" id="friend-computer-generate-btn" class="friend-mac-generate"><i class="fas fa-wand-magic-sparkles"></i><span>GENERATE</span></button><small class="friend-mac-generated-at">${this.currentFriend?.computerData?.generatedAt ? `last run：${this.escapeHTML(this.currentFriend.computerData.generatedAt)}` : 'no computer data available'}</small></div>`;
     },
 
     applyFriendComputerBackgroundUrl: function() {
@@ -3506,8 +3506,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         const prompt = `为 Char 的私人电脑生成真实、克制、符合职业与人设的工作数据。只能输出合法 JSON，不要 Markdown。${realTimeContext}\n【Char 人设】${friend.persona || '普通角色'}\n【User 人设】${window.userState?.persona || '普通用户'}\n【世界书】${globalRule}\n【近期聊天】${chat}\n【选中字段】\n${selected.map(key => requirements[key]).join('\n')}\n只返回一个对象，且只能包含这些顶层字段：${selected.join('、')}。内容避免模板化和重复，所有文本使用中文或符合角色背景的自然语言。`;
         const endpoint = window.u2Api.resolveChatCompletionsEndpoint(window.apiConfig.endpoint);
         button.disabled = true;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>正在生成...</span>';
-        window.showToast?.('正在生成电脑数据，请稍候...');
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>GENERATE...</span>';
+        window.showToast?.('Computer is running, please wait...');
         try {
             const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${window.apiConfig.apiKey}` }, body: JSON.stringify({ model: window.apiConfig.model || 'gpt-3.5-turbo', messages: [{ role: 'system', content: '你是数据生成助手，只返回合法 JSON。' }, { role: 'user', content: prompt }], temperature: 0.7 }) });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -3521,7 +3521,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             friend.computerData = this.normalizeFriendComputerData(merged, friend);
             friend.computerData.generatedAt = merged.generatedAt;
             await this.persistFriendState(friend);
-            window.showToast?.('电脑数据生成成功');
+            window.showToast?.('Computer is running normally');
             this.openFriendComputerApp('settings');
         } catch (error) {
             console.error('Friend computer generation failed:', error);
