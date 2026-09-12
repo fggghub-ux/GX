@@ -88,7 +88,7 @@ window.lovesApp = {
     },
 
     showDeleteConfirm: function(text, onConfirm) {
-        const result = window.confirm('Confirm deletion of "' + text + '" 吗？');
+        const result = window.confirm('Confirm deletion of "' + text + '"？');
         if (result) {
             Promise.resolve(onConfirm()).then(() => {
             });
@@ -777,7 +777,7 @@ window.lovesApp = {
             };
         }
 
-        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         let datesHtml = '';
         for (let i = -15; i <= 15; i++) {
             const d = new Date(baseDate);
@@ -793,7 +793,7 @@ window.lovesApp = {
             datesHtml += [
                 '<button type="button" class="', stateClasses, '" data-date="', dateStr, '" aria-label="',
                 d.getMonth() + 1, 'Month', d.getDate(), 'Day" aria-pressed="', String(isSelected), '">',
-                '<small>', isToday ? 'To' : dayNames[d.getDay()], '</small>',
+                '<small>', isToday ? 'TO' : dayNames[d.getDay()], '</small>',
                 '<strong>', d.getDate(), '</strong>',
                 '</button>'
             ].join('');
@@ -824,7 +824,7 @@ window.lovesApp = {
                 '<div class="lovers-diary-empty">',
                 '<i class="far fa-pen-to-square"></i>',
                 '<strong>', selectedDateStr === this.getLocalDateKey(today) ? 'She sees is a snowflake.' : 'She sees is a snowflake.', '</strong>',
-                '<span>But what I saw was not snow. It was her. It was my wife.</span>',
+                '<span>But what I saw was not snow. \nIt was her. It was my wife.</span>',
                 '</div>'
             ].join('');
             return;
@@ -1805,20 +1805,20 @@ window.lovesApp = {
     normalizeSavingsWithdrawResult: function(parsed, amount, reason) {
         const decision = parsed?.decision === 'reject' ? 'reject' : 'approve';
         const defaultReason = decision === 'reject'
-            ? `这笔我先不同意，${reason}这个理由还不够明确。`
-            : `可以，这次先从存钱罐给你提 ${amount.toFixed(2)}。`;
+            ? `Tell me why first, ${reason} I’ll decide after I hear you out.`
+            : `Okay, I'll give you ${amount.toFixed(2)} for now.`;
         const decisionReason = String(parsed?.reason || parsed?.decisionReason || parsed?.approveReason || parsed?.rejectReason || defaultReason).trim() || defaultReason;
         let messages = Array.isArray(parsed?.messages)
             ? parsed.messages.map(item => String(item || '').trim()).filter(Boolean)
             : [];
         const fallbackMessages = decision === 'reject'
             ? [
-                `这笔我先不同意，${reason}这个理由我还想再问清楚一点。`,
-                `你先别急着提，跟我说说到底怎么用。`
+                `I'll hold off on this one for now. I want to ask more about the reason, ${reason}`,
+                `Tell me about it, En.`
             ]
             : [
-                `可以，你先拿去用。`,
-                amount <= 50 ? `就提 ${amount.toFixed(2)} 够不够？` : `这笔我同意，记得别乱花。`
+                `I'll pay for it.`,
+                amount <= 50 ? `Take ${amount.toFixed(2)} for now.` : `Take the money. Tell me what you need, and I’ll arrange the purchase.`
             ];
         fallbackMessages.forEach(text => {
             if (messages.length < 2) messages.push(text);
@@ -2149,7 +2149,7 @@ window.lovesApp = {
             const sender = msg.role === 'user' || msg.sender === 'me' ? 'User' : 'Char';
             let content = msg.text || msg.content || '';
             if (msg.type === 'pay_transfer') {
-                content = `[支付卡片] ${msg.description || msg.cardTitle || ''} ${msg.amount ? `¥${Number(msg.amount).toFixed(2)}` : ''}`.trim();
+                content = `[支付卡片] ${msg.description || msg.cardTitle || ''} ${msg.amount ? `$${Number(msg.amount).toFixed(2)}` : ''}`.trim();
             }
             content = String(content || '[特殊消息]').replace(/<[^>]+>/g, '').slice(0, 180);
             return `${sender}: ${content}`;
@@ -2189,7 +2189,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 6. 如果拒绝，extraSupport.type 必须是 "none"。
 7. 如果提款金额超过当前总额，必须拒绝。
 8. 只返回纯 JSON，不要 Markdown，不要多余解释。格式如下：
-{"decision":"approve","reason":"可以，你先拿去买吃的。","messages":["吃什么？","就提这么点够不够？"],"extraSupport":{"type":"none"}}`;
+{"decision":"approve","reason":"Okay, take it and use it for now.","messages":["Anything else you need?", "Take whatever else you need."],"extraSupport":{"type":"none"}}`;
 
         if (sendBtn) {
             sendBtn.disabled = true;
@@ -2232,7 +2232,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     throw new Error('Pay API unavailable');
                 }
 
-                const incomeSuccess = window.addPayTransaction(amount, `存钱罐提款 · ${friendName}`, 'income');
+                const incomeSuccess = window.addPayTransaction(amount, `Withdraw · ${friendName}`, 'income');
                 if (!incomeSuccess) throw new Error('Pay income failed');
 
                 const now = new Date();
@@ -2348,7 +2348,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 payKind: 'system_notification',
                 payDirection: 'char_to_user',
                 amount,
-                description: `${titleStr} ¥${amount.toFixed(2)}`,
+                description: `${titleStr} $${amount.toFixed(2)}`,
                 payerName: friendName,
                 payeeName: userName,
                 senderName: friendName,
@@ -2356,7 +2356,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                 targetName: userName,
                 cardTitle: titleStr,
                 payStatus: 'completed',
-                content: `[Family] ${titleStr} ¥${amount.toFixed(2)}`,
+                content: `[Family] ${titleStr} $${amount.toFixed(2)}`,
                 timestamp
             };
         }
@@ -2377,7 +2377,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             targetName: userName,
             cardTitle: '转账',
             payStatus: 'pending',
-            content: `[转账] ${description} ¥${amount.toFixed(2)}`,
+            content: `[转账] ${description} $${amount.toFixed(2)}`,
             timestamp
         };
     },
