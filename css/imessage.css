@@ -931,39 +931,103 @@ button.group-private-chat-detail-bubble {
 }
 
 .line-content {
-    padding: calc(60px + env(safe-area-inset-top, 0px)) 20px var(--im-bottom-nav-space); /* Top padding for floating header, Bottom padding for nav */
+    padding: 60px 20px var(--im-bottom-nav-space);
+    color: #111;
     overflow-y: auto;
     flex: 1;
 }
 
-/* 2. Profile Section */
-.line-profile {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+/* Home default UI — adapted from JW-Home-ig.
+   Reference: 1080px screenshot / 3 = 360 CSS px; cover 292 x 170,
+   avatar 58, content inset 34, header title inset 38.
+   The shared header above remains the Chats/Moments baseline. */
+#imessage-view[data-im-active-surface="home"] > .line-header {
+    position: relative;
+    top: 0;
+    height: calc(69px + env(safe-area-inset-top, 0px));
+    min-height: calc(69px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 14px 0 0;
+    justify-content: flex-end;
+    background: #fff;
+    border-bottom: 1px solid #f2f2f2;
+    box-shadow: none;
 }
-
-.line-profile-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.line-profile-name {
-    font-size: 24px;
+#imessage-view[data-im-active-surface="home"] > .line-header::before {
+    content: "Instagram";
+    position: absolute;
+    top: calc(31px + env(safe-area-inset-top, 0px));
+    left: 38px;
+    font-family: Arial, Helvetica, "Nimbus Sans", sans-serif;
+    font-size: 31px;
     font-weight: 700;
+    line-height: 1;
+    color: #111;
+    letter-spacing: -0.5px;
+    pointer-events: none;
+}
+#imessage-view[data-im-active-surface="home"] .line-header-left {
+    position: absolute;
+    left: 6px;
+    top: env(safe-area-inset-top, 0px);
+    bottom: 0;
+    width: 26px;
+    height: auto;
+}
+#imessage-view[data-im-active-surface="home"] .line-header-right {
+    align-items: center;
+    gap: 20px;
+    font-size: 20px;
     color: #000;
-    margin-bottom: 4px;
+    transform: translateY(4px);
 }
-
+.line-profile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr);
+    grid-template-rows: 58px auto;
+    column-gap: 11px;
+    align-items: center;
+    margin: 0 14px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+.line-profile-info {
+    position: relative;
+    top: 2px;
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    padding-right: 64px;
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, "Nimbus Sans", sans-serif;
+    align-self: start;
+}
+.line-profile-name {
+    margin: 0 0 2px;
+    color: #000;
+    font-size: 24px;
+    font-weight: 750;
+    line-height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .line-profile-sign {
-    font-size: 13px;
+    margin: 0;
     color: #8e8e93;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-
 .line-profile-avatar {
-    width: 60px;
-    height: 60px;
+    grid-column: 1;
+    grid-row: 1;
+    width: 58px;
+    height: 58px;
+    border: 2px solid #111;
     border-radius: 50%;
     background-color: #e5e5ea;
     display: flex;
@@ -973,74 +1037,113 @@ button.group-private-chat-detail-bubble {
     color: #aeaeb2;
     overflow: hidden;
 }
-
 .line-profile-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-/* 3. Search Bar */
-.line-search-container {
-    margin-bottom: 20px;
+.line-profile::before {
+    content: "Follow";
+    position: absolute;
+    top: 15px;
+    right: 0;
+    padding: 0;
+    width: 61px;
+    text-align: center;
+    height: 28px;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-family: Arial, Helvetica, "Nimbus Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 28px;
+    pointer-events: none;
 }
-
-.line-search-bar {
-    background-color: #e5e5ea;
-    border-radius: 20px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #8e8e93;
-    font-size: 15px;
+.im-home-cover {
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    aspect-ratio: 1.72 / 1;
+    margin: 10px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f2f2f2;
+    cursor: pointer;
 }
-
-/* 4. Services Grid */
-.line-section {
-    margin-bottom: 30px;
+.im-home-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
-.line-section-title {
-    font-size: 13px;
-    color: #8e8e93;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
+.im-home-cover:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.line-search-container { display: none; }
+.line-section { margin-bottom: 30px; }
+#imessage-view > .line-content .line-section-title { display: none; }
 .line-services-grid {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+    margin: 10px 14px 0;
+    padding: 0;
 }
-
 .line-service-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 60px;
-    text-align: center;
+    display: block;
+    flex: 0 0 27px;
+    width: 27px;
+    min-width: 27px;
+    height: 29px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
 }
-
-.line-service-icon {
-    width: 48px;
-    height: 48px;
-    background-color: transparent; /* Flat style */
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
-    color: #333;
-     /* Removed shadow for flat style */
+.line-service-item:nth-child(4) { margin-left: auto; }
+.line-service-item > * { display: none; }
+.line-service-item::before {
+    content: "";
+    display: block;
+    width: 27px;
+    height: 27px;
+    background: center / contain no-repeat;
 }
-
-.line-service-item span {
-    font-size: 11px;
+.line-service-item:nth-child(1)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+}
+.line-service-item:nth-child(2)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'/%3E%3C/svg%3E");
+}
+.line-service-item:nth-child(3)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 2-7 20-4-9-9-4Z'/%3E%3Cpath d='M22 2 11 13'/%3E%3C/svg%3E");
+}
+.line-service-item:nth-child(4)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21 12 16 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+#imessage-view > .line-content .line-section-header { justify-content: flex-start; }
+.im-home-cover-toast {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--im-bottom-nav-space) + 16px);
+    z-index: 30;
+    transform: translateX(-50%);
+    padding: 14px 28px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     color: #000;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
     white-space: nowrap;
+    pointer-events: none;
 }
+.im-home-cover-toast[hidden],
+#imessage-view:not([data-im-active-surface="home"]) .im-home-cover-toast { display: none; }
 
 /* iMessage Game / Anonymous Q&A */
 .app-view.im-game-view,
