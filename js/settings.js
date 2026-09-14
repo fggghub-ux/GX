@@ -177,7 +177,7 @@
             { id: 'app-icon-5', name: 'Shop', icon: DEFAULT_APP_ICONS['app-icon-5'] },
             { id: 'app-icon-6', name: 'Library', icon: DEFAULT_APP_ICONS['app-icon-6'] },
             { id: 'app-icon-7', name: 'Netflix', icon: DEFAULT_APP_ICONS['app-icon-7'] },
-            { id: 'app-icon-8', name: 'Loves', icon: DEFAULT_APP_ICONS['app-icon-8'] },
+            { id: 'app-icon-8', name: 'Lover', icon: DEFAULT_APP_ICONS['app-icon-8'] },
             { id: 'dock-icon-settings', name: '设置', icon: DEFAULT_APP_ICONS['dock-icon-settings'] },
             { id: 'dock-icon-imessage', name: '信息', icon: DEFAULT_APP_ICONS['dock-icon-imessage'] },
             { id: 'dock-icon-youtube', name: 'YouTube', icon: DEFAULT_APP_ICONS['dock-icon-youtube'] }
@@ -277,8 +277,8 @@
                             if (savedApp.icon) existingApp.icon = savedApp.icon; // 空值不覆盖默认图
                             if (savedApp.id === 'app-icon-6') {
                                 existingApp.name = 'Library';
-                            } else if (savedApp.id === 'app-icon-8' && savedApp.name === 'Diary') {
-                                existingApp.name = 'Loves';
+                            } else if (savedApp.id === 'app-icon-8' && ['Diary', 'Loves'].includes(savedApp.name)) {
+                                existingApp.name = 'Lover';
                             } else {
                                 existingApp.name = savedApp.name || existingApp.name;
                             }

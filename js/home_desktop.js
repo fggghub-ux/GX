@@ -2,7 +2,13 @@
     const PAGE_EDGE_PX = 44;
     const GRID_CAPACITY = 24;
     const DOCK_CAPACITY = 4;
-    const DESKTOP_SCHEMA_VERSION = 1;
+    const DESKTOP_SCHEMA_VERSION = 2;
+    const APP_LAYOUT_MIGRATION_V2 = new Map([
+        ['app-bstage-btn', 'app-x-btn'],
+        ['app-x-btn', 'dock-icon-youtube'],
+        ['dock-icon-youtube', 'app-loves-btn'],
+        ['app-loves-btn', 'app-bstage-btn']
+    ]);
     const LEGACY_APP_ID_ALIASES = {
         'app-icon-7': 'app-netflix-btn',
         'app-icon-8': 'app-loves-btn'
@@ -256,6 +262,7 @@
     function normalizeDesktopState(raw, fallback) {
         desktopStateNeedsSave = false;
         const safe = raw && typeof raw === 'object' ? raw : {};
+        const sourceSchemaVersion = Number.parseInt(safe.schemaVersion, 10) || 0;
         const seenItems = new Set();
         let pages = Array.isArray(safe.pages) && safe.pages.length
             ? safe.pages.map((page) => normalizeDesktopItems(page, { seen: seenItems }))
@@ -279,6 +286,9 @@
         if (!defaultPhotoWidgetAdded) ensureDefaultPhotoWidget(pages, widgets);
         ensureCatalogWidgetConfigs(widgets);
         ensurePermanentCatalogWidgets(pages, widgets);
+        if (sourceSchemaVersion >= 1 && sourceSchemaVersion < 2) {
+            migrateAppLayoutV2(pages, dock);
+        }
 
         return {
             schemaVersion: DESKTOP_SCHEMA_VERSION,
@@ -287,6 +297,20 @@
             widgets,
             defaultPhotoWidgetAdded: true
         };
+    }
+
+    function migrateAppLayoutV2(pages, dock) {
+        let changed = false;
+        [...pages, dock].forEach((items) => {
+            items.forEach((item) => {
+                if (item.kind !== 'app') return;
+                const nextId = APP_LAYOUT_MIGRATION_V2.get(item.id);
+                if (!nextId) return;
+                item.id = nextId;
+                changed = true;
+            });
+        });
+        if (changed) desktopStateNeedsSave = true;
     }
 
     function isValidItem(item) {

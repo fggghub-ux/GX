@@ -74,7 +74,7 @@
         'app-icon-5': { name: 'Shop', key: 'home.app.shop' },
         'app-icon-6': { name: 'Library', key: 'home.app.library' },
         'app-icon-7': { name: 'Netflix', key: 'home.app.netflix' },
-        'app-icon-8': { name: 'Loves', key: 'home.app.loves' },
+        'app-icon-8': { name: 'Lover', key: 'home.app.loves' },
         'dock-icon-youtube': { name: 'YouTube', key: 'home.app.youtube' }
     });
 

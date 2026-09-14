@@ -3216,8 +3216,8 @@
             if (Array.isArray(themeState.apps)) {
                 themeState.apps = themeState.apps.map(app => {
                     if (!app || typeof app !== 'object') return app;
-                    if (app.id === 'app-icon-8' && app.name === 'Spotify') {
-                        return { ...app, name: 'Loves' };
+                    if (app.id === 'app-icon-8' && ['Spotify', 'Diary', 'Loves'].includes(app.name)) {
+                        return { ...app, name: 'Lover' };
                     }
                     return app;
                 });
@@ -3340,7 +3340,7 @@
                     { id: 'app-icon-5', name: 'Shop', icon: null },
             { id: 'app-icon-6', name: 'call', icon: null },
                     { id: 'app-icon-7', name: 'Netflix', icon: null },
-                    { id: 'app-icon-8', name: 'Loves', icon: null },
+                    { id: 'app-icon-8', name: 'Lover', icon: null },
                     { id: 'dock-icon-settings', name: '设置', icon: null },
                     { id: 'dock-icon-imessage', name: '信息', icon: null },
                     { id: 'dock-icon-youtube', name: 'YouTube', icon: null }

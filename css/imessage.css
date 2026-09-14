@@ -993,7 +993,7 @@ button.group-private-chat-detail-bubble {
     gap: 20px;
     font-size: 19px;
     color: #000;
-    transform: translate(-15px, 7px);
+    transform: translate(-12px, 10px);
 }
 #imessage-view[data-im-active-surface="home"] .line-header-right > .fa-cog {
     position: relative;
@@ -1009,7 +1009,7 @@ button.group-private-chat-detail-bubble {
     }
 
     #imessage-view[data-im-active-surface="home"] .line-header-right {
-        transform: translate(-15px, 29px);
+        transform: translate(-12px, 32px);
     }
 }
 #imessage-view[data-im-active-surface="home"] > .line-content {
