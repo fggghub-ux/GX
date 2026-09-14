@@ -956,7 +956,7 @@ button.group-private-chat-detail-bubble {
 #imessage-view[data-im-active-surface="home"] > .line-header::before {
     content: "Instagram";
     position: absolute;
-    top: 17px;
+    top: 8px;
     left: 38px;
     z-index: 5;
     font-family: "Brush Script MT", "Segoe Script", cursive;
@@ -982,7 +982,7 @@ button.group-private-chat-detail-bubble {
     gap: 20px;
     font-size: 20px;
     color: #000;
-    transform: translateX(-14px);
+    transform: translate(-18px, -9px);
 }
 #imessage-view[data-im-active-surface="home"] > .line-content {
     padding-top: 50px;
@@ -1001,7 +1001,7 @@ button.group-private-chat-detail-bubble {
 }
 .line-profile-info {
     position: relative;
-    top: 15px;
+    top: -1.5px;
     grid-column: 2;
     grid-row: 1 / 3;
     min-width: 0;
@@ -1010,11 +1010,11 @@ button.group-private-chat-detail-bubble {
     align-self: start;
 }
 .line-profile-name {
-    margin: 0;
+    margin: 0 0 2px;
     color: #000;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 750;
-    line-height: 20px;
+    line-height: 29px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1022,8 +1022,8 @@ button.group-private-chat-detail-bubble {
 .line-profile-sign {
     margin: 0;
     color: #8e8e93;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 13px;
+    font-weight: 700;
     line-height: 17px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2085,6 +2085,53 @@ button.group-private-chat-detail-bubble {
 
 .line-nav-item.active {
     color: #111111;
+}
+
+/* Keep the Home dock at the established pre-reference dimensions. */
+#imessage-view[data-im-active-surface="home"] .line-bottom-nav {
+    height: 58px !important;
+    padding: 5px !important;
+    border-radius: 32px !important;
+    max-width: calc(100vw - 32px) !important;
+}
+
+#imessage-view[data-im-active-surface="home"] .line-nav-indicator {
+    bottom: 5px !important;
+    height: 48px !important;
+    border-radius: 28px !important;
+}
+
+#imessage-view[data-im-active-surface="home"] .line-nav-item {
+    width: 78px !important;
+    height: 48px !important;
+    flex-basis: 78px !important;
+}
+
+#imessage-view[data-im-active-surface="home"] .line-nav-item i {
+    font-size: 18px !important;
+}
+
+#imessage-view[data-im-active-surface="home"] .line-nav-item span {
+    font-size: 10px !important;
+}
+
+@media (max-width: 390px) {
+    #imessage-view[data-im-active-surface="home"] .line-bottom-nav {
+        max-width: calc(100vw - 24px) !important;
+    }
+
+    #imessage-view[data-im-active-surface="home"] .line-nav-item {
+        width: 72px !important;
+        flex-basis: 72px !important;
+    }
+
+    #imessage-view[data-im-active-surface="home"] .line-nav-item i {
+        font-size: 17px !important;
+    }
+
+    #imessage-view[data-im-active-surface="home"] .line-nav-item span {
+        font-size: 9px !important;
+    }
 }
 
 /* Animations */
