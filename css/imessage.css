@@ -956,7 +956,7 @@ button.group-private-chat-detail-bubble {
 #imessage-view[data-im-active-surface="home"] > .line-header::after {
     content: "";
     position: absolute;
-    top: 68px;
+    top: 70px;
     left: 0;
     right: 0;
     height: 1px;
@@ -993,11 +993,24 @@ button.group-private-chat-detail-bubble {
     gap: 20px;
     font-size: 19px;
     color: #000;
-    transform: translate(-11px, 11px);
+    transform: translate(-15px, 7px);
 }
 #imessage-view[data-im-active-surface="home"] .line-header-right > .fa-cog {
     position: relative;
-    left: 3px;
+    left: -3px;
+}
+@media (min-width: 768px) {
+    #imessage-view[data-im-active-surface="home"] > .line-header::before {
+        top: 49px;
+    }
+
+    #imessage-view[data-im-active-surface="home"] > .line-header::after {
+        top: 92px;
+    }
+
+    #imessage-view[data-im-active-surface="home"] .line-header-right {
+        transform: translate(-15px, 29px);
+    }
 }
 #imessage-view[data-im-active-surface="home"] > .line-content {
     padding-top: 50px;
@@ -1037,7 +1050,7 @@ button.group-private-chat-detail-bubble {
 .line-profile-sign {
     margin: 0;
     color: #8e8e93;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     line-height: 16px;
     overflow: hidden;
