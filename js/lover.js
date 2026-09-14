@@ -1,7 +1,7 @@
 /**
- * Loves App Logic
+ * Lover App Logic
  */
-window.lovesApp = {
+window.loverApp = {
     view: null,
     backBtn: null,
     initialized: false,
@@ -10,7 +10,7 @@ window.lovesApp = {
     currentComputerApp: null,
     currentFriend: null,
     currentSelectedFriendId: null,
-    lovesProgrammaticScrollUntil: 0,
+    loverProgrammaticScrollUntil: 0,
     _realTimeJobsStarted: false,
     _realTimeTimer: null,
     _momentReplyQueues: new Map(),
@@ -120,12 +120,12 @@ window.lovesApp = {
         return ({ zh: 'Chinese', en: 'English', ja: 'Japanese', ko: 'Korean', fr: 'French' })[this.normalizeFriendPhoneLanguage(value)] || String(value || 'Chinese');
     },
 
-    resolveLovesMomentLanguage: function(friend = this.currentFriend) {
+    resolveLoverMomentLanguage: function(friend = this.currentFriend) {
         return this.normalizeFriendPhoneLanguage(friend?.language || 'zh');
     },
 
-    buildLovesMomentLocalizationContract: function(friend = this.currentFriend, subject = 'content') {
-        const language = this.resolveLovesMomentLanguage(friend);
+    buildLoverMomentLocalizationContract: function(friend = this.currentFriend, subject = 'content') {
+        const language = this.resolveLoverMomentLanguage(friend);
         if (window.imDataUtils?.buildLocalizedJsonContract) {
             return window.imDataUtils.buildLocalizedJsonContract(language, subject);
         }
@@ -135,8 +135,8 @@ window.lovesApp = {
             : `${subject}.text must be written only in ${languageName}; ${subject}.translation is mandatory and must be a natural accurate Simplified Chinese translation of that text.`;
     },
 
-    normalizeLovesMomentLocalizedContent: function(value, friend = this.currentFriend) {
-        const language = this.resolveLovesMomentLanguage(friend);
+    normalizeLoverMomentLocalizedContent: function(value, friend = this.currentFriend) {
+        const language = this.resolveLoverMomentLanguage(friend);
         if (window.imDataUtils?.normalizeLocalizedContent) {
             return window.imDataUtils.normalizeLocalizedContent(value, language);
         }
@@ -149,25 +149,25 @@ window.lovesApp = {
         return { text, translation, language };
     },
 
-    getLovesMomentTranslation: function(record) {
+    getLoverMomentTranslation: function(record) {
         if (!record || typeof record !== 'object') return '';
         return String(record.translation ?? record.translationZh ?? record.textTranslationZh ?? record.textTranslation ?? '').trim();
     },
 
-    renderLovesMomentTranslation: function(translation, targetId) {
+    renderLoverMomentTranslation: function(translation, targetId) {
         const text = String(translation || '').trim();
         if (!text) return '';
         const safeTargetId = this.escapeHTML(targetId);
-        return `<button type="button" class="loves-moment-translate-toggle" aria-expanded="false" aria-controls="${safeTargetId}" data-loves-translation-target="${safeTargetId}">Translate</button><div class="loves-moment-translation" id="${safeTargetId}" hidden>${this.escapeHTML(text).replace(/\n/g, '<br>')}</div>`;
+        return `<button type="button" class="lover-moment-translate-toggle" aria-expanded="false" aria-controls="${safeTargetId}" data-lover-translation-target="${safeTargetId}">Translate</button><div class="lover-moment-translation" id="${safeTargetId}" hidden>${this.escapeHTML(text).replace(/\n/g, '<br>')}</div>`;
     },
 
-    bindLovesMomentTranslationControls: function(container) {
+    bindLoverMomentTranslationControls: function(container) {
         if (!container) return;
-        container.querySelectorAll('.loves-moment-translate-toggle').forEach(control => {
+        container.querySelectorAll('.lover-moment-translate-toggle').forEach(control => {
             const toggle = (event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                const targetId = control.getAttribute('data-loves-translation-target');
+                const targetId = control.getAttribute('data-lover-translation-target');
                 const translation = targetId ? document.getElementById(targetId) : null;
                 if (!translation) return;
                 const expanded = control.getAttribute('aria-expanded') === 'true';
@@ -288,7 +288,7 @@ window.lovesApp = {
             });
         };
         visit(value, path);
-        if (missingPaths.length) console.warn('[Loves] 好友手机内容缺少中文翻译，已按原文降级展示：', missingPaths);
+        if (missingPaths.length) console.warn('[Lover] 好友手机内容缺少中文翻译，已按原文降级展示：', missingPaths);
         return missingPaths;
     },
 
@@ -471,7 +471,7 @@ window.lovesApp = {
         return this.getLocalDateKey(date);
     },
 
-    findLovesAcceptanceTimestamp: function(friend) {
+    findLoverAcceptanceTimestamp: function(friend) {
         const messages = Array.isArray(friend?.messages) ? friend.messages : [];
         const acceptedMessage = messages.find((message) => {
             const text = String(message?.text || message?.content || '');
@@ -485,22 +485,22 @@ window.lovesApp = {
         return Number.isFinite(timestamp) && timestamp > 0 ? timestamp : 0;
     },
 
-    ensureLovesStartTime: function(friend, fallbackTimestamp = Date.now()) {
-        if (!friend || !friend.hasLovesSpace) return { timestamp: 0, changed: false };
-        const existing = Number(friend.lovesSpaceStartTime);
+    ensureLoverStartTime: function(friend, fallbackTimestamp = Date.now()) {
+        if (!friend || !friend.hasLoverSpace) return { timestamp: 0, changed: false };
+        const existing = Number(friend.loverSpaceStartTime);
         if (Number.isFinite(existing) && existing > 0) {
             return { timestamp: existing, changed: false };
         }
 
-        const recovered = this.findLovesAcceptanceTimestamp(friend);
+        const recovered = this.findLoverAcceptanceTimestamp(friend);
         const fallback = Number(fallbackTimestamp);
         const timestamp = recovered || (Number.isFinite(fallback) && fallback > 0 ? fallback : Date.now());
-        friend.lovesSpaceStartTime = timestamp;
+        friend.loverSpaceStartTime = timestamp;
         return { timestamp, changed: true };
     },
 
-    getLovesDaysCount: function(friend, now = new Date()) {
-        const startTimestamp = Number(friend?.lovesSpaceStartTime);
+    getLoverDaysCount: function(friend, now = new Date()) {
+        const startTimestamp = Number(friend?.loverSpaceStartTime);
         if (!Number.isFinite(startTimestamp) || startTimestamp <= 0) return 1;
         const startDay = this.getLocalDayOrdinal(new Date(startTimestamp));
         const currentDay = this.getLocalDayOrdinal(now);
@@ -508,8 +508,8 @@ window.lovesApp = {
     },
 
     syncDailySavingsForFriend: async function(friend, now = new Date(), options = {}) {
-        if (!friend || !friend.hasLovesSpace) return false;
-        const startState = this.ensureLovesStartTime(friend, now.getTime());
+        if (!friend || !friend.hasLoverSpace) return false;
+        const startState = this.ensureLoverStartTime(friend, now.getTime());
         const startDateKey = this.getLocalDateKey(startState.timestamp);
         const todayKey = this.getLocalDateKey(now);
         const savings = this.ensureSavingsData(friend);
@@ -554,19 +554,19 @@ window.lovesApp = {
         return changed;
     },
 
-    syncAllLovesRealTimeData: async function() {
+    syncAllLoverRealTimeData: async function() {
         if (window.imApp?.ensureDataReady) await window.imApp.ensureDataReady();
         const friends = Array.isArray(window.imData?.friends) ? window.imData.friends : [];
-        const acceptedFriends = friends.filter(friend => friend?.hasLovesSpace);
+        const acceptedFriends = friends.filter(friend => friend?.hasLoverSpace);
 
         for (const friend of acceptedFriends) {
-            if (!Number(friend.lovesSpaceStartTime) && window.imApp?.ensureFriendMessagesLoaded) {
+            if (!Number(friend.loverSpaceStartTime) && window.imApp?.ensureFriendMessagesLoaded) {
                 await window.imApp.ensureFriendMessagesLoaded(friend);
             }
             await this.syncDailySavingsForFriend(friend);
         }
 
-        if (this.currentFriend?.hasLovesSpace) this.updateDaysCount(this.currentFriend);
+        if (this.currentFriend?.hasLoverSpace) this.updateDaysCount(this.currentFriend);
         if (document.getElementById('lovers-savings-view')?.classList.contains('active')) {
             this.renderSavingsJar();
         }
@@ -578,7 +578,7 @@ window.lovesApp = {
         const nextMidnight = new Date(now);
         nextMidnight.setHours(24, 0, 1, 0);
         this._realTimeTimer = setTimeout(async () => {
-            await this.syncAllLovesRealTimeData();
+            await this.syncAllLoverRealTimeData();
             this.scheduleNextRealTimeSync();
         }, Math.max(1000, nextMidnight.getTime() - now.getTime()));
     },
@@ -588,7 +588,7 @@ window.lovesApp = {
         this._realTimeJobsStarted = true;
 
         const refresh = () => {
-            void this.syncAllLovesRealTimeData().finally(() => this.scheduleNextRealTimeSync());
+            void this.syncAllLoverRealTimeData().finally(() => this.scheduleNextRealTimeSync());
         };
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') refresh();
@@ -608,8 +608,8 @@ window.lovesApp = {
     init: function() {
         if (this.initialized) return;
         
-        this.view = document.getElementById('loves-view');
-        this.backBtn = document.getElementById('loves-back-btn');
+        this.view = document.getElementById('lover-view');
+        this.backBtn = document.getElementById('lover-back-btn');
         
         if (!this.view) return;
         
@@ -618,13 +618,13 @@ window.lovesApp = {
         this.bindLauncherButton();
         this.initialized = true;
         this.startRealTimeJobs();
-        console.log('Loves app initialized');
+        console.log('Lover app initialized');
     },
 
     bindAndroidInputFocusScope: function() {
         if (this._androidFocusScopeCleanup || !window.mobileInputCompat?.registerFocusScope) return;
         this._androidFocusScopeCleanup = window.mobileInputCompat.registerFocusScope({
-            selector: '#loves-view, #lovers-space-view, #lovers-savings-view, #lovers-friend-phone-view, #lovers-friend-computer-view, .bottom-sheet-overlay[id^="lovers-"], .bottom-sheet-overlay[id^="friend-"]'
+            selector: '#lover-view, #lovers-space-view, #lovers-savings-view, #lovers-friend-phone-view, #lovers-friend-computer-view, .bottom-sheet-overlay[id^="lovers-"], .bottom-sheet-overlay[id^="friend-"]'
         });
     },
     
@@ -652,14 +652,14 @@ window.lovesApp = {
     },
 
     bindLauncherButton: function() {
-        const launcher = document.getElementById('app-loves-btn');
-        if (!launcher || launcher.dataset.lovesLauncherBound === 'true') return;
-        launcher.dataset.lovesLauncherBound = 'true';
+        const launcher = document.getElementById('app-lover-btn');
+        if (!launcher || launcher.dataset.loverLauncherBound === 'true') return;
+        launcher.dataset.loverLauncherBound = 'true';
         launcher.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (window.lovesApp && typeof window.lovesApp.open === 'function') {
-                window.lovesApp.open();
+            if (window.loverApp && typeof window.loverApp.open === 'function') {
+                window.loverApp.open();
             }
         });
     },
@@ -730,9 +730,9 @@ window.lovesApp = {
 
     ensureDiaryData: function(friend = this.currentFriend) {
         if (!friend) return [];
-        if (!friend.lovesData || typeof friend.lovesData !== 'object') friend.lovesData = {};
-        if (!Array.isArray(friend.lovesData.diaries)) friend.lovesData.diaries = [];
-        friend.lovesData.diaries = friend.lovesData.diaries
+        if (!friend.loverData || typeof friend.loverData !== 'object') friend.loverData = {};
+        if (!Array.isArray(friend.loverData.diaries)) friend.loverData.diaries = [];
+        friend.loverData.diaries = friend.loverData.diaries
             .filter(item => item && typeof item === 'object')
             .map((item, index) => ({
                 id: item.id || 'ld_' + Date.now() + '_' + index,
@@ -742,9 +742,9 @@ window.lovesApp = {
                 location: String(item.location || '未设置地点').trim() || '未设置地点',
                 diary: String(item.diary || item.content || '').trim(),
                 createdAt: Number(item.createdAt) || Number(item.timestamp) || Date.now(),
-                source: 'loves_diary'
+                source: 'lover_diary'
             }));
-        return friend.lovesData.diaries;
+        return friend.loverData.diaries;
     },
 
     renderDiary: function() {
@@ -859,7 +859,7 @@ window.lovesApp = {
                 if (!entryId) return;
                 if (!confirm('Delete this entry?')) return;
                 const diaries = this.ensureDiaryData();
-                this.currentFriend.lovesData.diaries = diaries.filter(item => String(item.id) !== String(entryId));
+                this.currentFriend.loverData.diaries = diaries.filter(item => String(item.id) !== String(entryId));
                 this.persistFriendState();
                 this.renderDiary();
             };
@@ -895,7 +895,7 @@ window.lovesApp = {
                 try {
                     const entries = await this.requestDiaryEntries(dateKey, count);
                     const diaries = this.ensureDiaryData();
-                    this.currentFriend.lovesData.diaries = diaries
+                    this.currentFriend.loverData.diaries = diaries
                         .filter(item => item.date !== dateKey)
                         .concat(entries);
                     await this.persistFriendState();
@@ -904,7 +904,7 @@ window.lovesApp = {
                     if (window.closeView) window.closeView(generatorView);
                     if (window.showToast) window.showToast(entries.length + ' Journal Entries Generated');
                 } catch (error) {
-                    console.error('[Loves Diary] generate failed', error);
+                    console.error('[Lover Diary] generate failed', error);
                     const message = String(error?.message || '日记生成失败').slice(0, 80);
                     if (window.showToast) window.showToast(message);
                     else alert(message);
@@ -927,18 +927,18 @@ window.lovesApp = {
         return count;
     },
 
-    getLovesApiConfig: function() {
+    getLoverApiConfig: function() {
         return typeof window.getApiConfig === 'function' ? (window.getApiConfig() || {}) : (window.apiConfig || {});
     },
 
-    resolveLovesChatEndpoint: function(apiConfig) {
+    resolveLoverChatEndpoint: function(apiConfig) {
         const endpoint = String(apiConfig?.endpoint || '').trim();
         return endpoint ? window.u2Api.resolveChatCompletionsEndpoint(endpoint) : '';
     },
 
     requestDiaryEntries: async function(dateKey, count) {
-        const apiConfig = this.getLovesApiConfig();
-        const endpoint = this.resolveLovesChatEndpoint(apiConfig);
+        const apiConfig = this.getLoverApiConfig();
+        const endpoint = this.resolveLoverChatEndpoint(apiConfig);
         if (!endpoint || !apiConfig.apiKey) throw new Error('请先在设置中配置 API');
 
         const friend = this.currentFriend || {};
@@ -952,7 +952,7 @@ window.lovesApp = {
             : '';
 
         const promptLines = [
-            '你要为 Loves 情侣空间生成角色的独立行程日记，不要写入或引用 iMessage 日程。',
+            '你要为 Lover 情侣空间生成角色的独立行程日记，不要写入或引用 iMessage 日程。',
             '',
             '【Char】' + charName,
             '【Char 人设】',
@@ -1051,7 +1051,7 @@ window.lovesApp = {
                 location,
                 diary,
                 createdAt: Date.now(),
-                source: 'loves_diary'
+                source: 'lover_diary'
             };
         });
 
@@ -1120,20 +1120,20 @@ window.lovesApp = {
                     comments: []
                 };
                 
-                if (!this.currentFriend.lovesData) {
-                    this.currentFriend.lovesData = { moments: [] };
+                if (!this.currentFriend.loverData) {
+                    this.currentFriend.loverData = { moments: [] };
                 }
-                if (!this.currentFriend.lovesData.moments) {
-                    this.currentFriend.lovesData.moments = [];
+                if (!this.currentFriend.loverData.moments) {
+                    this.currentFriend.loverData.moments = [];
                 }
                 
-                this.currentFriend.lovesData.moments.unshift(moment);
+                this.currentFriend.loverData.moments.unshift(moment);
                 
                 this.persistFriendState();
                 if (window.showToast) window.showToast('Posted successfully');
                 if (window.closeView) window.closeView(publishView);
                 
-                this.renderLovesMoments();
+                this.renderLoverMoments();
             };
         }
     },
@@ -1170,12 +1170,12 @@ window.lovesApp = {
         imgContainer.appendChild(addBtn);
     },
 
-    renderLovesMoments: function() {
+    renderLoverMoments: function() {
         const list = document.getElementById('lovers-moments-list');
         const empty = document.getElementById('lovers-moments-empty');
         if (!list || !empty || !this.currentFriend) return;
         
-        const moments = this.currentFriend.lovesData?.moments || [];
+        const moments = this.currentFriend.loverData?.moments || [];
         
         if (moments.length === 0) {
             list.style.display = 'none';
@@ -1202,13 +1202,13 @@ window.lovesApp = {
             const safeDisplayAvatar = this.escapeHTML(displayAvatar || '');
             const safeUserAvatar = this.escapeHTML(userAvatar || '');
             const momentTranslationHtml = m.isChar
-                ? this.renderLovesMomentTranslation(this.getLovesMomentTranslation(m), `loves-moment-post-translation-${idx}`)
+                ? this.renderLoverMomentTranslation(this.getLoverMomentTranslation(m), `lover-moment-post-translation-${idx}`)
                 : '';
 
             let imagesHtml = '';
             if (m.images && m.images.length > 0) {
                 const imageLayout = m.images.length === 1 ? 'is-one' : (m.images.length === 2 ? 'is-two' : 'is-many');
-                imagesHtml = `<div class="loves-moment-images ${imageLayout}">`;
+                imagesHtml = `<div class="lover-moment-images ${imageLayout}">`;
                 m.images.forEach((src, imageIndex) => {
                     imagesHtml += `<img src="${this.escapeHTML(src)}" alt="动态图片 ${imageIndex + 1}">`;
                 });
@@ -1217,18 +1217,18 @@ window.lovesApp = {
             
             let commentsHtml = '';
             if (m.comments && m.comments.length > 0) {
-                commentsHtml = `<div class="loves-moment-comments">`;
+                commentsHtml = `<div class="lover-moment-comments">`;
                 m.comments.forEach((c, cIdx) => {
                     const cAuthor = c.isChar ? (this.currentFriend.nickname || this.currentFriend.realname || 'TA') : userName;
                     const safeAuthor = this.escapeHTML(cAuthor);
                     const safeCommentText = this.escapeHTML(c.text);
                     const commentTranslationHtml = c.isChar
-                        ? this.renderLovesMomentTranslation(this.getLovesMomentTranslation(c), `loves-moment-comment-translation-${idx}-${cIdx}`)
+                        ? this.renderLoverMomentTranslation(this.getLoverMomentTranslation(c), `lover-moment-comment-translation-${idx}-${cIdx}`)
                         : '';
                     commentsHtml += `
-                        <div class="loves-moment-comment ${c.isChar ? 'is-char' : ''}">
-                            <div class="loves-moment-comment-copy" onclick="window.lovesApp.replyToComment(${idx}, ${cIdx})"><div><span class="loves-moment-comment-author">${safeAuthor}</span>：${safeCommentText}</div>${commentTranslationHtml}</div>
-                            <button type="button" class="loves-moment-comment-delete" onclick="window.lovesApp.deleteComment(${idx}, ${cIdx})">Delete</button>
+                        <div class="lover-moment-comment ${c.isChar ? 'is-char' : ''}">
+                            <div class="lover-moment-comment-copy" onclick="window.loverApp.replyToComment(${idx}, ${cIdx})"><div><span class="lover-moment-comment-author">${safeAuthor}</span>：${safeCommentText}</div>${commentTranslationHtml}</div>
+                            <button type="button" class="lover-moment-comment-delete" onclick="window.loverApp.deleteComment(${idx}, ${cIdx})">Delete</button>
                         </div>
                     `;
                 });
@@ -1236,58 +1236,58 @@ window.lovesApp = {
             }
 
             html += `
-            <article class="loves-moment-card">
-                <div class="loves-moment-head">
-                    <div class="loves-moment-author">
-                        <div class="loves-moment-avatar">
+            <article class="lover-moment-card">
+                <div class="lover-moment-head">
+                    <div class="lover-moment-author">
+                        <div class="lover-moment-avatar">
                             ${displayAvatar ? `<img src="${safeDisplayAvatar}" alt="${safeDisplayName}">` : `<i class="fas fa-user"></i>`}
                         </div>
-                        <div class="loves-moment-author-copy">
-                            <div class="loves-moment-name">${safeDisplayName}</div>
-                            <div class="loves-moment-time">${timeStr}</div>
+                        <div class="lover-moment-author-copy">
+                            <div class="lover-moment-name">${safeDisplayName}</div>
+                            <div class="lover-moment-time">${timeStr}</div>
                         </div>
                     </div>
-                    <div class="loves-moment-actions">
-                        <button type="button" class="loves-moment-more" aria-label="动态选项" onclick="window.lovesApp.toggleMomentMenu(${idx})"><i class="fas fa-ellipsis-h"></i></button>
-                        <div id="loves-moment-menu-${idx}" class="loves-moment-menu">
-                            <button type="button" onclick="window.lovesApp.requestCharComment(${idx})"><i class="fas fa-comment-dots"></i><span>Their comment</span></button>
-                            <button type="button" class="is-danger" onclick="window.lovesApp.deleteMoment(${idx})"><i class="fas fa-trash-alt"></i><span>Delete post</span></button>
+                    <div class="lover-moment-actions">
+                        <button type="button" class="lover-moment-more" aria-label="动态选项" onclick="window.loverApp.toggleMomentMenu(${idx})"><i class="fas fa-ellipsis-h"></i></button>
+                        <div id="lover-moment-menu-${idx}" class="lover-moment-menu">
+                            <button type="button" onclick="window.loverApp.requestCharComment(${idx})"><i class="fas fa-comment-dots"></i><span>Their comment</span></button>
+                            <button type="button" class="is-danger" onclick="window.loverApp.deleteMoment(${idx})"><i class="fas fa-trash-alt"></i><span>Delete post</span></button>
                         </div>
                     </div>
                 </div>
                 
-                ${m.text ? `<div class="loves-moment-body">${safeMomentText}</div>${momentTranslationHtml}` : ''}
+                ${m.text ? `<div class="lover-moment-body">${safeMomentText}</div>${momentTranslationHtml}` : ''}
                 ${imagesHtml}
                 
-                <div class="loves-moment-toolbar">
-                    <button type="button" class="${m.isLiked ? 'is-liked' : ''}" onclick="window.lovesApp.toggleMomentLike(${idx})"><i class="${m.isLiked ? 'fas' : 'far'} fa-heart"></i><span>${m.likes || 0}</span></button>
-                    <button type="button" onclick="window.lovesApp.addMomentComment(${idx})"><i class="far fa-comment-dots"></i><span>${m.comments ? m.comments.length : 0}</span></button>
+                <div class="lover-moment-toolbar">
+                    <button type="button" class="${m.isLiked ? 'is-liked' : ''}" onclick="window.loverApp.toggleMomentLike(${idx})"><i class="${m.isLiked ? 'fas' : 'far'} fa-heart"></i><span>${m.likes || 0}</span></button>
+                    <button type="button" onclick="window.loverApp.addMomentComment(${idx})"><i class="far fa-comment-dots"></i><span>${m.comments ? m.comments.length : 0}</span></button>
                 </div>
                 
                 ${commentsHtml}
-                <div class="loves-moment-composer">
-                    <div class="loves-moment-composer-avatar">
+                <div class="lover-moment-composer">
+                    <div class="lover-moment-composer-avatar">
                         ${userAvatar ? `<img src="${safeUserAvatar}" alt="${safeUserName}">` : `<i class="fas fa-user"></i>`}
                     </div>
-                    <input type="text" class="loves-moment-comment-input" data-moment-idx="${idx}" inputmode="text" enterkeyhint="send" autocomplete="off" placeholder="${m.isChar ? 'Comment on post...' : 'Add comment...'}">
-                    <button type="button" class="loves-moment-comment-send" data-moment-idx="${idx}">sent</button>
+                    <input type="text" class="lover-moment-comment-input" data-moment-idx="${idx}" inputmode="text" enterkeyhint="send" autocomplete="off" placeholder="${m.isChar ? 'Comment on post...' : 'Add comment...'}">
+                    <button type="button" class="lover-moment-comment-send" data-moment-idx="${idx}">sent</button>
                 </div>
             </article>
             `;
         });
         
         list.innerHTML = html;
-        this.bindLovesMomentTranslationControls(list);
-        list.querySelectorAll('.loves-moment-comment-send').forEach(btn => {
+        this.bindLoverMomentTranslationControls(list);
+        list.querySelectorAll('.lover-moment-comment-send').forEach(btn => {
             btn.addEventListener('click', () => {
                 const idx = parseInt(btn.dataset.momentIdx, 10);
-                const input = list.querySelector(`.loves-moment-comment-input[data-moment-idx="${idx}"]`);
+                const input = list.querySelector(`.lover-moment-comment-input[data-moment-idx="${idx}"]`);
                 this.addMomentComment(idx, input ? input.value : '', {
                     restoreComposerFocus: document.activeElement === input
                 });
             });
         });
-        list.querySelectorAll('.loves-moment-comment-input').forEach(input => {
+        list.querySelectorAll('.lover-moment-comment-input').forEach(input => {
             input.addEventListener('keydown', (e) => {
                 const isSendEnter = window.mobileInputCompat?.isSendEnter
                     ? window.mobileInputCompat.isSendEnter(e)
@@ -1302,8 +1302,8 @@ window.lovesApp = {
         // 全局点击关闭菜单
         if (!this._menuClickBound) {
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('[id^="loves-moment-menu-"]') && !e.target.closest('.fa-ellipsis-h')) {
-                    const menus = document.querySelectorAll('[id^="loves-moment-menu-"]');
+                if (!e.target.closest('[id^="lover-moment-menu-"]') && !e.target.closest('.fa-ellipsis-h')) {
+                    const menus = document.querySelectorAll('[id^="lover-moment-menu-"]');
                     menus.forEach(m => m.style.display = 'none');
                 }
             });
@@ -1314,49 +1314,49 @@ window.lovesApp = {
     updateDaysCount: function(friend) {
         const daysEl = document.getElementById('lovers-space-days');
         if (!daysEl || !friend) return;
-        const startState = this.ensureLovesStartTime(friend);
-        daysEl.textContent = String(this.getLovesDaysCount(friend));
+        const startState = this.ensureLoverStartTime(friend);
+        daysEl.textContent = String(this.getLoverDaysCount(friend));
         if (startState.changed) void this.persistFriendState(friend, { metaOnly: true, silent: true });
     },
 
     toggleMomentMenu: function(idx) {
-        const menus = document.querySelectorAll('[id^="loves-moment-menu-"]');
+        const menus = document.querySelectorAll('[id^="lover-moment-menu-"]');
         menus.forEach((m, i) => {
             if (i !== idx) m.style.display = 'none';
         });
-        const targetMenu = document.getElementById(`loves-moment-menu-${idx}`);
+        const targetMenu = document.getElementById(`lover-moment-menu-${idx}`);
         if (targetMenu) {
             targetMenu.style.display = targetMenu.style.display === 'none' ? 'block' : 'none';
         }
     },
     
     deleteMoment: function(idx) {
-        if (!this.currentFriend || !this.currentFriend.lovesData || !this.currentFriend.lovesData.moments) return;
-        const targetMenu = document.getElementById(`loves-moment-menu-${idx}`);
+        if (!this.currentFriend || !this.currentFriend.loverData || !this.currentFriend.loverData.moments) return;
+        const targetMenu = document.getElementById(`lover-moment-menu-${idx}`);
         if (targetMenu) targetMenu.style.display = 'none';
         
         this.showDeleteConfirm('这条动态', () => {
-            this.currentFriend.lovesData.moments.splice(idx, 1);
+            this.currentFriend.loverData.moments.splice(idx, 1);
             this.persistFriendState();
-            this.renderLovesMoments();
+            this.renderLoverMoments();
         });
     },
 
     deleteComment: function(mIdx, cIdx) {
-        if (!this.currentFriend || !this.currentFriend.lovesData || !this.currentFriend.lovesData.moments) return;
-        const m = this.currentFriend.lovesData.moments[mIdx];
+        if (!this.currentFriend || !this.currentFriend.loverData || !this.currentFriend.loverData.moments) return;
+        const m = this.currentFriend.loverData.moments[mIdx];
         if (!m || !m.comments) return;
         
         this.showDeleteConfirm('这条评论', () => {
             m.comments.splice(cIdx, 1);
             this.persistFriendState();
-            this.renderLovesMoments();
+            this.renderLoverMoments();
         });
     },
 
     addMomentComment: function(mIdx, presetText = '', options = {}) {
-        if (!this.currentFriend || !this.currentFriend.lovesData || !this.currentFriend.lovesData.moments) return;
-        const m = this.currentFriend.lovesData.moments[mIdx];
+        if (!this.currentFriend || !this.currentFriend.loverData || !this.currentFriend.loverData.moments) return;
+        const m = this.currentFriend.loverData.moments[mIdx];
         if (!m) return;
 
         let commentText = String(presetText || '').trim();
@@ -1375,11 +1375,11 @@ window.lovesApp = {
         });
 
         this.persistFriendState();
-        this.renderLovesMoments();
+        this.renderLoverMoments();
 
         if (options.restoreComposerFocus) {
             requestAnimationFrame(() => {
-                const nextInput = document.querySelector(`.loves-moment-comment-input[data-moment-idx="${mIdx}"]`);
+                const nextInput = document.querySelector(`.lover-moment-comment-input[data-moment-idx="${mIdx}"]`);
                 if (!nextInput) return;
                 try {
                     nextInput.focus({ preventScroll: true });
@@ -1399,8 +1399,8 @@ window.lovesApp = {
     },
 
     replyToComment: function(mIdx, cIdx) {
-        if (!this.currentFriend || !this.currentFriend.lovesData || !this.currentFriend.lovesData.moments) return;
-        const m = this.currentFriend.lovesData.moments[mIdx];
+        if (!this.currentFriend || !this.currentFriend.loverData || !this.currentFriend.loverData.moments) return;
+        const m = this.currentFriend.loverData.moments[mIdx];
         if (!m || !m.comments || !m.comments[cIdx]) return;
         
         const targetComment = m.comments[cIdx];
@@ -1414,7 +1414,7 @@ window.lovesApp = {
                 timestamp: Date.now()
             });
             this.persistFriendState();
-            this.renderLovesMoments();
+            this.renderLoverMoments();
 
             if (targetComment.isChar === true) {
                 this.requestCharComment(mIdx, {
@@ -1429,14 +1429,14 @@ window.lovesApp = {
 
     requestCharComment: function(idx, options = {}) {
         const friend = this.currentFriend;
-        const moment = friend?.lovesData?.moments?.[idx];
+        const moment = friend?.loverData?.moments?.[idx];
         if (!friend || !moment) return Promise.resolve(false);
         if (!moment.id) {
             moment.id = `lm_${Number(moment.timestamp) || Date.now()}_${idx}`;
             void this.persistFriendState(friend, { metaOnly: true, silent: true });
         }
 
-        const targetMenu = document.getElementById(`loves-moment-menu-${idx}`);
+        const targetMenu = document.getElementById(`lover-moment-menu-${idx}`);
         if (targetMenu) targetMenu.style.display = 'none';
         return this.queueCharCommentRequest(friend.id, moment.id, options);
     },
@@ -1458,7 +1458,7 @@ window.lovesApp = {
 
     executeCharCommentRequest: async function(friendId, momentId, options = {}) {
         let friend = window.imData?.friends?.find(item => String(item.id) === String(friendId));
-        let moment = friend?.lovesData?.moments?.find(item => String(item.id) === String(momentId));
+        let moment = friend?.loverData?.moments?.find(item => String(item.id) === String(momentId));
         if (!friend || !moment) return false;
 
         const apiConfig = window.getApiConfig ? window.getApiConfig() : (window.apiConfig || {});
@@ -1475,7 +1475,7 @@ window.lovesApp = {
             if (window.imApp?.ensureFriendMessagesLoaded) {
                 await window.imApp.ensureFriendMessagesLoaded(friend);
                 friend = window.imData?.friends?.find(item => String(item.id) === String(friendId)) || friend;
-                moment = friend?.lovesData?.moments?.find(item => String(item.id) === String(momentId));
+                moment = friend?.loverData?.moments?.find(item => String(item.id) === String(momentId));
                 if (!moment) return false;
             }
 
@@ -1498,7 +1498,7 @@ window.lovesApp = {
             const momentContent = moment.text || '[只有图片]';
             const imageCount = Array.isArray(moment.images) ? moment.images.length : 0;
             const isCharMoment = moment.isChar === true;
-            const charLanguage = this.resolveLovesMomentLanguage(friend);
+            const charLanguage = this.resolveLoverMomentLanguage(friend);
             const charLanguageName = this.getFriendPhoneLanguageName(charLanguage);
             const momentAuthor = isCharMoment ? '角色(Char)' : '用户(User)';
             let momentDesc = `${momentAuthor}发布了一条动态：\n文字内容：${momentContent}\n附带图片数量：${imageCount} 张`;
@@ -1521,7 +1521,7 @@ window.lovesApp = {
             prompt += `\n【动态与评论现场】：\n${momentDesc}\n`;
             prompt += `\n要求：
 1. 内容必须符合人设、世界观和近期关系氛围。
-2. Char 在 iMessage 中配置的默认语言是 ${charLanguageName}。comments 和 messages 中每一条都必须遵守以下语言规则：${this.buildLovesMomentLocalizationContract(friend, 'each item')}。
+2. Char 在 iMessage 中配置的默认语言是 ${charLanguageName}。comments 和 messages 中每一条都必须遵守以下语言规则：${this.buildLoverMomentLocalizationContract(friend, 'each item')}。
 3. 只返回纯 JSON 对象，格式为 {"comments":[{"text":"公开回复","translation":"中文翻译或空字符串"}],"messages":[{"text":"私聊消息","translation":"中文翻译或空字符串"}]}，不要返回 Markdown。
 4. comments ${options.reason === 'user_comment' ? '必须包含2-5条 Char 对 User 的连续直接回复' : (isCharMoment ? '包含1-3条' : '包含1-2条')}；messages ${options.reason === 'user_comment' ? '包含0-2条，可以为空数组' : '包含1-3条'}。
 5. 每个数组元素只写一条自然消息，不要带 Char/User 标签，不要把多条回复合并在一个字符串里。`;
@@ -1555,7 +1555,7 @@ window.lovesApp = {
                 if (!Array.isArray(list)) return [];
                 const source = list.slice(0, limit);
                 return source.map(item => {
-                    const localized = this.normalizeLovesMomentLocalizedContent(item, friend);
+                    const localized = this.normalizeLoverMomentLocalizedContent(item, friend);
                     if (localized) return localized;
 
                     // Keep a usable Char reply when a provider omits only its translation field.
@@ -1573,7 +1573,7 @@ window.lovesApp = {
             }
 
             friend = window.imData?.friends?.find(item => String(item.id) === String(friendId));
-            moment = friend?.lovesData?.moments?.find(item => String(item.id) === String(momentId));
+            moment = friend?.loverData?.moments?.find(item => String(item.id) === String(momentId));
             if (!friend || !moment) return false;
             if (!Array.isArray(moment.comments)) moment.comments = [];
             const baseTime = Date.now();
@@ -1614,7 +1614,7 @@ window.lovesApp = {
             await this.persistFriendState(friend, { metaOnly: true });
             if (this.currentFriend && String(this.currentFriend.id) === String(friendId)) {
                 this.currentFriend = friend;
-                this.renderLovesMoments();
+                this.renderLoverMoments();
             }
             if (window.showToast) window.showToast(privateMessages.length > 0 ? 'Comment sent' : 'Reply generated');
             return true;
@@ -1628,7 +1628,7 @@ window.lovesApp = {
             return false;
         } finally {
             const liveFriend = window.imData?.friends?.find(item => String(item.id) === String(friendId));
-            const liveMoment = liveFriend?.lovesData?.moments?.find(item => String(item.id) === String(momentId));
+            const liveMoment = liveFriend?.loverData?.moments?.find(item => String(item.id) === String(momentId));
             if (liveMoment) {
                 liveMoment._charReplyPendingCount = Math.max(0, Number(liveMoment._charReplyPendingCount) || 1) - 1;
                 liveMoment._charReplyPending = liveMoment._charReplyPendingCount > 0;
@@ -1637,22 +1637,22 @@ window.lovesApp = {
     },
     
     toggleMomentLike: function(idx) {
-        if (!this.currentFriend || !this.currentFriend.lovesData || !this.currentFriend.lovesData.moments) return;
-        const m = this.currentFriend.lovesData.moments[idx];
+        if (!this.currentFriend || !this.currentFriend.loverData || !this.currentFriend.loverData.moments) return;
+        const m = this.currentFriend.loverData.moments[idx];
         m.isLiked = !m.isLiked;
         m.likes = (m.likes || 0) + (m.isLiked ? 1 : -1);
         if (m.likes < 0) m.likes = 0;
         this.persistFriendState();
-        this.renderLovesMoments();
+        this.renderLoverMoments();
     },
 
     ensureSavingsData: function(friend = this.currentFriend) {
         if (!friend) return { goal: 88888, records: [], withdrawals: [] };
-        if (!friend.lovesData) friend.lovesData = {};
-        if (!friend.lovesData.savings || typeof friend.lovesData.savings !== 'object') {
-            friend.lovesData.savings = {};
+        if (!friend.loverData) friend.loverData = {};
+        if (!friend.loverData.savings || typeof friend.loverData.savings !== 'object') {
+            friend.loverData.savings = {};
         }
-        const savings = friend.lovesData.savings;
+        const savings = friend.loverData.savings;
         if (!Number.isFinite(Number(savings.goal)) || Number(savings.goal) <= 0) {
             savings.goal = 88888;
         } else {
@@ -2425,7 +2425,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             this.init();
         }
         
-        if (!this.view) this.view = document.getElementById('loves-view');
+        if (!this.view) this.view = document.getElementById('lover-view');
         if (this.view) {
             const appContainer = document.getElementById('app');
             if (appContainer) {
@@ -2441,7 +2441,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             }
             this.renderTopFriends();
         } else {
-            console.warn('[Loves] loves-view not found');
+            console.warn('[Lover] lover-view not found');
         }
     },
     
@@ -2450,16 +2450,16 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         let updated = false;
 
         friends.forEach(friend => {
-            if (friend.pendingLovesInvite && !friend.hasLovesSpace) {
+            if (friend.pendingLoverInvite && !friend.hasLoverSpace) {
                 const msgs = Array.isArray(friend.messages) ? friend.messages : [];
                 for (let i = msgs.length - 1; i >= 0; i--) {
                     const msg = msgs[i];
                     if (msg.sender !== 'me' && msg.text && msg.text.includes('[ACCEPT_INVITE]')) {
                         // Found acceptance
-                        friend.hasLovesSpace = true;
-                        friend.pendingLovesInvite = false;
-                        if (!Number(friend.lovesSpaceStartTime)) {
-                            friend.lovesSpaceStartTime = Number(msg.timestamp) || Date.now();
+                        friend.hasLoverSpace = true;
+                        friend.pendingLoverInvite = false;
+                        if (!Number(friend.loverSpaceStartTime)) {
+                            friend.loverSpaceStartTime = Number(msg.timestamp) || Date.now();
                         }
                         
                         // Replace the tag in the original message
@@ -2473,7 +2473,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             id: window.imChat && window.imChat.createMessageId ? window.imChat.createMessageId('msg') : 'msg_' + Date.now(),
                             sender: msg.sender,
                             role: 'assistant',
-                            content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
+                            content: `<div class="lover-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
                                     <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
@@ -2497,7 +2497,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 
         if (updated) {
             friends.forEach(friend => {
-                if (friend.hasLovesSpace) this.persistFriendState(friend, { metaOnly: true });
+                if (friend.hasLoverSpace) this.persistFriendState(friend, { metaOnly: true });
             });
         }
     },
@@ -2506,22 +2506,22 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         if (!friend) return;
 
         const acceptedAt = Date.now();
-        friend.hasLovesSpace = true;
-        friend.pendingLovesInvite = false;
-        if (!Number(friend.lovesSpaceStartTime)) friend.lovesSpaceStartTime = acceptedAt;
+        friend.hasLoverSpace = true;
+        friend.pendingLoverInvite = false;
+        if (!Number(friend.loverSpaceStartTime)) friend.loverSpaceStartTime = acceptedAt;
         
         const acceptMsg = {
             id: window.imChat && window.imChat.createMessageId ? window.imChat.createMessageId('msg') : 'msg_' + Date.now(),
             sender: friend.id,
             role: 'assistant',
-            content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
+            content: `<div class="lover-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                     <div style="width:28px; height:28px; border-radius:8px; background:#ff2d55; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
                     <div style="font-size:14px; font-weight:700;">Invitation Accepted</div>
                 </div>
                 <div style="font-size:13px; color:#333; line-height:1.4;">She's spoiled and willful, but she's still mine.</div>
             </div>`,
-            text: '【Loves】I accepted your invitation.',
+            text: '【Lover】I accepted your invitation.',
             timestamp: acceptedAt - 100, // 稍微提早一点以便排在前面
             type: 'html'
         };
@@ -2546,9 +2546,9 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             }
         }
 
-        // 如果当前打开的是这名好友的 Loves 详情页，立即更新按钮状态
-        const detailName = document.getElementById('loves-detail-name');
-        const detailArea = document.getElementById('loves-detail-area');
+        // 如果当前打开的是这名好友的 Lover 详情页，立即更新按钮状态
+        const detailName = document.getElementById('lover-detail-name');
+        const detailArea = document.getElementById('lover-detail-area');
         if (detailArea && detailArea.style.display === 'flex' && detailName) {
             const expectedName = friend.nickname || friend.realname || 'Unknown';
             if (detailName.textContent === expectedName) {
@@ -2569,13 +2569,13 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             friend.realname,
             friend.avatarUrl,
             friend.signature,
-            friend.hasLovesSpace ? 1 : 0,
-            friend.pendingLovesInvite ? 1 : 0
+            friend.hasLoverSpace ? 1 : 0,
+            friend.pendingLoverInvite ? 1 : 0
         ].join('\u0001')).join('\u0002');
     },
     
     renderTopFriends: function() {
-        const container = document.getElementById('loves-board');
+        const container = document.getElementById('lover-board');
         if (!container) return;
         
         
@@ -2588,7 +2588,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         
         if (validFriends.length === 0) {
             container.innerHTML = `
-                <div class="loves-placeholder">
+                <div class="lover-placeholder">
                     <i class="fas fa-heart-crack"></i>
                     <p>Cease longing for water that has passed</p>
                 </div>
@@ -2597,16 +2597,16 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         }
 
         validFriends.forEach((friend, idx) => {
-            const note = document.createElement(friend.hasLovesSpace ? 'button' : 'div');
-            note.className = 'loves-note';
-            if (friend.hasLovesSpace) {
+            const note = document.createElement(friend.hasLoverSpace ? 'button' : 'div');
+            note.className = 'lover-note';
+            if (friend.hasLoverSpace) {
                 note.type = 'button';
                 note.setAttribute('aria-label', `进入 ${friend.nickname || friend.realname || '好友'} 的恋人空间`);
             }
             
             // 头像区
             const avatarWrapper = document.createElement('div');
-            avatarWrapper.className = 'loves-note-avatar';
+            avatarWrapper.className = 'lover-note-avatar';
             if (friend.avatarUrl) {
                 const img = document.createElement('img');
                 img.src = friend.avatarUrl;
@@ -2620,35 +2620,35 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             
             // 中间信息区
             const infoArea = document.createElement('div');
-            infoArea.className = 'loves-note-info';
+            infoArea.className = 'lover-note-info';
             
             const nameEl = document.createElement('div');
-            nameEl.className = 'loves-note-name';
+            nameEl.className = 'lover-note-name';
             nameEl.textContent = friend.nickname || friend.realname || 'Unknown';
             
             const signEl = document.createElement('div');
-            signEl.className = 'loves-note-sign';
+            signEl.className = 'lover-note-sign';
             signEl.textContent = friend.signature || '新朋友加入，快去打个招呼吧';
             
             infoArea.appendChild(nameEl);
             infoArea.appendChild(signEl);
             
             // 右侧按钮区
-            const actionBtn = document.createElement(friend.hasLovesSpace ? 'span' : 'button');
-            actionBtn.className = 'loves-note-action';
+            const actionBtn = document.createElement(friend.hasLoverSpace ? 'span' : 'button');
+            actionBtn.className = 'lover-note-action';
             
-            if (friend.hasLovesSpace) {
+            if (friend.hasLoverSpace) {
                 actionBtn.textContent = 'Eutopia';
-                actionBtn.classList.add('loves-note-action-enter');
+                actionBtn.classList.add('lover-note-action-enter');
                 note.onclick = (e) => {
                     e.stopPropagation();
-                    this.enterLovesSpace(friend);
+                    this.enterLoverSpace(friend);
                 };
             } else {
                 actionBtn.type = 'button';
                 actionBtn.textContent = 'invite';
                 actionBtn.setAttribute('aria-label', `Invite ${friend.nickname || friend.realname || '好友'} to create a couple’s space`);
-                actionBtn.classList.add('loves-note-action-invite');
+                actionBtn.classList.add('lover-note-action-invite');
                 actionBtn.onclick = (e) => {
                     e.stopPropagation();
                     this.sendInviteCard(friend);
@@ -2675,15 +2675,15 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             id: window.imChat && window.imChat.createMessageId ? window.imChat.createMessageId('msg') : 'msg_' + Date.now(),
             sender: 'me',
             role: 'user',
-            content: `<div class="loves-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
+            content: `<div class="lover-invite-bubble" style="background:#fff; border-radius:16px; padding:12px; border:1px solid #e5e5ea;  color:#111; max-width:220px; margin:2px;">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                     <div style="width:28px; height:28px; border-radius:8px; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; font-size:14px;"><i class="fas fa-heart"></i></div>
-                    <div style="font-size:14px; font-weight:700;">Loves Invitation</div>
+                    <div style="font-size:14px; font-weight:700;">Lover Invitation</div>
                 </div>
                 <div style="font-size:13px; color:#333; line-height:1.4; margin-bottom:8px;">Love is the eternal romanticism.</div>
                 <div style="font-size:11px; color:#8e8e93;">Enter private space</div>
             </div>`,
-            text: '【Loves Invitation】Love is the eternal romanticism.',
+            text: '【Lover Invitation】Love is the eternal romanticism.',
             timestamp: Date.now(),
             time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false }),
             type: 'html'
@@ -2700,8 +2700,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         }
         if (!saved) return;
         
-        friend.pendingLovesInvite = true;
-        // 注意：这里移除了强制设置 friend.hasLovesSpace = true，改由AI回复后更新
+        friend.pendingLoverInvite = true;
+        // 注意：这里移除了强制设置 friend.hasLoverSpace = true，改由AI回复后更新
 
         await this.persistFriendState(friend, { metaOnly: true });
         
@@ -3047,7 +3047,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         `;
         this.showDetailModal('微博详情', content);
         setTimeout(() => {
-            document.querySelectorAll('#loves-detail-modal .friend-weibo-detail-image').forEach(el => {
+            document.querySelectorAll('#lover-detail-modal .friend-weibo-detail-image').forEach(el => {
                 el.addEventListener('click', () => {
                     const idx = Number(el.getAttribute('data-index') || 0);
                     const image = options.images?.[idx];
@@ -3156,7 +3156,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         }
     },
     
-    enterLovesSpace: function(friend) {
+    enterLoverSpace: function(friend) {
         const spaceView = document.getElementById('lovers-space-view');
         if (spaceView) {
             if (window.openView) window.openView(spaceView);
@@ -3244,7 +3244,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             // 绑定点击
             this.bindFabClick();
             // 首次渲染动态
-            this.renderLovesMoments();
+            this.renderLoverMoments();
             // 初始化日记并渲染
             this.currentDiaryDate = new Date();
             this.renderDiary();
@@ -4060,7 +4060,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     }
 
                     listEl.innerHTML = `
-                        <div style="padding: 15px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.lovesApp.switchImsgAccount('main', true)">
+                        <div style="padding: 15px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.loverApp.switchImsgAccount('main', true)">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e5ea; display: flex; justify-content: center; align-items: center; color: #8e8e93;"><i class="fas fa-user"></i></div>
                                 <span style="font-size: 16px; font-weight: 500; color: #000;">${mainName} (Apple ID)</span>
@@ -4068,7 +4068,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             ${this.currentImsgAccount === 'main' ? '<i class="fas fa-check" style="color: #007aff;"></i>' : ''}
                         </div>
                         ${hasAlt ? `
-                        <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.lovesApp.switchImsgAccount('alt', true)">
+                        <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.loverApp.switchImsgAccount('alt', true)">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e5ea; display: flex; justify-content: center; align-items: center; color: #8e8e93;"><i class="fas fa-user-secret"></i></div>
                                 <span style="font-size: 16px; font-weight: 500; color: #000;">${altName} (Alt ID)</span>
@@ -4099,13 +4099,13 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         const filesRecentlyDeletedList = document.getElementById('friend-files-recently-deleted-list');
 
         // 只在未绑定过时绑定，通过标识位防止重复绑定
-        if (!window.lovesApp._filesRecentlyDeletedBound) {
+        if (!window.loverApp._filesRecentlyDeletedBound) {
             document.addEventListener('click', (e) => {
                 const targetBtn = e.target.closest('#filesRecentlyDeletedBtn');
                 if (targetBtn && filesRecentlyDeletedView) {
                     if (window.openView) window.openView(filesRecentlyDeletedView);
                     
-                    const activeFriend = window.lovesApp.currentFriend;
+                    const activeFriend = window.loverApp.currentFriend;
                     
                     if (filesRecentlyDeletedList) {
                         if (activeFriend && activeFriend.filesData && activeFriend.filesData.recentlyDeleted && activeFriend.filesData.recentlyDeleted.length > 0) {
@@ -4131,7 +4131,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     if (window.closeView) window.closeView(filesRecentlyDeletedView);
                 });
             }
-            window.lovesApp._filesRecentlyDeletedBound = true;
+            window.loverApp._filesRecentlyDeletedBound = true;
         }
 
         if (filesBtn && filesView) {
@@ -4172,15 +4172,15 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                     e.stopPropagation();
                                     try {
                                         const item = JSON.parse(decodeURIComponent(this.getAttribute('data-item')));
-                                        window.lovesApp.showDetailModal(item.title, `<div style="white-space: pre-wrap; font-size: 15px; line-height: 1.6; color: #333;">${window.lovesApp.renderFriendPhoneLocalized(item, 'content', { id: 'file-content' })}</div>${window.lovesApp.renderFriendPhoneGeneratedTime(item)}`);
+                                        window.loverApp.showDetailModal(item.title, `<div style="white-space: pre-wrap; font-size: 15px; line-height: 1.6; color: #333;">${window.loverApp.renderFriendPhoneLocalized(item, 'content', { id: 'file-content' })}</div>${window.loverApp.renderFriendPhoneGeneratedTime(item)}`);
                                     } catch (err) {
                                         console.error('File item parse error', err);
                                     }
                                 });
-                                window.lovesApp.bindLongPress(el, function() {
+                                window.loverApp.bindLongPress(el, function() {
                                     try {
                                         const item = JSON.parse(decodeURIComponent(el.getAttribute('data-item')));
-                                        window.lovesApp.showDeleteConfirm(item.title, () => {
+                                        window.loverApp.showDeleteConfirm(item.title, () => {
                                             if (friend.filesData && friend.filesData.tags) {
                                                 friend.filesData.tags.forEach(tag => {
                                                     if (tag.items) {
@@ -4288,16 +4288,16 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                         const idx = this.getAttribute('data-idx');
                                         const s = friend.safariData.recentSearches[idx];
                                         if (typeof s === 'object' && s.title && s.content) {
-                                            window.lovesApp.showBrowserDetailModal(s.title, s.content, false, s);
+                                            window.loverApp.showBrowserDetailModal(s.title, s.content, false, s);
                                         } else {
-                                            window.lovesApp.showBrowserDetailModal('搜索记录', '无更多详情', false);
+                                            window.loverApp.showBrowserDetailModal('搜索记录', '无更多详情', false);
                                         }
                                     });
-                                    window.lovesApp.bindLongPress(el, function() {
+                                    window.loverApp.bindLongPress(el, function() {
                                         const idx = el.getAttribute('data-idx');
                                         const s = friend.safariData.recentSearches[idx];
                                         const text = typeof s === 'string' ? s : (s.keyword || '未知搜索');
-                                        window.lovesApp.showDeleteConfirm(text, () => {
+                                        window.loverApp.showDeleteConfirm(text, () => {
                                             friend.safariData.recentSearches.splice(idx, 1);
                                             safariBtn.onclick(); // 重新渲染
                                         });
@@ -4334,16 +4334,16 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                         const idx = this.getAttribute('data-idx');
                                         const s = friend.safariData.privateSearches[idx];
                                         if (typeof s === 'object' && s.title && s.content) {
-                                            window.lovesApp.showBrowserDetailModal(s.title, s.content, true, s);
+                                            window.loverApp.showBrowserDetailModal(s.title, s.content, true, s);
                                         } else {
-                                            window.lovesApp.showBrowserDetailModal('隐私记录', '无更多详情', true);
+                                            window.loverApp.showBrowserDetailModal('隐私记录', '无更多详情', true);
                                         }
                                     });
-                                    window.lovesApp.bindLongPress(el, function() {
+                                    window.loverApp.bindLongPress(el, function() {
                                         const idx = el.getAttribute('data-idx');
                                         const s = friend.safariData.privateSearches[idx];
                                         const text = typeof s === 'string' ? s : (s.keyword || '未知记录');
-                                        window.lovesApp.showDeleteConfirm(text, () => {
+                                        window.loverApp.showDeleteConfirm(text, () => {
                                             friend.safariData.privateSearches.splice(idx, 1);
                                             safariBtn.onclick(); // 重新渲染
                                         });
@@ -4496,8 +4496,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                             <div style="width: 80px; height: 80px; border-radius: 50%; background: #111; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 30px; margin-bottom: 15px; ">
                                                 <i class="fas fa-compact-disc"></i>
                                             </div>
-                                            <div style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 4px;">${window.lovesApp.escapeHTML(song.name || '未知歌曲')}</div>
-                                            <div style="font-size: 15px; color: #8e8e93;">${window.lovesApp.renderFriendPhoneLocalized(song, 'artist', { id: 'song-detail-artist' })}${window.lovesApp.renderFriendPhoneGeneratedTime(song)}</div>
+                                            <div style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 4px;">${window.loverApp.escapeHTML(song.name || '未知歌曲')}</div>
+                                            <div style="font-size: 15px; color: #8e8e93;">${window.loverApp.renderFriendPhoneLocalized(song, 'artist', { id: 'song-detail-artist' })}${window.loverApp.renderFriendPhoneGeneratedTime(song)}</div>
                                         </div>
                                         
                                         <div style="background: #f4f4f5; border-radius: 16px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
@@ -4515,16 +4515,16 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                 <i class="fas fa-headphones-alt" style="color: #fff;"></i> THOUGHTS
                                             </div>
                                             <div style="color: #ccc; line-height: 1.6; font-size: 14px; font-style: italic;">
-                                                “${window.lovesApp.renderFriendPhoneLocalized(song, 'thoughts', { fallback: thoughts, id: 'song-thoughts' })}”
+                                                “${window.loverApp.renderFriendPhoneLocalized(song, 'thoughts', { fallback: thoughts, id: 'song-thoughts' })}”
                                             </div>
                                         </div>
                                     `;
-                                    window.lovesApp.showDetailModal('SINGLE', content);
+                                    window.loverApp.showDetailModal('SINGLE', content);
                                 });
-                                window.lovesApp.bindLongPress(el, function() {
+                                window.loverApp.bindLongPress(el, function() {
                                     const idx = el.getAttribute('data-idx');
                                     const song = musicData.top[idx];
-                                    window.lovesApp.showDeleteConfirm(song.name, () => {
+                                    window.loverApp.showDeleteConfirm(song.name, () => {
                                         musicData.top.splice(idx, 1);
                                         musicBtn.onclick(); // 重新渲染
                                     });
@@ -4647,12 +4647,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                     e.stopPropagation();
                                     const idx = this.getAttribute('data-idx');
                                     const c = friend.callData.recentCalls[idx];
-                                    window.lovesApp.showCallDetailModal(c);
+                                    window.loverApp.showCallDetailModal(c);
                                 });
-                                window.lovesApp.bindLongPress(el, function() {
+                                window.loverApp.bindLongPress(el, function() {
                                     const idx = el.getAttribute('data-idx');
                                     const c = friend.callData.recentCalls[idx];
-                                    window.lovesApp.showDeleteConfirm(c.name + '的通话记录', () => {
+                                    window.loverApp.showDeleteConfirm(c.name + '的通话记录', () => {
                                         friend.callData.recentCalls.splice(idx, 1);
                                         callBtn.onclick();
                                     });
@@ -4667,7 +4667,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                         e.stopPropagation();
                                         const idx = this.getAttribute('data-idx');
                                         const c = friend.callData._parsedContacts[idx];
-                                        window.lovesApp.showContactDetailModal(c);
+                                        window.loverApp.showContactDetailModal(c);
                                     });
                                 });
                             }
@@ -5050,10 +5050,10 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         try {
                             const items = gameContent.querySelectorAll('.game-history-item-new');
                             items.forEach(el => {
-                                window.lovesApp.bindLongPress(el, function() {
+                                window.loverApp.bindLongPress(el, function() {
                                     const idx = el.getAttribute('data-idx');
                                     const g = friend.gameData.recentGames[idx];
-                                    window.lovesApp.showDeleteConfirm(g.name, () => {
+                                    window.loverApp.showDeleteConfirm(g.name, () => {
                                         friend.gameData.recentGames.splice(idx, 1);
                                         gameBtn.onclick();
                                     });
@@ -5087,12 +5087,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                     <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(142,142,147,0.1); display: flex; justify-content: center; align-items: center; color: ${iconColor}; font-size: 16px;">
                                                         <i class="fas fa-user"></i>
                                                     </div>
-                                                    <div style="font-size: 11px; font-weight: 500; color: ${textColor}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">${window.lovesApp.escapeHTML(m.hero || '我方')}</div>
+                                                    <div style="font-size: 11px; font-weight: 500; color: ${textColor}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">${window.loverApp.escapeHTML(m.hero || '我方')}</div>
                                                 </div>
                                                 
                                                 <div style="display: flex; flex-direction: column; align-items: center; flex: 1; pointer-events: none;">
                                                     <div style="font-size: 18px; font-weight: 800; color: ${resultColor}; letter-spacing: 1px;">${m.result}</div>
-                                                    <div style="font-size: 11px; color: #8e8e93; margin-top: 6px;">${window.lovesApp.escapeHTML(window.lovesApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '')}</div>
+                                                    <div style="font-size: 11px; color: #8e8e93; margin-top: 6px;">${window.loverApp.escapeHTML(window.loverApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '')}</div>
                                                     <div style="font-size: 12px; font-weight: 700; color: ${kdaTextColor}; margin-top: 8px; background: ${kdaBgColor}; padding: 4px 10px; border-radius: 8px;">KDA: ${m.kda || '-/-/-'}</div>
                                                 </div>
 
@@ -5116,19 +5116,19 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                     if (g.innerThoughts && !Array.isArray(g.matches)) {
                                         content += `<div style="background: #f4f4f5; border-radius: 24px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #111;">
                                             <div style="font-weight: 700; color: #111; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-headset" style="color: #111;"></i> 局内心声</div>
-                                            <div style="color: #333; line-height: 1.6; font-size: 14px; font-style: italic;">“${window.lovesApp.renderFriendPhoneLocalized(g, 'innerThoughts', { id: 'game-thoughts' })}”</div>
+                                            <div style="color: #333; line-height: 1.6; font-size: 14px; font-style: italic;">“${window.loverApp.renderFriendPhoneLocalized(g, 'innerThoughts', { id: 'game-thoughts' })}”</div>
                                         </div>`;
                                     }
                                     
                                     if (g.postGameReflection && !Array.isArray(g.matches)) {
                                         content += `<div style="background: #111; border-radius: 24px; padding: 16px; margin-bottom: 16px;">
                                             <div style="font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-clipboard-list" style="color: #fff;"></i> 局后复盘</div>
-                                            <div style="color: #ccc; line-height: 1.6; font-size: 14px;">${window.lovesApp.renderFriendPhoneLocalized(g, 'postGameReflection', { id: 'game-reflection' })}</div>
+                                            <div style="color: #ccc; line-height: 1.6; font-size: 14px;">${window.loverApp.renderFriendPhoneLocalized(g, 'postGameReflection', { id: 'game-reflection' })}</div>
                                         </div>`;
                                     }
                                     
                                     if (!content) content = '暂无更多数据';
-                                    window.lovesApp.showDetailModal(g.name + ' - 战绩列表', content);
+                                    window.loverApp.showDetailModal(g.name + ' - 战绩列表', content);
 
                                     // Bind match click events
                                     setTimeout(() => {
@@ -5149,7 +5149,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                                     <div style="font-weight: 700; color: #111; background: #e5e5ea; padding: 4px 10px; border-radius: 8px;">KDA: ${m.kda || '-/-/-'}</div>
                                                                 </div>
                                                                 <div style="display: flex; align-items: center; gap: 8px; color: #8e8e93; font-size: 13px;">
-                                                                    <i class="fas fa-clock"></i> ${window.lovesApp.escapeHTML(window.lovesApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '')} | 英雄: ${window.lovesApp.escapeHTML(m.hero || '未知')}
+                                                                    <i class="fas fa-clock"></i> ${window.loverApp.escapeHTML(window.loverApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '')} | 英雄: ${window.loverApp.escapeHTML(m.hero || '未知')}
                                                                 </div>
                                                             </div>
                                                         `;
@@ -5158,8 +5158,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                         if (m.highlights && Array.isArray(m.highlights) && m.highlights.length > 0) {
                                                             let highlightsHtml = m.highlights.map(h => `
                                                                 <div style="display: flex; gap: 12px; margin-bottom: 8px; align-items: flex-start;">
-                                                                    <div style="font-weight: 700; color: #111; font-size: 13px; background: #e5e5ea; padding: 2px 6px; border-radius: 4px; flex-shrink: 0;">${window.lovesApp.escapeHTML(window.lovesApp.formatFriendPhoneGeneratedAt(h.generatedAt) || '')}</div>
-                                                                    <div style="color: #333; font-size: 14px; line-height: 1.4;">${window.lovesApp.renderFriendPhoneLocalized(h, 'desc', { id: 'match-highlight' })}</div>
+                                                                    <div style="font-weight: 700; color: #111; font-size: 13px; background: #e5e5ea; padding: 2px 6px; border-radius: 4px; flex-shrink: 0;">${window.loverApp.escapeHTML(window.loverApp.formatFriendPhoneGeneratedAt(h.generatedAt) || '')}</div>
+                                                                    <div style="color: #333; font-size: 14px; line-height: 1.4;">${window.loverApp.renderFriendPhoneLocalized(h, 'desc', { id: 'match-highlight' })}</div>
                                                                 </div>
                                                             `).join('');
                                                             
@@ -5176,7 +5176,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                             matchDetailContent += `
                                                                 <div style="background: #f4f4f5; border-radius: 20px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #111;">
                                                                     <div style="font-weight: 700; color: #111; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-headset" style="color: #111;"></i> 局内心声</div>
-                                                                    <div style="color: #333; line-height: 1.6; font-size: 14px; font-style: italic;">“${window.lovesApp.renderFriendPhoneLocalized(m, 'innerThoughts', { id: 'match-thoughts' })}”</div>
+                                                                    <div style="color: #333; line-height: 1.6; font-size: 14px; font-style: italic;">“${window.loverApp.renderFriendPhoneLocalized(m, 'innerThoughts', { id: 'match-thoughts' })}”</div>
                                                                 </div>
                                                             `;
                                                         }
@@ -5187,7 +5187,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                             matchDetailContent += `
                                                                 <div style="background: #111; border-radius: 20px; padding: 16px; margin-bottom: 16px;">
                                                                     <div style="font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-clipboard-list" style="color: #fff;"></i> 局后复盘</div>
-                                                                    <div style="color: #ccc; line-height: 1.6; font-size: 14px;">${window.lovesApp.renderFriendPhoneLocalized(m, m.postGameReflection ? 'postGameReflection' : 'thoughts', { fallback: reflectionText, id: 'match-reflection' })}</div>
+                                                                    <div style="color: #ccc; line-height: 1.6; font-size: 14px;">${window.loverApp.renderFriendPhoneLocalized(m, m.postGameReflection ? 'postGameReflection' : 'thoughts', { fallback: reflectionText, id: 'match-reflection' })}</div>
                                                                 </div>
                                                             `;
                                                         }
@@ -5195,7 +5195,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                                                         if (!matchDetailContent) matchDetailContent = '暂无详情数据';
                                                         
                                                         // Show secondary modal
-                                                        window.lovesApp.showDetailModal('单局详情', matchDetailContent);
+                                                        window.loverApp.showDetailModal('单局详情', matchDetailContent);
                                                     } catch (e) {
                                                         console.error('Parse match data error', e);
                                                     }
@@ -5250,11 +5250,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     
     showContactDetailModal: function(contactData) {
         try {
-            const oldModals = document.querySelectorAll('#loves-contact-detail-modal');
+            const oldModals = document.querySelectorAll('#lover-contact-detail-modal');
             oldModals.forEach(m => m.remove());
 
             const modal = document.createElement('div');
-            modal.id = 'loves-contact-detail-modal';
+            modal.id = 'lover-contact-detail-modal';
             modal.style.position = 'fixed';
             modal.style.top = '0';
             modal.style.left = '0';
@@ -5379,11 +5379,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 
     showCallDetailModal: function(callData) {
         try {
-            const oldModals = document.querySelectorAll('#loves-call-detail-modal');
+            const oldModals = document.querySelectorAll('#lover-call-detail-modal');
             oldModals.forEach(m => m.remove());
 
             const modal = document.createElement('div');
-            modal.id = 'loves-call-detail-modal';
+            modal.id = 'lover-call-detail-modal';
             modal.style.position = 'fixed';
             modal.style.top = '0';
             modal.style.left = '0';
@@ -5519,11 +5519,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     showDetailModal: function(title, content) {
         try {
             // 清理旧的
-            const oldModals = document.querySelectorAll('#loves-detail-modal');
+            const oldModals = document.querySelectorAll('#lover-detail-modal');
             oldModals.forEach(m => m.remove());
 
             const modal = document.createElement('div');
-            modal.id = 'loves-detail-modal';
+            modal.id = 'lover-detail-modal';
             modal.style.position = 'fixed';
             modal.style.top = '0';
             modal.style.left = '0';
@@ -5561,7 +5561,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             };
             
             const titleEl = document.createElement('div');
-            titleEl.id = 'loves-detail-modal-title';
+            titleEl.id = 'lover-detail-modal-title';
             titleEl.style.fontSize = '20px';
             titleEl.style.fontWeight = '800';
             titleEl.style.color = '#111';
@@ -5570,7 +5570,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             titleEl.innerText = title;
             
             const contentEl = document.createElement('div');
-            contentEl.id = 'loves-detail-modal-content';
+            contentEl.id = 'lover-detail-modal-content';
             contentEl.style.fontSize = '15px';
             contentEl.style.color = '#333';
             contentEl.style.lineHeight = '1.6';
@@ -5598,11 +5598,11 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     showBrowserDetailModal: function(title, content, isDark = false, record = null) {
         try {
             // 清理旧的
-            const oldModals = document.querySelectorAll('#loves-browser-detail-modal');
+            const oldModals = document.querySelectorAll('#lover-browser-detail-modal');
             oldModals.forEach(m => m.remove());
 
             const modal = document.createElement('div');
-            modal.id = 'loves-browser-detail-modal';
+            modal.id = 'lover-browser-detail-modal';
             modal.style.position = 'fixed';
             modal.style.top = '0';
             modal.style.left = '0';
@@ -5890,27 +5890,27 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                     const msgContainer = document.getElementById('reverse-chat-messages');
                     if (msgContainer) {
                         msgContainer.innerHTML = '<div class="friend-phone-context-note">已同步最近 10 条聊天上下文</div>';
-                        const last10Msgs = window.lovesApp.getFriendPhoneUserContextMessages(friend, 10);
+                        const last10Msgs = window.loverApp.getFriendPhoneUserContextMessages(friend, 10);
                         let lastRenderedTimestamp = 0;
                         last10Msgs.forEach(m => {
                             const messageTimestamp = Number(m.timestamp) || 0;
                             if (messageTimestamp > 0 && (!lastRenderedTimestamp || messageTimestamp - lastRenderedTimestamp >= 5 * 60 * 1000)) {
                                 const timeDivider = document.createElement('div');
                                 timeDivider.className = 'friend-phone-message-time-divider';
-                                timeDivider.textContent = window.lovesApp.formatFriendPhoneGeneratedAt(messageTimestamp);
+                                timeDivider.textContent = window.loverApp.formatFriendPhoneGeneratedAt(messageTimestamp);
                                 msgContainer.appendChild(timeDivider);
                             }
                             if (messageTimestamp > 0) lastRenderedTimestamp = messageTimestamp;
                             const div = document.createElement('div');
                             // 在 Char 视角，User 发来的消息在左边，Char 自己发出的消息在右边。
-                            if (window.lovesApp.isFriendPhoneUserMessage(m)) {
+                            if (window.loverApp.isFriendPhoneUserMessage(m)) {
                                 div.className = 'reverse-bubble-left';
                             } else {
                                 div.className = 'reverse-bubble-right';
                             }
-                            const messageText = window.lovesApp.getFriendPhoneMessageText(m);
-                            const translation = window.lovesApp.getFriendPhoneTranslation(m, 'text');
-                            div.innerHTML = `<span>${window.lovesApp.escapeHTML(messageText).replace(/\n/g, '<br>')}</span>${translation ? `<span class="friend-phone-translation friend-phone-bubble-translation" hidden>${window.lovesApp.escapeHTML(translation).replace(/\n/g, '<br>')}</span>` : ''}`;
+                            const messageText = window.loverApp.getFriendPhoneMessageText(m);
+                            const translation = window.loverApp.getFriendPhoneTranslation(m, 'text');
+                            div.innerHTML = `<span>${window.loverApp.escapeHTML(messageText).replace(/\n/g, '<br>')}</span>${translation ? `<span class="friend-phone-translation friend-phone-bubble-translation" hidden>${window.loverApp.escapeHTML(translation).replace(/\n/g, '<br>')}</span>` : ''}`;
                             if (translation) {
                                 div.classList.add('friend-phone-bubble-translatable');
                                 div.setAttribute('role', 'button');
@@ -5938,7 +5938,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
             else if (fixedChatName === '备忘录') avatarHtml = '<i class="fas fa-sticky-note" style="color: #111; font-size: 20px;"></i>';
 
             return `
-            <div class="lovers-friend-imsg-item" data-idx="${idx}" style="display: flex; align-items: center; padding: 16px; border-radius: 20px; background: #fff;  cursor: pointer;" onclick="window.lovesApp.openGeneratedChat('${isMain ? 'main' : 'alt'}', ${idx}, '${encodeURIComponent(JSON.stringify(chat))}')">
+            <div class="lovers-friend-imsg-item" data-idx="${idx}" style="display: flex; align-items: center; padding: 16px; border-radius: 20px; background: #fff;  cursor: pointer;" onclick="window.loverApp.openGeneratedChat('${isMain ? 'main' : 'alt'}', ${idx}, '${encodeURIComponent(JSON.stringify(chat))}')">
                 <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;">
                     ${avatarHtml}
                 </div>
@@ -5968,12 +5968,12 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         setTimeout(() => {
             const imsgItems = imsgList.querySelectorAll('.lovers-friend-imsg-item');
             imsgItems.forEach(el => {
-                window.lovesApp.bindLongPress(el, function() {
+                window.loverApp.bindLongPress(el, function() {
                     const idx = el.getAttribute('data-idx');
                     const chat = currentChats[idx];
-                    window.lovesApp.showDeleteConfirm(chat.contactName, () => {
+                    window.loverApp.showDeleteConfirm(chat.contactName, () => {
                         currentChats.splice(idx, 1);
-                        window.lovesApp.renderFriendImsg(friend);
+                        window.loverApp.renderFriendImsg(friend);
                     });
                 });
             });
@@ -6002,7 +6002,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                         const currentBatchId = m.batchId || `legacy-${messageIndex}`;
                         if (currentBatchId !== renderedBatchId) {
                             renderedBatchId = currentBatchId;
-                            const timeText = window.lovesApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '';
+                            const timeText = window.loverApp.formatFriendPhoneGeneratedAt(m.generatedAt) || m.time || '';
                             if (timeText) {
                                 const divider = document.createElement('div');
                                 divider.className = 'friend-phone-message-time-divider';
@@ -6023,8 +6023,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
                             div.style.color = '#fff';
                             div.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
                         }
-                        const translation = window.lovesApp.getFriendPhoneTranslation(m, 'text');
-                        div.innerHTML = `<span>${window.lovesApp.escapeHTML(m.text || '[特殊消息]').replace(/\n/g, '<br>')}</span>${translation ? `<span class="friend-phone-translation friend-phone-bubble-translation" hidden>${window.lovesApp.escapeHTML(translation).replace(/\n/g, '<br>')}</span>` : ''}`;
+                        const translation = window.loverApp.getFriendPhoneTranslation(m, 'text');
+                        div.innerHTML = `<span>${window.loverApp.escapeHTML(m.text || '[特殊消息]').replace(/\n/g, '<br>')}</span>${translation ? `<span class="friend-phone-translation friend-phone-bubble-translation" hidden>${window.loverApp.escapeHTML(translation).replace(/\n/g, '<br>')}</span>` : ''}`;
                         if (translation) {
                             div.classList.add('friend-phone-bubble-translatable');
                             div.setAttribute('role', 'button');
@@ -6044,7 +6044,7 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
     close: function() {
         if (this.view) {
             window.closeView(this.view);
-            const detailArea = document.getElementById('loves-detail-area');
+            const detailArea = document.getElementById('lover-detail-area');
             if (detailArea) detailArea.style.display = 'none';
         }
     }
@@ -6054,8 +6054,8 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
 (window.u2OnStorageReady || (callback => document.addEventListener('DOMContentLoaded', callback)))(() => {
     // 延迟初始化以确保 DOM 完全加载
     setTimeout(() => {
-        if (window.lovesApp) {
-            window.lovesApp.init();
+        if (window.loverApp) {
+            window.loverApp.init();
         }
     }, 100);
 });

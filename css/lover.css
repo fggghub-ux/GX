@@ -1,8 +1,8 @@
 /* ==========================================================================
-   LOVES APP CSS
+   LOVER APP CSS
    ========================================================================== */
 
-.loves-view {
+.lover-view {
     display: none;
     flex-direction: column;
     height: 100%;
@@ -14,7 +14,7 @@
     z-index: 100;
 }
 
-#loves-view.loves-view,
+#lover-view.lover-view,
 #lovers-space-view.lovers-space-view,
 #lovers-friend-phone-view.lovers-friend-phone-view,
 #lovers-friend-computer-view.lovers-friend-computer-view,
@@ -34,11 +34,11 @@
     padding-bottom: 0;
 }
 
-.loves-view.active {
+.lover-view.active {
     display: flex;
 }
 
-.loves-header {
+.lover-header {
     height: max(44px, calc(44px + var(--safe-top)));
     padding-top: var(--safe-top);
     display: flex;
@@ -57,17 +57,17 @@
     box-sizing: border-box;
 }
 
-.loves-header-title {
+.lover-header-title {
     display: none;
 }
 
-.loves-back-btn {
+.lover-back-btn {
     cursor: pointer;
     z-index: 10;
     pointer-events: auto;
 }
 
-.loves-content {
+.lover-content {
     flex: 1;
     overflow-y: auto;
     display: flex;
@@ -76,7 +76,7 @@
 }
 
 /* 留言板设计 */
-.loves-board {
+.lover-board {
     display: flex;
     flex-direction: column;
     padding: max(80px, calc(60px + var(--safe-top))) 0 40px;
@@ -85,7 +85,7 @@
 }
 
 /* 列表项设计 (类似 ins 会话列表) */
-.loves-note {
+.lover-note {
     width: 100%;
     display: flex;
     align-items: center;
@@ -95,11 +95,11 @@
     cursor: pointer;
 }
 
-.loves-note:active {
+.lover-note:active {
     background: #fafafa;
 }
 
-.loves-note-avatar {
+.lover-note-avatar {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -112,19 +112,19 @@
     flex-shrink: 0;
 }
 
-.loves-note-avatar img {
+.lover-note-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.loves-note-avatar i {
+.lover-note-avatar i {
     font-size: 24px;
     color: #ccc;
 }
 
 /* 中间信息区 */
-.loves-note-info {
+.lover-note-info {
     flex: 1;
     min-width: 0;
     display: flex;
@@ -132,7 +132,7 @@
     justify-content: center;
 }
 
-.loves-note-name {
+.lover-note-name {
     font-size: 14px;
     font-weight: 600;
     color: #000;
@@ -142,7 +142,7 @@
     margin-bottom: 2px;
 }
 
-.loves-note-sign {
+.lover-note-sign {
     font-size: 14px;
     color: #737373;
     white-space: nowrap;
@@ -151,7 +151,7 @@
 }
 
 /* 右侧操作按钮 */
-.loves-note-action {
+.lover-note-action {
     font-size: 14px;
     font-weight: 600;
     padding: 7px 16px;
@@ -160,25 +160,25 @@
     flex-shrink: 0;
 }
 
-.loves-note-action-invite {
+.lover-note-action-invite {
     background: #0095f6;
     color: #fff;
 }
 
-.loves-note-action-invite:active {
+.lover-note-action-invite:active {
     background: #1877f2;
 }
 
-.loves-note-action-enter {
+.lover-note-action-enter {
     background: #efefef;
     color: #000;
 }
 
-.loves-note-action-enter:active {
+.lover-note-action-enter:active {
     background: #dbdbdb;
 }
 
-.loves-placeholder {
+.lover-placeholder {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -188,12 +188,12 @@
     margin-top: 50px;
 }
 
-.loves-placeholder i {
+.lover-placeholder i {
     font-size: 48px;
     color: #ff9bb3;
 }
 
-.loves-placeholder p {
+.lover-placeholder p {
     font-size: 16px;
     font-weight: 500;
 }
@@ -215,7 +215,7 @@
     display: flex;
 }
 
-@keyframes lovesFadeIn {
+@keyframes loverFadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
@@ -228,7 +228,7 @@
 
 .lovers-space-panel.active {
     display: flex;
-    animation: lovesFadeIn 0.3s ease-out forwards;
+    animation: loverFadeIn 0.3s ease-out forwards;
 }
 
 /* 好友手机全屏界面 */
@@ -1434,10 +1434,10 @@
 }
 
 /* ========================================================================== 
-   LOVES — Korean low-saturation relationship space
+   LOVER — Korean low-saturation relationship space
    ========================================================================== */
 
-.loves-view,
+.lover-view,
 .lovers-space-view,
 .lovers-savings-view,
 #lovers-publish-view,
@@ -1446,20 +1446,20 @@
 #lovers-savings-deposit-sheet,
 #lovers-savings-withdraw-sheet,
 #lovers-savings-withdraw-result-modal {
-    --loves-bg: #f2f2f7;
-    --loves-surface: #ffffff;
-    --loves-ink: #1c1c1e;
-    --loves-muted: #8e8e93;
-    --loves-line: #e5e5ea;
-    --loves-accent: #1c1c1e;
-    --loves-accent-soft: #f6e8eb;
-    --loves-pink: #edcfd4;
-    --loves-pink-ink: #8f5f67;
-    --loves-danger: #a14c56;
+    --lover-bg: #f2f2f7;
+    --lover-surface: #ffffff;
+    --lover-ink: #1c1c1e;
+    --lover-muted: #8e8e93;
+    --lover-line: #e5e5ea;
+    --lover-accent: #1c1c1e;
+    --lover-accent-soft: #f6e8eb;
+    --lover-pink: #edcfd4;
+    --lover-pink-ink: #8f5f67;
+    --lover-danger: #a14c56;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-.loves-view button,
+.lover-view button,
 .lovers-space-view button,
 .lovers-savings-view button,
 #lovers-publish-view button,
@@ -1469,33 +1469,33 @@
     font: inherit;
 }
 
-.loves-view button:focus-visible,
+.lover-view button:focus-visible,
 .lovers-space-view button:focus-visible,
 .lovers-savings-view button:focus-visible,
 #lovers-publish-view button:focus-visible,
 #lovers-diary-generator-view button:focus-visible,
-.loves-view input:focus-visible,
+.lover-view input:focus-visible,
 .lovers-space-view input:focus-visible,
 .lovers-savings-view input:focus-visible,
 #lovers-publish-view textarea:focus-visible,
 #lovers-diary-generator-view input:focus-visible {
-    outline: 2px solid var(--loves-accent);
+    outline: 2px solid var(--lover-accent);
     outline-offset: 3px;
 }
 
 /* Entry */
-.loves-view {
-    background: var(--loves-bg);
-    color: var(--loves-ink);
+.lover-view {
+    background: var(--lover-bg);
+    color: var(--lover-ink);
 }
 
-#loves-view.loves-view,
+#lover-view.lover-view,
 #lovers-space-view.lovers-space-view {
     padding-top: 0;
-    background: var(--loves-bg);
+    background: var(--lover-bg);
 }
 
-.loves-header {
+.lover-header {
     width: min(100%, 520px);
     min-height: calc(76px + var(--safe-top));
     height: auto;
@@ -1512,27 +1512,27 @@
     pointer-events: auto;
 }
 
-.loves-back-btn,
+.lover-back-btn,
 .lovers-space-icon-btn,
 .lovers-savings-icon-btn {
     width: 44px;
     height: 44px;
     padding: 0;
     border-radius: 15px;
-    background: var(--loves-surface);
-    color: var(--loves-ink);
+    background: var(--lover-surface);
+    color: var(--lover-ink);
     display: grid;
     place-items: center;
     cursor: pointer;
     font-size: 15px;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
 }
 
-.loves-heading { min-width: 0; text-align: center; }
+.lover-heading { min-width: 0; text-align: center; }
 
-.loves-heading > span,
-.loves-intro > span,
-.loves-list-heading > span,
+.lover-heading > span,
+.lover-intro > span,
+.lover-list-heading > span,
 .lovers-space-header-copy span,
 .lovers-space-hero-copy > span,
 .lovers-panel-heading > span,
@@ -1540,14 +1540,14 @@
 .lovers-compose-field > span,
 .lovers-savings-kicker {
     display: block;
-    color: var(--loves-pink-ink);
+    color: var(--lover-pink-ink);
     font-size: 9px;
     line-height: 1.2;
     font-weight: 800;
     letter-spacing: .17em;
 }
 
-.loves-heading h1 {
+.lover-heading h1 {
     margin: 3px 0 0;
     font-size: 18px;
     line-height: 1.15;
@@ -1555,8 +1555,8 @@
     letter-spacing: -.02em;
 }
 
-.loves-header-mark {
-    color: var(--loves-muted);
+.lover-header-mark {
+    color: var(--lover-muted);
     font-size: 8px;
     line-height: 1.2;
     font-weight: 800;
@@ -1564,25 +1564,25 @@
     text-align: right;
 }
 
-.loves-content {
+.lover-content {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
     padding: 8px 16px max(40px, calc(26px + var(--safe-bottom)));
-    background: var(--loves-bg);
+    background: var(--lover-bg);
     display: block;
     -webkit-overflow-scrolling: touch;
 }
 
-.loves-intro,
-.loves-list-heading,
-.loves-board {
+.lover-intro,
+.lover-list-heading,
+.lover-board {
     width: min(100%, 520px);
     margin-left: auto;
     margin-right: auto;
 }
 
-.loves-intro {
+.lover-intro {
     min-height: 174px;
     padding: 24px;
     border-radius: 26px;
@@ -1595,7 +1595,7 @@
     overflow: hidden;
 }
 
-.loves-intro::after {
+.lover-intro::after {
     content: "";
     width: 124px;
     height: 124px;
@@ -1607,9 +1607,9 @@
     box-shadow: 0 0 0 24px rgba(255,255,255,.02), 0 0 0 48px rgba(255,255,255,.015);
 }
 
-.loves-intro > span { color: var(--loves-pink); }
+.lover-intro > span { color: var(--lover-pink); }
 
-.loves-intro h2 {
+.lover-intro h2 {
     max-width: 310px;
     margin: 9px 0 0;
     font-size: 25px;
@@ -1618,7 +1618,7 @@
     letter-spacing: -.045em;
 }
 
-.loves-intro p {
+.lover-intro p {
     max-width: 320px;
     margin: 8px 0 0;
     color: rgba(255, 255, 255, .62);
@@ -1626,7 +1626,7 @@
     line-height: 1.55;
 }
 
-.loves-list-heading {
+.lover-list-heading {
     margin-top: 28px;
     margin-bottom: 11px;
     padding: 0 2px;
@@ -1635,7 +1635,7 @@
     justify-content: space-between;
 }
 
-.loves-list-heading h3 {
+.lover-list-heading h3 {
     margin: 0;
     font-size: 21px;
     line-height: 1.2;
@@ -1643,9 +1643,9 @@
     letter-spacing: -.035em;
 }
 
-.loves-list-heading > span { padding-bottom: 2px; color: var(--loves-muted); }
+.lover-list-heading > span { padding-bottom: 2px; color: var(--lover-muted); }
 
-.loves-board {
+.lover-board {
     min-height: 0;
     padding: 0;
     background: transparent;
@@ -1654,26 +1654,26 @@
     gap: 8px;
 }
 
-.loves-note {
+.lover-note {
     width: 100%;
     min-height: 78px;
     padding: 12px;
     border: 0;
     border-radius: 20px;
-    background: var(--loves-surface);
-    color: var(--loves-ink);
+    background: var(--lover-surface);
+    color: var(--lover-ink);
     display: flex;
     align-items: center;
     position: relative;
     cursor: pointer;
     text-align: left;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
     transition: transform 160ms ease, background 160ms ease;
 }
 
-.loves-note:active { transform: scale(.985); background: var(--loves-accent-soft); }
+.lover-note:active { transform: scale(.985); background: var(--lover-accent-soft); }
 
-.loves-note-avatar {
+.lover-note-avatar {
     width: 52px;
     height: 52px;
     margin-right: 12px;
@@ -1682,11 +1682,11 @@
     color: #aeaeb2;
 }
 
-.loves-note-avatar i { color: inherit; font-size: 20px; }
-.loves-note-name { margin: 0; color: var(--loves-ink); font-size: 15px; font-weight: 750; }
-.loves-note-sign { margin-top: 5px; color: var(--loves-muted); font-size: 12px; }
+.lover-note-avatar i { color: inherit; font-size: 20px; }
+.lover-note-name { margin: 0; color: var(--lover-ink); font-size: 15px; font-weight: 750; }
+.lover-note-sign { margin-top: 5px; color: var(--lover-muted); font-size: 12px; }
 
-.loves-note-action {
+.lover-note-action {
     min-width: 64px;
     min-height: 44px;
     margin-left: 10px;
@@ -1699,33 +1699,33 @@
     font-weight: 750;
 }
 
-.loves-note-action-invite {
-    background: var(--loves-accent);
+.lover-note-action-invite {
+    background: var(--lover-accent);
     color: #fff !important;
     -webkit-text-fill-color: #fff;
 }
-.loves-note-action-enter { background: var(--loves-accent-soft); color: var(--loves-pink-ink); }
-.loves-note-action-invite:active,
-.loves-note-action-enter:active { background: var(--loves-pink); }
+.lover-note-action-enter { background: var(--lover-accent-soft); color: var(--lover-pink-ink); }
+.lover-note-action-invite:active,
+.lover-note-action-enter:active { background: var(--lover-pink); }
 
-.loves-placeholder {
+.lover-placeholder {
     min-height: 210px;
     margin: 0;
     border-radius: 22px;
-    background: var(--loves-surface);
-    color: var(--loves-muted);
+    background: var(--lover-surface);
+    color: var(--lover-muted);
     justify-content: center;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
 }
 
-.loves-placeholder i { color: var(--loves-pink-ink); font-size: 30px; }
-.loves-placeholder p { margin: 0; font-size: 13px; font-weight: 650; }
+.lover-placeholder i { color: var(--lover-pink-ink); font-size: 30px; }
+.lover-placeholder p { margin: 0; font-size: 13px; font-weight: 650; }
 
 /* Shared space */
 .lovers-space-view {
     padding: 0;
-    background: var(--loves-bg);
-    color: var(--loves-ink);
+    background: var(--lover-bg);
+    color: var(--lover-ink);
 }
 
 .lovers-space-header {
@@ -1753,7 +1753,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: var(--loves-bg);
+    background: var(--lover-bg);
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1769,24 +1769,24 @@
     margin-top: 8px;
     padding: 22px;
     border-radius: 26px;
-    background: var(--loves-surface);
+    background: var(--lover-surface);
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-areas: "copy avatars" "days days";
     gap: 22px;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
 }
 
 .lovers-space-hero-copy { grid-area: copy; align-self: center; }
 .lovers-space-hero-copy h2 { margin: 7px 0 0; font-size: 22px; font-weight: 780; letter-spacing: -.04em; }
-.lovers-space-hero-copy p { max-width: 240px; margin: 7px 0 0; color: var(--loves-muted); font-size: 11px; line-height: 1.55; }
+.lovers-space-hero-copy p { max-width: 240px; margin: 7px 0 0; color: var(--lover-muted); font-size: 11px; line-height: 1.55; }
 
 .lovers-space-avatars { grid-area: avatars; display: flex; align-items: center; }
 
 .lovers-space-avatar {
     width: 58px;
     height: 58px;
-    border: 3px solid var(--loves-surface);
+    border: 3px solid var(--lover-surface);
     border-radius: 20px;
     background: #f2f2f7;
     color: #aeaeb2;
@@ -1806,7 +1806,7 @@
     min-height: 70px;
     padding: 13px 16px;
     border-radius: 18px;
-    background: var(--loves-accent-soft);
+    background: var(--lover-accent-soft);
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -1814,7 +1814,7 @@
 }
 
 .lovers-space-days-card > span {
-    color: var(--loves-pink-ink);
+    color: var(--lover-pink-ink);
     font-size: 38px;
     line-height: 1;
     font-weight: 760;
@@ -1822,21 +1822,21 @@
     font-variant-numeric: tabular-nums;
 }
 
-.lovers-space-days-card small { padding-bottom: 4px; color: var(--loves-muted); font-size: 8px; font-weight: 800; letter-spacing: .14em; }
+.lovers-space-days-card small { padding-bottom: 4px; color: var(--lover-muted); font-size: 8px; font-weight: 800; letter-spacing: .14em; }
 
 .lovers-space-tabs-container {
     min-height: 54px;
     margin-top: 14px;
     padding: 5px;
     border-radius: 17px;
-    background: var(--loves-surface);
+    background: var(--lover-surface);
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 12;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
 }
 
 .lovers-space-tab {
@@ -1844,14 +1844,14 @@
     padding: 0;
     border-radius: 13px;
     background: transparent;
-    color: var(--loves-muted) !important;
+    color: var(--lover-muted) !important;
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
     transition: color 160ms ease, background 160ms ease;
 }
 
-.lovers-space-tab.active { background: var(--loves-accent); color: #fff !important; }
+.lovers-space-tab.active { background: var(--lover-accent); color: #fff !important; }
 .lovers-space-tab-indicator { display: none; }
 
 .lovers-space-tab-content-area {
@@ -1866,7 +1866,7 @@
     inset: auto;
     min-height: 360px;
     padding: 18px 16px max(108px, calc(92px + var(--safe-bottom)));
-    animation: lovesFadeIn 180ms ease-out forwards;
+    animation: loverFadeIn 180ms ease-out forwards;
 }
 
 .lovers-space-panel.active { display: flex; }
@@ -1885,27 +1885,27 @@
     min-height: 72px;
     padding: 12px;
     border-radius: 18px;
-    background: var(--loves-surface);
+    background: var(--lover-surface);
     display: flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
     text-align: left;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
     transition: transform 160ms ease, background 160ms ease;
 }
 
-.lovers-feature-row:active { transform: scale(.985); background: var(--loves-accent-soft); }
+.lovers-feature-row:active { transform: scale(.985); background: var(--lover-accent-soft); }
 .lovers-feature-row.is-static { cursor: default; }
-.lovers-feature-row.is-static:active { transform: none; background: var(--loves-surface); }
+.lovers-feature-row.is-static:active { transform: none; background: var(--lover-surface); }
 .lovers-feature-row.is-offline { opacity: .58; }
 
 .lovers-feature-icon {
     width: 42px;
     height: 42px;
     border-radius: 14px;
-    background: var(--loves-accent-soft);
-    color: var(--loves-pink-ink);
+    background: var(--lover-accent-soft);
+    color: var(--lover-pink-ink);
     display: grid;
     place-items: center;
     flex-shrink: 0;
@@ -1914,9 +1914,9 @@
 
 .lovers-feature-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .lovers-feature-copy strong { overflow: hidden; font-size: 14px; font-weight: 750; white-space: nowrap; text-overflow: ellipsis; }
-.lovers-feature-copy small { overflow: hidden; color: var(--loves-muted); font-size: 11px; white-space: nowrap; text-overflow: ellipsis; }
+.lovers-feature-copy small { overflow: hidden; color: var(--lover-muted); font-size: 11px; white-space: nowrap; text-overflow: ellipsis; }
 .lovers-feature-chevron { color: #aeaeb2; font-size: 11px; }
-.lovers-device-status { color: var(--loves-muted); font-size: 8px; font-weight: 800; letter-spacing: .1em; }
+.lovers-device-status { color: var(--lover-muted); font-size: 8px; font-weight: 800; letter-spacing: .1em; }
 .lovers-device-status.is-online { color: #636366; }
 
 .lovers-panel-empty {
@@ -1927,13 +1927,13 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: var(--loves-muted);
+    color: var(--lover-muted);
     text-align: center;
     pointer-events: none;
 }
 
-.lovers-panel-empty i { margin-bottom: 6px; color: var(--loves-pink-ink); font-size: 28px; }
-.lovers-panel-empty strong { color: var(--loves-ink); font-size: 15px; font-weight: 750; }
+.lovers-panel-empty i { margin-bottom: 6px; color: var(--lover-pink-ink); font-size: 28px; }
+.lovers-panel-empty strong { color: var(--lover-ink); font-size: 15px; font-weight: 750; }
 .lovers-panel-empty span { font-size: 11px; }
 .lovers-more-panel { align-items: stretch; justify-content: center; }
 
@@ -1946,7 +1946,7 @@
     right: max(18px, calc((100% - 520px) / 2 + 18px));
     bottom: max(22px, calc(14px + var(--safe-bottom)));
     z-index: 30;
-    background: var(--loves-accent);
+    background: var(--lover-accent);
     color: #fff;
     display: grid;
     place-items: center;
@@ -1971,25 +1971,25 @@
     gap: 10px;
 }
 
-.loves-moment-card {
+.lover-moment-card {
     padding: 16px;
     border-radius: 22px;
-    background: var(--loves-surface);
+    background: var(--lover-surface);
     position: relative;
-    box-shadow: inset 0 0 0 1px var(--loves-line);
+    box-shadow: inset 0 0 0 1px var(--lover-line);
 }
 
-.loves-moment-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.loves-moment-author { min-width: 0; display: flex; align-items: center; gap: 10px; }
-.loves-moment-avatar { width: 40px; height: 40px; border-radius: 14px; background: #f2f2f7; color: #aeaeb2; overflow: hidden; display: grid; place-items: center; flex-shrink: 0; }
-.loves-moment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.loves-moment-author-copy { min-width: 0; }
-.loves-moment-name { overflow: hidden; font-size: 14px; font-weight: 750; white-space: nowrap; text-overflow: ellipsis; }
-.loves-moment-time { margin-top: 4px; color: var(--loves-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
-.loves-moment-actions { position: relative; }
-.loves-moment-more { width: 44px; height: 44px; border-radius: 12px; background: transparent; color: var(--loves-muted); cursor: pointer; }
+.lover-moment-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.lover-moment-author { min-width: 0; display: flex; align-items: center; gap: 10px; }
+.lover-moment-avatar { width: 40px; height: 40px; border-radius: 14px; background: #f2f2f7; color: #aeaeb2; overflow: hidden; display: grid; place-items: center; flex-shrink: 0; }
+.lover-moment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lover-moment-author-copy { min-width: 0; }
+.lover-moment-name { overflow: hidden; font-size: 14px; font-weight: 750; white-space: nowrap; text-overflow: ellipsis; }
+.lover-moment-time { margin-top: 4px; color: var(--lover-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+.lover-moment-actions { position: relative; }
+.lover-moment-more { width: 44px; height: 44px; border-radius: 12px; background: transparent; color: var(--lover-muted); cursor: pointer; }
 
-.loves-moment-menu {
+.lover-moment-menu {
     width: 148px;
     padding: 5px;
     border-radius: 16px;
@@ -1998,78 +1998,78 @@
     top: 40px;
     z-index: 15;
     display: none;
-    background: var(--loves-surface);
-    box-shadow: 0 16px 38px rgba(28, 28, 30, .14), inset 0 0 0 1px var(--loves-line);
+    background: var(--lover-surface);
+    box-shadow: 0 16px 38px rgba(28, 28, 30, .14), inset 0 0 0 1px var(--lover-line);
 }
 
-.loves-moment-menu button { width: 100%; min-height: 40px; padding: 0 10px; border-radius: 11px; background: transparent; display: flex; align-items: center; gap: 9px; cursor: pointer; text-align: left; font-size: 12px; font-weight: 700; }
-.loves-moment-menu button:hover { background: var(--loves-accent-soft); }
-.loves-moment-menu button.is-danger { color: var(--loves-danger); }
-.loves-moment-body { color: #2c2c2e; font-size: 14px; line-height: 1.62; white-space: pre-wrap; word-break: break-word; }
-.loves-moment-translate-toggle { display: block; margin: 6px 0 0; padding: 0; border: 0; background: transparent; color: var(--loves-pink-ink); cursor: pointer; font-size: 11px; font-weight: 700; line-height: 1.5; }
-.loves-moment-translation { margin-top: 5px; padding-top: 6px; border-top: 1px solid var(--loves-line); color: var(--loves-muted); font-size: 12px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.lover-moment-menu button { width: 100%; min-height: 40px; padding: 0 10px; border-radius: 11px; background: transparent; display: flex; align-items: center; gap: 9px; cursor: pointer; text-align: left; font-size: 12px; font-weight: 700; }
+.lover-moment-menu button:hover { background: var(--lover-accent-soft); }
+.lover-moment-menu button.is-danger { color: var(--lover-danger); }
+.lover-moment-body { color: #2c2c2e; font-size: 14px; line-height: 1.62; white-space: pre-wrap; word-break: break-word; }
+.lover-moment-translate-toggle { display: block; margin: 6px 0 0; padding: 0; border: 0; background: transparent; color: var(--lover-pink-ink); cursor: pointer; font-size: 11px; font-weight: 700; line-height: 1.5; }
+.lover-moment-translation { margin-top: 5px; padding-top: 6px; border-top: 1px solid var(--lover-line); color: var(--lover-muted); font-size: 12px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
 
-.loves-moment-images { margin-top: 12px; display: grid; gap: 5px; }
-.loves-moment-images.is-one { grid-template-columns: minmax(0, 1fr); }
-.loves-moment-images.is-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.loves-moment-images.is-many { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.loves-moment-images img { width: 100%; aspect-ratio: 1; border-radius: 13px; object-fit: cover; background: #e5e5ea; }
+.lover-moment-images { margin-top: 12px; display: grid; gap: 5px; }
+.lover-moment-images.is-one { grid-template-columns: minmax(0, 1fr); }
+.lover-moment-images.is-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lover-moment-images.is-many { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lover-moment-images img { width: 100%; aspect-ratio: 1; border-radius: 13px; object-fit: cover; background: #e5e5ea; }
 
-.loves-moment-toolbar { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--loves-line); display: flex; gap: 8px; }
-.loves-moment-toolbar button { min-width: 58px; min-height: 44px; padding: 0 12px; border-radius: 12px; background: var(--loves-bg); color: var(--loves-muted); display: flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer; font-size: 12px; }
-.loves-moment-toolbar button.is-liked { background: var(--loves-accent-soft); color: var(--loves-pink-ink); }
+.lover-moment-toolbar { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--lover-line); display: flex; gap: 8px; }
+.lover-moment-toolbar button { min-width: 58px; min-height: 44px; padding: 0 12px; border-radius: 12px; background: var(--lover-bg); color: var(--lover-muted); display: flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer; font-size: 12px; }
+.lover-moment-toolbar button.is-liked { background: var(--lover-accent-soft); color: var(--lover-pink-ink); }
 
-.loves-moment-comments { margin-top: 12px; padding: 10px 12px; border-radius: 15px; background: var(--loves-bg); display: flex; flex-direction: column; gap: 8px; }
-.loves-moment-comment { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.5; }
-.loves-moment-comment.is-char { font-size: 14px; line-height: 1.62; }
-.loves-moment-comment-copy { flex: 1; min-width: 0; cursor: pointer; }
-.loves-moment-comment-author { color: var(--loves-pink-ink); font-weight: 750; }
-.loves-moment-comment .loves-moment-translate-toggle { margin-top: 4px; }
-.loves-moment-comment .loves-moment-translation { font-size: 11px; }
-.loves-moment-comment-delete { flex-shrink: 0; padding: 0; border-radius: 0; background: transparent; color: var(--loves-danger); cursor: pointer; font-size: 12px; line-height: 1.5; text-decoration: none; white-space: nowrap; }
-.loves-moment-comment-delete:hover { text-decoration: underline; }
+.lover-moment-comments { margin-top: 12px; padding: 10px 12px; border-radius: 15px; background: var(--lover-bg); display: flex; flex-direction: column; gap: 8px; }
+.lover-moment-comment { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.5; }
+.lover-moment-comment.is-char { font-size: 14px; line-height: 1.62; }
+.lover-moment-comment-copy { flex: 1; min-width: 0; cursor: pointer; }
+.lover-moment-comment-author { color: var(--lover-pink-ink); font-weight: 750; }
+.lover-moment-comment .lover-moment-translate-toggle { margin-top: 4px; }
+.lover-moment-comment .lover-moment-translation { font-size: 11px; }
+.lover-moment-comment-delete { flex-shrink: 0; padding: 0; border-radius: 0; background: transparent; color: var(--lover-danger); cursor: pointer; font-size: 12px; line-height: 1.5; text-decoration: none; white-space: nowrap; }
+.lover-moment-comment-delete:hover { text-decoration: underline; }
 
-.loves-moment-composer { margin-top: 12px; padding: 7px; border-radius: 15px; background: var(--loves-bg); display: flex; align-items: center; gap: 8px; }
-.loves-moment-composer-avatar { width: 28px; height: 28px; border-radius: 10px; background: #f2f2f7; color: #aeaeb2; overflow: hidden; display: grid; place-items: center; flex-shrink: 0; }
-.loves-moment-composer-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.loves-moment-comment-input { flex: 1; min-width: 0; height: 32px; border: 0; outline: 0; background: transparent; color: var(--loves-ink); font-size: 12px; }
-.loves-moment-comment-send { min-width: 58px; height: 44px; padding: 0 12px; border-radius: 12px; background: var(--loves-accent); color: #fff; cursor: pointer; font-size: 11px; font-weight: 750; }
+.lover-moment-composer { margin-top: 12px; padding: 7px; border-radius: 15px; background: var(--lover-bg); display: flex; align-items: center; gap: 8px; }
+.lover-moment-composer-avatar { width: 28px; height: 28px; border-radius: 10px; background: #f2f2f7; color: #aeaeb2; overflow: hidden; display: grid; place-items: center; flex-shrink: 0; }
+.lover-moment-composer-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lover-moment-comment-input { flex: 1; min-width: 0; height: 32px; border: 0; outline: 0; background: transparent; color: var(--lover-ink); font-size: 12px; }
+.lover-moment-comment-send { min-width: 58px; height: 44px; padding: 0 12px; border-radius: 12px; background: var(--lover-accent); color: #fff; cursor: pointer; font-size: 11px; font-weight: 750; }
 
 /* Diary */
 .lovers-diary-heading { margin: 5px 2px 12px; position: relative; }
 #lovers-diary-year-month-display { display: flex; align-items: baseline; gap: 6px; }
 #lovers-diary-year-display { font-size: 25px; line-height: 1.1; font-weight: 780; letter-spacing: -.04em; }
-#lovers-diary-month-display { color: var(--loves-pink-ink); font-size: 15px; font-weight: 750; }
-#lovers-diary-year-month-display i { color: var(--loves-muted); font-size: 9px; }
+#lovers-diary-month-display { color: var(--lover-pink-ink); font-size: 15px; font-weight: 750; }
+#lovers-diary-year-month-display i { color: var(--lover-muted); font-size: 9px; }
 #lovers-diary-month-picker { width: 160px; height: 100%; position: absolute; inset: 0 auto auto 0; opacity: 0; cursor: pointer; }
 
-.lovers-diary-strip { margin-bottom: 20px; padding: 8px; border-radius: 18px; background: var(--loves-surface); overflow-x: auto; scrollbar-width: none; box-shadow: inset 0 0 0 1px var(--loves-line); }
+.lovers-diary-strip { margin-bottom: 20px; padding: 8px; border-radius: 18px; background: var(--lover-surface); overflow-x: auto; scrollbar-width: none; box-shadow: inset 0 0 0 1px var(--lover-line); }
 .lovers-diary-strip::-webkit-scrollbar { display: none; }
 #lovers-diary-dates { min-width: max-content; display: flex; gap: 6px; }
-.diary-date-item { width: 44px; height: 58px; padding: 0; border: 0; border-radius: 13px; background: transparent; color: var(--loves-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; transition: color 160ms ease, background 160ms ease; }
+.diary-date-item { width: 44px; height: 58px; padding: 0; border: 0; border-radius: 13px; background: transparent; color: var(--lover-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; transition: color 160ms ease, background 160ms ease; }
 .diary-date-item small { font-size: 9px; font-weight: 700; }
 .diary-date-item strong { font-size: 14px; font-weight: 750; }
-.diary-date-item.is-today:not(.is-selected) { color: var(--loves-ink); box-shadow: inset 0 0 0 1px var(--loves-line); }
-.diary-date-item.is-selected { background: var(--loves-accent); color: #fff; }
+.diary-date-item.is-today:not(.is-selected) { color: var(--lover-ink); box-shadow: inset 0 0 0 1px var(--lover-line); }
+.diary-date-item.is-selected { background: var(--lover-accent); color: #fff; }
 
 .lovers-diary-list { padding: 0 0 20px; position: relative; display: flex; flex-direction: column; gap: 10px; }
-.lovers-diary-empty { min-height: 170px; padding: 24px; border-radius: 20px; background: var(--loves-surface); color: var(--loves-muted); display: grid; place-items: center; text-align: center; gap: 8px; font-size: 12px; box-shadow: inset 0 0 0 1px var(--loves-line); }
-.lovers-diary-empty i { color: var(--loves-pink-ink); font-size: 28px; }
-.lovers-diary-empty strong { color: var(--loves-ink); font-size: 15px; font-weight: 760; }
+.lovers-diary-empty { min-height: 170px; padding: 24px; border-radius: 20px; background: var(--lover-surface); color: var(--lover-muted); display: grid; place-items: center; text-align: center; gap: 8px; font-size: 12px; box-shadow: inset 0 0 0 1px var(--lover-line); }
+.lovers-diary-empty i { color: var(--lover-pink-ink); font-size: 28px; }
+.lovers-diary-empty strong { color: var(--lover-ink); font-size: 15px; font-weight: 760; }
 .lovers-diary-item { min-height: 104px; display: grid; grid-template-columns: 48px 1fr; align-items: stretch; gap: 10px; position: relative; }
-.lovers-diary-time { padding-top: 16px; color: var(--loves-muted); font-size: 10px; line-height: 1.35; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
-.lovers-diary-card { min-width: 0; padding: 14px; border-radius: 18px; background: var(--loves-surface); position: relative; box-shadow: inset 0 0 0 1px var(--loves-line); }
-.lovers-diary-card::before { content: ""; width: 4px; border-radius: 4px; position: absolute; left: 0; top: 14px; bottom: 14px; background: var(--loves-pink-ink); }
+.lovers-diary-time { padding-top: 16px; color: var(--lover-muted); font-size: 10px; line-height: 1.35; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.lovers-diary-card { min-width: 0; padding: 14px; border-radius: 18px; background: var(--lover-surface); position: relative; box-shadow: inset 0 0 0 1px var(--lover-line); }
+.lovers-diary-card::before { content: ""; width: 4px; border-radius: 4px; position: absolute; left: 0; top: 14px; bottom: 14px; background: var(--lover-pink-ink); }
 .lovers-diary-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .lovers-diary-card-head strong { min-width: 0; display: block; overflow: hidden; font-size: 14px; font-weight: 750; white-space: nowrap; text-overflow: ellipsis; }
-.lovers-diary-location { margin-top: 7px; color: var(--loves-muted); display: flex; align-items: center; gap: 5px; font-size: 10px; }
+.lovers-diary-location { margin-top: 7px; color: var(--lover-muted); display: flex; align-items: center; gap: 5px; font-size: 10px; }
 .lovers-diary-card p { margin: 11px 0 0; color: #2c2c2e; font-size: 13px; line-height: 1.62; white-space: pre-wrap; word-break: break-word; }
-.lovers-diary-delete { flex-shrink: 0; padding: 0; border-radius: 0; background: transparent; color: var(--loves-danger); cursor: pointer; font-size: 12px; line-height: 1.5; text-decoration: none; white-space: nowrap; }
+.lovers-diary-delete { flex-shrink: 0; padding: 0; border-radius: 0; background: transparent; color: var(--lover-danger); cursor: pointer; font-size: 12px; line-height: 1.5; text-decoration: none; white-space: nowrap; }
 .lovers-diary-delete:hover { text-decoration: underline; }
-.lovers-diary-end { margin-top: 10px; color: var(--loves-muted); font-size: 10px; text-align: center; }
+.lovers-diary-end { margin-top: 10px; color: var(--lover-muted); font-size: 10px; text-align: center; }
 
 /* Savings */
-.lovers-savings-view { background: var(--loves-bg); color: var(--loves-ink); }
+.lovers-savings-view { background: var(--lover-bg); color: var(--lover-ink); }
 
 .lovers-savings-header {
     width: min(100%, 520px);
@@ -2091,50 +2091,50 @@
     box-shadow: none;
 }
 
-.lovers-savings-kicker { color: var(--loves-pink); opacity: 1; }
+.lovers-savings-kicker { color: var(--lover-pink); opacity: 1; }
 .lovers-savings-total { margin-top: 10px; font-size: 40px; font-weight: 760; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
-.lovers-savings-jar { width: 54px; height: 54px; border-radius: 17px; background: rgba(255,255,255,.08); color: var(--loves-pink); font-size: 21px; }
+.lovers-savings-jar { width: 54px; height: 54px; border-radius: 17px; background: rgba(255,255,255,.08); color: var(--lover-pink); font-size: 21px; }
 .lovers-savings-goal-row { color: rgba(255,255,255,.68); font-size: 11px; opacity: 1; }
 .lovers-savings-progress-track { height: 7px; background: rgba(255,255,255,.12); }
-.lovers-savings-progress-fill { background: var(--loves-pink); }
+.lovers-savings-progress-fill { background: var(--lover-pink); }
 .lovers-savings-left { color: rgba(255,255,255,.58); font-size: 10px; opacity: 1; }
 
 .lovers-savings-person,
 .lovers-savings-day-totals div,
-.lovers-savings-record { background: var(--loves-surface); box-shadow: inset 0 0 0 1px var(--loves-line); }
+.lovers-savings-record { background: var(--lover-surface); box-shadow: inset 0 0 0 1px var(--lover-line); }
 .lovers-savings-person { border-radius: 18px; }
 .lovers-savings-person-dot.is-user,
 .lovers-savings-person-dot.is-char,
 .lovers-savings-record-icon.is-user,
-.lovers-savings-record-icon.is-char { background: var(--loves-accent); }
+.lovers-savings-record-icon.is-char { background: var(--lover-accent); }
 .lovers-savings-record.is-withdrawal .lovers-savings-record-icon { background: #636366; }
 .lovers-savings-person-name,
 .lovers-savings-day-subtitle,
 .lovers-savings-day-totals span,
-.lovers-savings-record-meta { color: var(--loves-muted); }
+.lovers-savings-record-meta { color: var(--lover-muted); }
 .lovers-savings-section-title { font-size: 21px; font-weight: 780; letter-spacing: -.035em; }
-.lovers-savings-date-filter { min-height: 42px; background: var(--loves-surface); color: var(--loves-ink); box-shadow: inset 0 0 0 1px var(--loves-line); }
+.lovers-savings-date-filter { min-height: 42px; background: var(--lover-surface); color: var(--lover-ink); box-shadow: inset 0 0 0 1px var(--lover-line); }
 .lovers-savings-record-icon { border-radius: 14px; }
-.lovers-savings-empty i { color: var(--loves-pink-ink); }
+.lovers-savings-empty i { color: var(--lover-pink-ink); }
 
-.lovers-savings-deposit-sheet { width: min(100%, 520px); margin: 0 auto; background: var(--loves-bg); }
-.lovers-savings-deposit-header button { min-height: 44px; color: var(--loves-accent); }
-.lovers-savings-form label { min-height: 54px; background: var(--loves-surface); box-shadow: inset 0 0 0 1px var(--loves-line); }
-.lovers-savings-form span { color: var(--loves-ink); }
+.lovers-savings-deposit-sheet { width: min(100%, 520px); margin: 0 auto; background: var(--lover-bg); }
+.lovers-savings-deposit-header button { min-height: 44px; color: var(--lover-accent); }
+.lovers-savings-form label { min-height: 54px; background: var(--lover-surface); box-shadow: inset 0 0 0 1px var(--lover-line); }
+.lovers-savings-form span { color: var(--lover-ink); }
 .lovers-savings-form input,
 .lovers-savings-form select,
-.lovers-savings-form textarea { color: var(--loves-ink); }
-.lovers-savings-withdraw-btn { min-height: 50px; border: 0; background: var(--loves-surface); color: var(--loves-ink); box-shadow: inset 0 0 0 1px var(--loves-line); }
+.lovers-savings-form textarea { color: var(--lover-ink); }
+.lovers-savings-withdraw-btn { min-height: 50px; border: 0; background: var(--lover-surface); color: var(--lover-ink); box-shadow: inset 0 0 0 1px var(--lover-line); }
 
-.lovers-savings-result-modal { background: var(--loves-surface); box-shadow: 0 18px 50px rgba(17,17,17,.16); }
-.lovers-savings-result-icon { border-radius: 18px; background: var(--loves-accent); }
-.lovers-savings-result-modal-overlay.is-rejected .lovers-savings-result-icon { background: var(--loves-danger); }
-.lovers-savings-result-reason-card { background: var(--loves-bg); }
+.lovers-savings-result-modal { background: var(--lover-surface); box-shadow: 0 18px 50px rgba(17,17,17,.16); }
+.lovers-savings-result-icon { border-radius: 18px; background: var(--lover-accent); }
+.lovers-savings-result-modal-overlay.is-rejected .lovers-savings-result-icon { background: var(--lover-danger); }
+.lovers-savings-result-reason-card { background: var(--lover-bg); }
 .lovers-savings-result-title,
 .lovers-savings-result-amount,
-.lovers-savings-result-reason-card p { color: var(--loves-ink); }
-.lovers-savings-result-reason-card span { color: var(--loves-muted); }
-.lovers-savings-result-ok { min-height: 46px; border-radius: 15px; background: var(--loves-accent); }
+.lovers-savings-result-reason-card p { color: var(--lover-ink); }
+.lovers-savings-result-reason-card span { color: var(--lover-muted); }
+.lovers-savings-result-ok { min-height: 46px; border-radius: 15px; background: var(--lover-accent); }
 
 /* Compose and diary sheets */
 .lovers-compose-sheet {
@@ -2143,7 +2143,7 @@
     margin: 0 auto;
     padding-bottom: max(16px, var(--safe-bottom));
     border-radius: 28px 28px 0 0;
-    background: var(--loves-bg);
+    background: var(--lover-bg);
     display: flex;
     flex-direction: column;
 }
@@ -2164,34 +2164,34 @@
 .lovers-compose-header strong { display: block; margin-top: 3px; font-size: 16px; font-weight: 780; }
 .lovers-compose-cancel,
 .lovers-compose-primary { min-height: 44px; padding: 0 12px; border-radius: 13px; cursor: pointer; font-size: 12px; font-weight: 750; }
-.lovers-compose-cancel { background: transparent; color: var(--loves-muted); }
-.lovers-compose-primary { background: var(--loves-accent); color: #fff !important; }
+.lovers-compose-cancel { background: transparent; color: var(--lover-muted); }
+.lovers-compose-primary { background: var(--lover-accent); color: #fff !important; }
 .lovers-compose-primary:disabled { opacity: .62; cursor: wait; }
 
 .lovers-compose-content { flex: 1; padding: 4px 16px 20px; overflow-y: auto; }
-.lovers-compose-field { padding: 15px; border-radius: 19px; background: var(--loves-surface); display: block; box-shadow: inset 0 0 0 1px var(--loves-line); }
+.lovers-compose-field { padding: 15px; border-radius: 19px; background: var(--lover-surface); display: block; box-shadow: inset 0 0 0 1px var(--lover-line); }
 .lovers-compose-field textarea,
-.lovers-compose-field input { width: 100%; margin-top: 10px; border: 0; outline: 0; resize: none; background: transparent; color: var(--loves-ink); font: inherit; }
+.lovers-compose-field input { width: 100%; margin-top: 10px; border: 0; outline: 0; resize: none; background: transparent; color: var(--lover-ink); font: inherit; }
 .lovers-compose-field textarea { min-height: 132px; font-size: 15px; line-height: 1.6; }
 .lovers-compose-field input { height: 36px; font-size: 14px; }
 
 .lovers-publish-images { margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.lovers-publish-add { aspect-ratio: 1; border-radius: 17px; background: var(--loves-accent-soft); color: var(--loves-pink-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer; font-size: 18px; }
+.lovers-publish-add { aspect-ratio: 1; border-radius: 17px; background: var(--lover-accent-soft); color: var(--lover-pink-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer; font-size: 18px; }
 .lovers-publish-add small { font-size: 9px; font-weight: 750; }
 .lovers-publish-image { aspect-ratio: 1; border-radius: 17px; overflow: hidden; position: relative; background: #e5e5ea; }
 .lovers-publish-image img { width: 100%; height: 100%; object-fit: cover; }
 .lovers-publish-image button { width: 28px; height: 28px; padding: 0; border-radius: 10px; position: absolute; top: 5px; right: 5px; background: rgba(28,28,30,.72); color: #fff; cursor: pointer; font-size: 10px; }
 
-.lovers-diary-generator-summary { padding: 16px; border-radius: 19px; background: var(--loves-surface); box-shadow: inset 0 0 0 1px var(--loves-line); }
-.lovers-diary-generator-summary span { color: var(--loves-muted); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
-.lovers-diary-generator-summary strong { display: block; margin-top: 7px; color: var(--loves-ink); font-size: 18px; font-weight: 780; }
-.lovers-diary-generator-summary p { margin: 8px 0 0; color: var(--loves-muted); font-size: 12px; line-height: 1.55; }
+.lovers-diary-generator-summary { padding: 16px; border-radius: 19px; background: var(--lover-surface); box-shadow: inset 0 0 0 1px var(--lover-line); }
+.lovers-diary-generator-summary span { color: var(--lover-muted); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.lovers-diary-generator-summary strong { display: block; margin-top: 7px; color: var(--lover-ink); font-size: 18px; font-weight: 780; }
+.lovers-diary-generator-summary p { margin: 8px 0 0; color: var(--lover-muted); font-size: 12px; line-height: 1.55; }
 .lovers-diary-count-field { margin-top: 12px; }
 .lovers-diary-count-field input { text-align: left; }
-.lovers-diary-generator-hint { margin: 12px 2px 0; color: var(--loves-muted); font-size: 12px; line-height: 1.55; }
+.lovers-diary-generator-hint { margin: 12px 2px 0; color: var(--lover-muted); font-size: 12px; line-height: 1.55; }
 
 @media (min-width: 600px) {
-    .loves-content { padding-left: 0; padding-right: 0; }
+    .lover-content { padding-left: 0; padding-right: 0; }
     .lovers-space-hero { margin-top: 8px; }
     .lovers-compose-sheet,
     .lovers-savings-deposit-sheet { margin-bottom: 20px; border-radius: 28px; }
@@ -2203,7 +2203,7 @@
 }
 
 @media (max-width: 350px) {
-    .loves-content { padding-left: 12px; padding-right: 12px; }
+    .lover-content { padding-left: 12px; padding-right: 12px; }
     .lovers-space-hero { padding: 18px; }
     .lovers-space-avatar { width: 50px; height: 50px; border-radius: 17px; }
     .lovers-space-hero-copy h2 { font-size: 19px; }
@@ -2211,7 +2211,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .loves-view *,
+    .lover-view *,
     .lovers-space-view *,
     .lovers-savings-view *,
     #lovers-publish-view *,

@@ -155,15 +155,15 @@
     const DEFAULT_APP_ICONS = {
         'app-icon-1': APP_ICON_BASE + 'pay.jpg',
         'app-icon-2': APP_ICON_BASE + 'tiktok.jpg',
-        'app-icon-3': APP_ICON_BASE + 'x.jpg',
-        'app-icon-4': APP_ICON_BASE + 'youtube.jpg',
+        'app-icon-3': APP_ICON_BASE + 'bstage.jpg',
+        'app-icon-4': APP_ICON_BASE + 'x.jpg',
         'app-icon-5': APP_ICON_BASE + 'shop.jpg',
         'app-icon-6': APP_ICON_BASE + 'library.jpg',
         'app-icon-7': APP_ICON_BASE + 'netflix.jpg',
-        'app-icon-8': APP_ICON_BASE + 'bstage.jpg',
+        'app-icon-8': APP_ICON_BASE + 'lover.jpg',
         'dock-icon-settings': APP_ICON_BASE + 'settings.jpg',
         'dock-icon-imessage': APP_ICON_BASE + 'imessage.jpg',
-        'dock-icon-youtube': APP_ICON_BASE + 'lover.jpg'
+        'dock-icon-youtube': APP_ICON_BASE + 'youtube.jpg'
     };
 
     let themeState = {
@@ -172,15 +172,15 @@
         apps: [
             { id: 'app-icon-1', name: 'Pay', icon: DEFAULT_APP_ICONS['app-icon-1'] },
             { id: 'app-icon-2', name: 'TikTok', icon: DEFAULT_APP_ICONS['app-icon-2'] },
-            { id: 'app-icon-3', name: 'X', icon: DEFAULT_APP_ICONS['app-icon-3'] },
-            { id: 'app-icon-4', name: 'YouTube', icon: DEFAULT_APP_ICONS['app-icon-4'] },
+            { id: 'app-icon-3', name: 'b.stage', icon: DEFAULT_APP_ICONS['app-icon-3'] },
+            { id: 'app-icon-4', name: 'X', icon: DEFAULT_APP_ICONS['app-icon-4'] },
             { id: 'app-icon-5', name: 'Shop', icon: DEFAULT_APP_ICONS['app-icon-5'] },
             { id: 'app-icon-6', name: 'Library', icon: DEFAULT_APP_ICONS['app-icon-6'] },
             { id: 'app-icon-7', name: 'Netflix', icon: DEFAULT_APP_ICONS['app-icon-7'] },
-            { id: 'app-icon-8', name: 'b.stage', icon: DEFAULT_APP_ICONS['app-icon-8'] },
+            { id: 'app-icon-8', name: 'Lover', icon: DEFAULT_APP_ICONS['app-icon-8'] },
             { id: 'dock-icon-settings', name: '设置', icon: DEFAULT_APP_ICONS['dock-icon-settings'] },
             { id: 'dock-icon-imessage', name: '信息', icon: DEFAULT_APP_ICONS['dock-icon-imessage'] },
-            { id: 'dock-icon-youtube', name: 'Lover', icon: DEFAULT_APP_ICONS['dock-icon-lover'] }
+            { id: 'dock-icon-youtube', name: 'YouTube', icon: DEFAULT_APP_ICONS['dock-icon-youtube'] }
         ],
         fontMode: 'preset', // 'preset' or 'saved'
         fontPresetKey: 'system-default',
@@ -277,7 +277,7 @@
                             if (savedApp.icon) existingApp.icon = savedApp.icon; // 空值不覆盖默认图
                             if (savedApp.id === 'app-icon-6') {
                                 existingApp.name = 'Library';
-                            } else if (savedApp.id === 'app-icon-8' && ['Diary', 'Loves'].includes(savedApp.name)) {
+                            } else if (savedApp.id === 'app-icon-8' && ['Diary', 'Lover', ['Love', 's'].join('')].includes(savedApp.name)) {
                                 existingApp.name = 'Lover';
                             } else {
                                 existingApp.name = savedApp.name || existingApp.name;
@@ -2605,10 +2605,10 @@
 .chat-link-card-footer { margin-top: 8px; padding-top: 7px; display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid #f2f2f7; color: #8e8e93; font-size: 9px; }
 .chat-link-card-footer span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
-/* HTML / Loves 自定义卡片 */
+/* HTML / Lover 自定义卡片 */
 .html-bubble.im-card-bubble { position: relative; max-width: min(72%, 260px) !important; padding: 0; background: transparent; }
 .html-bubble.im-card-bubble > * { max-width: 100% !important; box-sizing: border-box !important; }
-.html-bubble.im-card-bubble .loves-invite-bubble { width: min(62vw, 220px) !important; max-width: 100% !important; box-sizing: border-box !important; }
+.html-bubble.im-card-bubble .lover-invite-bubble { width: min(62vw, 220px) !important; max-width: 100% !important; box-sizing: border-box !important; }
 
 /* 通话记录与线下见面记录 */
 .voice-call-record-bubble { min-width: 176px !important; padding: 0; background: transparent; }

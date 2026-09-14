@@ -63,7 +63,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="stylesheet" href="css/loves.css?v=20260719-friend-phone-bilingual-v8&no-glass=20260803-v1&moment-language=20260806-v1">
+    <link rel="stylesheet" href="css/lover.css?v=20260719-friend-phone-bilingual-v8&no-glass=20260803-v1&moment-language=20260806-v1">
     <link rel="stylesheet" href="css/library.css?v=20260715-reader-streaming-v1">
     <!-- App Styles -->
     <link rel="stylesheet" href="css/settings.css?v=20260721-mobile-input-layout-v1&performance=20260801-v2&api-model-picker=20260803-v1&api-open-performance=20260805-v1&about-modal-focus=20260807-v1&data-management-fullscreen=20260812-v2&notification-sound-v1">
@@ -449,11 +449,11 @@
                     </div>
                     <span class="app-name">信息</span>
                 </div>
-                <div class="app-item loves-app" id="app-loves-btn" style="cursor: pointer;" onclick="if(window.lovesApp && typeof window.lovesApp.open === 'function') window.lovesApp.open(); else { const v = document.getElementById('loves-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
-                    <div class="app-icon icon-placeholder" id="app-icon-8" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 28px;" onclick="event.stopPropagation(); if(window.lovesApp && typeof window.lovesApp.open === 'function') window.lovesApp.open(); else { const v = document.getElementById('loves-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
+                <div class="app-item lover-app" id="app-lover-btn" style="cursor: pointer;" onclick="if(window.loverApp && typeof window.loverApp.open === 'function') window.loverApp.open(); else { const v = document.getElementById('lover-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
+                    <div class="app-icon icon-placeholder" id="app-icon-8" style="background: #ffffff; color: #1c1c1e; border: 1px solid #e5e5ea; display: flex; justify-content: center; align-items: center; font-size: 28px;" onclick="event.stopPropagation(); if(window.loverApp && typeof window.loverApp.open === 'function') window.loverApp.open(); else { const v = document.getElementById('lover-view'); if(v) { v.style.display='flex'; v.classList.add('active'); } }">
                         <i class="fas fa-heart"></i>
                     </div>
-                    <span class="app-name" data-u2-i18n="home.app.loves">Lover</span>
+                    <span class="app-name" data-u2-i18n="home.app.lover">Lover</span>
                 </div>
             </div>
         </div>
@@ -7228,30 +7228,30 @@
             <div class="app-view netflix-view" id="netflix-view" style="display: none; flex-direction: column; position: absolute; inset: 0; z-index: 1000;"></div>
 
             <!-- ========================================== -->
-            <!-- LOVES APP VIEW -->
+            <!-- LOVER APP VIEW -->
             <!-- ========================================== -->
-            <div class="app-view loves-view" id="loves-view" role="application" aria-label="恋人空间">
-                <header class="loves-header">
-                    <button type="button" class="loves-back-btn" id="loves-back-btn" aria-label="返回主屏幕">
+            <div class="app-view lover-view" id="lover-view" role="application" aria-label="恋人空间">
+                <header class="lover-header">
+                    <button type="button" class="lover-back-btn" id="lover-back-btn" aria-label="返回主屏幕">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="loves-heading">
+                    <div class="lover-heading">
                         <span>LOVER</span>
                         <h1>ONLYYOU</h1>
                     </div>
-                    <div class="loves-header-mark" aria-hidden="true">SHARED LIFE</div>
+                    <div class="lover-header-mark" aria-hidden="true">SHARED LIFE</div>
                 </header>
-                <div class="loves-content">
-                    <div class="loves-intro">
+                <div class="lover-content">
+                    <div class="lover-intro">
                         <span>TOGETHER</span>
                         <h2>Dedicated to Your Romance</h2>
                         <p>I could see the East River from here, but my mind was nowhere near California anymore.</p>
                     </div>
-                    <div class="loves-list-heading">
+                    <div class="lover-list-heading">
                         <h3>RELYON</h3>
                         <span>RELATIONSHIPS</span>
                     </div>
-                    <div class="loves-board" id="loves-board" aria-live="polite">
+                    <div class="lover-board" id="lover-board" aria-live="polite">
                         <!-- Friends notes will be injected here -->
                     </div>
                 </div>
@@ -7261,7 +7261,7 @@
             <!-- LOVERS SPACE VIEW (全屏界面) -->
             <!-- ========================================== -->
             <div class="app-view lovers-space-view" id="lovers-space-view">
-                <!-- 悬浮返回按钮，高度与 Loves 顶栏一致 -->
+                <!-- 悬浮返回按钮，高度与 Lover 顶栏一致 -->
                 <header class="lovers-space-header">
                     <button type="button" id="lovers-space-back-btn" class="lovers-space-icon-btn" aria-label="返回恋人空间">
                         <i class="fas fa-chevron-left"></i>
@@ -7380,7 +7380,7 @@
                 </div>
 
                 <!-- 悬浮发帖加号按钮 -->
-                <button type="button" id="lovers-space-fab" onclick="window.lovesApp && window.lovesApp.openPublishView()" aria-label="添加内容">
+                <button type="button" id="lovers-space-fab" onclick="window.loverApp && window.loverApp.openPublishView()" aria-label="添加内容">
                     <i class="fas fa-plus"></i>
                 </button>
 
@@ -8248,7 +8248,7 @@
                 </div>
 
                 <div style="flex: 1; overflow-y: auto; background: #fff;" id="friend-music-content">
-                    <!-- 内容由 loves.js 动态渲染 -->
+                    <!-- 内容由 lover.js 动态渲染 -->
                 </div>
             </div>
 
@@ -8406,7 +8406,7 @@
     <script src="js/ui_translation.js?v=20260807-global-ui-zh-v2-lover-name"></script>
 <script src="js/settings.js?v=20260718-ios-pwa-export-v1-notification-sync-v1-custom-notification-sound-v1-api-presets-accessor-v1&global-font-scale=20260801-v3&theme-source=20260802-status-center-v1&assistive=20260801-drag-settle-v3&home-theme=20260731-widgets-v1&app-icon-alpha=20260731-v1&backup=20260814-v9-json-rollback-v1&api=20260803-config-v2-model-search&provider-picker=20260807-v1&image-generation=20260807-model-select-v1&image-understanding=20260811-v1&startup-queue=20260804-v1&api-open-performance=20260805-v1&vector-memory=20260807-local-v1&group-identity-css-v1&theme-import-android-v1&moments-account-hydration=20260806-v1&global-ui-zh-v1&tts=20260811-v1&data-management-fullscreen=20260812-v1&imessage-theme-surfaces=20260814-v1&image-compression=20260815-v1&lover-name=20260914-v1"></script>
     <script src="js/library.js?v=20260715-reader-streaming-v1&open-performance=20260801-v1&vendor-lazy=20260803-v1&startup-queue=20260804-v1"></script>
-    <script src="js/loves.js?v=20260719-friend-phone-bilingual-v13-android-focus-scope-v1&open-performance=20260801-v1&api=20260803-unified-v1&image-assets=20260803-v1&startup-queue=20260804-v1&moment-language=20260806-v1&android-comment-focus=20260807-v1"></script>
+    <script src="js/lover.js?v=20260719-friend-phone-bilingual-v13-android-focus-scope-v1&open-performance=20260801-v1&api=20260803-unified-v1&image-assets=20260803-v1&startup-queue=20260804-v1&moment-language=20260806-v1&android-comment-focus=20260807-v1"></script>
     <script src="js/tiktok/2_core.js?v=20260712-tiktok-feed-cleanup-v1&open-performance=20260801-v1&startup-queue=20260804-v1"></script>
     <script src="js/tiktok/3_home.js?v=20260712-tiktok-feed-cleanup-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/tiktok/4_chat.js?v=20260712-tiktok-polish-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>

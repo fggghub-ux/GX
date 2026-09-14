@@ -765,6 +765,19 @@ window.imApp.normalizeFavoriteUserMessages = function(items) {
 
 window.imApp.normalizeFriendData = function(friend) {
     const normalized = { ...friend };
+    const legacyToken = ['love', 's'].join('');
+    const legacyTitleToken = legacyToken.charAt(0).toUpperCase() + legacyToken.slice(1);
+    [
+        [legacyToken + 'Data', 'loverData'],
+        ['has' + legacyTitleToken + 'Space', 'hasLoverSpace'],
+        ['pending' + legacyTitleToken + 'Invite', 'pendingLoverInvite'],
+        [legacyToken + 'SpaceStartTime', 'loverSpaceStartTime']
+    ].forEach(([legacyKey, currentKey]) => {
+        if (normalized[currentKey] === undefined && normalized[legacyKey] !== undefined) {
+            normalized[currentKey] = normalized[legacyKey];
+        }
+        delete normalized[legacyKey];
+    });
     normalized.id = normalized.id != null ? normalized.id : Date.now();
     normalized.type = normalized.type || 'char';
     const isGroupChat = normalized.type === 'group';

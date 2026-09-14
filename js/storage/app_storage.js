@@ -3216,7 +3216,7 @@
             if (Array.isArray(themeState.apps)) {
                 themeState.apps = themeState.apps.map(app => {
                     if (!app || typeof app !== 'object') return app;
-                    if (app.id === 'app-icon-8' && ['Spotify', 'Diary', 'Loves'].includes(app.name)) {
+                    if (app.id === 'app-icon-8' && ['Spotify', 'Diary', 'Lover', ['Love', 's'].join('')].includes(app.name)) {
                         return { ...app, name: 'Lover' };
                     }
                     return app;

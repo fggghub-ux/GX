@@ -9,7 +9,7 @@
         'home.app.shop': '商店',
         'home.app.library': '图书馆',
         'home.app.netflix': '奈飞',
-        'home.app.loves': '恋爱',
+        'home.app.lover': '恋爱',
         'home.app.youtube': '油管',
         'home.search': '搜索',
         'home.widget.add': '添加小组件',
@@ -74,7 +74,7 @@
         'app-icon-5': { name: 'Shop', key: 'home.app.shop' },
         'app-icon-6': { name: 'Library', key: 'home.app.library' },
         'app-icon-7': { name: 'Netflix', key: 'home.app.netflix' },
-        'app-icon-8': { name: 'Lover', key: 'home.app.loves' },
+        'app-icon-8': { name: 'Lover', key: 'home.app.lover' },
         'dock-icon-youtube': { name: 'YouTube', key: 'home.app.youtube' }
     });
 
