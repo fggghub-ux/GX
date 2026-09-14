@@ -155,15 +155,15 @@
     const DEFAULT_APP_ICONS = {
         'app-icon-1': APP_ICON_BASE + 'pay.jpg',
         'app-icon-2': APP_ICON_BASE + 'tiktok.jpg',
-        'app-icon-3': APP_ICON_BASE + 'bstage.jpg',
-        'app-icon-4': APP_ICON_BASE + 'x.jpg',
+        'app-icon-3': APP_ICON_BASE + 'x.jpg',
+        'app-icon-4': APP_ICON_BASE + 'youtube.jpg',
         'app-icon-5': APP_ICON_BASE + 'shop.jpg',
         'app-icon-6': APP_ICON_BASE + 'library.jpg',
         'app-icon-7': APP_ICON_BASE + 'netflix.jpg',
-        'app-icon-8': APP_ICON_BASE + 'loves.jpg',
+        'app-icon-8': APP_ICON_BASE + 'bstage.jpg',
         'dock-icon-settings': APP_ICON_BASE + 'settings.jpg',
         'dock-icon-imessage': APP_ICON_BASE + 'imessage.jpg',
-        'dock-icon-youtube': APP_ICON_BASE + 'youtube.jpg'
+        'dock-icon-youtube': APP_ICON_BASE + 'lover.jpg'
     };
 
     let themeState = {
@@ -172,15 +172,15 @@
         apps: [
             { id: 'app-icon-1', name: 'Pay', icon: DEFAULT_APP_ICONS['app-icon-1'] },
             { id: 'app-icon-2', name: 'TikTok', icon: DEFAULT_APP_ICONS['app-icon-2'] },
-            { id: 'app-icon-3', name: 'b.stage', icon: DEFAULT_APP_ICONS['app-icon-3'] },
-            { id: 'app-icon-4', name: 'X', icon: DEFAULT_APP_ICONS['app-icon-4'] },
+            { id: 'app-icon-3', name: 'X', icon: DEFAULT_APP_ICONS['app-icon-3'] },
+            { id: 'app-icon-4', name: 'YouTube', icon: DEFAULT_APP_ICONS['app-icon-4'] },
             { id: 'app-icon-5', name: 'Shop', icon: DEFAULT_APP_ICONS['app-icon-5'] },
             { id: 'app-icon-6', name: 'Library', icon: DEFAULT_APP_ICONS['app-icon-6'] },
             { id: 'app-icon-7', name: 'Netflix', icon: DEFAULT_APP_ICONS['app-icon-7'] },
-            { id: 'app-icon-8', name: 'Lover', icon: DEFAULT_APP_ICONS['app-icon-8'] },
+            { id: 'app-icon-8', name: 'b.stage', icon: DEFAULT_APP_ICONS['app-icon-8'] },
             { id: 'dock-icon-settings', name: '设置', icon: DEFAULT_APP_ICONS['dock-icon-settings'] },
             { id: 'dock-icon-imessage', name: '信息', icon: DEFAULT_APP_ICONS['dock-icon-imessage'] },
-            { id: 'dock-icon-youtube', name: 'YouTube', icon: DEFAULT_APP_ICONS['dock-icon-youtube'] }
+            { id: 'dock-icon-youtube', name: 'Lover', icon: DEFAULT_APP_ICONS['dock-icon-lover'] }
         ],
         fontMode: 'preset', // 'preset' or 'saved'
         fontPresetKey: 'system-default',
