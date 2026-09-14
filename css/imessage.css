@@ -956,7 +956,7 @@ button.group-private-chat-detail-bubble {
 #imessage-view[data-im-active-surface="home"] > .line-header::before {
     content: "Instagram";
     position: absolute;
-    top: 8px;
+    top: 29px;
     left: 38px;
     z-index: 5;
     font-family: "Brush Script MT", "Segoe Script", cursive;
@@ -982,7 +982,7 @@ button.group-private-chat-detail-bubble {
     gap: 20px;
     font-size: 20px;
     color: #000;
-    transform: translate(-18px, -9px);
+    transform: translate(-11px, 11px);
 }
 #imessage-view[data-im-active-surface="home"] > .line-content {
     padding-top: 50px;
@@ -1001,7 +1001,7 @@ button.group-private-chat-detail-bubble {
 }
 .line-profile-info {
     position: relative;
-    top: -1.5px;
+    top: -4.5px;
     grid-column: 2;
     grid-row: 1 / 3;
     min-width: 0;
@@ -1012,9 +1012,9 @@ button.group-private-chat-detail-bubble {
 .line-profile-name {
     margin: 0 0 2px;
     color: #000;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 750;
-    line-height: 29px;
+    line-height: 27px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1022,9 +1022,9 @@ button.group-private-chat-detail-bubble {
 .line-profile-sign {
     margin: 0;
     color: #8e8e93;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 17px;
+    line-height: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
