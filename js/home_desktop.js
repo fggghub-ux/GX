@@ -2,7 +2,8 @@
     const PAGE_EDGE_PX = 44;
     const GRID_CAPACITY = 24;
     const DOCK_CAPACITY = 4;
-    const DESKTOP_SCHEMA_VERSION = 3;
+    const DESKTOP_SCHEMA_VERSION = 4;
+    const CHATGPT_APP_ID = 'app-chatgpt-btn';
     const LEGACY_LOVER_APP_ID = ['app-love', 's-btn'].join('');
     const APP_LAYOUT_MIGRATION_V2 = new Map([
         ['app-bstage-btn', 'app-x-btn'],
@@ -293,6 +294,9 @@
         if (sourceSchemaVersion >= 1 && sourceSchemaVersion < 3) {
             migrateLoverAppIdV3(pages, dock);
         }
+        if (sourceSchemaVersion < 4) {
+            ensureChatgptAppPlacement(pages, dock);
+        }
 
         return {
             schemaVersion: DESKTOP_SCHEMA_VERSION,
@@ -327,6 +331,14 @@
             });
         });
         if (changed) desktopStateNeedsSave = true;
+    }
+
+    function ensureChatgptAppPlacement(pages, dock) {
+        const isPlaced = [...pages, dock].some(items => items.some(item => item.kind === 'app' && item.id === CHATGPT_APP_ID));
+        if (isPlaced) return;
+        while (pages.length < 3) pages.push([]);
+        pages[2].push({ kind: 'app', id: CHATGPT_APP_ID });
+        desktopStateNeedsSave = true;
     }
 
     function isValidItem(item) {

@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="css/tiktok.css?v=20260721-mobile-input-layout-v1">
     <link rel="stylesheet" href="css/shopping.css">
     <link rel="stylesheet" href="css/x.css?v=20260815-x-char-profile-generation-v1">
+    <link rel="stylesheet" href="css/chatgpt.css?v=20260915-chatgpt-app-v1">
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -420,11 +421,24 @@
                 </div>
             </div>
 
+            <!-- Page 3 (ChatGPT) -->
+            <div class="page-wrapper">
+                <div class="main-grid" id="main-grid-3">
+                    <div class="app-item chatgpt-app" id="app-chatgpt-btn" style="cursor: pointer;">
+                        <div class="app-icon chatgpt-home-icon">
+                            <img src="assets/app-icons/chatgpt.jpg" alt="" draggable="false">
+                        </div>
+                        <span class="app-name">ChatGPT</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Page Indicators (Dots) -->
         <div class="page-indicators" id="page-indicators">
             <div class="dot active"></div>
+            <div class="dot"></div>
             <div class="dot"></div>
         </div>
 
@@ -478,6 +492,80 @@
         
 
         
+        <!-- ChatGPT App -->
+        <section class="app-view chatgpt-view" id="chatgpt-view" aria-hidden="true">
+            <div class="cgpt-shell" id="cgpt-shell">
+                <aside class="cgpt-sidebar" id="cgpt-sidebar" aria-hidden="true">
+                    <header class="cgpt-sidebar-header">
+                        <div class="cgpt-sidebar-brand">ChatGPT</div>
+                        <button class="cgpt-sidebar-search" type="button" aria-label="Search" disabled>
+                            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                        </button>
+                    </header>
+
+                    <div class="cgpt-sidebar-scroll">
+                        <nav class="cgpt-sidebar-navigation" aria-label="ChatGPT navigation">
+                            <button type="button" disabled><i class="fas fa-book-open" aria-hidden="true"></i><span>Library</span></button>
+                            <button type="button" disabled><i class="far fa-folder" aria-hidden="true"></i><span>Projects</span></button>
+                            <button type="button" disabled><i class="fas fa-link" aria-hidden="true"></i><span>Plugins</span></button>
+                            <button type="button" disabled><i class="far fa-clock" aria-hidden="true"></i><span>Scheduled</span></button>
+                            <button type="button" disabled><i class="fas fa-shapes" aria-hidden="true"></i><span>Explore</span></button>
+                        </nav>
+
+                        <section class="cgpt-conversation-section" id="cgpt-pinned-section" hidden>
+                            <h2>Pinned</h2>
+                            <div class="cgpt-conversation-list" id="cgpt-pinned-list"></div>
+                        </section>
+                        <section class="cgpt-conversation-section" id="cgpt-recents-section" hidden>
+                            <h2>Recents</h2>
+                            <div class="cgpt-conversation-list" id="cgpt-recents-list"></div>
+                        </section>
+                    </div>
+
+                    <div class="cgpt-sidebar-bottom-blur" aria-hidden="true"></div>
+                    <footer class="cgpt-sidebar-footer">
+                        <button class="cgpt-sidebar-new-chat" id="cgpt-sidebar-new-chat" type="button">
+                            <i class="far fa-pen-to-square" aria-hidden="true"></i><span>Chat</span>
+                        </button>
+                        <button class="cgpt-sidebar-settings" type="button" aria-label="Settings">
+                            <i class="fas fa-gear" aria-hidden="true"></i>
+                        </button>
+                    </footer>
+                </aside>
+
+                <div class="cgpt-stage" id="cgpt-stage">
+                    <div class="cgpt-top-blur" aria-hidden="true"></div>
+                    <header class="cgpt-header">
+                        <button class="cgpt-glass-button cgpt-sidebar-toggle" id="cgpt-sidebar-toggle" type="button" aria-label="Open sidebar" aria-expanded="false">
+                            <span class="cgpt-sidebar-glyph" aria-hidden="true"><span></span><span></span></span>
+                        </button>
+                        <div class="cgpt-header-actions">
+                            <button id="cgpt-header-new-chat" type="button" aria-label="New Chat">
+                                <i class="far fa-pen-to-square" aria-hidden="true"></i>
+                            </button>
+                            <button id="cgpt-exit-button" type="button" aria-label="More">
+                                <i class="fas fa-ellipsis" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </header>
+
+                    <main class="cgpt-messages" id="cgpt-messages" aria-live="polite"></main>
+
+                    <div class="cgpt-bottom-blur" aria-hidden="true"></div>
+                    <form class="cgpt-composer" id="cgpt-composer">
+                        <button class="cgpt-composer-plus" type="button" aria-label="Add"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                        <textarea id="cgpt-input" rows="1" placeholder="Ask ChatGPT" aria-label="Ask ChatGPT"></textarea>
+                        <button class="cgpt-composer-send-only" id="cgpt-send-only" type="button" aria-label="Send message">
+                            <i class="fas fa-microphone" aria-hidden="true"></i>
+                        </button>
+                        <button class="cgpt-composer-api" id="cgpt-api-send" type="submit" aria-label="Send and ask ChatGPT">
+                            <span class="cgpt-waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <!-- Library App -->
         <div class="app-view library-app" id="library-view" aria-hidden="true">
             <header class="library-header">
@@ -8422,7 +8510,8 @@
     <script src="js/netflix.js?v=20260811-character-relations-v3&open-performance=20260801-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/shopping.js?v=20260710-storage-ready-v1&performance=20260801-v2&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/xapp.js?v=20260815-x-char-profile-generation-v3&worldbook=20260729-global-bound-char-v1&api=20260803-unified-v1&image-understanding=20260811-v1&startup-queue=20260804-v1&dm-imessage-context=20260811-v1&dm-role-context=20260811-v1"></script>
-    <script src="js/home_desktop.js?v=20260710-storage-ready-v1&theme-widgets=20260731-v1&image-assets=20260804-v1&eager-images=20260804-v1&splash-gate=20260804-v1&layout-schema=20260914-v2"></script>
+    <script src="js/chatgpt.js?v=20260915-chatgpt-app-v1"></script>
+    <script src="js/home_desktop.js?v=20260710-storage-ready-v1&theme-widgets=20260731-v1&image-assets=20260804-v1&eager-images=20260804-v1&splash-gate=20260804-v1&layout-schema=20260915-v4"></script>
     <script src="js/home_widget_panel_enhance.js"></script>
     <!-- 引入主逻辑脚本 -->
     <script src="script.js?v=20260725-modal-owner-v1&home-swipe=20260801-scrollend-v2&performance=20260801-v1&splash-notice-handshake=20260813-v1"></script>
