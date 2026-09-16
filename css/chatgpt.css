@@ -17,16 +17,29 @@
     position: absolute;
     inset: 0;
     z-index: 680;
-    display: none;
+    display: block;
     padding: 0;
     overflow: hidden;
     color: #0d0d0d;
     background: #f7f7f7;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        transform 320ms cubic-bezier(.25, .1, .25, 1),
+        opacity 230ms ease,
+        visibility 0s linear 320ms;
+    will-change: transform, opacity;
 }
 
 .app-view.chatgpt-view.active {
-    display: block;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
 }
 
 .cgpt-shell,
@@ -51,7 +64,9 @@
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, .025);
     border-radius: 30px;
-    background: rgba(255, 255, 255, .97);
+    background: rgba(250, 250, 250, .985);
+    -webkit-backdrop-filter: blur(22px) saturate(120%);
+    backdrop-filter: blur(22px) saturate(120%);
     box-shadow: 0 4px 28px rgba(0, 0, 0, .055);
     transform: translate3d(calc(-100% - 16px), 0, 0);
     transition: transform 390ms cubic-bezier(.22, 1, .36, 1);
@@ -146,6 +161,19 @@
     font-weight: 400;
 }
 
+.cgpt-sidebar-navigation img {
+    width: 25px;
+    height: 25px;
+    display: block;
+    object-fit: contain;
+}
+
+.cgpt-sidebar-navigation button:nth-child(3) img,
+.cgpt-sidebar-navigation button:nth-child(4) img {
+    width: 24px;
+    height: 24px;
+}
+
 .cgpt-sidebar-navigation span {
     font-size: 17px;
     line-height: 1.25;
@@ -179,17 +207,18 @@
     border-radius: 11px;
     padding: 10px 11px 10px 0;
     overflow: hidden;
-    color: #151515;
+    color: #5e5e62;
     background: transparent;
     text-align: left;
-    font: 400 16px/23px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    font: 380 16px/23px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     letter-spacing: -.2px;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
 .cgpt-conversation-item.is-active {
-    font-weight: 480;
+    color: #404044;
+    font-weight: 420;
 }
 
 .cgpt-conversation-item:active {
@@ -202,11 +231,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 104px;
+    height: 126px;
     pointer-events: none;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.88) 35%, #fff 70%);
-    -webkit-backdrop-filter: blur(11px) saturate(150%);
-    backdrop-filter: blur(11px) saturate(150%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.92) 38%, #fff 76%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    backdrop-filter: blur(12px) saturate(150%);
     -webkit-mask-image: linear-gradient(to bottom, transparent, #000 32%, #000);
     mask-image: linear-gradient(to bottom, transparent, #000 32%, #000);
 }
@@ -216,31 +245,38 @@
     z-index: 5;
     left: 28px;
     right: 24px;
-    bottom: 18px;
-    height: 52px;
+    bottom: max(30px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .cgpt-sidebar-new-chat {
+    width: 116px;
     height: 50px;
-    min-width: 143px;
     border: 0;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 0 24px;
-    background: #151515;
-    color: #fff;
-    font: 570 17px/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    padding: 0;
+    background: transparent;
 }
 
-.cgpt-sidebar-new-chat i {
-    font-size: 20px;
-    font-weight: 400;
+.cgpt-sidebar-new-chat img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: fill;
+}
+
+.cgpt-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .cgpt-sidebar-settings {
@@ -259,13 +295,13 @@
     top: 0;
     left: 0;
     right: 0;
-    height: calc(max(0px, env(safe-area-inset-top, 0px)) + 116px);
+    height: calc(max(0px, env(safe-area-inset-top, 0px)) + 112px);
     pointer-events: none;
-    background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,.76) 63%, rgba(255,255,255,0) 100%);
-    -webkit-backdrop-filter: blur(17px) saturate(165%);
-    backdrop-filter: blur(17px) saturate(165%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,.32) 0%, rgba(255,255,255,.2) 58%, rgba(255,255,255,.06) 80%, rgba(255,255,255,0) 100%);
+    -webkit-backdrop-filter: blur(25px) saturate(145%);
+    backdrop-filter: blur(25px) saturate(145%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.96) 54%, rgba(0,0,0,.54) 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.96) 54%, rgba(0,0,0,.54) 78%, transparent 100%);
 }
 
 .cgpt-header {
@@ -307,27 +343,15 @@
 }
 
 .cgpt-shell.is-sidebar-open .cgpt-sidebar-toggle {
-    transform: translate3d(calc(var(--cgpt-sidebar-width) - 2px), 0, 0);
+    transform: translate3d(calc(var(--cgpt-sidebar-width) - 12px), 0, 0);
 }
 
-.cgpt-sidebar-glyph {
-    width: 24px;
-    height: 19px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 7px;
-}
-
-.cgpt-sidebar-glyph span {
+.cgpt-sidebar-icon {
+    width: 25px;
+    height: 18px;
     display: block;
-    height: 2.4px;
-    border-radius: 2px;
-    background: currentColor;
+    object-fit: contain;
 }
-
-.cgpt-sidebar-glyph span:first-child { width: 24px; }
-.cgpt-sidebar-glyph span:last-child { width: 17px; }
 
 .cgpt-header-actions {
     height: 52px;
@@ -339,7 +363,8 @@
     transition: opacity 150ms ease;
 }
 
-.cgpt-shell.is-sidebar-open .cgpt-header-actions {
+.cgpt-shell.is-sidebar-open .cgpt-header-actions,
+.cgpt-shell.is-sidebar-closing .cgpt-header-actions {
     opacity: 0;
     pointer-events: none;
 }
@@ -359,6 +384,13 @@
     font-size: 20px;
 }
 
+.cgpt-new-chat-icon {
+    width: 25px;
+    height: 25px;
+    display: block;
+    object-fit: contain;
+}
+
 .cgpt-messages {
     position: absolute;
     z-index: 3;
@@ -367,7 +399,7 @@
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: calc(max(82px, env(safe-area-inset-top, 0px) + 76px)) 18px calc(max(112px, env(safe-area-inset-bottom, 0px) + 100px));
+    padding: calc(max(82px, env(safe-area-inset-top, 0px) + 76px)) 18px calc(max(132px, env(safe-area-inset-bottom, 0px) + 120px));
 }
 
 .cgpt-message-row {
@@ -450,9 +482,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: calc(max(24px, env(safe-area-inset-bottom, 0px)) + 92px);
+    height: calc(max(30px, env(safe-area-inset-bottom, 0px)) + 104px);
     pointer-events: none;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.72) 38%, rgba(255,255,255,.96) 78%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.9) 40%, #fff 82%);
     -webkit-backdrop-filter: blur(12px) saturate(155%);
     backdrop-filter: blur(12px) saturate(155%);
     -webkit-mask-image: linear-gradient(to bottom, transparent, #000 43%, #000);
@@ -462,17 +494,17 @@
 .cgpt-composer {
     position: absolute;
     z-index: 10;
-    left: 18px;
-    right: 18px;
-    bottom: calc(max(12px, env(safe-area-inset-bottom, 0px) + 8px));
-    min-height: 56px;
+    left: 32px;
+    right: 32px;
+    bottom: max(34px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+    min-height: 52px;
     display: grid;
-    grid-template-columns: 42px minmax(0, 1fr) 38px 46px;
+    grid-template-columns: 36px minmax(0, 1fr) 34px 42px;
     align-items: end;
     gap: 2px;
-    padding: 5px 5px 5px 6px;
+    padding: 4px 4px 4px 6px;
     border: 1px solid rgba(255,255,255,.78);
-    border-radius: 29px;
+    border-radius: 27px;
     background: rgba(248,248,248,.78);
     -webkit-backdrop-filter: blur(14px) saturate(165%);
     backdrop-filter: blur(14px) saturate(165%);
@@ -490,25 +522,24 @@
 
 .cgpt-composer-plus,
 .cgpt-composer-send-only {
-    width: 40px;
-    height: 44px;
-    font-size: 24px;
+    width: 36px;
+    height: 42px;
+    font-size: 23px;
 }
 
 .cgpt-composer-send-only {
-    width: 36px;
-    font-size: 20px;
+    width: 34px;
 }
 
 #cgpt-input {
     width: 100%;
-    height: 44px;
-    max-height: 132px;
+    height: 42px;
+    max-height: 126px;
     resize: none;
     overflow-y: auto;
     border: 0;
     outline: 0;
-    padding: 11px 5px 9px;
+    padding: 10px 3px 8px;
     color: #111;
     background: transparent;
     font: 400 16px/22px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
@@ -520,8 +551,8 @@
 }
 
 .cgpt-composer-api {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
     border-radius: 50% !important;
     align-self: end;
     background: #050505 !important;
@@ -532,37 +563,28 @@
     opacity: .58;
 }
 
-.cgpt-waveform {
-    height: 22px;
-    display: flex;
-    align-items: center;
-    gap: 3px;
+.cgpt-microphone-icon {
+    width: 19px;
+    height: 25px;
+    display: block;
+    object-fit: fill;
 }
 
-.cgpt-waveform i {
-    width: 2.4px;
-    border-radius: 2px;
-    background: currentColor;
+.cgpt-voice-icon {
+    width: 42px;
+    height: 42px;
+    display: block;
+    object-fit: contain;
 }
 
-.cgpt-waveform i:nth-child(1) { height: 9px; }
-.cgpt-waveform i:nth-child(2) { height: 17px; }
-.cgpt-waveform i:nth-child(3) { height: 22px; }
-.cgpt-waveform i:nth-child(4) { height: 15px; }
-.cgpt-waveform i:nth-child(5) { height: 8px; }
-
-.cgpt-composer-api.is-loading .cgpt-waveform i {
-    animation: cgpt-wave .65s ease-in-out infinite alternate;
+.cgpt-composer-api.is-loading .cgpt-voice-icon {
+    animation: cgpt-voice-pulse .7s ease-in-out infinite alternate;
 }
 
-.cgpt-composer-api.is-loading .cgpt-waveform i:nth-child(2) { animation-delay: -.22s; }
-.cgpt-composer-api.is-loading .cgpt-waveform i:nth-child(3) { animation-delay: -.42s; }
-.cgpt-composer-api.is-loading .cgpt-waveform i:nth-child(4) { animation-delay: -.15s; }
-
-@keyframes cgpt-wave { to { height: 7px; } }
+@keyframes cgpt-voice-pulse { to { transform: scale(.9); opacity: .74; } }
 
 @media (max-width: 430px) {
-    .cgpt-view { --cgpt-sidebar-width: 82vw; }
+    .chatgpt-view { --cgpt-sidebar-width: 82vw; }
     .cgpt-sidebar {
         left: 6px;
         top: max(6px, env(safe-area-inset-top, 0px));
@@ -573,6 +595,7 @@
     .cgpt-sidebar-header { padding-left: 24px; padding-right: 21px; }
     .cgpt-sidebar-scroll { padding-left: 24px; padding-right: 19px; }
     .cgpt-sidebar-footer { left: 24px; right: 19px; }
+    .cgpt-composer { left: 30px; right: 30px; }
 }
 
 @media (min-width: 700px) {
@@ -586,8 +609,8 @@
     }
     .cgpt-header { left: 24px; right: 24px; }
     .cgpt-composer {
-        left: max(28px, calc((100% - 760px) / 2));
-        right: max(28px, calc((100% - 760px) / 2));
+        left: max(34px, calc((100% - 720px) / 2));
+        right: max(34px, calc((100% - 720px) / 2));
     }
     .cgpt-messages {
         padding-left: max(30px, calc((100% - 780px) / 2));
@@ -599,9 +622,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .chatgpt-view,
     .cgpt-stage,
     .cgpt-sidebar,
     .cgpt-sidebar-toggle { transition-duration: 1ms; }
     .cgpt-typing i,
-    .cgpt-composer-api.is-loading .cgpt-waveform i { animation: none; }
+    .cgpt-composer-api.is-loading .cgpt-voice-icon { animation: none; }
 }

@@ -11,6 +11,8 @@
     let initialized = false;
     let isRequesting = false;
     let pendingController = null;
+    let sidebarCloseTimer = null;
+    let suppressExitUntil = 0;
 
     function clone(value) {
         if (typeof structuredClone === 'function') return structuredClone(value);
@@ -96,6 +98,20 @@
 
     function setSidebarOpen(open) {
         const next = !!open;
+        if (sidebarCloseTimer) {
+            clearTimeout(sidebarCloseTimer);
+            sidebarCloseTimer = null;
+        }
+        if (!next && elements.shell?.classList.contains('is-sidebar-open')) {
+            suppressExitUntil = Date.now() + 520;
+            elements.shell.classList.add('is-sidebar-closing');
+            sidebarCloseTimer = setTimeout(() => {
+                elements.shell?.classList.remove('is-sidebar-closing');
+                sidebarCloseTimer = null;
+            }, 430);
+        } else if (next) {
+            elements.shell?.classList.remove('is-sidebar-closing');
+        }
         elements.shell?.classList.toggle('is-sidebar-open', next);
         elements.sidebar?.setAttribute('aria-hidden', String(!next));
         elements.sidebarToggle?.setAttribute('aria-expanded', String(next));
@@ -237,43 +253,8 @@
         }
     }
 
-    function pinConversation(id) {
-        const conversation = state.conversations.find(item => item.id === id);
-        if (!conversation) return;
-        conversation.pinned = !conversation.pinned;
-        conversation.updatedAt = Date.now();
-        saveState();
-        renderSidebar();
-        window.showToast?.(conversation.pinned ? 'Pinned' : 'Unpinned');
-    }
-
-    function bindConversationPress(button, conversation) {
-        let timer = null;
-        let longPressed = false;
-        const clear = () => {
-            if (timer) clearTimeout(timer);
-            timer = null;
-        };
-        button.addEventListener('pointerdown', event => {
-            if (event.pointerType === 'mouse' && event.button !== 0) return;
-            longPressed = false;
-            timer = setTimeout(() => {
-                longPressed = true;
-                pinConversation(conversation.id);
-            }, 650);
-        });
-        ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => button.addEventListener(type, clear));
-        button.addEventListener('contextmenu', event => {
-            event.preventDefault();
-            clear();
-            pinConversation(conversation.id);
-        });
-        button.addEventListener('click', event => {
-            if (longPressed) {
-                event.preventDefault();
-                longPressed = false;
-                return;
-            }
+    function bindConversationSelection(button, conversation) {
+        button.addEventListener('click', () => {
             state.currentConversationId = conversation.id;
             saveState();
             renderAll();
@@ -291,8 +272,7 @@
             button.className = 'cgpt-conversation-item';
             button.classList.toggle('is-active', conversation.id === state.currentConversationId);
             button.textContent = conversation.title;
-            button.title = conversation.pinned ? 'Long press to unpin' : 'Long press to pin';
-            bindConversationPress(button, conversation);
+            bindConversationSelection(button, conversation);
             container.appendChild(button);
         });
     }
@@ -319,8 +299,8 @@
     function resizeInput() {
         const input = elements.input;
         if (!input) return;
-        input.style.height = '44px';
-        input.style.height = `${Math.min(132, Math.max(44, input.scrollHeight))}px`;
+        input.style.height = '42px';
+        input.style.height = `${Math.min(126, Math.max(42, input.scrollHeight))}px`;
     }
 
     function setRequestingUi(requesting) {
@@ -443,10 +423,19 @@
         state = loadState();
 
         document.getElementById('app-chatgpt-btn')?.addEventListener('click', openApp);
-        elements.sidebarToggle?.addEventListener('click', () => setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open')));
+        elements.sidebarToggle?.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
+        });
         document.getElementById('cgpt-header-new-chat')?.addEventListener('click', () => createNewDraft());
         document.getElementById('cgpt-sidebar-new-chat')?.addEventListener('click', () => createNewDraft());
-        document.getElementById('cgpt-exit-button')?.addEventListener('click', closeApp);
+        document.getElementById('cgpt-exit-button')?.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (Date.now() < suppressExitUntil) return;
+            closeApp();
+        });
         elements.sendOnly?.addEventListener('click', submitUserText);
         elements.composer?.addEventListener('submit', sendAndAsk);
         elements.input?.addEventListener('input', resizeInput);
