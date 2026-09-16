@@ -133,11 +133,6 @@
     function tkStableImageUrl(video = {}) {
         const existing = video.imageUrl || video.cover || video.bgImage;
         if (existing) return existing;
-        const defaultImage = {
-            vegartatelier: 'assets/tiktok/feed-default-1.jpg',
-            pilotluana: 'assets/tiktok/feed-default-2.jpg'
-        }[video.id];
-        if (defaultImage) return defaultImage;
         const seed = encodeURIComponent(video.imagePrompt || video.desc || video.authorName || video.id || 'tiktok-image');
         return `https://picsum.photos/seed/${seed}/900/1200`;
     }
