@@ -59,7 +59,7 @@
     <link rel="stylesheet" href="css/tiktok.css?v=20260721-mobile-input-layout-v1">
     <link rel="stylesheet" href="css/shopping.css">
     <link rel="stylesheet" href="css/x.css?v=20260815-x-char-profile-generation-v1">
-    <link rel="stylesheet" href="css/chatgpt.css?v=20260916-chatgpt-refine-v2">
+    <link rel="stylesheet" href="css/chatgpt.css?v=20260916-chatgpt-refine-v3">
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -505,11 +505,26 @@
 
                     <div class="cgpt-sidebar-scroll">
                         <nav class="cgpt-sidebar-navigation" aria-label="ChatGPT navigation">
-                            <button type="button" disabled><img src="assets/chatgpt/library.png" alt="" aria-hidden="true"><span>Library</span></button>
-                            <button type="button" disabled><img src="assets/chatgpt/projects.png" alt="" aria-hidden="true"><span>Projects</span></button>
-                            <button type="button" disabled><img src="assets/chatgpt/plugins.png" alt="" aria-hidden="true"><span>Plugins</span></button>
-                            <button type="button" disabled><img src="assets/chatgpt/scheduled.png" alt="" aria-hidden="true"><span>Scheduled</span></button>
-                            <button type="button" disabled><i class="fas fa-shapes" aria-hidden="true"></i><span>Explore</span></button>
+                            <button type="button" disabled>
+                                <svg class="cgpt-code-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="5" height="14" rx="2"></rect><rect x="9.5" y="5" width="5" height="14" rx="2"></rect><rect x="16" y="5" width="5" height="14" rx="2"></rect></svg>
+                                <span>Library</span>
+                            </button>
+                            <button type="button" disabled>
+                                <svg class="cgpt-code-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.2V6.8c0-1 .8-1.8 1.8-1.8h5l2 2h6.4c1 0 1.8.8 1.8 1.8v8.4c0 1-.8 1.8-1.8 1.8H5.3c-1 0-1.8-.8-1.8-1.8v-9Z"></path><path d="M3.5 9h17"></path></svg>
+                                <span>Projects</span>
+                            </button>
+                            <button type="button" disabled>
+                                <svg class="cgpt-code-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 14.8 6.8 16.6a3.4 3.4 0 0 1-4.8-4.8l3-3a3.4 3.4 0 0 1 4.8 0"></path><path d="m15.4 9.2 1.8-1.8a3.4 3.4 0 0 1 4.8 4.8l-3 3a3.4 3.4 0 0 1-4.8 0"></path><path d="m8.5 12 7 0"></path></svg>
+                                <span>Plugins</span>
+                            </button>
+                            <button type="button" disabled>
+                                <svg class="cgpt-code-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.2v5l-3 2"></path></svg>
+                                <span>Scheduled</span>
+                            </button>
+                            <button type="button" disabled>
+                                <svg class="cgpt-code-icon cgpt-explore-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.8"></rect><path d="m17.3 2.8 3.9 3.9-3.9 3.9-3.9-3.9 3.9-3.9Z"></path><circle cx="6.5" cy="17.5" r="3.5"></circle><rect x="14" y="14" width="7" height="7" rx="1.8"></rect></svg>
+                                <span>Explore</span>
+                            </button>
                         </nav>
 
                         <section class="cgpt-conversation-section" id="cgpt-pinned-section" hidden>
@@ -525,10 +540,11 @@
                     <div class="cgpt-sidebar-bottom-blur" aria-hidden="true"></div>
                     <footer class="cgpt-sidebar-footer">
                         <button class="cgpt-sidebar-new-chat" id="cgpt-sidebar-new-chat" type="button">
-                            <img src="assets/chatgpt/chat-pill.png" alt="" aria-hidden="true"><span class="cgpt-visually-hidden">Chat</span>
+                            <svg class="cgpt-chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 5H6.7A2.7 2.7 0 0 0 4 7.7v9.6A2.7 2.7 0 0 0 6.7 20h9.6a2.7 2.7 0 0 0 2.7-2.7v-7.1"></path><path d="m11.2 13.2.5-3 6.2-6.2a1.8 1.8 0 0 1 2.6 2.6l-6.2 6.2-3.1.4Z"></path></svg>
+                            <span>Chat</span>
                         </button>
                         <button class="cgpt-sidebar-settings" type="button" aria-label="Settings">
-                            <i class="fas fa-gear" aria-hidden="true"></i>
+                            <svg class="cgpt-settings-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 3.3h4.8l.7 2.1c.5.2 1 .5 1.4.8l2.2-.5 2.4 4.1-1.5 1.6v1.7l1.5 1.6-2.4 4.1-2.2-.5c-.4.3-.9.6-1.4.8l-.7 2.1H9.6l-.7-2.1c-.5-.2-1-.5-1.4-.8l-2.2.5-2.4-4.1 1.5-1.6v-1.7L2.9 9.8l2.4-4.1 2.2.5c.4-.3.9-.6 1.4-.8l.7-2.1Z"></path><circle cx="12" cy="12.2" r="3.1"></circle></svg>
                         </button>
                     </footer>
                 </aside>
@@ -537,11 +553,11 @@
                     <div class="cgpt-top-blur" aria-hidden="true"></div>
                     <header class="cgpt-header">
                         <button class="cgpt-glass-button cgpt-sidebar-toggle" id="cgpt-sidebar-toggle" type="button" aria-label="Open sidebar" aria-expanded="false">
-                            <img class="cgpt-sidebar-icon" src="assets/chatgpt/sidebar.png" alt="" aria-hidden="true">
+                            <span class="cgpt-sidebar-glyph" aria-hidden="true"><span></span><span></span></span>
                         </button>
                         <div class="cgpt-header-actions">
                             <button id="cgpt-header-new-chat" type="button" aria-label="New Chat">
-                                <img class="cgpt-new-chat-icon" src="assets/chatgpt/new-chat.png" alt="" aria-hidden="true">
+                                <svg class="cgpt-new-chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 5H6.7A2.7 2.7 0 0 0 4 7.7v9.6A2.7 2.7 0 0 0 6.7 20h9.6a2.7 2.7 0 0 0 2.7-2.7v-7.1"></path><path d="m11.2 13.2.5-3 6.2-6.2a1.8 1.8 0 0 1 2.6 2.6l-6.2 6.2-3.1.4Z"></path></svg>
                             </button>
                             <button id="cgpt-exit-button" type="button" aria-label="More">
                                 <i class="fas fa-ellipsis" aria-hidden="true"></i>
@@ -556,10 +572,10 @@
                         <button class="cgpt-composer-plus" type="button" aria-label="Add"><i class="fas fa-plus" aria-hidden="true"></i></button>
                         <textarea id="cgpt-input" rows="1" placeholder="Ask ChatGPT" aria-label="Ask ChatGPT"></textarea>
                         <button class="cgpt-composer-send-only" id="cgpt-send-only" type="button" aria-label="Send message">
-                            <img class="cgpt-microphone-icon" src="assets/chatgpt/microphone.png" alt="" aria-hidden="true">
+                            <svg class="cgpt-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.2" y="2.5" width="7.6" height="13" rx="3.8"></rect><path d="M5.8 11.8v.8a6.2 6.2 0 0 0 12.4 0v-.8M12 18.8v3"></path></svg>
                         </button>
                         <button class="cgpt-composer-api" id="cgpt-api-send" type="submit" aria-label="Send and ask ChatGPT">
-                            <img class="cgpt-voice-icon" src="assets/chatgpt/voice.png" alt="" aria-hidden="true">
+                            <span class="cgpt-waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                         </button>
                     </form>
                 </div>
@@ -8510,7 +8526,7 @@
     <script src="js/netflix.js?v=20260811-character-relations-v3&open-performance=20260801-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/shopping.js?v=20260710-storage-ready-v1&performance=20260801-v2&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/xapp.js?v=20260815-x-char-profile-generation-v3&worldbook=20260729-global-bound-char-v1&api=20260803-unified-v1&image-understanding=20260811-v1&startup-queue=20260804-v1&dm-imessage-context=20260811-v1&dm-role-context=20260811-v1"></script>
-    <script src="js/chatgpt.js?v=20260916-chatgpt-refine-v2"></script>
+    <script src="js/chatgpt.js?v=20260916-chatgpt-refine-v3"></script>
     <script src="js/home_desktop.js?v=20260710-storage-ready-v1&theme-widgets=20260731-v1&image-assets=20260804-v1&eager-images=20260804-v1&splash-gate=20260804-v1&layout-schema=20260915-v4"></script>
     <script src="js/home_widget_panel_enhance.js"></script>
     <!-- 引入主逻辑脚本 -->

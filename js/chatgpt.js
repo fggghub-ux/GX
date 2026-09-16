@@ -13,6 +13,7 @@
     let pendingController = null;
     let sidebarCloseTimer = null;
     let suppressExitUntil = 0;
+    let exitPointerArmed = false;
 
     function clone(value) {
         if (typeof structuredClone === 'function') return structuredClone(value);
@@ -103,12 +104,13 @@
             sidebarCloseTimer = null;
         }
         if (!next && elements.shell?.classList.contains('is-sidebar-open')) {
-            suppressExitUntil = Date.now() + 520;
+            suppressExitUntil = Date.now() + 900;
+            exitPointerArmed = false;
             elements.shell.classList.add('is-sidebar-closing');
             sidebarCloseTimer = setTimeout(() => {
                 elements.shell?.classList.remove('is-sidebar-closing');
                 sidebarCloseTimer = null;
-            }, 430);
+            }, 720);
         } else if (next) {
             elements.shell?.classList.remove('is-sidebar-closing');
         }
@@ -197,14 +199,20 @@
         return message;
     }
 
-    function createActionButton(iconClass, label) {
+    function actionIconMarkup(name) {
+        const icons = {
+            copy: '<svg class="cgpt-action-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="11" height="14" rx="2.5"></rect><rect x="4" y="7" width="11" height="14" rx="2.5"></rect></svg>',
+            read: '<svg class="cgpt-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h3.4l4.6 4V5L7.4 9H4Z"></path><path d="M15 8.2a5.4 5.4 0 0 1 0 7.6M17.8 5.5a9.2 9.2 0 0 1 0 13"></path></svg>',
+            share: '<svg class="cgpt-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"></path><path d="M5 12v7.2c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8V12"></path></svg>'
+        };
+        return icons[name] || '<i class="fas fa-ellipsis" aria-hidden="true"></i>';
+    }
+
+    function createActionButton(iconName, label) {
         const button = document.createElement('button');
         button.type = 'button';
         button.setAttribute('aria-label', label);
-        const icon = document.createElement('i');
-        icon.className = iconClass;
-        icon.setAttribute('aria-hidden', 'true');
-        button.appendChild(icon);
+        button.innerHTML = actionIconMarkup(iconName);
         return button;
     }
 
@@ -229,10 +237,10 @@
         const actions = document.createElement('div');
         actions.className = 'cgpt-assistant-actions';
         actions.append(
-            createActionButton('far fa-copy', 'Copy'),
-            createActionButton('fas fa-volume-high', 'Read Aloud'),
-            createActionButton('fas fa-arrow-up-from-bracket', 'Share'),
-            createActionButton('fas fa-ellipsis', 'More')
+            createActionButton('copy', 'Copy'),
+            createActionButton('read', 'Read Aloud'),
+            createActionButton('share', 'Share'),
+            createActionButton('more', 'More')
         );
         row.appendChild(actions);
         return row;
@@ -299,8 +307,8 @@
     function resizeInput() {
         const input = elements.input;
         if (!input) return;
-        input.style.height = '42px';
-        input.style.height = `${Math.min(126, Math.max(42, input.scrollHeight))}px`;
+        input.style.height = '40px';
+        input.style.height = `${Math.min(120, Math.max(40, input.scrollHeight))}px`;
     }
 
     function setRequestingUi(requesting) {
@@ -423,18 +431,44 @@
         state = loadState();
 
         document.getElementById('app-chatgpt-btn')?.addEventListener('click', openApp);
+        elements.sidebarToggle?.addEventListener('pointerdown', event => {
+            event.stopPropagation();
+            elements.sidebarToggle.setPointerCapture?.(event.pointerId);
+        });
+        elements.sidebarToggle?.addEventListener('pointerup', event => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
+        });
         elements.sidebarToggle?.addEventListener('click', event => {
             event.preventDefault();
-            event.stopPropagation();
-            setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
+            event.stopImmediatePropagation();
+            if (event.detail === 0) setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
         });
         document.getElementById('cgpt-header-new-chat')?.addEventListener('click', () => createNewDraft());
         document.getElementById('cgpt-sidebar-new-chat')?.addEventListener('click', () => createNewDraft());
-        document.getElementById('cgpt-exit-button')?.addEventListener('click', event => {
-            event.preventDefault();
+        const exitButton = document.getElementById('cgpt-exit-button');
+        exitButton?.addEventListener('pointerdown', event => {
             event.stopPropagation();
-            if (Date.now() < suppressExitUntil) return;
+            exitPointerArmed = Date.now() >= suppressExitUntil
+                && !elements.shell.classList.contains('is-sidebar-open')
+                && !elements.shell.classList.contains('is-sidebar-closing');
+        });
+        exitButton?.addEventListener('pointerup', event => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            if (!exitPointerArmed || Date.now() < suppressExitUntil) {
+                exitPointerArmed = false;
+                return;
+            }
+            exitPointerArmed = false;
             closeApp();
+        });
+        exitButton?.addEventListener('pointercancel', () => { exitPointerArmed = false; });
+        exitButton?.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            if (event.detail === 0 && Date.now() >= suppressExitUntil) closeApp();
         });
         elements.sendOnly?.addEventListener('click', submitUserText);
         elements.composer?.addEventListener('submit', sendAndAsk);
