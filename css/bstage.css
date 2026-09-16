@@ -1473,7 +1473,7 @@
     position: relative;
 }
 
-#bstage-shop-banner-edit > div[style*="background-color:#222"] {
+#bstage-shop-banner-edit > div:not(.bstage-shop-banner-text) {
     display: none;
 }
 
