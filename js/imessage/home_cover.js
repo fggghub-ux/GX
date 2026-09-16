@@ -17,7 +17,9 @@
 
     const storageKey = 'imessage_home_cover';
     const saved = window.appStorage?.loadLegacyKey(storageKey, null);
-    if (typeof saved === 'string' && saved.startsWith('data:image/')) image.src = saved;
+    image.src = typeof saved === 'string' && saved.startsWith('data:image/')
+        ? saved
+        : 'assets/imessage/home-cover-default.jpg';
     let toastTimer;
 
     function showStatus(text) {
