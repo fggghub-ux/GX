@@ -11,6 +11,7 @@
     let initialized = false;
     let isRequesting = false;
     let pendingController = null;
+    let suppressSidebarClickUntil = 0;
 
     function clone(value) {
         if (typeof structuredClone === 'function') return structuredClone(value);
@@ -411,9 +412,17 @@
         state = loadState();
 
         document.getElementById('app-chatgpt-btn')?.addEventListener('click', openApp);
+        elements.sidebarToggle?.addEventListener('pointerdown', event => {
+            if (event.pointerType === 'mouse') return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            suppressSidebarClickUntil = Date.now() + 700;
+            setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
+        });
         elements.sidebarToggle?.addEventListener('click', event => {
             event.preventDefault();
             event.stopImmediatePropagation();
+            if (Date.now() < suppressSidebarClickUntil) return;
             setSidebarOpen(!elements.shell.classList.contains('is-sidebar-open'));
         });
         document.getElementById('cgpt-header-new-chat')?.addEventListener('click', () => createNewDraft());

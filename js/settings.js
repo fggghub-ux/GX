@@ -3626,11 +3626,13 @@
                 return iconDiv.querySelector('i');
             };
         
-            if (app.icon) {
+            const iconSource = app.icon || (app.id === 'app-icon-8' ? DEFAULT_APP_ICONS['app-icon-8'] : '');
+
+            if (iconSource) {
                 iconDiv.innerHTML = '';
                 iconDiv.classList.add('has-custom-app-icon');
-                iconDiv.style.setProperty('background', `url(${app.icon}) center / cover no-repeat`, 'important');
-                iconDiv.style.setProperty('background-image', `url(${app.icon})`, 'important');
+                iconDiv.style.setProperty('background', `url(${iconSource}) center / cover no-repeat`, 'important');
+                iconDiv.style.setProperty('background-image', `url(${iconSource})`, 'important');
                 iconDiv.style.setProperty('background-size', 'cover', 'important');
                 iconDiv.style.setProperty('background-position', 'center', 'important');
                 iconDiv.style.setProperty('background-repeat', 'no-repeat', 'important');
