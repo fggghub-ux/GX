@@ -388,12 +388,23 @@
         startOrdersRefresh() {
             this.stopOrdersRefresh();
             if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
+
+            const now = Date.now();
+            const nextDelay = this.orders.reduce((nearest, order) => {
+                const elapsed = now - (order.timestamp || order.id);
+                return [8000, 16000].reduce(
+                    (delay, step) => elapsed < step ? Math.min(delay, step - elapsed) : delay,
+                    nearest
+                );
+            }, Infinity);
+            if (!Number.isFinite(nextDelay)) return;
+
             this.ordersRefreshTimer = window.setTimeout(() => {
                 this.ordersRefreshTimer = null;
                 if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
                 this.renderOrders();
                 this.startOrdersRefresh();
-            }, 1000);
+            }, Math.max(100, nextDelay + 50));
         }
 
         async handleGenerateProducts() {
@@ -1072,7 +1083,7 @@
                         date: new Date().toLocaleString(),
                         items: [...this.cart],
                         total: total,
-                        status: 'Payment request sent.',
+                        status: 'Payment request sent',
                         method: `pay for me (${friendName})`
                     });
                     this.saveOrders();
@@ -1081,7 +1092,7 @@
                     this.saveCart();
                     this.renderCart();
                     this.checkoutSheet?.classList.remove('active');
-                    window.showToast ? window.showToast('Payment request sent.') : alert('Payment request sent.');
+                    window.showToast ? window.showToast('Payment request sent') : alert('Payment request sent');
                 } else {
                     window.showToast ? window.showToast('无法发送代付请求') : alert('无法发送代付请求');
                 }
