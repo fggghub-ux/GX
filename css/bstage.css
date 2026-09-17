@@ -1473,9 +1473,6 @@
     position: relative;
 }
 
-#bstage-shop-banner-edit > div:not(.bstage-shop-banner-text) {
-    display: none;
-}
 
 .bstage-shop-banner img {
     width: 100%;
