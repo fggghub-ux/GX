@@ -635,27 +635,26 @@
 
                 product.style.cursor = 'pointer';
                 product.addEventListener('click', () => {
-                    let name, price, desc, iconHtml, mediaBg;
+                    let name, price, desc;
                     
-            let isFood = false;
-            if (product.classList.contains('shopping-food-card')) {
-                isFood = true;
+            const isFood = product.classList.contains('shopping-food-card');
+            const media = product.querySelector(isFood ? '.shopping-food-media' : '.shopping-product-media');
+            if (isFood) {
                 name = product.querySelector('strong')?.textContent || 'Food Item';
                 price = product.querySelector('.shopping-card-topline span')?.textContent || '$0';
                 desc = product.querySelector('p')?.textContent || '';
-                iconHtml = product.querySelector('.shopping-food-media')?.innerHTML || '';
-                mediaBg = product.querySelector('.shopping-food-media').style.background || window.getComputedStyle(product.querySelector('.shopping-food-media')).background;
             } else {
                 name = product.querySelector('strong')?.textContent || 'Product';
                 price = product.querySelector('span')?.textContent.split('·')[0].trim() || '$0';
                 // For generated mall items, desc is in the hidden span
                 const spans = product.querySelectorAll('span');
                 desc = (spans.length > 1) ? spans[1].textContent : '';
-                iconHtml = product.querySelector('.shopping-product-media')?.innerHTML || '';
-                mediaBg = product.querySelector('.shopping-product-media').style.background || window.getComputedStyle(product.querySelector('.shopping-product-media')).background;
             }
 
-                    this.openDetail({ name, price, desc, iconHtml, mediaBg }, isFood);
+                    const iconHtml = media?.innerHTML || '';
+                    const mediaBg = media ? (media.style.background || window.getComputedStyle(media).background) : '';
+                    const mediaImage = media ? window.getComputedStyle(media, '::after').backgroundImage : 'none';
+                    this.openDetail({ name, price, desc, iconHtml, mediaBg, mediaImage }, isFood);
                 });
             });
         }
@@ -1258,6 +1257,16 @@
             });
         }
 
+        setDetailMedia(element, product) {
+            const hasImage = product.mediaImage && product.mediaImage !== 'none';
+            element.innerHTML = hasImage ? '' : product.iconHtml;
+            element.style.background = product.mediaBg;
+            element.style.backgroundImage = hasImage ? product.mediaImage : '';
+            element.style.backgroundPosition = 'center';
+            element.style.backgroundSize = 'cover';
+            element.style.backgroundRepeat = 'no-repeat';
+        }
+
         openDetail(product, isFood = false) {
             product.isFood = isFood;
             this.currentProduct = product;
@@ -1271,8 +1280,7 @@
                 if (this.foodBottomPrice) this.foodBottomPrice.textContent = product.price;
                 if (this.foodDetailDesc) this.foodDetailDesc.textContent = product.desc;
                 if (this.foodDetailMedia) {
-                    this.foodDetailMedia.innerHTML = product.iconHtml;
-                    this.foodDetailMedia.style.background = product.mediaBg;
+                    this.setDetailMedia(this.foodDetailMedia, product);
                 }
                 if (this.foodDetailSheet) {
                     this.foodDetailSheet.classList.add('active');
@@ -1282,8 +1290,7 @@
                 if (this.detailPrice) this.detailPrice.textContent = product.price;
                 if (this.detailDesc) this.detailDesc.textContent = product.desc;
                 if (this.detailMedia) {
-                    this.detailMedia.innerHTML = product.iconHtml;
-                    this.detailMedia.style.background = product.mediaBg;
+                    this.setDetailMedia(this.detailMedia, product);
                 }
                 
                 // Update QA Trigger Preview
