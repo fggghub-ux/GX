@@ -224,11 +224,24 @@
 
 .shopping-food-media,
 .shopping-product-media {
+    position: relative;
+    overflow: hidden;
     border-radius: var(--shop-radius);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
+}
+
+.shopping-food-media::after,
+.shopping-product-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .shopping-food-media {
@@ -239,6 +252,9 @@
 .food-media-ash { background: linear-gradient(145deg, #334456, #B4B9BF); }
 .food-media-rose { background: linear-gradient(135deg, #0A1128 30%, #C41E5C 100%); }
 .food-media-noir { background: linear-gradient(145deg, #07060B, #1E1137); }
+.food-media-ash::after { background-image: url('../assets/shopping/food-coffee.jpg'); }
+.food-media-rose::after { background-image: url('../assets/shopping/food-per-se.jpg'); }
+.food-media-noir::after { background-image: url('../assets/shopping/food-mase.jpg'); }
 
 .shopping-food-copy {
     min-width: 0;
@@ -314,6 +330,10 @@
 .product-media-charcoal { background: linear-gradient(145deg, #A07300, #7B4715, #DCA524); }
 .product-media-stone { background: linear-gradient(145deg, #161616, #424242, #232232); }
 .product-media-moss { background: linear-gradient(145deg, #f1f0ed, #9d9082); }
+.product-media-ivory::after { background-image: url('../assets/shopping/mall-drc.jpg'); }
+.product-media-charcoal::after { background-image: url('../assets/shopping/mall-bylgarl.jpg'); }
+.product-media-stone::after { background-image: url('../assets/shopping/mall-hermes.jpg'); }
+.product-media-moss::after { background-image: url('../assets/shopping/mall-vca.jpg'); }
 
 .shopping-product-card strong,
 .shopping-product-card span {
