@@ -1183,11 +1183,14 @@
 
                     <div class="shopping-order-item-inline-wrap">
                         <div class="shopping-order-items-scroll inline-mode">
-                            ${order.items.map(item => `
-                                <div class="shopping-order-item-media" style="background: ${item.mediaBg};">
-                                    ${item.iconHtml}
-                                </div>
-                            `).join('')}
+                            ${order.items.map(item => {
+                                const mediaImage = this.getProductImage(item);
+                                return `
+                                    <div class="shopping-order-item-media" style="background: ${item.mediaBg}; ${mediaImage ? `background-image: ${mediaImage}; background-position: center; background-size: cover; background-repeat: no-repeat;` : ''}">
+                                        ${mediaImage ? '' : item.iconHtml}
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                         <div class="shopping-order-title inline-mode">${itemNames}</div>
                     </div>
@@ -1255,6 +1258,20 @@
 
                 this.ordersList.appendChild(el);
             });
+        }
+
+        getProductImage(product) {
+            const defaults = {
+                'Espresson': 'assets/shopping/food-coffee.jpg',
+                'Per Se Menu': 'assets/shopping/food-per-se.jpg',
+                'Mase Omakase': 'assets/shopping/food-mase.jpg',
+                'Romanée-Conti': 'assets/shopping/mall-drc.jpg',
+                'Serpenti Viper Bracelet': 'assets/shopping/mall-bylgarl.jpg',
+                'Hermes Birkin': 'assets/shopping/mall-hermes.jpg',
+                'Vintage Alhambra': 'assets/shopping/mall-vca.jpg'
+            };
+            if (product.mediaImage && product.mediaImage !== 'none') return product.mediaImage;
+            return defaults[product.name] ? `url("${defaults[product.name]}")` : '';
         }
 
         setDetailMedia(element, product) {
@@ -1641,6 +1658,7 @@
 
             this.cart.forEach((item, index) => {
                 subtotal += item.priceVal;
+                const mediaImage = this.getProductImage(item);
                 
                 const itemEl = document.createElement('div');
                 itemEl.style.display = 'flex';
@@ -1652,8 +1670,8 @@
                 itemEl.style.boxShadow = '0 2px 10px rgba(0,0,0,0.03)';
                 
                 itemEl.innerHTML = `
-                    <div style="width: 50px; height: 50px; border-radius: 10px; background: ${item.mediaBg}; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 20px;">
-                        ${item.iconHtml}
+                    <div style="width: 50px; height: 50px; border-radius: 10px; background: ${item.mediaBg}; ${mediaImage ? `background-image: ${mediaImage}; background-position: center; background-size: cover; background-repeat: no-repeat;` : ''} display: flex; justify-content: center; align-items: center; color: #fff; font-size: 20px;">
+                        ${mediaImage ? '' : item.iconHtml}
                     </div>
                     <div style="flex: 1;">
                         <div style="font-weight: 700; font-size: 15px;">${item.name}</div>
