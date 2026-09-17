@@ -255,6 +255,9 @@
 .food-media-ash::after { background-image: url('../assets/shopping/food-coffee.jpg'); }
 .food-media-rose::after { background-image: url('../assets/shopping/food-per-se.jpg'); }
 .food-media-noir::after { background-image: url('../assets/shopping/food-mase.jpg'); }
+.food-media-ash,
+.food-media-rose,
+.food-media-noir { border-radius: 0; }
 
 .shopping-food-copy {
     min-width: 0;
