@@ -667,11 +667,6 @@
     
 }
 
-.shopping-order-card:active {
-    transform: scale(0.98);
-    transition: transform 0.2s ease;
-}
-
 .shopping-order-header {
     display: flex;
     justify-content: space-between;
