@@ -1270,8 +1270,10 @@
                 'Hermes Birkin': 'assets/shopping/mall-hermes.jpg',
                 'Vintage Alhambra': 'assets/shopping/mall-vca.jpg'
             };
-            if (product.mediaImage && product.mediaImage !== 'none') return product.mediaImage;
-            return defaults[product.name] ? `url("${defaults[product.name]}")` : '';
+            if (product.mediaImage && product.mediaImage !== 'none') {
+                return product.mediaImage.replace(/"/g, "'");
+            }
+            return defaults[product.name] ? `url('${defaults[product.name]}')` : '';
         }
 
         setDetailMedia(element, product) {
