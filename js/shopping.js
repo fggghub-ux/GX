@@ -385,26 +385,58 @@
             this.ordersRefreshTimer = null;
         }
 
+        updateOrderProgress() {
+            if (!this.ordersList) return;
+            const now = Date.now();
+
+            this.ordersList.querySelectorAll('.shopping-order-card[data-order-id]').forEach(card => {
+                const order = this.orders.find(item => String(item.id) === card.dataset.orderId);
+                if (!order) return;
+
+                const elapsed = (now - (order.timestamp || order.id)) / 1000;
+                const progress = Math.min(100, Math.max(0, (elapsed / 16) * 100));
+                const isFood = order.items.some(item => item.isFood);
+                const active = [true, elapsed >= 8, elapsed >= 16];
+                const currentColor = isFood ? 'var(--shop-accent, #a97642)' : '#111111';
+                const finalColor = 'var(--shop-green, #476c5a)';
+                const glow = isFood ? 'shopPulseGlow' : 'shopPulseGlowGreen';
+
+                const fill = card.querySelector('.shopping-order-fill');
+                if (fill) {
+                    fill.style.width = `calc(68% * ${progress / 100})`;
+                    fill.style.background = active[2] ? finalColor : currentColor;
+                }
+
+                card.querySelectorAll('.shopping-order-node').forEach((node, index) => {
+                    const icon = node.querySelector('.shopping-order-icon-wrap');
+                    const text = node.querySelector('.shopping-order-node-text');
+                    const color = index === 2 ? finalColor : currentColor;
+                    if (icon) {
+                        icon.style.background = active[index] ? color : '#f2f2f7';
+                        icon.style.animation = (
+                            (index === 0 && active[0] && !active[1]) ||
+                            (index === 1 && active[1] && !active[2])
+                        ) ? `${glow} 2s infinite` : 'none';
+                        const glyph = icon.querySelector('i');
+                        if (glyph) glyph.style.color = active[index] ? '#fff' : '#c7c7cc';
+                    }
+                    if (text) {
+                        text.style.color = active[index] ? '#111' : '#8e8e93';
+                        text.style.fontWeight = active[index] ? '700' : '600';
+                    }
+                });
+            });
+        }
+
         startOrdersRefresh() {
             this.stopOrdersRefresh();
             if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
-
-            const now = Date.now();
-            const nextDelay = this.orders.reduce((nearest, order) => {
-                const elapsed = now - (order.timestamp || order.id);
-                return [8000, 16000].reduce(
-                    (delay, step) => elapsed < step ? Math.min(delay, step - elapsed) : delay,
-                    nearest
-                );
-            }, Infinity);
-            if (!Number.isFinite(nextDelay)) return;
-
             this.ordersRefreshTimer = window.setTimeout(() => {
                 this.ordersRefreshTimer = null;
                 if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
-                this.renderOrders();
+                this.updateOrderProgress();
                 this.startOrdersRefresh();
-            }, Math.max(100, nextDelay + 50));
+            }, 1000);
         }
 
         async handleGenerateProducts() {
@@ -1151,6 +1183,7 @@
                 // Add staggered animation delay
                 const delay = index * 0.1;
                 el.className = 'shopping-order-card';
+                el.dataset.orderId = String(order.id);
                 el.style.animationDelay = `${delay}s`;
                 // Remove inline styles that clash with css classes
                 el.style.cssText = `animation-delay: ${delay}s;`;
