@@ -47,7 +47,7 @@ class NetflixApp {
             category,
             summary,
             tags,
-            coverUrl,
+            coverUrl: new URL(coverUrl, document.baseURI).href,
             cast: []
         });
         const items = [
