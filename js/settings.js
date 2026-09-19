@@ -522,7 +522,7 @@
         if (aboutDeviceBtn && aboutDeviceSheet) {
             aboutDeviceBtn.addEventListener('click', () => {
                 const appNameEl = document.getElementById('about-device-app-name');
-                if (appNameEl) appNameEl.textContent = 'JW';
+                if (appNameEl) appNameEl.textContent = 'IHG';
                 openView(aboutDeviceSheet);
             });
         }
