@@ -4874,8 +4874,9 @@ System managed. Mounted world books, User persona, Char persona, and recent onli
                 name: '字数要求',
                 enabled: true,
                 content: `<length_requirement>
-字数要求：最少800字，最多1200字。
-正文必须分段输出。每段约100至150字，段落之间必须保留一个空行，不要把所有文字挤在同一个长段落里。
+字数要求：最少200字，最多400字。
+正文必须分段输出。段落之间必须保留一个空行，不要把所有文字挤在同一个长段落里。
+禁止一次性输出太多段。
 如果包含对白，仍要让叙述段落和对白自然分开，保持阅读呼吸感。
 </length_requirement>`,
                 editable: true,
@@ -4888,9 +4889,19 @@ System managed. Mounted world books, User persona, Char persona, and recent onli
                 presetVersion: 1,
                 content: `<bilingual_dialogue>
 All spoken dialogue in the response must use {{char}}'s default language configured in Chat Settings.
-When the default language is not Chinese, every spoken line must use this exact format without variation: 「default-language dialogue（Chinese translation）」. Example: 「잘자（晚安）」.
-The text before the full-width parentheses must contain only the default-language dialogue. The text inside the parentheses must contain only its Chinese translation.
-When the default language is Chinese, output only Chinese dialogue in corner quotes, for example: 「晚安」. Do not append a duplicate Chinese translation.
+When the default language is not Chinese, every spoken line must use this exact format without variation:
+"default-language dialogue."
+Chinese translation.
+
+The default-language dialogue must appear on the first line. Its Chinese translation must appear immediately on the next line, with exactly one line break between them and no blank line.
+
+Example:
+"Good night."
+晚安。
+
+The text inside the double quotation marks must contain only the default-language dialogue. The following line must contain only its Chinese translation. The Chinese translation should not use quotation marks; adding extra quotation marks is not allowed.
+
+When the default language is Chinese, output only Chinese dialogue in Chinese double quotation marks, for example: “晚安。” Do not append a duplicate Chinese translation.
 </bilingual_dialogue>`,
                 editable: true,
                 deletable: false
@@ -4912,6 +4923,12 @@ When the default language is Chinese, output only Chinese dialogue in corner quo
                 presetVersion: 4,
                 content: `<literary_guidance>
 Literary Writing Guidance
+
+0. Output Scope
+
+Write char only. The user has exclusive authorship over the user’s actions, dialogue, thoughts, feelings, perceptions, and reactions.
+
+Do not write for the user, enter the user’s perspective, describe what the user sees or experiences, infer the user’s internal state or needs, or frame char through the user’s gaze. Do not repeat, paraphrase, extend, or complete actions already written by the user.
 
 I. Fundamental Logic
 
@@ -5049,7 +5066,7 @@ Do not summarize information that User cannot perceive inside the current scene.
                 enabled: true,
                 presetVersion: 2,
                 content: `<perspective_rule type="third_person">
-必须使用以 {{user}} 为主导、为中心的第三人称限定视角。这是第三人称叙事，不得用“我”代替 {{user}}，也不得把正文写成对 {{user}} 使用“你”的第二人称叙事。
+必须使用以 {{char}} 为主导、为中心的第三人称限定视角。这是第三人称叙事，不得用“我”代替 {{user}}，也不得把正文写成对 {{user}} 使用“你”的第二人称叙事。
 叙事镜头优先贴近 {{user}} 当下能够看见、听见、触碰、回忆或合理推断的内容，并由 {{user}} 的动作、选择和注意力带动剧情。
 不得随意进入 {{char}} 的内心或使用全知总结；Char 的情绪、动机和隐私必须通过动作、对白、停顿、表情及场景线索呈现。
 群聊场景仍以 {{user}} 为视角锚点，同时观察成员之间的关系、反应与彼此影响，形成层次清楚的群像，而不是轮流点名发言。
