@@ -5241,7 +5241,7 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
                 name: 'cot-语言检查',
                 enabled: false,
                 presetVersion: 3,
-                content: `是否按照角色默认语言书写台词；非中文台词是否紧跟准确的中文翻译，并使用规定的直角引号和全角括号。`,
+                content: `是否按照角色默认语言书写台词；非中文台词是否紧跟准确的中文翻译，并使用规定的双引号。`,
                 editable: true,
                 deletable: false
             },
