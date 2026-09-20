@@ -767,7 +767,20 @@ JSON example:
             wtChatContainer.innerHTML = '<div style="text-align: center; color: rgba(0,0,0,0.5); font-size: 10px; margin-top: 5px;">Tap the avatar to interact</div>';
         }
 
-        if (wtUserAvatar) wtUserAvatar.src = tkState.profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User';
+        if (wtUserAvatar) {
+            const userAvatar = window.tkResolveAvatar
+                ? window.tkResolveAvatar(
+                    'profile',
+                    tkState.profile.name || tkState.profile.handle || 'User',
+                    tkState.profile.avatar || window.userState?.avatarUrl || window.userState?.avatar || ''
+                )
+                : (tkState.profile.avatar || window.userState?.avatarUrl || window.userState?.avatar || '');
+            wtUserAvatar.src = userAvatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User';
+            wtUserAvatar.onerror = () => {
+                wtUserAvatar.onerror = null;
+                wtUserAvatar.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=User';
+            };
+        }
         if (wtCharAvatar) wtCharAvatar.src = tkDmResolveAvatar(char) || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Char';
 
         wtBubble.dataset.charId = charId;
@@ -845,8 +858,8 @@ JSON example:
         row.style.justifyContent = sender === 'user' ? 'flex-end' : 'flex-start';
         
         const msgDiv = document.createElement('div');
-        msgDiv.style.background = sender === 'user' ? '#333333' : '#e5e5ea'; // char的背景改为浅灰色
-        msgDiv.style.color = sender === 'user' ? '#ffffff' : '#111111';
+        msgDiv.style.background = sender === 'user' ? '#A0A0A0' : '#E9E9EA';
+        msgDiv.style.color = sender === 'user' ? '#FFFFFF' : '#000000';
         msgDiv.style.padding = '6px 10px';
         msgDiv.style.borderRadius = '16px';
         msgDiv.style.fontSize = '12px';
@@ -910,12 +923,12 @@ JSON example:
                     bubble.style.wordBreak = 'break-word';
                     
                     if (isSelf) {
-                        bubble.style.background = '#111111'; // 用户黑色气泡
-                        bubble.style.color = '#ffffff';
+                        bubble.style.background = '#A0A0A0';
+                        bubble.style.color = '#FFFFFF';
                         bubble.style.borderRadius = '16px';
                     } else {
-                        bubble.style.background = '#e5e5ea'; // 角色浅灰色气泡
-                        bubble.style.color = '#111111';
+                        bubble.style.background = '#E9E9EA';
+                        bubble.style.color = '#000000';
                         bubble.style.borderRadius = '16px';
                     }
                     

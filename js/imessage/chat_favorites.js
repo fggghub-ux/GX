@@ -163,7 +163,9 @@
             const value = Number(timestamp);
             if (!Number.isFinite(value) || value <= 0) return '';
             if (global.imApp?.formatTime) return global.imApp.formatTime(value);
-            return new Date(value).toLocaleString();
+            return window.imDataUtils?.formatUsDateTime
+                ? window.imDataUtils.formatUsDateTime(value)
+                : new Date(value).toLocaleString('en-US', { hour12: true });
         }
 
         function renderFavorites() {

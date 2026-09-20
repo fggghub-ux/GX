@@ -1000,8 +1000,18 @@ button.group-private-chat-detail-bubble {
     left: -3px;
 }
 @media (min-width: 768px) {
+    #imessage-view[data-im-active-surface="home"] > .line-header {
+        height: 84px;
+        min-height: 84px;
+        overflow: visible;
+    }
+
     #imessage-view[data-im-active-surface="home"] > .line-header::before {
         top: 49px;
+        display: block;
+        height: 36px;
+        line-height: 36px;
+        white-space: nowrap;
     }
 
     #imessage-view[data-im-active-surface="home"] > .line-header::after {
@@ -4955,7 +4965,7 @@ button.group-private-chat-detail-bubble {
     border: none;
     color: #111;
     padding: 6px 0;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 22px;
     resize: none;
     outline: none;
@@ -5487,7 +5497,8 @@ button.group-private-chat-detail-bubble {
     border: none;
     background: transparent;
     outline: none;
-    font-size: 15px;
+    /* Prevent iOS Safari from zooming the viewport when the field receives focus. */
+    font-size: 16px;
     padding: 8px 0;
     min-width: 0;
 }

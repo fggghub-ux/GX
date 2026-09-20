@@ -1076,8 +1076,9 @@ window.imApp.applyGeneratedShortTermMemory = function(friend, entry, options = {
     if (!Array.isArray(friend.memory.shortTermEntries)) friend.memory.shortTermEntries = [];
 
     const now = options.now instanceof Date ? options.now : new Date(options.now || Date.now());
-    const pad = value => String(value).padStart(2, '0');
-    const nowString = options.nowString || `${now.getFullYear()}年${pad(now.getMonth() + 1)}月${pad(now.getDate())}日 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const nowString = options.nowString || (window.imDataUtils?.formatUsDateTime
+        ? window.imDataUtils.formatUsDateTime(now)
+        : now.toLocaleString('en-US', { hour12: true }));
     const activatedIds = new Set((Array.isArray(options.activatedEntryIds) ? options.activatedEntryIds : [])
         .map(String)
         .filter(Boolean));
@@ -1685,8 +1686,9 @@ window.imApp.buildLinkedAccountMemoryContext = function(friend, options = {}) {
         const value = Number(timestamp) || 0;
         if (!value) return '未知时间';
         const date = new Date(value);
-        const pad = number => String(number).padStart(2, '0');
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     };
     const lines = [
         'Linked Friend Memory / 关联好友记忆:',
@@ -1786,8 +1788,9 @@ window.imApp.buildXDirectMessageMemoryContext = function(friend, options = {}) {
         const timestamp = Number(value) || 0;
         if (!timestamp) return 'Unknown time';
         const date = new Date(timestamp);
-        const pad = number => String(number).padStart(2, '0');
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     };
     const formatMessage = (message) => {
         if (!message || typeof message !== 'object') return '';
@@ -4237,18 +4240,24 @@ window.addImFriend = async function(friendData) {
 window.imApp.formatTime = function(timestamp) {
     if (!timestamp) return '';
     const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return '';
     const now = new Date();
     const isToday = date.toDateString() === now.toDateString();
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
     const isYesterday = date.toDateString() === yesterday.toDateString();
+    const timeText = window.imDataUtils?.formatUsTime
+        ? window.imDataUtils.formatUsTime(date)
+        : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-      if (isToday) return `${hours}:${minutes}`;
-      if (isYesterday) return `Yesterday`;
-      return `${date.getMonth() + 1}/${date.getDate()} ${hours}:${minutes}`;
+    if (isToday) return timeText;
+    if (isYesterday) return `Yesterday ${timeText}`;
+    const dateText = date.toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: date.getFullYear() === now.getFullYear() ? undefined : 'numeric'
+    });
+    return `${dateText} ${timeText}`;
   };
 
 window.imApp.addMomentNotification = async function(type, user, momentId, contentOrPayload = '', thought = '') {
@@ -6454,8 +6463,9 @@ window.addEventListener('pagehide', () => {
     }
 
     function formatManualMemoryTime(date = new Date()) {
-        const pad = value => String(value).padStart(2, '0');
-        return `${date.getFullYear()}年${pad(date.getMonth() + 1)}月${pad(date.getDate())}日 ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     }
 
     function normalizeManualMemoryTags(value) {

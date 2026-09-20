@@ -8,6 +8,40 @@
         return String(value).padStart(2, '0');
     }
 
+    function toValidDate(value) {
+        const date = value instanceof Date ? new Date(value.getTime()) : new Date(value);
+        return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function formatUsTime(value, options = {}) {
+        const date = toValidDate(value);
+        if (!date) return '';
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            second: options.seconds ? '2-digit' : undefined,
+            hour12: true
+        });
+    }
+
+    function formatUsDate(value, options = {}) {
+        const date = toValidDate(value);
+        if (!date) return '';
+        return date.toLocaleDateString('en-US', {
+            month: options.longMonth ? 'long' : 'numeric',
+            day: 'numeric',
+            year: options.includeYear === false ? undefined : 'numeric'
+        });
+    }
+
+    function formatUsDateTime(value, options = {}) {
+        const date = toValidDate(value);
+        if (!date) return '';
+        const dateText = formatUsDate(date, options);
+        const timeText = formatUsTime(date, options);
+        return [dateText, timeText].filter(Boolean).join(' ');
+    }
+
     function normalizeRoundLimit(value, fallback = 30) {
         const numeric = Number(value);
         return Number.isFinite(numeric) && numeric > 0
@@ -190,8 +224,8 @@
         const fallbackDate = parseMessageTimestamp(fallbackTimestamp) || new Date();
         const start = dates[0] || fallbackDate;
         const end = dates[dates.length - 1] || start;
-        const formatDate = date => `${date.getFullYear()}年${pad2(date.getMonth() + 1)}月${pad2(date.getDate())}日`;
-        const formatTime = date => `${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
+        const formatDate = date => formatUsDate(date);
+        const formatTime = date => formatUsTime(date);
         const startText = `${formatDate(start)} ${formatTime(start)}`;
         const endText = `${formatDate(end)} ${formatTime(end)}`;
         if (startText === endText) return startText;
@@ -220,7 +254,7 @@
         if (!normalized) return '';
         const date = new Date(normalized);
         if (Number.isNaN(date.getTime())) return '';
-        return `${date.getFullYear()}年${pad2(date.getMonth() + 1)}月${pad2(date.getDate())}日 ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
+        return formatUsDateTime(date);
     }
 
     function normalizeScheduleEvent(event, index = 0) {
@@ -594,6 +628,9 @@
         normalizeRoundLimit,
         normalizeMessageLimit,
         normalizeChatMessageRange,
+        formatUsTime,
+        formatUsDate,
+        formatUsDateTime,
         findMessageByReference,
         normalizeChatLanguage,
         getChatLanguageName,

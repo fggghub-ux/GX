@@ -390,7 +390,11 @@
 
         const snapshot = history[selectedIndex];
         const createdAt = snapshot.createdAt ? new Date(snapshot.createdAt) : null;
-        const timeLabel = createdAt && !Number.isNaN(createdAt.getTime()) ? createdAt.toLocaleString() : '时间未记录';
+        const timeLabel = createdAt && !Number.isNaN(createdAt.getTime())
+            ? (window.imDataUtils?.formatUsDateTime
+                ? window.imDataUtils.formatUsDateTime(createdAt)
+                : createdAt.toLocaleString('en-US', { hour12: true }))
+            : '时间未记录';
         const field = (value) => escapeProfilePanelHtml(value || '未记录');
         return `
             <div class="chat-profile-status-page" data-selected-index="${selectedIndex}" data-status-id="${escapeProfilePanelHtml(snapshot.id)}">

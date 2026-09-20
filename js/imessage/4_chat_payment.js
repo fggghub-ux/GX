@@ -1189,7 +1189,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 const appendHost = document.createElement('div');
                 const lastMsgBeforeReceive = friend.messages.length > 1 ? friend.messages[friend.messages.length - 2] : null;
 
-                if (!lastMsgBeforeReceive || (receiveTimestamp - (lastMsgBeforeReceive.timestamp || 0) > 300000)) {
+                if (!lastMsgBeforeReceive || (receiveTimestamp - (lastMsgBeforeReceive.timestamp || 0) >= 60 * 60 * 1000)) {
                     window.imChat.renderTimestamp(receiveTimestamp, appendHost);
                 }
 
@@ -1408,7 +1408,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 const appendHost = document.createElement('div');
                 const lastMsgBeforeReceive = friend.messages.length > 1 ? friend.messages[friend.messages.length - 2] : null;
 
-                if (!lastMsgBeforeReceive || (rejectTimestamp - (lastMsgBeforeReceive.timestamp || 0) > 300000)) {
+                if (!lastMsgBeforeReceive || (rejectTimestamp - (lastMsgBeforeReceive.timestamp || 0) >= 60 * 60 * 1000)) {
                     window.imChat.renderTimestamp(rejectTimestamp, appendHost);
                 }
 

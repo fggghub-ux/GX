@@ -2479,7 +2479,7 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 15px;
+  font-size: 16px;
   padding: 8px 0;
   min-width: 0;
   color: #111;
