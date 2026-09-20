@@ -4900,7 +4900,6 @@ Example:
 晚安。
 
 The text inside the double quotation marks must contain only the default-language dialogue. The following line must contain only its Chinese translation. The Chinese translation should not use quotation marks; adding extra quotation marks is not allowed.
-
 When the default language is Chinese, output only Chinese dialogue in Chinese double quotation marks, for example: “晚安。” Do not append a duplicate Chinese translation.
 </bilingual_dialogue>`,
                 editable: true,
@@ -4927,7 +4926,6 @@ Literary Writing Guidance
 0. Output Scope
 
 Write char only. The user has exclusive authorship over the user’s actions, dialogue, thoughts, feelings, perceptions, and reactions.
-
 Do not write for the user, enter the user’s perspective, describe what the user sees or experiences, infer the user’s internal state or needs, or frame char through the user’s gaze. Do not repeat, paraphrase, extend, or complete actions already written by the user.
 
 I. Fundamental Logic
