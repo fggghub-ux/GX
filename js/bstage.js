@@ -4165,17 +4165,11 @@ ${history}
             `;
 
             // Shop Banner Logic
-            const bannerStyle = team.shopBanner ? `background-image: url('${team.shopBanner}');` : 'background-color:#222;';
-            const bannerContent = team.shopBanner ? '' : `
-                <div style="width:100%;height:100%;background-color:#222;display:flex;justify-content:center;align-items:center;opacity:0.5;">
-                    <i class="fas fa-star" style="font-size:40px;color:#444;"></i>
-                </div>
-            `;
+            const bannerStyle = `background-image: url('${team.shopBanner || 'assets/bstage/shop-banner-default.jpg'}');`;
 
             contentArea.innerHTML = `
                 <div class="bstage-shop-view">
                     <div class="bstage-shop-banner" id="bstage-shop-banner-edit" style="${bannerStyle}; cursor: pointer; position: relative;">
-                        ${bannerContent}
                         <div class="bstage-shop-banner-text">OFFICIAL SHOP</div>
                         <input type="file" id="bstage-shop-banner-input" accept="image/*" style="display:none;">
                     </div>

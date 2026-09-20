@@ -186,6 +186,7 @@
     width: 100%;
     height: 100%;
     position: relative;
+    background-image: url('../assets/bstage/home-background-default.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1464,13 +1465,14 @@
     height: 150px;
     border-radius: 16px;
     background-color: #1a1a1a;
-    background-image: url('https://picsum.photos/seed/bstage_banner/800/400?grayscale');
+    background-image: url('../assets/bstage/shop-banner-default.jpg');
     background-size: cover;
     background-position: center;
     margin-bottom: 24px;
     overflow: hidden;
     position: relative;
 }
+
 
 .bstage-shop-banner img {
     width: 100%;

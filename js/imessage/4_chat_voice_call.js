@@ -968,7 +968,10 @@ ${previousReply}` : '';
                             let timeStr = '';
                             if (m.timestamp) {
                                 const date = new Date(m.timestamp);
-                                timeStr = `[${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}] `;
+                                const formatted = window.imDataUtils?.formatUsDateTime
+                                    ? window.imDataUtils.formatUsDateTime(date)
+                                    : date.toLocaleString('en-US', { hour12: true });
+                                timeStr = `[${formatted}] `;
                             }
                             return `${timeStr}${roleName}: ${content}`;
                         }).join('\n');
@@ -1567,7 +1570,10 @@ ${previousReply}`;
                                     let timeStr = '';
                                     if (msg.timestamp) {
                                         const date = new Date(msg.timestamp);
-                                        timeStr = `[${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}] `;
+                                        const formatted = window.imDataUtils?.formatUsDateTime
+                                            ? window.imDataUtils.formatUsDateTime(date)
+                                            : date.toLocaleString('en-US', { hour12: true });
+                                        timeStr = `[${formatted}] `;
                                     }
                                     return `${timeStr}${roleName}: ${msg.text || msg.content || ''}`;
                                 }).join('\n');

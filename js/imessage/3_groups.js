@@ -71,7 +71,9 @@
         const time = Number(timestamp) || 0;
         if (!time) return '';
         const date = new Date(time);
-        return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     }
 
     function getPrivateChatMessageTranslation(message) {

@@ -385,13 +385,56 @@
             this.ordersRefreshTimer = null;
         }
 
+        updateOrderProgress() {
+            if (!this.ordersList) return;
+            const now = Date.now();
+
+            this.ordersList.querySelectorAll('.shopping-order-card[data-order-id]').forEach(card => {
+                const order = this.orders.find(item => String(item.id) === card.dataset.orderId);
+                if (!order) return;
+
+                const elapsed = (now - (order.timestamp || order.id)) / 1000;
+                const progress = Math.min(100, Math.max(0, (elapsed / 16) * 100));
+                const isFood = order.items.some(item => item.isFood);
+                const active = [true, elapsed >= 8, elapsed >= 16];
+                const currentColor = isFood ? 'var(--shop-accent, #a97642)' : '#111111';
+                const finalColor = 'var(--shop-green, #476c5a)';
+                const glow = isFood ? 'shopPulseGlow' : 'shopPulseGlowGreen';
+
+                const fill = card.querySelector('.shopping-order-fill');
+                if (fill) {
+                    fill.style.width = `calc(68% * ${progress / 100})`;
+                    fill.style.background = active[2] ? finalColor : currentColor;
+                }
+
+                card.querySelectorAll('.shopping-order-node').forEach((node, index) => {
+                    const icon = node.querySelector('.shopping-order-icon-wrap');
+                    const text = node.querySelector('.shopping-order-node-text');
+                    const color = index === 2 ? finalColor : currentColor;
+                    if (icon) {
+                        icon.style.background = active[index] ? color : '#f2f2f7';
+                        icon.style.animation = (
+                            (index === 0 && active[0] && !active[1]) ||
+                            (index === 1 && active[1] && !active[2])
+                        ) ? `${glow} 2s infinite` : 'none';
+                        const glyph = icon.querySelector('i');
+                        if (glyph) glyph.style.color = active[index] ? '#fff' : '#c7c7cc';
+                    }
+                    if (text) {
+                        text.style.color = active[index] ? '#111' : '#8e8e93';
+                        text.style.fontWeight = active[index] ? '700' : '600';
+                    }
+                });
+            });
+        }
+
         startOrdersRefresh() {
             this.stopOrdersRefresh();
             if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
             this.ordersRefreshTimer = window.setTimeout(() => {
                 this.ordersRefreshTimer = null;
                 if (!this.ordersSheet?.classList.contains('active') || document.hidden) return;
-                this.renderOrders();
+                this.updateOrderProgress();
                 this.startOrdersRefresh();
             }, 1000);
         }
@@ -635,27 +678,26 @@
 
                 product.style.cursor = 'pointer';
                 product.addEventListener('click', () => {
-                    let name, price, desc, iconHtml, mediaBg;
+                    let name, price, desc;
                     
-            let isFood = false;
-            if (product.classList.contains('shopping-food-card')) {
-                isFood = true;
+            const isFood = product.classList.contains('shopping-food-card');
+            const media = product.querySelector(isFood ? '.shopping-food-media' : '.shopping-product-media');
+            if (isFood) {
                 name = product.querySelector('strong')?.textContent || 'Food Item';
                 price = product.querySelector('.shopping-card-topline span')?.textContent || '$0';
                 desc = product.querySelector('p')?.textContent || '';
-                iconHtml = product.querySelector('.shopping-food-media')?.innerHTML || '';
-                mediaBg = product.querySelector('.shopping-food-media').style.background || window.getComputedStyle(product.querySelector('.shopping-food-media')).background;
             } else {
                 name = product.querySelector('strong')?.textContent || 'Product';
                 price = product.querySelector('span')?.textContent.split('·')[0].trim() || '$0';
                 // For generated mall items, desc is in the hidden span
                 const spans = product.querySelectorAll('span');
                 desc = (spans.length > 1) ? spans[1].textContent : '';
-                iconHtml = product.querySelector('.shopping-product-media')?.innerHTML || '';
-                mediaBg = product.querySelector('.shopping-product-media').style.background || window.getComputedStyle(product.querySelector('.shopping-product-media')).background;
             }
 
-                    this.openDetail({ name, price, desc, iconHtml, mediaBg }, isFood);
+                    const iconHtml = media?.innerHTML || '';
+                    const mediaBg = media ? (media.style.background || window.getComputedStyle(media).background) : '';
+                    const mediaImage = media ? window.getComputedStyle(media, '::after').backgroundImage : 'none';
+                    this.openDetail({ name, price, desc, iconHtml, mediaBg, mediaImage }, isFood);
                 });
             });
         }
@@ -1073,7 +1115,7 @@
                         date: new Date().toLocaleString(),
                         items: [...this.cart],
                         total: total,
-                        status: 'Payment request sent.',
+                        status: 'Payment request sent',
                         method: `pay for me (${friendName})`
                     });
                     this.saveOrders();
@@ -1082,7 +1124,7 @@
                     this.saveCart();
                     this.renderCart();
                     this.checkoutSheet?.classList.remove('active');
-                    window.showToast ? window.showToast('Payment request sent.') : alert('Payment request sent.');
+                    window.showToast ? window.showToast('Payment request sent') : alert('Payment request sent');
                 } else {
                     window.showToast ? window.showToast('无法发送代付请求') : alert('无法发送代付请求');
                 }
@@ -1141,6 +1183,7 @@
                 // Add staggered animation delay
                 const delay = index * 0.1;
                 el.className = 'shopping-order-card';
+                el.dataset.orderId = String(order.id);
                 el.style.animationDelay = `${delay}s`;
                 // Remove inline styles that clash with css classes
                 el.style.cssText = `animation-delay: ${delay}s;`;
@@ -1184,11 +1227,14 @@
 
                     <div class="shopping-order-item-inline-wrap">
                         <div class="shopping-order-items-scroll inline-mode">
-                            ${order.items.map(item => `
-                                <div class="shopping-order-item-media" style="background: ${item.mediaBg};">
-                                    ${item.iconHtml}
-                                </div>
-                            `).join('')}
+                            ${order.items.map(item => {
+                                const mediaImage = this.getProductImage(item);
+                                return `
+                                    <div class="shopping-order-item-media" style="background: ${item.mediaBg}; ${mediaImage ? `background-image: ${mediaImage}; background-position: center; background-size: cover; background-repeat: no-repeat;` : ''}">
+                                        ${mediaImage ? '' : item.iconHtml}
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                         <div class="shopping-order-title inline-mode">${itemNames}</div>
                     </div>
@@ -1258,6 +1304,32 @@
             });
         }
 
+        getProductImage(product) {
+            const defaults = {
+                'Espresson': 'assets/shopping/food-coffee.jpg',
+                'Per Se Menu': 'assets/shopping/food-per-se.jpg',
+                'Mase Omakase': 'assets/shopping/food-mase.jpg',
+                'Romanée-Conti': 'assets/shopping/mall-drc.jpg',
+                'Serpenti Viper Bracelet': 'assets/shopping/mall-bylgarl.jpg',
+                'Hermes Birkin': 'assets/shopping/mall-hermes.jpg',
+                'Vintage Alhambra': 'assets/shopping/mall-vca.jpg'
+            };
+            if (product.mediaImage && product.mediaImage !== 'none') {
+                return product.mediaImage.replace(/"/g, "'");
+            }
+            return defaults[product.name] ? `url('${defaults[product.name]}')` : '';
+        }
+
+        setDetailMedia(element, product) {
+            const hasImage = product.mediaImage && product.mediaImage !== 'none';
+            element.innerHTML = hasImage ? '' : product.iconHtml;
+            element.style.background = product.mediaBg;
+            element.style.backgroundImage = hasImage ? product.mediaImage : '';
+            element.style.backgroundPosition = 'center';
+            element.style.backgroundSize = 'cover';
+            element.style.backgroundRepeat = 'no-repeat';
+        }
+
         openDetail(product, isFood = false) {
             product.isFood = isFood;
             this.currentProduct = product;
@@ -1271,8 +1343,7 @@
                 if (this.foodBottomPrice) this.foodBottomPrice.textContent = product.price;
                 if (this.foodDetailDesc) this.foodDetailDesc.textContent = product.desc;
                 if (this.foodDetailMedia) {
-                    this.foodDetailMedia.innerHTML = product.iconHtml;
-                    this.foodDetailMedia.style.background = product.mediaBg;
+                    this.setDetailMedia(this.foodDetailMedia, product);
                 }
                 if (this.foodDetailSheet) {
                     this.foodDetailSheet.classList.add('active');
@@ -1282,8 +1353,7 @@
                 if (this.detailPrice) this.detailPrice.textContent = product.price;
                 if (this.detailDesc) this.detailDesc.textContent = product.desc;
                 if (this.detailMedia) {
-                    this.detailMedia.innerHTML = product.iconHtml;
-                    this.detailMedia.style.background = product.mediaBg;
+                    this.setDetailMedia(this.detailMedia, product);
                 }
                 
                 // Update QA Trigger Preview
@@ -1634,6 +1704,7 @@
 
             this.cart.forEach((item, index) => {
                 subtotal += item.priceVal;
+                const mediaImage = this.getProductImage(item);
                 
                 const itemEl = document.createElement('div');
                 itemEl.style.display = 'flex';
@@ -1645,8 +1716,8 @@
                 itemEl.style.boxShadow = '0 2px 10px rgba(0,0,0,0.03)';
                 
                 itemEl.innerHTML = `
-                    <div style="width: 50px; height: 50px; border-radius: 10px; background: ${item.mediaBg}; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 20px;">
-                        ${item.iconHtml}
+                    <div style="width: 50px; height: 50px; border-radius: 10px; background: ${item.mediaBg}; ${mediaImage ? `background-image: ${mediaImage}; background-position: center; background-size: cover; background-repeat: no-repeat;` : ''} display: flex; justify-content: center; align-items: center; color: #fff; font-size: 20px;">
+                        ${mediaImage ? '' : item.iconHtml}
                     </div>
                     <div style="flex: 1;">
                         <div style="font-weight: 700; font-size: 15px;">${item.name}</div>

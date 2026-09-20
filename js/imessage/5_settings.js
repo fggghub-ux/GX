@@ -967,7 +967,7 @@
         }
         const days = Math.max(1, Math.ceil((Date.now() - firstMsgTime) / (1000 * 60 * 60 * 24)));
             
-        const lastTimeStr = window.imApp.formatTime ? window.imApp.formatTime(lastMsgTime) : new Date(lastMsgTime).toLocaleString();
+        const lastTimeStr = window.imApp.formatTime ? window.imApp.formatTime(lastMsgTime) : new Date(lastMsgTime).toLocaleString('en-US', { hour12: true });
 
         statsContainer.innerHTML = `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
@@ -1219,7 +1219,7 @@
             }
             const days = Math.max(1, Math.ceil((Date.now() - firstMsgTime) / (1000 * 60 * 60 * 24)));
             
-            const lastTimeStr = window.imApp.formatTime ? window.imApp.formatTime(lastMsgTime) : new Date(lastMsgTime).toLocaleString();
+            const lastTimeStr = window.imApp.formatTime ? window.imApp.formatTime(lastMsgTime) : new Date(lastMsgTime).toLocaleString('en-US', { hour12: true });
 
             const statsHtml = `
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
@@ -2990,7 +2990,10 @@
         if (value <= 0) return '等待下次随机触发';
         const date = new Date(value);
         if (Number.isNaN(date.getTime())) return '等待下次随机触发';
-        return `下次约 ${date.getMonth() + 1}月${date.getDate()}日 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        const dateTime = window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
+        return `下次约 ${dateTime}`;
     }
 
     function getAutonomousIntervalValues(minInput, maxInput, fallbackTask) {
@@ -3196,14 +3199,22 @@
             const formatted = window.imApp.formatMessageForApiContext(msg, friend, {
                 userName: userState?.name || 'User'
             });
-            const time = msg.timestamp ? new Date(msg.timestamp).toLocaleString('zh-CN', { hour12: false }) : '';
+            const time = msg.timestamp
+                ? (window.imDataUtils?.formatUsDateTime
+                    ? window.imDataUtils.formatUsDateTime(msg.timestamp)
+                    : new Date(msg.timestamp).toLocaleString('en-US', { hour12: true }))
+                : '';
             return `[${time}] ${formatted?.content || msg.content || msg.text || ''}`;
         }
 
         const speaker = msg.role === 'assistant'
             ? (friend.nickname || friend.realname || friend.realName || 'Char')
             : (userState?.name || 'User');
-        const time = msg.timestamp ? new Date(msg.timestamp).toLocaleString('zh-CN', { hour12: false }) : '';
+        const time = msg.timestamp
+            ? (window.imDataUtils?.formatUsDateTime
+                ? window.imDataUtils.formatUsDateTime(msg.timestamp)
+                : new Date(msg.timestamp).toLocaleString('en-US', { hour12: true }))
+            : '';
         const content = msg.content || msg.text || '';
         return `[${time}] ${speaker}: ${content}`;
     }
@@ -3526,7 +3537,9 @@
         const charName = friend.nickname || friend.realname || friend.realName || 'Char';
         const userName = userState?.name || 'User';
         const now = new Date();
-        const nowString = `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, '0')}月${String(now.getDate()).padStart(2, '0')}日 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const nowString = window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(now)
+            : now.toLocaleString('en-US', { hour12: true });
         const eventTime = window.imDataUtils?.formatMemoryEventTime
             ? window.imDataUtils.formatMemoryEventTime(sourceMessages, now.getTime())
             : nowString;
@@ -3667,7 +3680,9 @@
             targetFriend.memory = window.imApp.normalizeFriendData(targetFriend).memory;
             if (!Array.isArray(targetFriend.memory.shortTermEntries)) targetFriend.memory.shortTermEntries = [];
             const now = new Date();
-            const nowString = `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, '0')}月${String(now.getDate()).padStart(2, '0')}日 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const nowString = window.imDataUtils?.formatUsDateTime
+                ? window.imDataUtils.formatUsDateTime(now)
+                : now.toLocaleString('en-US', { hour12: true });
             const activatedIds = new Set(Array.isArray(summary.activatedEntryIds) ? summary.activatedEntryIds.map(String) : []);
             targetFriend.memory.shortTermEntries.forEach(entry => {
                 if (entry && activatedIds.has(String(entry.id))) {
@@ -4278,7 +4293,7 @@
                 
                 const saved = await commitSettingsFriendChange((targetFriend) => {
                     targetFriend.language = nextValue;
-                }, { silent: true });
+                }, { silent: true, syncActive: true });
 
                 if (!saved) {
                     e.target.value = previousValue;
@@ -4299,7 +4314,7 @@
         const previousValue = friend.language || 'zh';
         const saved = await commitSettingsFriendChange((targetFriend) => {
             targetFriend.language = nextValue;
-        }, { silent: true });
+        }, { silent: true, syncActive: true });
         if (!saved) {
             chatCustomLanguageInput.value = standardChatLanguages.has(previousValue) ? '' : previousValue;
             showToast('语言设置保存失败');

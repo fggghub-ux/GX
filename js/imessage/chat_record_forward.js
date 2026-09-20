@@ -456,8 +456,9 @@
         const value = Number(timestamp) || 0;
         if (!value) return '未知时间';
         const date = new Date(value);
-        const pad = number => String(number).padStart(2, '0');
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     }
 
     function buildRecordEntryContent(entry) {

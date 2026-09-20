@@ -381,7 +381,9 @@
             }
             elements.history.innerHTML = entries.map(entry => {
                 const date = new Date(entry.createdAt);
-                const time = Number.isNaN(date.getTime()) ? '' : date.toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const time = Number.isNaN(date.getTime())
+                    ? ''
+                    : date.toLocaleString('en-US', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
                 return `<article class="im-anonymous-entry">
                     <div class="im-anonymous-entry-meta">
                         <span><i class="fas fa-user-secret"></i> 匿名来信</span>

@@ -166,6 +166,12 @@
         'dock-icon-youtube': APP_ICON_BASE + 'youtube.jpg'
     };
 
+    const LEGACY_LOVER_ICON_FILE = ['love', 's.jpg'].join('');
+    const isLegacyLoverIcon = (icon) => {
+        const cleanPath = String(icon || '').split(/[?#]/, 1)[0];
+        return cleanPath === LEGACY_LOVER_ICON_FILE || cleanPath.endsWith('/' + LEGACY_LOVER_ICON_FILE);
+    };
+
     let themeState = {
         bgUrl: null,
         uiChineseEnabled: false,
@@ -274,7 +280,11 @@
                     savedThemeState.apps.forEach(savedApp => {
                         const existingApp = themeState.apps.find(a => a.id === savedApp.id);
                         if (existingApp) {
-                            if (savedApp.icon) existingApp.icon = savedApp.icon; // 空值不覆盖默认图
+                            if (savedApp.id === 'app-icon-8' && isLegacyLoverIcon(savedApp.icon)) {
+                                existingApp.icon = DEFAULT_APP_ICONS['app-icon-8'];
+                            } else if (savedApp.icon) {
+                                existingApp.icon = savedApp.icon; // 空值不覆盖默认图
+                            }
                             if (savedApp.id === 'app-icon-6') {
                                 existingApp.name = 'Library';
                             } else if (savedApp.id === 'app-icon-8' && ['Diary', 'Lover', ['Love', 's'].join('')].includes(savedApp.name)) {
@@ -512,7 +522,7 @@
         if (aboutDeviceBtn && aboutDeviceSheet) {
             aboutDeviceBtn.addEventListener('click', () => {
                 const appNameEl = document.getElementById('about-device-app-name');
-                if (appNameEl) appNameEl.textContent = 'JW';
+                if (appNameEl) appNameEl.textContent = 'IHG';
                 openView(aboutDeviceSheet);
             });
         }
@@ -3626,11 +3636,13 @@
                 return iconDiv.querySelector('i');
             };
         
-            if (app.icon) {
+            const iconSource = app.icon || (app.id === 'app-icon-8' ? DEFAULT_APP_ICONS['app-icon-8'] : '');
+
+            if (iconSource) {
                 iconDiv.innerHTML = '';
                 iconDiv.classList.add('has-custom-app-icon');
-                iconDiv.style.setProperty('background', `url(${app.icon}) center / cover no-repeat`, 'important');
-                iconDiv.style.setProperty('background-image', `url(${app.icon})`, 'important');
+                iconDiv.style.setProperty('background', `url(${iconSource}) center / cover no-repeat`, 'important');
+                iconDiv.style.setProperty('background-image', `url(${iconSource})`, 'important');
                 iconDiv.style.setProperty('background-size', 'cover', 'important');
                 iconDiv.style.setProperty('background-position', 'center', 'important');
                 iconDiv.style.setProperty('background-repeat', 'no-repeat', 'important');

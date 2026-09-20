@@ -668,7 +668,9 @@
 
         if (timeEl) {
             const d = new Date(m.time);
-            timeEl.textContent = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+            timeEl.textContent = window.imDataUtils?.formatUsDateTime
+                ? window.imDataUtils.formatUsDateTime(d)
+                : d.toLocaleString('en-US', { hour12: true });
             let translateButton = document.getElementById('moment-detail-translate-btn');
             if (!translateButton) {
                 translateButton = document.createElement('span');

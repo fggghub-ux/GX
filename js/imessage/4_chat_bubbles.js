@@ -7,7 +7,19 @@
     const imChat = window.imChat;
     const INITIAL_HISTORY_USER_ROUNDS = 30;
     const HISTORY_LOAD_MORE_USER_ROUNDS = 10;
+    const TIMESTAMP_SEPARATOR_INTERVAL_MS = 60 * 60 * 1000;
     const renderMessageContextByFriend = new WeakMap();
+
+    function formatBubbleTime(value) {
+        if (window.imDataUtils?.formatUsTime) return window.imDataUtils.formatUsTime(value);
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+    }
 
     function escapeHtml(value) {
         return String(value == null ? '' : value)
@@ -572,10 +584,7 @@ function renderGroupRedPacketBubble(msg, friend, container, timestamp = Date.now
             </div>
         `;
 
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
 
         const headerHtml = buildMessageHeaderHtml(isUser, friend, timestamp, speakerName, speakerAvatar, hasPrev, msg);
 
@@ -1057,7 +1066,7 @@ function renderMessageBubble(msg, friend, container, timestamp = Date.now()) {
             if (lastMessageTimestamp) break;
         }
 
-        if (!lastMessageTimestamp || msgTime - lastMessageTimestamp > 300000) {
+        if (!lastMessageTimestamp || msgTime - lastMessageTimestamp >= TIMESTAMP_SEPARATOR_INTERVAL_MS) {
             window.imChat.renderTimestamp(msgTime, container);
         }
 
@@ -1143,7 +1152,7 @@ function renderChatHistory(friend, container, options = {}) {
 
         const messages = Array.isArray(friend.messages) ? friend.messages : [];
         const state = getChatHistoryState(friend, container, messages, options);
-        let lastTime = 0;
+        let previousMessageTime = 0;
         const recallPresentation = friend.memory?.recallPresentation || null;
         const recallApiRunId = String(recallPresentation?.apiRunId || '');
         const triggerUserMessageId = String(recallPresentation?.triggerUserMessageId || '');
@@ -1164,10 +1173,10 @@ function renderChatHistory(friend, container, options = {}) {
                 messages.slice(state.visibleStartIndex).forEach(msg => {
                     window.imChat.ensureMessageId(msg, msg.type === 'pay_transfer' ? 'pay' : 'msg');
                     const msgTime = msg.timestamp || 0;
-                    if (msgTime - lastTime > 300000) { 
+                    if (!previousMessageTime || msgTime - previousMessageTime >= TIMESTAMP_SEPARATOR_INTERVAL_MS) {
                         window.imChat.renderTimestamp(msgTime, container);
-                        lastTime = msgTime;
                     }
+                    previousMessageTime = msgTime;
                     if (msg === recallAnchorMessage && window.imChat.renderMemoryRecallPresentation) {
                         window.imChat.renderMemoryRecallPresentation(friend, container, recallPresentation);
                     }
@@ -1194,6 +1203,9 @@ function scrollToBottom(container) {
 
 function renderTimestamp(timestamp, container) {
         if (!timestamp) return;
+        const previousMessageRow = Array.from(container?.querySelectorAll?.('.chat-row[data-timestamp]') || []).pop();
+        const previousMessageTime = Number(previousMessageRow?.getAttribute('data-timestamp')) || 0;
+        if (previousMessageTime && timestamp - previousMessageTime < TIMESTAMP_SEPARATOR_INTERVAL_MS) return;
         const div = document.createElement('div');
         div.className = 'chat-timestamp';
         let timeStr = window.imApp.formatTime ? window.imApp.formatTime(timestamp) : '';
@@ -1229,10 +1241,7 @@ function renderUserBubble(text, container, timestamp = Date.now(), replyTo = nul
             contentHtml += `<div class="msg-translation" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; word-wrap: break-word; white-space: normal;">${translation}</div>`;
         }
 
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
         contentHtml += `<span class="bubble-meta"><span class="bubble-time">${timeStr}</span><i class="fas fa-check bubble-read-icon"></i></span>`;
 
         row.innerHTML = `
@@ -1296,10 +1305,7 @@ function renderUserBubble(text, container, timestamp = Date.now(), replyTo = nul
             contentHtml += `<div class="msg-translation" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 13px; color: #8e8e93; line-height: 1.4; word-wrap: break-word; white-space: normal;">${translation}</div>`;
         }
         
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
         contentHtml += `<span class="bubble-meta"><span class="bubble-time">${timeStr}</span></span>`;
 
         const headerHtml = buildMessageHeaderHtml(false, friend, timestamp, speakerName, speakerAvatar, hasPrev);
@@ -1518,10 +1524,7 @@ function openChatImageDetail(msg, friend, timestamp, senderName) {
         const rerollErrorEl = overlay.querySelector('.chat-image-detail-reroll-error');
         const rerollButton = overlay.querySelector('.chat-image-detail-reroll');
         const saveButton = overlay.querySelector('.chat-image-detail-save');
-        const date = new Date(timestamp || msg.timestamp || Date.now());
-        const timeStr = typeof window.formatChatBubbleTime === 'function'
-            ? window.formatChatBubbleTime(timestamp || msg.timestamp || Date.now())
-            : `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+        const timeStr = formatBubbleTime(timestamp || msg.timestamp || Date.now());
 
         const imageUrl = msg.content || window.imChat.CHAT_IMAGE_PLACEHOLDER_URL || '';
         const isGeneratedImage = msg.imageSource === 'generated'
@@ -1641,10 +1644,7 @@ function renderImageBubble(msg, friend, container, timestamp = Date.now()) {
             <img class="chat-image-bubble-img" src="${escapeHtml(imageSrc)}" style="width: min(56vw, 200px); height: min(56vw, 200px); max-width: 200px; max-height: 200px; aspect-ratio: 1 / 1; border-radius: 12px; object-fit: cover; display: block; background: #e5e5ea; cursor: pointer;">
         `;
 
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
 
         const metaHtml = "";
         const bubbleHtml = `<div class="chat-bubble ${isUser ? 'user-bubble' : 'ai-bubble'} im-card-bubble image-message-bubble" style="padding: 0; background: transparent; ">${contentHtml}${metaHtml}</div>`;
@@ -1760,8 +1760,7 @@ function renderPayTransferBubble(msg, friend, container, timestamp = Date.now())
 
         const headerHtml = buildMessageHeaderHtml(isUser, friend, timestamp, speakerName, speakerAvatar, hasPrev, msg);
 
-        const date = new Date(timestamp);
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+        const timeStr = formatBubbleTime(timestamp);
 
         if (isOfficialReceipt) {
             // 微信支付样式居中大卡片
@@ -1921,10 +1920,7 @@ function renderMomentForwardBubble(msg, friend, container, timestamp = Date.now(
 
         const headerHtml = buildMessageHeaderHtml(isUser, friend, timestamp, null, null, hasPrev, msg);
 
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
         
         if (isUser) {
             let metaHtml = "";
@@ -2019,10 +2015,7 @@ function renderVoiceMessageBubble(msg, friend, container, timestamp = Date.now()
         const duration = Math.min(18, Math.max(3, Number(msg.duration) || calculatedDuration));
         const safeTranscript = escapeHtml(transcript || '暂无转文字');
         const cleanTranslation = String(msg.translation || '').trim();
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
         const metaHtml = "";
 
         const contentHtml = `
@@ -2158,10 +2151,7 @@ function renderStickerMessageBubble(msg, friend, container, timestamp = Date.now
 
         const stickerUrl = String(msg.stickerUrl || msg.content || '').trim();
         const stickerName = String(msg.stickerName || msg.text || 'Sticker').trim();
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
         const metaHtml = "";
         const stickerHtml = `
             <div class="sticker-message-wrap" title="${escapeHtml(stickerName)}">
@@ -2743,8 +2733,9 @@ function renderStickerMessageBubble(msg, friend, container, timestamp = Date.now
     function formatOfflineMeetingTimestamp(timestamp) {
         const value = Number(timestamp) || Date.now();
         const date = new Date(value);
-        const pad = (num) => String(num).padStart(2, '0');
-        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        return window.imDataUtils?.formatUsDateTime
+            ? window.imDataUtils.formatUsDateTime(date)
+            : date.toLocaleString('en-US', { hour12: true });
     }
 
     function renderOfflineMeetingDetailReadMode(contentEl, msg) {
@@ -2918,8 +2909,7 @@ function renderStickerMessageBubble(msg, friend, container, timestamp = Date.now
         const contentHtml = msg.content || msg.text || '';
         const headerHtml = buildMessageHeaderHtml(isUser, friend, timestamp, null, null, hasPrev, msg);
 
-        const date = new Date(timestamp);
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+        const timeStr = formatBubbleTime(timestamp);
 
         if (isUser) {
             const metaHtml = "";
@@ -3026,10 +3016,7 @@ function renderVoiceCallRecordBubble(msg, friend, container, timestamp = Date.no
             </div>
         `;
 
-        const timeStr = typeof window.formatChatBubbleTime === 'function' ? window.formatChatBubbleTime(timestamp) : (() => {
-            const date = new Date(timestamp);
-            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-        })();
+        const timeStr = formatBubbleTime(timestamp);
 
         // For voice call record, it uses simplified DOM structure, but we still need header. 
         // Note: It doesn't have hasPrev tracking in its code properly, let's just assume false as it lacks context, or compute if possible.

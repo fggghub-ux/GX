@@ -35,6 +35,7 @@ function createDefaultTkState() {
                 id: 'vegartatelier',
                 authorId: 'vegartatelier',
                 authorName: 'VEGART ATELIER',
+                cover: 'assets/tiktok/feed-default-1.jpg',
                 desc: 'Aurelia Forest House is designed as an ultra-luxury brutalist villa concept lost in nature but losing nothing from its architectural character.#ArchitecturalConcept #ForestHouse',
                 sceneText: 'Pale limestone surfaces, greige mineral concrete masses and warm travertine terraces create a calmer, more natural and more timeless luxury language within the dense wood texture. Brutalism is not harsh and cold here. On the contrary, it becomes more refined with the shadow of the forest, texture of the stone and soft light of the sunset.',
                 likes: 143119,
@@ -50,6 +51,7 @@ function createDefaultTkState() {
                 id: 'pilotluana',
                 authorId: 'pilotluana',
                 authorName: 'FRED',
+                cover: 'assets/tiktok/feed-default-2.jpg',
                 desc: 'If your business travels with you, your finances should too.#FlexGlobal #FlexElite #FlexPartner',
                 sceneText: 'Now expanding across 170 countries and 37 currencies, it gives founders and business owners an easier way to manage expenses and operate internationally.And for those looking for an even more premium experience, Flex Elite takes it one step further.',
                 likes: 22157,
@@ -112,7 +114,9 @@ function normalizeTkState(rawState = {}) {
                 : []
         },
         chars,
-        videos: Array.isArray(safeState.videos) && safeState.videos.length > 0 ? safeState.videos : defaults.videos,
+        videos: Array.isArray(safeState.videos) && safeState.videos.length > 0
+            ? safeState.videos.map(video => ({ ...defaults.videos.find(item => item.id === video.id), ...video }))
+            : defaults.videos,
         dms: Array.isArray(safeState.dms) ? safeState.dms : defaults.dms
     };
 }
