@@ -4332,6 +4332,7 @@ button.group-private-chat-detail-bubble {
 }
 
 .offline-chat-thinking {
+    display: none !important;
     width: fit-content;
     max-width: 100%;
     margin-bottom: 8px;
