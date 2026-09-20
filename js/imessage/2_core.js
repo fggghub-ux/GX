@@ -887,7 +887,7 @@ window.imApp.normalizeFriendData = function(friend) {
     // the normal-chat autoGenerate setting so enabling one surface never starts
     // image requests in the other.  Groups never participate in this flow.
     normalized.offlineAutoImageGeneration = !isGroupChat && normalized.offlineAutoImageGeneration === true;
-    normalized.offlineRequestReasoning = true;
+    normalized.offlineRequestReasoning = normalized.offlineRequestReasoning === true;
     normalized.offlineMaxResponseTokens = 30000;
     normalized.offlineMaxResponseTokensVersion = 2;
     normalized.dynamicActionNarrationEnabled = !!normalized.dynamicActionNarrationEnabled;

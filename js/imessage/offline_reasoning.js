@@ -111,9 +111,7 @@ ${checklistText}
     const buildReasoningRequestConfig = (options = {}) => {
         const endpoint = String(options.endpoint || '').trim();
         const model = String(options.model || '').trim();
-        // Keep model reasoning active for offline roleplay even when no optional
-        // COT checklist is enabled. The reasoning remains private to the model.
-        const enabled = true;
+        const enabled = options.enabled !== false;
         const maxTokens = normalizeMaxResponseTokens(options.maxTokens);
         const mode = detectReasoningApiMode(endpoint, model);
         const parameters = {};
@@ -122,7 +120,7 @@ ${checklistText}
         else parameters.max_tokens = maxTokens;
 
         if (mode === 'openrouter') {
-            parameters.reasoning = { enabled, exclude: true };
+            parameters.reasoning = { enabled, exclude: false };
         } else if (mode === 'thinking') {
             parameters.thinking = { type: enabled ? 'enabled' : 'disabled' };
         }
