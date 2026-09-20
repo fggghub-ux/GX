@@ -879,12 +879,15 @@ window.imApp.normalizeFriendData = function(friend) {
     if (normalized.statusPromptEnabled && !normalized.statusPrompt.trim()) {
         normalized.statusPrompt = window.imApp.DEFAULT_STATUS_PROMPT;
     }
-    normalized.offlineStreamEnabled = normalized.offlineStreamEnabled !== false;
+    const offlineStreamDefaultVersion = Number(normalized.offlineStreamDefaultVersion) || 0;
+    normalized.offlineStreamEnabled = offlineStreamDefaultVersion >= 1
+        && normalized.offlineStreamEnabled === true;
+    normalized.offlineStreamDefaultVersion = 1;
     // Keep offline automatic images opt-in.  This is intentionally separate from
     // the normal-chat autoGenerate setting so enabling one surface never starts
     // image requests in the other.  Groups never participate in this flow.
     normalized.offlineAutoImageGeneration = !isGroupChat && normalized.offlineAutoImageGeneration === true;
-    normalized.offlineRequestReasoning = true;
+    normalized.offlineRequestReasoning = normalized.offlineRequestReasoning === true;
     normalized.offlineMaxResponseTokens = 30000;
     normalized.offlineMaxResponseTokensVersion = 2;
     normalized.dynamicActionNarrationEnabled = !!normalized.dynamicActionNarrationEnabled;
