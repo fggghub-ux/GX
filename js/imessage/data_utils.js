@@ -86,6 +86,11 @@
         if (['ja', 'jp'].includes(language)) return 'ja';
         if (language === 'en') return 'en';
         if (language === 'fr') return 'fr';
+        if (['it', 'italian', '意大利语', '義大利語'].includes(language)) return 'it';
+        if (['es', 'spanish', '西班牙语', '西班牙語'].includes(language)) return 'es';
+        if (['pt', 'portuguese', '葡萄牙语', '葡萄牙語'].includes(language)) return 'pt';
+        if (['de', 'german', '德语', '德語'].includes(language)) return 'de';
+        if (['ar', 'arabic', '阿拉伯语', '阿拉伯語'].includes(language)) return 'ar';
         if (['yue', 'cantonese', '粤语', '廣東話'].includes(language)) return 'yue';
         if (['ru', 'russian', '俄语', '俄語'].includes(language)) return 'ru';
         return originalLanguage || 'zh';
@@ -99,6 +104,11 @@
             ja: 'Japanese',
             en: 'English',
             fr: 'French',
+            it: 'Italian',
+            es: 'Spanish',
+            pt: 'Portuguese',
+            de: 'German',
+            ar: 'Arabic',
             yue: 'Cantonese',
             ru: 'Russian'
         }[language] || language || 'Chinese';

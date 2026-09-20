@@ -703,7 +703,7 @@ async function openChatTab(friend) {
                     </div>
                     <div class="ins-chat-input-wrapper">
                         ${isNpcChat ? '' : '<div class="ins-input-icon plus-btn"><i class="fas fa-plus"></i></div>'}
-                        <input type="text" placeholder="imessage..." class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
+                        <input type="text" placeholder="Message" class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
                         <div class="im-chat-input-actions">
                             <div class="send-btn-icon send-btn"><i class="fas fa-paper-plane"></i></div>
                             <div class="send-btn-icon mic-btn"><i class="fas fa-arrow-down"></i></div>

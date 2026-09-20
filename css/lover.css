@@ -668,13 +668,13 @@
 .friend-mac-owner span { font-size: 10px; font-weight: 700; letter-spacing: 1.6px; }
 .friend-mac-owner strong { margin-top: 4px; font-size: 23px; letter-spacing: 0; }
 /* 好友手机桌面统一使用白底黑色图标 */
-#friend-phone-app-music > div,
-#friend-phone-app-health > div,
-#friend-phone-app-pay > div,
-#friend-phone-app-game > div,
-#friend-phone-app-call > div,
-#friend-phone-app-files > div,
-#friend-phone-app-weibo > div,
+#friend-phone-app-music > div:first-child,
+#friend-phone-app-health > div:first-child,
+#friend-phone-app-pay > div:first-child,
+#friend-phone-app-game > div:first-child,
+#friend-phone-app-call > div:first-child,
+#friend-phone-app-files > div:first-child,
+#friend-phone-app-weibo > div:first-child,
 #friend-phone-app-settings,
 #friend-phone-app-imessage,
 #friend-phone-app-safari {

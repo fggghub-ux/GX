@@ -961,7 +961,7 @@ button.group-private-chat-detail-bubble {
     right: 0;
     height: 1px;
     z-index: 4;
-    background: #f2f2f2;
+    background: #f6f6f6;
     pointer-events: none;
 }
 #imessage-view[data-im-active-surface="home"] > .line-header::before {
@@ -1001,17 +1001,11 @@ button.group-private-chat-detail-bubble {
 }
 @media (min-width: 768px) {
     #imessage-view[data-im-active-surface="home"] > .line-header {
-        height: 84px;
-        min-height: 84px;
-        overflow: visible;
+        box-shadow: 0 30px 0 #fff;
     }
 
     #imessage-view[data-im-active-surface="home"] > .line-header::before {
         top: 49px;
-        display: block;
-        height: 36px;
-        line-height: 36px;
-        white-space: nowrap;
     }
 
     #imessage-view[data-im-active-surface="home"] > .line-header::after {
@@ -4965,7 +4959,7 @@ button.group-private-chat-detail-bubble {
     border: none;
     color: #111;
     padding: 6px 0;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 22px;
     resize: none;
     outline: none;
@@ -5393,10 +5387,6 @@ button.group-private-chat-detail-bubble {
 .im-together-listening-control { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: #344239; }
 .im-together-listening-progress { position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px; background: linear-gradient(to right, #607168 var(--together-progress, 0%), rgba(96,113,104,.15) var(--together-progress, 0%)); }
 
-.keyboard-open .ins-chat-input-container {
-    padding: 8px 12px;
-}
-
 /* @ Mention List Box */
 .at-mention-list {
     position: absolute;
@@ -5497,8 +5487,7 @@ button.group-private-chat-detail-bubble {
     border: none;
     background: transparent;
     outline: none;
-    /* Prevent iOS Safari from zooming the viewport when the field receives focus. */
-    font-size: 16px;
+    font-size: 15px;
     padding: 8px 0;
     min-width: 0;
 }

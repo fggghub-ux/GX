@@ -4251,7 +4251,7 @@ window.imApp.formatTime = function(timestamp) {
         : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
     if (isToday) return timeText;
-    if (isYesterday) return `Yesterday ${timeText}`;
+    if (isYesterday) return 'Yesterday';
     const dateText = date.toLocaleDateString('en-US', {
         month: 'numeric',
         day: 'numeric',
