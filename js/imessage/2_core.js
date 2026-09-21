@@ -371,7 +371,7 @@ window.imApp.applyGlobalHomeCss = function(themeState = window.u2ThemeState || {
         styleId: 'global-imessage-home-css',
         enabled: !!themeState.imessageHomeCssEnabled,
         css: themeState.imessageHomeCss,
-        scope: '#imessage-view:is([data-im-active-surface="home"], [data-im-active-surface="chats"])'
+        scope: '#imessage-view[data-im-active-surface="home"]'
     });
 };
 
@@ -5133,6 +5133,14 @@ window.addEventListener('pagehide', () => {
     if (imHeaderLeft) {
         imHeaderLeft.addEventListener('click', () => {
             closeView(imessageView);
+        });
+    }
+
+    const chatsEditBtn = document.getElementById('chats-edit-btn');
+    if (chatsEditBtn) {
+        chatsEditBtn.addEventListener('click', () => {
+            if (imHeaderLeft) imHeaderLeft.click();
+            else closeView(imessageView);
         });
     }
 

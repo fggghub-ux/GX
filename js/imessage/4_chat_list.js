@@ -6,6 +6,7 @@
     const { apiConfig, userState } = window;
     window.imChat = window.imChat || {};
     const imChat = window.imChat;
+    const chatsSearchInput = document.getElementById('chats-search-input');
 
 function getFriendChatSummary(friend) {
         if (!friend) {
@@ -43,6 +44,7 @@ function getFriendChatSummary(friend) {
 function updateChatsView() {
         const emptyState = document.getElementById('chats-empty-state');
         const listContainer = document.getElementById('chats-list-container');
+        const listSurface = document.getElementById('chats-list-surface');
         const lineHeader = document.querySelector('.line-header');
         const chatsContent = document.getElementById('chats-content');
         const imBottomNavContainer = document.querySelector('.line-bottom-nav-container');
@@ -57,6 +59,7 @@ function updateChatsView() {
 
         if (window.imData.currentActiveFriend) {
             window.imApp?.setActiveThemeSurface?.('chat-detail');
+            if(listSurface) listSurface.style.display = 'none';
             if(emptyState) emptyState.style.display = 'none';
             if(listContainer) listContainer.style.display = 'none';
             if(imBottomNavContainer) imBottomNavContainer.style.display = 'none';
@@ -71,11 +74,12 @@ function updateChatsView() {
             }
         } else {
             window.imApp?.setActiveThemeSurface?.('chats');
+            if(listSurface) listSurface.style.display = 'flex';
             if(imBottomNavContainer) imBottomNavContainer.style.display = 'flex';
             if(lineHeader) lineHeader.style.display = 'flex'; 
             
             window.imChat.renderChatsList();
-            const hasChats = window.imData.friends.some(f => {
+            const hasChats = (window.imData.friends || []).some(f => {
                 const summary = getFriendChatSummary(f);
                 return summary.hasMessages || !!f.isPinned;
             });
@@ -114,7 +118,7 @@ function buildChatAvatarHtml(friend) {
 
     function buildChatUnreadHtml(friend) {
         if (friend.unreadCount && friend.unreadCount > 0) {
-            return `<div class="chat-unread-badge">${friend.unreadCount > 99 ? '99+' : friend.unreadCount}</div>`;
+            return '<span class="chat-unread-dot" aria-hidden="true"></span>';
         }
         return '';
     }
@@ -138,48 +142,41 @@ function buildChatAvatarHtml(friend) {
 
         item.className = isPinned ? 'chat-item pinned' : 'chat-item';
         item.dataset.friendId = String(friend.id);
-        item.innerHTML = isPinned
-            ? `
-                <div style="position: relative; display: inline-block;">
-                    <div class="chat-avatar">${buildChatAvatarHtml(friend)}</div>
-                    ${buildChatUnreadHtml(friend)}
-                </div>
-                <div class="chat-info">
-                    <div class="chat-row-top">
-                        <div class="chat-name">${buildChatNameHtml(friend)}</div>
-                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                            <div class="chat-time">${timeStr}</div>
-                        </div>
+        item.setAttribute('aria-label', friend.unreadCount > 0
+            ? `${friend.nickname}, ${friend.unreadCount} unread`
+            : friend.nickname);
+        item.innerHTML = `
+            ${buildChatUnreadHtml(friend)}
+            <div class="chat-avatar-wrap">
+                <div class="chat-avatar">${buildChatAvatarHtml(friend)}</div>
+            </div>
+            <div class="chat-info">
+                <div class="chat-row-top">
+                    <div class="chat-name">${buildChatNameHtml(friend)}</div>
+                    <div class="chat-meta">
+                        <div class="chat-time">${timeStr}</div>
+                        <svg class="chat-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
                     </div>
-                    <div class="chat-message">${msgPreview}</div>
                 </div>
-                <div class="pin-icon"><i class="fas fa-thumbtack"></i></div>
-            `
-            : `
-                <div style="position: relative; display: inline-block;">
-                    <div class="chat-avatar">${buildChatAvatarHtml(friend)}</div>
-                    ${buildChatUnreadHtml(friend)}
-                </div>
-                <div class="chat-info">
-                    <div class="chat-row-top">
-                        <div class="chat-name">${buildChatNameHtml(friend)}</div>
-                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                            <div class="chat-time">${timeStr}</div>
-                        </div>
-                    </div>
-                    <div class="chat-message">${msgPreview}</div>
-                </div>
-            `;
+                <div class="chat-message">${msgPreview}</div>
+            </div>
+        `;
     }
 
     function renderChatsList() {
         const chatsList = document.getElementById('chats-list');
         if (!chatsList) return;
 
-        const activeFriends = window.imData.friends.filter(f => {
+        const allActiveFriends = (window.imData.friends || []).filter(f => {
             const summary = getFriendChatSummary(f);
             return summary.hasMessages || f.isPinned;
         });
+        const query = String(chatsSearchInput?.value || '').trim().toLocaleLowerCase();
+        const activeFriends = query
+            ? allActiveFriends.filter(friend => String(friend.nickname || '').toLocaleLowerCase().includes(query))
+            : allActiveFriends;
 
         activeFriends.sort((a, b) => {
             if (a.isPinned !== b.isPinned) {
@@ -257,5 +254,7 @@ function buildChatAvatarHtml(friend) {
 
     window.imChat.updateChatsView = updateChatsView;
     window.imChat.renderChatsList = renderChatsList;
+
+    chatsSearchInput?.addEventListener('input', renderChatsList);
 
 });

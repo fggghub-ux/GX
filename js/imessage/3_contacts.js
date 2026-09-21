@@ -7,6 +7,7 @@
 
     // Add Friend Modal Buttons from Header
     const addCharBtn = document.getElementById('add-char-btn');
+    const chatsAddFriendBtn = document.getElementById('chats-add-friend-btn');
     const friendActionsSheet = document.getElementById('friend-actions-sheet');
     const openAddFriendSheetBtn = document.getElementById('open-add-friend-sheet-btn');
     const newFriendsBtn = document.getElementById('new-friends-btn');
@@ -151,6 +152,10 @@
                 if (showToast) showToast('头像处理失败');
             }
         });
+    }
+
+    if (chatsAddFriendBtn) {
+        chatsAddFriendBtn.addEventListener('click', openAddFriendSheetDirectly);
     }
 
     const friendProfileImportBtn = document.getElementById('friend-profile-import-btn');
