@@ -24,7 +24,7 @@
         if (!featuredPage || !featuredSurface) return;
         const surfaceWidth = featuredSurface.getBoundingClientRect().width;
         const isTabletLayout = surfaceWidth >= 700;
-        const scale = isTabletLayout ? 1 : Math.min(1, Math.max(0.75, surfaceWidth / 430));
+        const scale = isTabletLayout ? 1.05 : Math.min(1.05, Math.max(0.82, surfaceWidth / 410));
         featuredPage.style.setProperty('--chats-ui-scale', scale.toFixed(4));
     }
     window.imApp = window.imApp || {};
@@ -40,7 +40,9 @@
     function setEntryStatus(entry, value) {
         const status = document.querySelector(`[data-chats-featured-status="${entry.id}"]`);
         if (!status) return;
-        status.textContent = String(value || '').trim() || entry.defaultStatus;
+        const normalizedValue = String(value == null ? '' : value).trim();
+        status.textContent = normalizedValue;
+        status.hidden = normalizedValue.length === 0;
     }
 
     function closeStatusModalStyle() {
@@ -60,7 +62,7 @@
                 placeholder: 'Enter Your Current Status',
                 defaultValue: currentValue,
                 onConfirm: async value => {
-                    const nextValue = String(value || '').trim() || entry.defaultStatus;
+                    const nextValue = String(value == null ? '' : value).trim();
                     setEntryStatus(entry, nextValue);
                     closeStatusModalStyle();
                     try {
@@ -77,7 +79,7 @@
 
         const nextValue = window.prompt('Enter Your Current Status', currentValue);
         if (nextValue == null) return;
-        const normalizedValue = String(nextValue).trim() || entry.defaultStatus;
+        const normalizedValue = String(nextValue).trim();
         setEntryStatus(entry, normalizedValue);
         window.appStorage?.saveLegacyKey?.(entry.statusStorageKey, normalizedValue);
     }
@@ -118,7 +120,7 @@
             entry,
             typeof saved === 'string' && saved.startsWith('data:image/') ? saved : entry.defaultSrc
         );
-        const savedStatus = window.appStorage?.loadLegacyKey(entry.statusStorageKey, entry.defaultStatus);
+        const savedStatus = window.appStorage?.loadLegacyKey(entry.statusStorageKey, null);
         setEntryStatus(entry, typeof savedStatus === 'string' ? savedStatus : entry.defaultStatus);
 
         // Keep the picker call synchronous so iOS presents the native photo menu.

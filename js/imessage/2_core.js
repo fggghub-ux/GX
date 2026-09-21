@@ -4245,22 +4245,22 @@ window.imApp.formatTime = function(timestamp) {
     const date = new Date(timestamp);
     if (Number.isNaN(date.getTime())) return '';
     const now = new Date();
-    const isToday = date.toDateString() === now.toDateString();
-    const yesterday = new Date(now);
-    yesterday.setDate(now.getDate() - 1);
-    const isYesterday = date.toDateString() === yesterday.toDateString();
+    const dayNumber = value => Date.UTC(value.getFullYear(), value.getMonth(), value.getDate());
+    const dayDifference = Math.round((dayNumber(now) - dayNumber(date)) / 86400000);
     const timeText = window.imDataUtils?.formatUsTime
         ? window.imDataUtils.formatUsTime(date)
         : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
-    if (isToday) return timeText;
-    if (isYesterday) return 'Yesterday';
-    const dateText = date.toLocaleDateString('en-US', {
+    if (dayDifference === 0) return timeText;
+    if (dayDifference === 1) return 'Yesterday';
+    if (dayDifference >= 2 && dayDifference <= 6) {
+        return date.toLocaleDateString('en-US', { weekday: 'long' });
+    }
+    return date.toLocaleDateString('en-US', {
         month: 'numeric',
         day: 'numeric',
-        year: date.getFullYear() === now.getFullYear() ? undefined : 'numeric'
+        year: '2-digit'
     });
-    return `${dateText} ${timeText}`;
   };
 
 window.imApp.addMomentNotification = async function(type, user, momentId, contentOrPayload = '', thought = '') {

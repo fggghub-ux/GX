@@ -9,6 +9,10 @@
     const chatsSearchInput = document.getElementById('chats-search-input');
 
     function formatChatsListTime(timestamp, referenceNow = Date.now()) {
+        if (arguments.length < 2) {
+            const sharedFormatter = window.imApp?.formatTime;
+            if (typeof sharedFormatter === 'function') return sharedFormatter(timestamp);
+        }
         if (!timestamp) return '';
         const date = new Date(timestamp);
         const now = new Date(referenceNow);

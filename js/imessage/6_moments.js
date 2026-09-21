@@ -489,7 +489,7 @@
         return {
             name: user.name || user.realName || user.nickname || 'User',
             signature: user.signature || '',
-            avatarUrl: user.avatarUrl || user.avatar || null,
+            avatarUrl: user.avatarUrl || user.avatar || window.U2_DEFAULT_USER_AVATAR_URL || 'assets/default-user-avatar.jpg',
             persona: user.persona || ''
         };
     }
