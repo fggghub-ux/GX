@@ -1,6 +1,19 @@
 /**
  * Lover App Logic
  */
+const FRIEND_PHONE_APP_META = Object.freeze({
+    music: { name: 'Music', icon: 'assets/lover/char-phone-music.jpg' },
+    health: { name: 'Health', icon: 'assets/lover/char-phone-health.jpg' },
+    pay: { name: 'Wallet', icon: 'assets/lover/char-phone-wallet.jpg' },
+    game: { name: 'Games', icon: 'assets/lover/char-phone-games.jpg' },
+    call: { name: 'Phone', icon: 'assets/lover/char-phone-phone.jpg' },
+    files: { name: 'Files', icon: 'assets/lover/char-phone-files.jpg' },
+    weibo: { name: 'Weibo', icon: null },
+    settings: { name: 'Settings', icon: 'assets/lover/char-phone-settings.jpg' },
+    imessage: { name: 'Message', icon: 'assets/lover/char-phone-message.jpg' },
+    safari: { name: 'Safari', icon: 'assets/lover/char-phone-safari.jpg' }
+});
+
 window.loverApp = {
     view: null,
     backBtn: null,
@@ -3531,9 +3544,28 @@ ${chatContext ? `【近期 iMessage 上下文】\n${chatContext}\n\n` : ''}要�
         }
     },
 
+    syncFriendPhoneAppMetadata: function() {
+        Object.entries(FRIEND_PHONE_APP_META).forEach(([key, meta]) => {
+            const app = document.getElementById(`friend-phone-app-${key}`);
+            if (!app) return;
+
+            app.setAttribute('aria-label', meta.name);
+            app.setAttribute('title', meta.name);
+
+            const label = app.querySelector('.friend-phone-app-label');
+            if (label) label.textContent = meta.name;
+
+            const image = app.querySelector('.friend-phone-app-icon');
+            if (image && meta.icon && image.getAttribute('src') !== meta.icon) {
+                image.src = meta.icon;
+            }
+        });
+    },
+
     openFriendPhone: function(friend) {
         const phoneView = document.getElementById('lovers-friend-phone-view');
         if (!phoneView) return;
+        this.syncFriendPhoneAppMetadata();
         if (String(this.currentFriend?.id || '') !== String(friend?.id || '')) {
             this._healthHistoryIndex = 0;
             this._payHistoryIndex = 0;

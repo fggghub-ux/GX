@@ -682,6 +682,16 @@
     background: #fff !important;
     color: #111 !important;
     box-shadow: none !important;
+    overflow: hidden;
+    padding: 0;
+}
+
+#lovers-friend-phone-view .friend-phone-app-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
 }
 
 #lovers-friend-phone-view > div[style*="grid-template-columns"] > div > div:last-child {

@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="css/login.css?v=20260731-login-gate-focus-v2">
     <link rel="stylesheet" href="css/home.css?v=20260731-ios-swipe-icon-flicker-v1&layout=20260801-fixed-grid-v1&performance=20260801-v1">
     <link rel="stylesheet" href="css/worldbook.css?no-glass=20260803-v1&notes-ios26=20260812-v6">
-    <link rel="stylesheet" href="css/imessage.css?home-ui=20260914-v7&chats-ui=20260922-v2&v=20260721-status-prompt-v3-group-poll-v3&cot=20260725-single-chat-cot-v1&status=20260802-three-line-thought-v1&cotui=20260725-pill-v1&link=20260726-light-link-theatre-v1&relationship=20260801-static-preview-v3&android-keyboard=20260801-v1&group-user-avatar=20260802-v1&game=20260803-anonymous-qa-v7-context-layout&image-assets=20260803-v1&offline-stream-performance=20260805-v1&vector-memory=20260807-local-v1&theme-import-android-v1&moment-visibility=20260811-v1&offline-summary-archive=20260811-v1&offline-meeting-delete=20260811-v1&offline-summary-memory=20260811-v1&offline-chat-rename=20260811-v1&offline-auto-image=20260813-v2&offline-txt-export=20260813-v1&memory-recall-promotion=20260813-v1&memory-action-loading=20260813-v1&theme-surfaces=20260814-v1&theme-avatar-hooks=20260814-v2&chat-record-forward=20260815-v3">
+    <link rel="stylesheet" href="css/imessage.css?home-ui=20260914-v7&chats-ui=20260922-v3&v=20260721-status-prompt-v3-group-poll-v3&cot=20260725-single-chat-cot-v1&status=20260802-three-line-thought-v1&cotui=20260725-pill-v1&link=20260726-light-link-theatre-v1&relationship=20260801-static-preview-v3&android-keyboard=20260801-v1&group-user-avatar=20260802-v1&game=20260803-anonymous-qa-v7-context-layout&image-assets=20260803-v1&offline-stream-performance=20260805-v1&vector-memory=20260807-local-v1&theme-import-android-v1&moment-visibility=20260811-v1&offline-summary-archive=20260811-v1&offline-meeting-delete=20260811-v1&offline-summary-memory=20260811-v1&offline-chat-rename=20260811-v1&offline-auto-image=20260813-v2&offline-txt-export=20260813-v1&memory-recall-promotion=20260813-v1&memory-action-loading=20260813-v1&theme-surfaces=20260814-v1&theme-avatar-hooks=20260814-v2&chat-record-forward=20260815-v3">
     <link rel="stylesheet" href="css/pay.css?v=20260812-pay-transfer-bank-v1">
     <link rel="stylesheet" href="css/bstage.css?v=20260721-mobile-input-layout-v1-android-focus-scope-v1&no-glass=20260803-v1">
     <link rel="stylesheet" href="css/tiktok.css?v=20260721-mobile-input-layout-v1">
@@ -64,7 +64,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="stylesheet" href="css/lover.css?v=20260719-friend-phone-bilingual-v8&no-glass=20260803-v1&moment-language=20260806-v1">
+    <link rel="stylesheet" href="css/lover.css?v=20260719-friend-phone-bilingual-v8&no-glass=20260803-v1&moment-language=20260806-v1&friend-phone-icons=20260922-v1">
     <link rel="stylesheet" href="css/library.css?v=20260715-reader-streaming-v1">
     <!-- App Styles -->
     <link rel="stylesheet" href="css/settings.css?v=20260721-mobile-input-layout-v1&performance=20260801-v2&api-model-picker=20260803-v1&api-open-performance=20260805-v1&about-modal-focus=20260807-v1&data-management-fullscreen=20260812-v2&notification-sound-v1">
@@ -7822,39 +7822,39 @@
                 <!-- 中间 6 个 App (使用 Grid) -->
                 <div style="padding: max(80px, calc(60px + var(--safe-top))) 30px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 15px;">
                     <!-- Music -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-music">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #ff2d55; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; "><i class="fas fa-music"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">Music</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-music" aria-label="Music" title="Music">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #ff2d55; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-music.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Music</div>
                     </div>
                     <!-- 健康 -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-health">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #ff2d55; display: flex; justify-content: center; align-items: center; font-size: 32px; "><i class="fas fa-heart"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">健康</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-health" aria-label="Health" title="Health">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #ff2d55; display: flex; justify-content: center; align-items: center; font-size: 32px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-health.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Health</div>
                     </div>
                     <!-- Pay -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-pay">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #007aff; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 28px; "><i class="fas fa-wallet"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">Pay</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-pay" aria-label="Wallet" title="Wallet">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #007aff; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 28px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-wallet.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Wallet</div>
                     </div>
                     <!-- Game -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-game">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #000; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; "><i class="fas fa-gamepad"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">Game</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-game" aria-label="Games" title="Games">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #000; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-games.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Games</div>
                     </div>
                     <!-- 电话 -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-call">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #34c759; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 28px;  transform: rotate(90deg);"><i class="fas fa-phone"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">call</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-call" aria-label="Phone" title="Phone">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #34c759; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 28px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-phone.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Phone</div>
                     </div>
                     <!-- 文件 (Files) -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-files">
-                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #007aff; display: flex; justify-content: center; align-items: center; font-size: 30px; "><i class="far fa-folder-open"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">文件</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-files" aria-label="Files" title="Files">
+                        <div style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #007aff; display: flex; justify-content: center; align-items: center; font-size: 30px;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-files.jpg" alt=""></div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Files</div>
                     </div>
                     <!-- Weibo -->
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-weibo">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;" id="friend-phone-app-weibo" aria-label="Weibo" title="Weibo">
                         <div style="width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, #ff8a00, #ff2d55); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px;"><i class="fab fa-weibo"></i></div>
-                        <div style="font-size: 12px; color: #333; font-weight: 500;">微博</div>
+                        <div class="friend-phone-app-label" style="font-size: 12px; color: #333; font-weight: 500;">Weibo</div>
                     </div>
                 </div>
 
@@ -8119,11 +8119,11 @@
                 <!-- 悬浮底栏 Dock -->
                 <div style="margin-top: auto; margin-bottom: max(30px, calc(10px + var(--safe-bottom))); align-self: center; background: rgba(0,0,0,0.04);   border-radius: 35px; padding: 18px 22px; display: flex; gap: 20px; ">
                     <!-- 设置 -->
-                    <div id="friend-phone-app-settings" style="width: 60px; height: 60px; border-radius: 14px; background: #8e8e93; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 32px; cursor: pointer;"><i class="fas fa-cog"></i></div>
+                    <div id="friend-phone-app-settings" aria-label="Settings" title="Settings" style="width: 60px; height: 60px; border-radius: 14px; background: #8e8e93; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 32px; cursor: pointer;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-settings.jpg" alt=""></div>
                     <!-- iMessage -->
-                    <div id="friend-phone-app-imessage" style="width: 60px; height: 60px; border-radius: 14px; background: #34c759; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer;"><i class="fas fa-comment"></i></div>
+                    <div id="friend-phone-app-imessage" aria-label="Message" title="Message" style="width: 60px; height: 60px; border-radius: 14px; background: #34c759; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-message.jpg" alt=""></div>
                     <!-- Safari -->
-                    <div id="friend-phone-app-safari" style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #007aff; display: flex; justify-content: center; align-items: center; font-size: 34px; cursor: pointer;"><i class="far fa-compass"></i></div>
+                    <div id="friend-phone-app-safari" aria-label="Safari" title="Safari" style="width: 60px; height: 60px; border-radius: 14px; background: #fff; color: #007aff; display: flex; justify-content: center; align-items: center; font-size: 34px; cursor: pointer;"><img class="friend-phone-app-icon" src="assets/lover/char-phone-safari.jpg" alt=""></div>
                 </div>
             </div>
 
@@ -8545,7 +8545,7 @@
     <script src="js/imessage/game.js?v=20260803-anonymous-qa-v7-context-layout&startup-queue=20260804-v1"></script>
     <script src="js/imessage/data_utils.js?v=20260713-offline-memory-v1-sticker-manifest-v2-memory-event-time-v1-offline-handoff-v2&single-chat-info=20260803-v1&schedule-routine=20260804-v1&summary-error=20260811-v1"></script>
     <script src="js/imessage/home_cover.js?v=20260913-v1"></script>
-    <script src="js/imessage/chats_featured.js?v=20260922-v3"></script>
+    <script src="js/imessage/chats_featured.js?v=20260922-v4"></script>
     <script src="js/imessage/2_core.js?v=20260725-single-chat-cot-v1-default-off-v2-context50-thought-v4-cot-short-v1&cotcopy=20260727-v2&observer=20260730-v1&open-performance=20260802-v1&auto-translation=20260801-v1&status-prompt=20260802-v1&group-user-avatar=20260802-v1&image-generation=20260803-artist-prompt-v6&single-chat-info=20260803-v1&offline-handoff=20260803-v2&cot-default=20260803-v3&chat-runtime-performance=20260803-v1&avatar-self-update=20260803-v2&vendor-lazy=20260803-v1&startup-queue=20260804-v1&schedule-routine=20260804-v1&context-window=20260804-v1&local-vector-memory=20260807-v1&group-identity-css-v1&service-id-v1&x-dm-context=20260811-v2&x-social-post-context=20260811-v2&offline-summary-settings=20260811-v1&time-aware-context=20260811-v1&offline-chat-rename=20260811-v1&group-private-chat-permissions=20260812-v1&auto-face-lock=20260812-v1&memory-recall-promotion=20260813-v1&memory-action-loading=20260813-v1&theme-surfaces=20260814-v1&theme-avatar-hooks=20260814-v2&chat-image-reroll=20260815-v1&chat-record-forward=20260815-v1&chats-ui=20260922-v2"></script>
     <script src="js/imessage/vector_memory.js?v=20260807-local-vector-memory-v1&memory-recall-promotion=20260813-v1"></script>
     <script src="js/imessage/3_contacts.js?v=20260718-friend-profile-import-v1&render-cache=20260801-v1&vendor-lazy=20260803-v1&startup-queue=20260804-v1&chats-add=20260921-v2"></script>
@@ -8581,7 +8581,7 @@
     <script src="js/ui_translation.js?v=20260807-global-ui-zh-v2-lover-name"></script>
 <script src="js/settings.js?v=20260718-ios-pwa-export-v1-notification-sync-v1-custom-notification-sound-v1-api-presets-accessor-v1&global-font-scale=20260801-v3&theme-source=20260802-status-center-v1&assistive=20260801-drag-settle-v3&home-theme=20260731-widgets-v1&app-icon-alpha=20260731-v1&backup=20260814-v9-json-rollback-v1&api=20260803-config-v2-model-search&provider-picker=20260807-v1&image-generation=20260807-model-select-v1&image-understanding=20260811-v1&startup-queue=20260804-v1&api-open-performance=20260805-v1&vector-memory=20260807-local-v1&group-identity-css-v1&theme-import-android-v1&moments-account-hydration=20260806-v1&global-ui-zh-v1&tts=20260811-v1&data-management-fullscreen=20260812-v1&imessage-theme-surfaces=20260814-v1&image-compression=20260815-v1&lover-name=20260914-v1&lover-icon=20260917-v1&default-user-avatar=20260921-v1"></script>
     <script src="js/library.js?v=20260715-reader-streaming-v1&open-performance=20260801-v1&vendor-lazy=20260803-v1&startup-queue=20260804-v1"></script>
-    <script src="js/lover.js?v=20260719-friend-phone-bilingual-v13-android-focus-scope-v1&open-performance=20260801-v1&api=20260803-unified-v1&image-assets=20260803-v1&startup-queue=20260804-v1&moment-language=20260806-v1&android-comment-focus=20260807-v1"></script>
+    <script src="js/lover.js?v=20260719-friend-phone-bilingual-v13-android-focus-scope-v1&open-performance=20260801-v1&api=20260803-unified-v1&image-assets=20260803-v1&startup-queue=20260804-v1&moment-language=20260806-v1&android-comment-focus=20260807-v1&friend-phone-icons=20260922-v1"></script>
     <script src="js/tiktok/2_core.js?v=20260712-tiktok-feed-cleanup-v1&open-performance=20260801-v1&startup-queue=20260804-v1&default-user-avatar=20260921-v1"></script>
     <script src="js/tiktok/3_home.js?v=20260712-tiktok-feed-cleanup-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>
     <script src="js/tiktok/4_chat.js?v=20260712-tiktok-polish-v1&api=20260803-unified-v1&startup-queue=20260804-v1"></script>

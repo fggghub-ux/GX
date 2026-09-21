@@ -24,7 +24,7 @@
         if (!featuredPage || !featuredSurface) return;
         const surfaceWidth = featuredSurface.getBoundingClientRect().width;
         const isTabletLayout = surfaceWidth >= 700;
-        const scale = isTabletLayout ? 1.05 : Math.min(1.05, Math.max(0.82, surfaceWidth / 410));
+        const scale = isTabletLayout ? 1.025 : Math.min(1.025, Math.max(0.785, surfaceWidth / 420));
         featuredPage.style.setProperty('--chats-ui-scale', scale.toFixed(4));
     }
     window.imApp = window.imApp || {};
