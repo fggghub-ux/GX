@@ -1,13 +1,14 @@
 // ==========================================
 // TIKTOK: 2. CORE SYSTEM, STATE & NAVIGATION
 // ==========================================
+const TK_DEFAULT_USER_AVATAR_URL = window.U2_DEFAULT_USER_AVATAR_URL || 'assets/default-user-avatar.jpg';
 
 function createDefaultTkState() {
     return {
         profile: {
             name: 'User',
             handle: 'user',
-            avatar: null,
+            avatar: TK_DEFAULT_USER_AVATAR_URL,
             status: 'No Signa...',
             bio: 'Add bio',
             persona: '',
@@ -96,7 +97,8 @@ function normalizeTkState(rawState = {}) {
         ...safeState,
         profile: {
             ...defaults.profile,
-            ...(safeState.profile && typeof safeState.profile === 'object' ? safeState.profile : {})
+            ...(safeState.profile && typeof safeState.profile === 'object' ? safeState.profile : {}),
+            avatar: safeState.profile?.avatar || defaults.profile.avatar
         },
         activity: {
             ...defaults.activity,

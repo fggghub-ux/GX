@@ -4,20 +4,82 @@
         {
             id: 'tearsorg',
             defaultSrc: 'assets/imessage/chats-featured-tearsorg.jpg',
-            storageKey: 'imessage_chats_featured_tearsorg'
+            storageKey: 'imessage_chats_featured_tearsorg',
+            defaultStatus: 'Touch you',
+            statusStorageKey: 'imessage_chats_featured_status_tearsorg'
         },
         {
             id: 'tiamo',
             defaultSrc: 'assets/imessage/chats-featured-tiamo.jpg',
-            storageKey: 'imessage_chats_featured_tiamo'
+            storageKey: 'imessage_chats_featured_tiamo',
+            defaultStatus: "I'm so tired.",
+            statusStorageKey: 'imessage_chats_featured_status_tiamo'
         }
     ];
+
+    const featuredPage = document.querySelector('.chats-reference-page');
+    const featuredSurface = document.getElementById('chats-list-surface');
+
+    function syncPhoneScale() {
+        if (!featuredPage || !featuredSurface) return;
+        const surfaceWidth = featuredSurface.getBoundingClientRect().width;
+        const isTabletLayout = surfaceWidth >= 700;
+        const scale = isTabletLayout ? 1 : Math.min(1, Math.max(0.75, surfaceWidth / 430));
+        featuredPage.style.setProperty('--chats-ui-scale', scale.toFixed(4));
+    }
+    window.imApp = window.imApp || {};
+    window.imApp.syncChatsLayout = syncPhoneScale;
 
     function setEntrySource(entry, source) {
         const image = document.querySelector(`[data-chats-featured-image="${entry.id}"]`);
         const shadow = document.querySelector(`[data-chats-featured-shadow="${entry.id}"]`);
         if (image) image.src = source;
         if (shadow) shadow.src = source;
+    }
+
+    function setEntryStatus(entry, value) {
+        const status = document.querySelector(`[data-chats-featured-status="${entry.id}"]`);
+        if (!status) return;
+        status.textContent = String(value || '').trim() || entry.defaultStatus;
+    }
+
+    function closeStatusModalStyle() {
+        document.getElementById('custom-modal-overlay')?.classList.remove('im-chats-status-modal');
+    }
+
+    function openStatusEditor(entry) {
+        const status = document.querySelector(`[data-chats-featured-status="${entry.id}"]`);
+        if (!status) return;
+        const currentValue = String(status.textContent || entry.defaultStatus).trim();
+
+        if (typeof window.showCustomModal === 'function') {
+            document.getElementById('custom-modal-overlay')?.classList.add('im-chats-status-modal');
+            window.showCustomModal({
+                title: 'STATUS',
+                type: 'prompt',
+                placeholder: 'Enter Your Current Status',
+                defaultValue: currentValue,
+                onConfirm: async value => {
+                    const nextValue = String(value || '').trim() || entry.defaultStatus;
+                    setEntryStatus(entry, nextValue);
+                    closeStatusModalStyle();
+                    try {
+                        await window.appStorage?.saveLegacyKey?.(entry.statusStorageKey, nextValue);
+                    } catch (error) {
+                        console.error(`Chats featured status update failed: ${entry.id}`, error);
+                        window.showToast?.('Status could not be updated');
+                    }
+                },
+                onCancel: closeStatusModalStyle
+            });
+            return;
+        }
+
+        const nextValue = window.prompt('Enter Your Current Status', currentValue);
+        if (nextValue == null) return;
+        const normalizedValue = String(nextValue).trim() || entry.defaultStatus;
+        setEntryStatus(entry, normalizedValue);
+        window.appStorage?.saveLegacyKey?.(entry.statusStorageKey, normalizedValue);
     }
 
     async function encodeImage(file) {
@@ -48,6 +110,7 @@
     entries.forEach(entry => {
         const button = document.querySelector(`[data-chats-featured="${entry.id}"]`);
         const input = document.getElementById(`chats-featured-${entry.id}-input`);
+        const statusButton = document.querySelector(`[data-chats-featured-status="${entry.id}"]`);
         if (!button || !input) return;
 
         const saved = window.appStorage?.loadLegacyKey(entry.storageKey, null);
@@ -55,9 +118,16 @@
             entry,
             typeof saved === 'string' && saved.startsWith('data:image/') ? saved : entry.defaultSrc
         );
+        const savedStatus = window.appStorage?.loadLegacyKey(entry.statusStorageKey, entry.defaultStatus);
+        setEntryStatus(entry, typeof savedStatus === 'string' ? savedStatus : entry.defaultStatus);
 
         // Keep the picker call synchronous so iOS presents the native photo menu.
         button.addEventListener('click', () => input.click());
+        statusButton?.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            openStatusEditor(entry);
+        });
         input.addEventListener('change', async () => {
             const file = input.files?.[0];
             input.value = '';
@@ -77,4 +147,12 @@
             }
         });
     });
+
+    syncPhoneScale();
+    window.addEventListener('resize', syncPhoneScale, { passive: true });
+    window.visualViewport?.addEventListener('resize', syncPhoneScale, { passive: true });
+    if (typeof ResizeObserver === 'function' && featuredSurface) {
+        const resizeObserver = new ResizeObserver(syncPhoneScale);
+        resizeObserver.observe(featuredSurface);
+    }
 });

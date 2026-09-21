@@ -2,6 +2,9 @@
 // Adapted from iiso/emulator/4_settings.js
 
 (function() {
+    const DEFAULT_USER_AVATAR_URL = 'assets/default-user-avatar.jpg';
+    window.U2_DEFAULT_USER_AVATAR_URL = DEFAULT_USER_AVATAR_URL;
+
     // Basic User/Account State Mock
     let accounts = [];
     let currentAccountId = null;
@@ -919,16 +922,11 @@
                 settingsName.textContent = userState.name || '未登录 Apple ID';
             }
             
-            if (userState.avatarUrl) {
-                if (settingsAvatarImg) {
-                    settingsAvatarImg.src = userState.avatarUrl;
-                    settingsAvatarImg.style.display = 'block';
-                }
-                if (settingsAvatarIcon) settingsAvatarIcon.style.display = 'none';
-            } else {
-                if (settingsAvatarImg) settingsAvatarImg.style.display = 'none';
-                if (settingsAvatarIcon) settingsAvatarIcon.style.display = 'block';
+            if (settingsAvatarImg) {
+                settingsAvatarImg.src = userState.avatarUrl || DEFAULT_USER_AVATAR_URL;
+                settingsAvatarImg.style.display = 'block';
             }
+            if (settingsAvatarIcon) settingsAvatarIcon.style.display = 'none';
             
             // Sync Edit View
             const displayName = document.getElementById('display-name');
@@ -941,16 +939,11 @@
             if (displayPhone) displayPhone.textContent = userState.phone || '暂无手机号';
             if (displaySignature) displaySignature.textContent = userState.signature || '添加账号后可同步头像、名称与签名';
             
-            if (userState.avatarUrl) {
-                if (editAvatarImg) {
-                    editAvatarImg.src = userState.avatarUrl;
-                    editAvatarImg.style.display = 'block';
-                }
-                if (editAvatarIcon) editAvatarIcon.style.display = 'none';
-            } else {
-                if (editAvatarImg) editAvatarImg.style.display = 'none';
-                if (editAvatarIcon) editAvatarIcon.style.display = 'block';
+            if (editAvatarImg) {
+                editAvatarImg.src = userState.avatarUrl || DEFAULT_USER_AVATAR_URL;
+                editAvatarImg.style.display = 'block';
             }
+            if (editAvatarIcon) editAvatarIcon.style.display = 'none';
             
             // Sync iMessage Home Top Bar
             const imProfileName = document.getElementById('imessage-profile-name');
@@ -961,16 +954,11 @@
             if (imProfileName) imProfileName.textContent = userState.name || 'Default User';
             if (imProfileSign) imProfileSign.textContent = userState.signature || 'No Signature';
             
-            if (userState.avatarUrl) {
-                if (imAvatarImg) {
-                    imAvatarImg.src = userState.avatarUrl;
-                    imAvatarImg.style.display = 'block';
-                }
-                if (imAvatarIcon) imAvatarIcon.style.display = 'none';
-            } else {
-                if (imAvatarImg) imAvatarImg.style.display = 'none';
-                if (imAvatarIcon) imAvatarIcon.style.display = 'block';
+            if (imAvatarImg) {
+                imAvatarImg.src = userState.avatarUrl || DEFAULT_USER_AVATAR_URL;
+                imAvatarImg.style.display = 'block';
             }
+            if (imAvatarIcon) imAvatarIcon.style.display = 'none';
         };
 
         // 初始同步 UI (使用包含了全局状态同步的完整方法)

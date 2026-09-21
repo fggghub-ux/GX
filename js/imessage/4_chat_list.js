@@ -8,6 +8,31 @@
     const imChat = window.imChat;
     const chatsSearchInput = document.getElementById('chats-search-input');
 
+    function formatChatsListTime(timestamp, referenceNow = Date.now()) {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+        const now = new Date(referenceNow);
+        if (Number.isNaN(date.getTime()) || Number.isNaN(now.getTime())) return '';
+
+        const dayNumber = value => Date.UTC(value.getFullYear(), value.getMonth(), value.getDate());
+        const dayDifference = Math.round((dayNumber(now) - dayNumber(date)) / 86400000);
+
+        if (dayDifference === 0) {
+            return window.imDataUtils?.formatUsTime
+                ? window.imDataUtils.formatUsTime(date)
+                : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        }
+        if (dayDifference === 1) return 'Yesterday';
+        if (dayDifference >= 2 && dayDifference <= 6) {
+            return date.toLocaleDateString('en-US', { weekday: 'long' });
+        }
+        return date.toLocaleDateString('en-US', {
+            month: 'numeric',
+            day: 'numeric',
+            year: '2-digit'
+        });
+    }
+
 function getFriendChatSummary(friend) {
         if (!friend) {
             return {
@@ -45,7 +70,6 @@ function updateChatsView() {
         const emptyState = document.getElementById('chats-empty-state');
         const listContainer = document.getElementById('chats-list-container');
         const listSurface = document.getElementById('chats-list-surface');
-        const lineHeader = document.querySelector('.line-header');
         const chatsContent = document.getElementById('chats-content');
         const imBottomNavContainer = document.querySelector('.line-bottom-nav-container');
         
@@ -63,8 +87,6 @@ function updateChatsView() {
             if(emptyState) emptyState.style.display = 'none';
             if(listContainer) listContainer.style.display = 'none';
             if(imBottomNavContainer) imBottomNavContainer.style.display = 'none';
-            if(lineHeader) lineHeader.style.display = 'none'; 
-            
             const pageId = `chat-interface-${window.imData.currentActiveFriend.id}`;
             const page = document.getElementById(pageId);
             if (page) {
@@ -76,8 +98,7 @@ function updateChatsView() {
             window.imApp?.setActiveThemeSurface?.('chats');
             if(listSurface) listSurface.style.display = 'flex';
             if(imBottomNavContainer) imBottomNavContainer.style.display = 'flex';
-            if(lineHeader) lineHeader.style.display = 'flex'; 
-            
+            window.imApp?.syncChatsLayout?.();
             window.imChat.renderChatsList();
             const hasChats = (window.imData.friends || []).some(f => {
                 const summary = getFriendChatSummary(f);
@@ -101,9 +122,11 @@ function buildChatAvatarHtml(friend) {
                 : `<div style="width: 100%; height: 100%; background: linear-gradient(135deg, #ff9a9e, #fecfef); color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 20px;">${friend.nickname.charAt(0).toUpperCase()}</div>`;
         }
 
-        return friend.avatarUrl
-            ? `<img src="${friend.avatarUrl}">`
-            : `<i class="fas fa-user"></i>`;
+        if (friend.avatarUrl) return `<img src="${friend.avatarUrl}">`;
+        if (!friend.type || friend.type === 'char') {
+            return '<img src="assets/imessage/default-char-avatar.jpg">';
+        }
+        return '<i class="fas fa-user"></i>';
     }
 
     function buildChatNameHtml(friend) {
@@ -136,9 +159,7 @@ function buildChatAvatarHtml(friend) {
     function updateChatListItem(item, friend, isPinned) {
         const summary = getFriendChatSummary(friend);
         const msgPreview = summary.preview;
-        const timeStr = summary.timestamp && window.imApp.formatTime
-            ? window.imApp.formatTime(summary.timestamp)
-            : '';
+        const timeStr = formatChatsListTime(summary.timestamp);
 
         item.className = isPinned ? 'chat-item pinned' : 'chat-item';
         item.dataset.friendId = String(friend.id);
@@ -254,6 +275,7 @@ function buildChatAvatarHtml(friend) {
 
     window.imChat.updateChatsView = updateChatsView;
     window.imChat.renderChatsList = renderChatsList;
+    window.imChat.formatChatsListTime = formatChatsListTime;
 
     chatsSearchInput?.addEventListener('input', renderChatsList);
 

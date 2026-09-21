@@ -11,6 +11,7 @@
     const friendActionsSheet = document.getElementById('friend-actions-sheet');
     const openAddFriendSheetBtn = document.getElementById('open-add-friend-sheet-btn');
     const newFriendsBtn = document.getElementById('new-friends-btn');
+    const DEFAULT_CHAR_AVATAR_URL = 'assets/imessage/default-char-avatar.jpg';
 
     function resetAddFriendForm() {
         const friendRealName = document.getElementById('friend-realname-input');
@@ -25,7 +26,7 @@
         if(friendRelationship) friendRelationship.value = '';
         if(friendPersona) friendPersona.value = '';
         
-        setFriendAvatar(null);
+        setFriendAvatar(DEFAULT_CHAR_AVATAR_URL, { isDefault: true });
     }
 
     async function commitContactsFriendChange(friendOrId, mutator, options = {}) {
@@ -146,7 +147,7 @@
                     })
                     : await window.imApp.readFileAsDataUrl(file);
 
-                setFriendAvatar(nextAvatar);
+                setFriendAvatar(nextAvatar, { isDefault: false });
             } catch (error) {
                 console.error('Failed to process friend avatar', error);
                 if (showToast) showToast('头像处理失败');
@@ -207,7 +208,7 @@
         });
     }
 
-    function setFriendAvatar(url) {
+    function setFriendAvatar(url, options = {}) {
         const friendAvatarImg = document.getElementById('friend-avatar-img');
         const friendAvatarPreview = document.getElementById('friend-avatar-preview');
         const friendAvatarIcon = friendAvatarPreview ? friendAvatarPreview.querySelector('i') : null;
@@ -216,13 +217,26 @@
 
         if (url) {
             friendAvatarImg.src = url;
+            friendAvatarImg.dataset.defaultAvatar = options.isDefault ? 'true' : 'false';
             friendAvatarImg.style.display = 'block';
             friendAvatarIcon.style.display = 'none';
         } else {
             friendAvatarImg.style.display = 'none';
             friendAvatarIcon.style.display = 'block';
             friendAvatarImg.src = '';
+            delete friendAvatarImg.dataset.defaultAvatar;
         }
+    }
+
+    function getPendingFriendAvatar(includeDefault) {
+        const image = document.getElementById('friend-avatar-img');
+        if (!image || image.style.display !== 'block') {
+            return includeDefault ? DEFAULT_CHAR_AVATAR_URL : null;
+        }
+        if (image.dataset.defaultAvatar === 'true') {
+            return includeDefault ? DEFAULT_CHAR_AVATAR_URL : null;
+        }
+        return image.src || (includeDefault ? DEFAULT_CHAR_AVATAR_URL : null);
     }
 
     // Confirm Add Friend/NPC
@@ -251,7 +265,7 @@
                 signature: document.getElementById('friend-signature-input') ? document.getElementById('friend-signature-input').value || 'No Signature' : 'No Signature',
                 persona: document.getElementById('friend-persona-input') ? document.getElementById('friend-persona-input').value : '',
                 relationship: document.getElementById('friend-relationship-input') ? document.getElementById('friend-relationship-input').value : '',
-                avatarUrl: (document.getElementById('friend-avatar-img') && document.getElementById('friend-avatar-img').style.display === 'block') ? document.getElementById('friend-avatar-img').src : null,
+                avatarUrl: getPendingFriendAvatar(true),
                 messages: [],
                 chatBg: null,
                 customCssEnabled: false,
@@ -295,7 +309,7 @@
                 signature: document.getElementById('friend-signature-input') ? document.getElementById('friend-signature-input').value || 'No Signature' : 'No Signature',
                 persona: document.getElementById('friend-persona-input') ? document.getElementById('friend-persona-input').value : '',
                 relationship: document.getElementById('friend-relationship-input') ? document.getElementById('friend-relationship-input').value : '',
-                avatarUrl: (document.getElementById('friend-avatar-img') && document.getElementById('friend-avatar-img').style.display === 'block') ? document.getElementById('friend-avatar-img').src : null,
+                avatarUrl: getPendingFriendAvatar(false),
                 messages: [],
                 chatBg: null,
                 customCssEnabled: false,
