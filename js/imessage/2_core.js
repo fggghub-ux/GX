@@ -859,6 +859,7 @@ window.imApp.normalizeFriendData = function(friend) {
     normalized.isPinned = !!normalized.isPinned;
     normalized.unreadCount = Math.max(0, Number(normalized.unreadCount) || 0);
     normalized.showTimestamp = !!normalized.showTimestamp;
+    normalized.avatarDisplayMode = normalized.avatarDisplayMode === 'two' ? 'two' : 'one';
     normalized.timeAware = normalized.timeAware !== false;
     normalized.allowRoleRecall = normalized.allowRoleRecall !== false;
     // Group-derived private conversations are enabled by default so existing groups

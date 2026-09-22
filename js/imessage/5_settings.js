@@ -4007,6 +4007,8 @@
         const tsPositionBody = document.getElementById('timestamp-position-body');
         const tsPositionSelect = document.getElementById('timestamp-position-select');
         const chatAvatarToggle = document.getElementById('chat-avatar-toggle');
+        const avatarPositionBody = document.getElementById('avatar-position-body');
+        const avatarPositionSelect = document.getElementById('avatar-position-select');
         const chatLanguageSelect = document.getElementById('chat-language-select');
         const chatCustomLanguageRow = document.getElementById('chat-custom-language-row');
         const chatCustomLanguageInput = document.getElementById('chat-custom-language-input');
@@ -4022,6 +4024,12 @@
         
         if (chatAvatarToggle) {
             chatAvatarToggle.checked = !!friend.showAvatar;
+        }
+        if (avatarPositionBody) {
+            avatarPositionBody.style.display = friend.showAvatar ? 'flex' : 'none';
+        }
+        if (avatarPositionSelect) {
+            avatarPositionSelect.value = friend.avatarDisplayMode === 'two' ? 'two' : 'one';
         }
 
         if (chatLanguageSelect) {
@@ -4501,7 +4509,17 @@
     }
 
     const chatAvatarToggle = document.getElementById('chat-avatar-toggle');
-    if (chatAvatarToggle) {
+    const avatarPositionBody = document.getElementById('avatar-position-body');
+    const avatarPositionSelect = document.getElementById('avatar-position-select');
+    const rerenderAvatarSettingPreview = () => {
+        if (!window.imChat?.rerenderChatContainer) return;
+        const friend = window.imData.currentSettingsFriend;
+        const page = friend ? document.getElementById(`chat-interface-${friend.id}`) : null;
+        const msgContainer = page?.querySelector('.ins-chat-messages');
+        if (friend && msgContainer) window.imChat.rerenderChatContainer(friend, msgContainer, { scroll: false });
+    };
+    if (chatAvatarToggle && chatAvatarToggle.dataset.bound !== 'true') {
+        chatAvatarToggle.dataset.bound = 'true';
         chatAvatarToggle.addEventListener('change', async (e) => {
             if (window.imData.currentSettingsFriend) {
                 const previousValue = !!window.imData.currentSettingsFriend.showAvatar;
@@ -4516,16 +4534,27 @@
                     showToast('头像设置保存失败');
                     return;
                 }
-                
-                if (window.imChat && window.imChat.rerenderChatContainer) {
-                    const friend = window.imData.currentSettingsFriend;
-                    const page = document.getElementById(`chat-interface-${friend.id}`);
-                    if (page) {
-                        const msgContainer = page.querySelector('.ins-chat-messages');
-                        if (msgContainer) window.imChat.rerenderChatContainer(friend, msgContainer, { scroll: false });
-                    }
-                }
+                if (avatarPositionBody) avatarPositionBody.style.display = nextValue ? 'flex' : 'none';
+                rerenderAvatarSettingPreview();
             }
+        });
+    }
+
+    if (avatarPositionSelect && avatarPositionSelect.dataset.bound !== 'true') {
+        avatarPositionSelect.dataset.bound = 'true';
+        avatarPositionSelect.addEventListener('change', async (e) => {
+            if (!window.imData.currentSettingsFriend) return;
+            const previousValue = window.imData.currentSettingsFriend.avatarDisplayMode === 'two' ? 'two' : 'one';
+            const nextValue = e.target.value === 'two' ? 'two' : 'one';
+            const saved = await commitSettingsFriendChange((targetFriend) => {
+                targetFriend.avatarDisplayMode = nextValue;
+            }, { silent: true });
+            if (!saved) {
+                e.target.value = previousValue;
+                showToast('头像样式保存失败');
+                return;
+            }
+            rerenderAvatarSettingPreview();
         });
     }
 

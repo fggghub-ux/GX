@@ -500,17 +500,18 @@ function renderChatBackBadge(page, value = getChatBackBadgeValue()) {
     const normalized = String(value == null ? '' : value).trim();
     const badge = page?.querySelector?.('.im-chat-back-count');
     const backButton = page?.querySelector?.('.im-chat-back-btn');
-    const badgeZone = page?.querySelector?.('.im-chat-back-badge-zone');
+    const restoreHotspot = page?.querySelector?.('.im-chat-back-restore-hotspot');
     if (badge) {
         badge.textContent = normalized;
         badge.hidden = !normalized;
     }
     if (backButton) {
         backButton.setAttribute('aria-label', '返回');
+        backButton.classList.toggle('has-count', !!normalized);
     }
-    if (badgeZone) {
-        badgeZone.classList.toggle('is-empty', !normalized);
-        badgeZone.setAttribute('aria-label', normalized ? `编辑数字 ${normalized}` : '长按编辑数字');
+    if (restoreHotspot) {
+        restoreHotspot.hidden = !!normalized;
+        restoreHotspot.setAttribute('aria-label', '编辑数字');
     }
 }
 
@@ -745,7 +746,7 @@ async function openChatTab(friend) {
                         <i class="fas fa-chevron-left" style="pointer-events: none; margin-right: 2px;"></i>
                    </div>`
                 : isCharChat
-                    ? `<div class="chat-back-btn im-chat-back-btn" role="button"><svg class="im-chat-back-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L8.5 12 L15 18"></path></svg></div><div class="im-chat-back-badge-zone" role="button"><span class="im-chat-back-count"></span></div>`
+                    ? `<div class="chat-back-btn im-chat-back-btn" role="button"><svg class="im-chat-back-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L8.5 12 L15 18"></path></svg><span class="im-chat-back-count"></span></div><button type="button" class="im-chat-back-restore-hotspot" aria-label="编辑数字" hidden></button>`
                     : `<div class="chat-back-btn im-chat-back-btn"><i class="fas fa-chevron-left" style="pointer-events: none;"></i></div>`;
 
             let topBarHtml = '';
@@ -836,44 +837,18 @@ async function openChatTab(friend) {
             if (backBtn) {
                 if (isCharChat) {
                     renderChatBackBadge(page);
-                    const badgeZone = page.querySelector('.im-chat-back-badge-zone');
-                    badgeZone?.addEventListener('click', (event) => {
+                    const badge = page.querySelector('.im-chat-back-count');
+                    const restoreHotspot = page.querySelector('.im-chat-back-restore-hotspot');
+                    badge?.addEventListener('click', (event) => {
                         event.preventDefault();
                         event.stopPropagation();
-                        if (!badgeZone.classList.contains('is-empty')) openChatBackBadgeEditor(page);
+                        openChatBackBadgeEditor(page);
                     });
-
-                    let longPressTimer = null;
-                    let longPressTriggered = false;
-                    const cancelLongPress = () => {
-                        if (longPressTimer) window.clearTimeout(longPressTimer);
-                        longPressTimer = null;
-                    };
-                    badgeZone?.addEventListener('pointerdown', () => {
-                        if (!badgeZone.classList.contains('is-empty')) return;
-                        longPressTriggered = false;
-                        longPressTimer = window.setTimeout(() => {
-                            longPressTriggered = true;
-                            openChatBackBadgeEditor(page);
-                        }, 3000);
-                    });
-                    badgeZone?.addEventListener('pointerup', () => {
-                        cancelLongPress();
-                        if (longPressTriggered) window.setTimeout(() => { longPressTriggered = false; }, 0);
-                    });
-                    ['pointercancel', 'pointerleave'].forEach((eventName) => {
-                        badgeZone?.addEventListener(eventName, () => {
-                            cancelLongPress();
-                            longPressTriggered = false;
-                        });
-                    });
-                    badgeZone?.addEventListener('contextmenu', (event) => event.preventDefault());
-                    badgeZone?.addEventListener('click', (event) => {
-                        if (!longPressTriggered) return;
+                    restoreHotspot?.addEventListener('click', (event) => {
                         event.preventDefault();
-                        event.stopImmediatePropagation();
-                        longPressTriggered = false;
-                    }, true);
+                        event.stopPropagation();
+                        openChatBackBadgeEditor(page);
+                    });
                 }
                 backBtn.addEventListener('click', () => {
                     if (profilePanelOverlay) {
@@ -1492,8 +1467,8 @@ async function openChatTab(friend) {
         const bubbleHeightLimit = Math.max(64, availableHeight - chromeHeight);
 
         bubbleClone.style.maxHeight = `${bubbleHeightLimit}px`;
-        bubbleClone.style.overflowY = 'auto';
-        bubbleClone.style.overscrollBehavior = 'contain';
+        bubbleClone.style.overflow = 'visible';
+        bubbleClone.style.overscrollBehavior = 'auto';
         bubbleClone.style.flexShrink = '1';
         if (reactionBar) reactionBar.style.flexShrink = '0';
         if (mainActions) mainActions.style.flexShrink = '0';

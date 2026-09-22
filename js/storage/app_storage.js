@@ -1941,6 +1941,9 @@
                 : null,
             imageRerollCount: Math.max(0, Number(safe.imageRerollCount) || 0),
             imageRerolledAt: Math.max(0, Number(safe.imageRerolledAt) || 0),
+            imageGroupId: typeof safe.imageGroupId === 'string' ? safe.imageGroupId : '',
+            imageGroupIndex: Math.max(0, Number(safe.imageGroupIndex) || 0),
+            imageGroupCount: Math.max(0, Number(safe.imageGroupCount) || 0),
             fakeLinkData: safe.fakeLinkData && typeof safe.fakeLinkData === 'object'
                 ? sanitizePersistentValue(cloneDeep(safe.fakeLinkData))
                 : null,
@@ -2089,6 +2092,9 @@
                 : null,
             imageRerollCount: Math.max(0, Number(row.imageRerollCount) || 0),
             imageRerolledAt: Math.max(0, Number(row.imageRerolledAt) || 0),
+            imageGroupId: row.imageGroupId || '',
+            imageGroupIndex: Math.max(0, Number(row.imageGroupIndex) || 0),
+            imageGroupCount: Math.max(0, Number(row.imageGroupCount) || 0),
             fakeLinkData: row.fakeLinkData && typeof row.fakeLinkData === 'object'
                 ? cloneDeep(row.fakeLinkData)
                 : null,

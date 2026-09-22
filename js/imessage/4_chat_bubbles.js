@@ -58,9 +58,18 @@
         container.style.setProperty('--group-user-avatar-image', `url(${JSON.stringify(String(avatarUrl))})`);
     }
 
+    function syncSingleChatAvatarState(friend, container) {
+        if (!container) return;
+        const isTwo = (!friend?.type || friend.type === 'char')
+            && friend?.showAvatar === true
+            && friend?.avatarDisplayMode === 'two';
+        container.classList.toggle('avatar-mode-two', isTwo);
+    }
+
     function decorateMessageRowAvatar(row, friend, message = {}) {
         const isCharFriend = !friend?.type || friend.type === 'char';
-        if (!row || !friend?.showAvatar || !isCharFriend || row.querySelector(':scope > .im-message-avatar')) return row;
+        const isEveryMessageMode = friend?.avatarDisplayMode === 'two';
+        if (!row || !friend?.showAvatar || !isCharFriend || !isEveryMessageMode || row.querySelector(':scope > .im-message-avatar')) return row;
         if (message.type === 'system_notice' || row.classList.contains('chat-system-row') || row.classList.contains('typing-row')) return row;
 
         const isUser = message.role === 'user' || row.classList.contains('user-row');
@@ -175,7 +184,7 @@
 
     function buildMessageHeaderHtml(isUser, friend, timestamp, speakerName, speakerAvatar, hasPrev, message = null) {
         if (!friend || !friend.showAvatar || hasPrev) return '';
-        if (!friend.type || friend.type === 'char') return '';
+        if ((!friend.type || friend.type === 'char') && friend.avatarDisplayMode === 'two') return '';
         const date = new Date(timestamp);
         const dateStr = date.toLocaleString('en-US', { month: 'long', day: 'numeric' });
         const ampmTimeStr = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
@@ -1165,13 +1174,13 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
         const summary = document.createElement('div');
         summary.className = `photo-batch-summary ${isUser ? 'is-user' : 'is-char'}${isExpanded ? ' is-expanded' : ''}`;
         summary.dataset.photoGroupId = groupId;
-        const photoOrder = safeMessages.slice();
         const gridIconSvg = `<svg class="photo-batch-grid-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor"></rect><rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor"></rect><rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor"></rect><rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor"></rect></svg>`;
         const downloadIconSvg = `<svg class="photo-batch-download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>`;
         summary.innerHTML = `
             <div class="photo-batch-content">
                 <div class="photo-batch-label">${gridIconSvg}<span>${safeMessages.length} photos</span></div>
-                <div class="photo-batch-stack" aria-label="${safeMessages.length} photos"></div>
+                <div class="photo-batch-stack" aria-label="${safeMessages.length} photos"${isExpanded ? ' hidden' : ''}></div>
+                <div class="photo-batch-expanded-list"${isExpanded ? '' : ' hidden'}></div>
             </div>
             <button type="button" class="photo-batch-toggle" aria-label="${isExpanded ? '收起图片' : '展开图片'}" aria-expanded="${isExpanded ? 'true' : 'false'}">
                 ${downloadIconSvg}
@@ -1180,154 +1189,266 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
         container.appendChild(summary);
 
         const stack = summary.querySelector('.photo-batch-stack');
-        const renderStack = (returningMessage = null, returnDirection = 1) => {
-            if (!stack) return;
-            stack.innerHTML = '';
-            let returningCard = null;
-            photoOrder.slice().reverse().forEach((message, reverseIndex) => {
-                const originalIndex = photoOrder.length - 1 - reverseIndex;
-                const card = document.createElement('div');
-                card.className = `photo-batch-card${originalIndex === 0 ? ' is-top' : ''}`;
-                card.dataset.photoIndex = String(originalIndex);
-                card.style.zIndex = String(photoOrder.length - originalIndex);
-                card.innerHTML = `<img src="${escapeHtml(message.content || window.imChat.CHAT_IMAGE_PLACEHOLDER_URL || '')}" alt="">`;
-                if (message === returningMessage) returningCard = card;
-                stack.appendChild(card);
-            });
-            if (returningCard) {
-                returningCard.style.transition = 'none';
-                returningCard.style.transform = `translateX(${returnDirection * (stack.offsetWidth + 90)}px) rotate(${returnDirection * 12}deg)`;
-                returningCard.style.opacity = '0';
-                requestAnimationFrame(() => requestAnimationFrame(() => {
-                    returningCard.style.removeProperty('transition');
-                    returningCard.style.removeProperty('transform');
-                    returningCard.style.removeProperty('opacity');
-                }));
-            }
-            bindTopCardSwipe();
-        };
+        const cards = safeMessages.map((message, index) => {
+            const card = document.createElement('div');
+            card.className = 'photo-batch-card';
+            card.dataset.photoIndex = String(index);
+            card.innerHTML = `<img src="${escapeHtml(message.content || window.imChat.CHAT_IMAGE_PLACEHOLDER_URL || '')}" alt="">`;
+            stack?.appendChild(card);
+            return card;
+        });
+        const cardOrder = cards.slice();
 
-        const bindTopCardSwipe = () => {
-            const topCard = stack?.querySelector('.photo-batch-card.is-top');
-            if (!topCard) return;
+        // Gesture timing and scrub behavior adapted from fggghub-ux/PhotoStack
+        // (PolyForm Noncommercial 1.0.0). The order wraps so either direction
+        // moves the visible card to the back, as required by this chat UI.
+        const stackMotion = {
+            frame: 0,
+            apply() {
+                cardOrder.forEach((card, depth) => {
+                    card.style.transition = '';
+                    card.classList.toggle('is-top', depth === 0);
+                    card.style.zIndex = String(100 - depth);
+                    card.style.opacity = depth < 3 ? '1' : '0';
+                    if (depth === 0) card.style.transform = 'translateX(0) rotate(0deg) scale(1)';
+                    else {
+                        const offset = 8 + (depth - 1) * 7;
+                        const rotation = 2.2 * Math.min(depth, 3);
+                        const scale = Math.max(.82, 1 - .055 * depth);
+                        card.style.transform = `translateX(${offset}px) rotate(${rotation}deg) scale(${scale})`;
+                    }
+                });
+            },
+            scrub(direction, progress) {
+                const width = stack?.offsetWidth || 140;
+                const peak = width * .52;
+                cardOrder.forEach(card => { card.style.transition = 'none'; });
+                this.apply();
+                cardOrder.forEach(card => { card.style.transition = 'none'; });
+                const current = cardOrder[0];
+                const next = cardOrder[1];
+                const third = cardOrder[2];
+                let x;
+                let rotation;
+                let scale = 1;
+                if (progress <= .5) {
+                    const phase = progress / .5;
+                    x = direction * peak * phase;
+                    rotation = direction * 8 * phase;
+                } else {
+                    const phase = (progress - .5) / .5;
+                    x = direction * (peak - (peak - 8) * phase);
+                    rotation = direction * (8 - 5.8 * phase);
+                    scale = 1 - .055 * phase;
+                }
+                current.style.transform = `translateX(${x}px) rotate(${rotation}deg) scale(${scale})`;
+                current.style.zIndex = progress < .5 ? '110' : '98';
+                if (next) {
+                    next.style.transform = `translateX(${8 * (1 - progress)}px) rotate(${2.2 * (1 - progress)}deg) scale(${.945 + .055 * progress})`;
+                    next.style.opacity = '1';
+                    next.style.zIndex = '105';
+                }
+                if (third) {
+                    third.style.transform = `translateX(${15 - 7 * progress}px) rotate(${4.4 - 2.2 * progress}deg) scale(${.89 + .055 * progress})`;
+                    third.style.opacity = '1';
+                }
+            },
+            finish(direction, fromProgress) {
+                if (this.frame) cancelAnimationFrame(this.frame);
+                const duration = Math.max(140, (1 - fromProgress) * 340);
+                const startedAt = performance.now();
+                const step = (now) => {
+                    const elapsed = Math.min(1, (now - startedAt) / duration);
+                    const eased = 1 - Math.pow(1 - elapsed, 2);
+                    this.scrub(direction, fromProgress + (1 - fromProgress) * eased);
+                    if (elapsed < 1) {
+                        this.frame = requestAnimationFrame(step);
+                        return;
+                    }
+                    this.frame = 0;
+                    cardOrder.push(cardOrder.shift());
+                    this.apply();
+                };
+                this.frame = requestAnimationFrame(step);
+            }
+        };
+        stackMotion.apply();
+
+        if (stack) {
             let pointerId = null;
             let startX = 0;
             let startY = 0;
-            let deltaX = 0;
+            let lastX = 0;
+            let lastTime = 0;
+            let velocity = 0;
             let dragging = false;
-
-            const resetCard = () => {
-                topCard.classList.remove('is-swiping');
-                topCard.style.transform = '';
-                topCard.style.opacity = '';
-            };
-
-            topCard.addEventListener('pointerdown', (event) => {
+            let deltaX = 0;
+            stack.style.touchAction = 'pan-y';
+            stack.addEventListener('pointerdown', (event) => {
                 if (summary.classList.contains('is-expanded')) return;
                 pointerId = event.pointerId;
-                startX = event.clientX;
+                startX = lastX = event.clientX;
                 startY = event.clientY;
+                lastTime = event.timeStamp;
+                velocity = 0;
                 deltaX = 0;
                 dragging = false;
-                topCard.classList.add('is-swiping');
-                topCard.setPointerCapture?.(pointerId);
+                stack.setPointerCapture?.(pointerId);
             });
-
-            topCard.addEventListener('pointermove', (event) => {
+            stack.addEventListener('pointermove', (event) => {
                 if (pointerId !== event.pointerId) return;
-                const nextX = event.clientX - startX;
-                const nextY = event.clientY - startY;
-                if (!dragging && Math.abs(nextY) > Math.abs(nextX) + 8) {
-                    pointerId = null;
-                    resetCard();
-                    return;
-                }
-                if (Math.abs(nextX) > 4) dragging = true;
+                const dx = event.clientX - startX;
+                const dy = event.clientY - startY;
+                if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) dragging = true;
                 if (!dragging) return;
-                deltaX = nextX;
                 event.preventDefault();
-                topCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.035}deg)`;
-                topCard.style.opacity = String(Math.max(.55, 1 - Math.abs(deltaX) / 320));
-            });
-
-            const finishSwipe = (event) => {
-                if (pointerId !== event.pointerId) return;
-                pointerId = null;
-                topCard.releasePointerCapture?.(event.pointerId);
-                if (!dragging || Math.abs(deltaX) < 36) {
-                    resetCard();
-                    return;
+                if (event.timeStamp > lastTime) {
+                    velocity = .7 * ((event.clientX - lastX) / (event.timeStamp - lastTime)) + .3 * velocity;
                 }
-                const direction = deltaX < 0 ? -1 : 1;
-                topCard.classList.remove('is-swiping');
-                topCard.classList.add('is-reordering');
-                topCard.style.transform = `translateX(${direction * (stack.offsetWidth + 90)}px) rotate(${direction * 12}deg)`;
-                topCard.style.opacity = '0';
-                window.setTimeout(() => {
-                    const movedPhoto = photoOrder.shift();
-                    photoOrder.push(movedPhoto);
-                    renderStack(movedPhoto, direction);
-                }, 280);
+                lastX = event.clientX;
+                lastTime = event.timeStamp;
+                deltaX = dx;
+                stackMotion.scrub(dx < 0 ? -1 : 1, Math.min(1, Math.abs(dx) / Math.max(120, stack.offsetWidth * 1.45)));
+            });
+            const release = (event, cancelled = false) => {
+                if (pointerId !== event.pointerId) return;
+                stack.releasePointerCapture?.(pointerId);
+                pointerId = null;
+                const progress = Math.min(1, Math.abs(deltaX) / Math.max(120, stack.offsetWidth * 1.45));
+                const fling = Math.abs(velocity) > .4 && progress > .04;
+                if (!cancelled && dragging && (progress > .32 || fling)) {
+                    stackMotion.finish(deltaX < 0 ? -1 : 1, progress);
+                } else {
+                    stackMotion.apply();
+                }
+                dragging = false;
             };
-
-            topCard.addEventListener('pointerup', finishSwipe);
-            topCard.addEventListener('pointercancel', resetCard);
-        };
-
-        renderStack();
+            stack.addEventListener('pointerup', event => release(event));
+            stack.addEventListener('pointercancel', event => release(event, true));
+        }
 
         const memberRows = [];
+        const expandedList = summary.querySelector('.photo-batch-expanded-list');
         safeMessages.forEach((message) => {
             window.imChat.ensureMessageId(message, 'img');
-            renderImageBubble(message, friend, container, message.timestamp || timestamp);
-            const row = container.lastElementChild;
+            renderImageBubble(message, friend, expandedList, message.timestamp || timestamp);
+            const row = expandedList?.lastElementChild;
             if (row?.classList?.contains('chat-row')) {
                 row.classList.add('photo-batch-member');
                 row.dataset.photoGroupId = groupId;
-                row.hidden = !isExpanded;
                 memberRows.push(row);
             }
         });
 
         const toggle = summary.querySelector('.photo-batch-toggle');
-        let animationTimer = null;
+        let animationToken = 0;
         toggle?.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            if (animationTimer) window.clearTimeout(animationTimer);
+            const token = ++animationToken;
             const expanded = !summary.classList.contains('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             toggle.setAttribute('aria-label', expanded ? '收起图片' : '展开图片');
             if (expanded) {
                 summary.classList.add('is-expanded');
+                if (expandedList) expandedList.hidden = false;
                 memberRows.forEach((row, index) => {
-                    row.hidden = false;
-                    row.classList.add('is-photo-entering');
-                    window.setTimeout(() => {
-                        requestAnimationFrame(() => row.classList.remove('is-photo-entering'));
-                    }, index * 70);
+                    row.getAnimations?.().forEach(animation => animation.cancel());
+                    row.animate?.([
+                        { opacity: 0, transform: 'translateY(-16px) scale(.98)' },
+                        { opacity: 1, transform: 'translateY(0) scale(1)' }
+                    ], { duration: 300, delay: index * 65, easing: 'cubic-bezier(.22,.8,.25,1)', fill: 'both' });
                 });
+                const collapse = stack?.animate?.([
+                    { opacity: 1, transform: 'scale(1)' },
+                    { opacity: 0, transform: 'scale(.96)' }
+                ], { duration: 170, easing: 'ease-out', fill: 'both' });
+                if (collapse && stack) collapse.finished.catch(() => {}).then(() => {
+                    if (token === animationToken) stack.hidden = true;
+                });
+                else if (stack) stack.hidden = true;
                 expandedGroups.add(groupId);
             } else {
-                summary.classList.add('is-collapsing');
-                memberRows.slice().reverse().forEach((row, index) => {
-                    window.setTimeout(() => row.classList.add('is-photo-leaving'), index * 60);
+                const reversed = memberRows.slice().reverse();
+                const total = 240 + Math.max(0, reversed.length - 1) * 55;
+                reversed.forEach((row, index) => {
+                    row.getAnimations?.().forEach(animation => animation.cancel());
+                    row.animate?.([
+                        { opacity: 1, transform: 'translateY(0) scale(1)' },
+                        { opacity: 0, transform: 'translateY(-14px) scale(.98)' }
+                    ], { duration: 240, delay: index * 55, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'both' });
                 });
-                animationTimer = window.setTimeout(() => {
-                    memberRows.forEach(row => {
-                        row.hidden = true;
-                        row.classList.remove('is-photo-leaving');
-                    });
-                    summary.classList.remove('is-expanded', 'is-collapsing');
-                }, 300 + memberRows.length * 60);
+                window.setTimeout(() => {
+                    if (token !== animationToken) return;
+                    if (expandedList) expandedList.hidden = true;
+                    memberRows.forEach(row => row.getAnimations?.().forEach(animation => animation.cancel()));
+                    summary.classList.remove('is-expanded');
+                    if (stack) {
+                        stack.hidden = false;
+                        stack.animate?.([
+                            { opacity: 0, transform: 'scale(.96)' },
+                            { opacity: 1, transform: 'scale(1)' }
+                        ], { duration: 220, easing: 'cubic-bezier(.22,.8,.25,1)' });
+                    }
+                }, total);
                 expandedGroups.delete(groupId);
             }
         });
     }
 
+    function buildPhotoBatchLookup(messages) {
+        const list = Array.isArray(messages) ? messages : [];
+        const lookup = new Map();
+        const explicitGroups = new Map();
+
+        list.forEach((message) => {
+            if (message?.type !== 'image' || Number(message.imageGroupCount) < 2 || !message.imageGroupId) return;
+            const key = `saved:${String(message.imageGroupId)}`;
+            if (!explicitGroups.has(key)) explicitGroups.set(key, []);
+            explicitGroups.get(key).push(message);
+        });
+
+        explicitGroups.forEach((groupMessages, key) => {
+            groupMessages
+                .sort((left, right) => Number(left.imageGroupIndex || 0) - Number(right.imageGroupIndex || 0))
+                .forEach(message => lookup.set(message, { key, messages: groupMessages }));
+        });
+
+        // Older saves discarded imageGroup* fields. A single picker send gives every
+        // member the exact same timestamp and adjacent order, so only recover that
+        // narrow shape; separately sent images are intentionally left independent.
+        for (let index = 0; index < list.length;) {
+            const first = list[index];
+            if (first?.type !== 'image' || lookup.has(first)) {
+                index += 1;
+                continue;
+            }
+            const timestamp = Number(first.timestamp) || 0;
+            const role = String(first.role || 'assistant');
+            const run = [first];
+            let cursor = index + 1;
+            while (cursor < list.length) {
+                const candidate = list[cursor];
+                if (candidate?.type !== 'image'
+                    || lookup.has(candidate)
+                    || (Number(candidate.timestamp) || 0) !== timestamp
+                    || String(candidate.role || 'assistant') !== role) break;
+                run.push(candidate);
+                cursor += 1;
+            }
+            if (run.length > 1) {
+                const key = `legacy:${role}:${timestamp}:${String(first.id || index)}`;
+                run.forEach(message => lookup.set(message, { key, messages: run }));
+            }
+            index = cursor;
+        }
+        return lookup;
+    }
+
 function renderChatHistory(friend, container, options = {}) {
         if (!friend || !container) return;
         syncGroupUserAvatarState(friend, container);
+        syncSingleChatAvatarState(friend, container);
 
         const messages = Array.isArray(friend.messages) ? friend.messages : [];
         const state = getChatHistoryState(friend, container, messages, options);
@@ -1351,11 +1472,11 @@ function renderChatHistory(friend, container, options = {}) {
             if (messages.length > 0) {
                 const visibleMessages = messages.slice(state.visibleStartIndex);
                 const renderedPhotoGroups = new Set();
+                const photoBatchLookup = buildPhotoBatchLookup(messages);
                 visibleMessages.forEach(msg => {
                     window.imChat.ensureMessageId(msg, msg.type === 'pay_transfer' ? 'pay' : 'msg');
-                    const photoGroupId = msg.type === 'image' && Number(msg.imageGroupCount) > 1
-                        ? String(msg.imageGroupId || '')
-                        : '';
+                    const photoBatch = photoBatchLookup.get(msg) || null;
+                    const photoGroupId = photoBatch?.key || '';
                     if (photoGroupId && renderedPhotoGroups.has(photoGroupId)) return;
                     const msgTime = msg.timestamp || 0;
                     if (!previousMessageTime || msgTime - previousMessageTime >= TIMESTAMP_SEPARATOR_INTERVAL_MS) {
@@ -1367,10 +1488,7 @@ function renderChatHistory(friend, container, options = {}) {
                     }
                     if (photoGroupId) {
                         renderedPhotoGroups.add(photoGroupId);
-                        const photoMessages = messages
-                            .filter(item => item?.type === 'image' && String(item.imageGroupId || '') === photoGroupId)
-                            .sort((left, right) => Number(left.imageGroupIndex || 0) - Number(right.imageGroupIndex || 0));
-                        renderPhotoBatchGroup(photoMessages, friend, container, msgTime);
+                        renderPhotoBatchGroup(photoBatch.messages, friend, container, msgTime);
                     } else {
                         renderMessageBubble(msg, friend, container, msgTime);
                     }
@@ -2218,7 +2336,7 @@ function renderVoiceMessageBubble(msg, friend, container, timestamp = Date.now()
             ${metaHtml}
         `;
 
-        const bubbleHtml = `<div class="chat-bubble ${isUser ? 'user-bubble' : 'ai-bubble'} im-card-bubble voice-message-bubble">${contentHtml}</div>`;
+        const bubbleHtml = `<div class="chat-bubble ${isUser ? 'user-bubble' : 'ai-bubble'} voice-message-bubble">${contentHtml}</div>`;
         let bubbleWrapperHtml = bubbleHtml;
         if (isGroupMessage) {
             const avatarInitial = String(speakerName).trim().charAt(0) || '?';
@@ -2645,6 +2763,37 @@ function renderStickerMessageBubble(msg, friend, container, timestamp = Date.now
         bindFakeLinkInteractions(root, pagePackage.interactions);
         return true;
     }
+
+    let liveAvatarRefreshFrame = 0;
+    function scheduleVisibleChatAvatarRefresh() {
+        if (liveAvatarRefreshFrame) cancelAnimationFrame(liveAvatarRefreshFrame);
+        liveAvatarRefreshFrame = requestAnimationFrame(() => {
+            liveAvatarRefreshFrame = 0;
+            const activeFriend = window.imData?.currentActiveFriend;
+            if (!activeFriend) return;
+            const friend = window.imApp?.getFriendById?.(activeFriend.id) || activeFriend;
+            if (!friend?.showAvatar) return;
+            const page = document.getElementById(`chat-interface-${friend.id}`);
+            const container = page?.querySelector('.ins-chat-messages');
+            if (!container) return;
+            const previousScrollTop = container.scrollTop;
+            const distanceFromBottom = container.scrollHeight - container.clientHeight - previousScrollTop;
+            rerenderChatContainer(friend, container, { scroll: false });
+            if (distanceFromBottom < 24) {
+                window.imChat.scrollToBottom(container);
+            } else {
+                container.scrollTop = previousScrollTop;
+            }
+        });
+    }
+
+    window.addEventListener('user-state-updated', (event) => {
+        if (event.detail?.avatarChanged) scheduleVisibleChatAvatarRefresh();
+    });
+    window.addEventListener('avatar-updated', scheduleVisibleChatAvatarRefresh);
+    window.addEventListener('account-updated', (event) => {
+        if (event.detail?.avatarChanged) scheduleVisibleChatAvatarRefresh();
+    });
 
     function normalizeFakeLinkDisplayValue(value) {
         const raw = cleanFakeLinkText(value, 220);
