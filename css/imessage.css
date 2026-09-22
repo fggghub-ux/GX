@@ -3325,13 +3325,13 @@ button.group-private-chat-detail-bubble {
         --chats-inline: 32px;
         --chats-featured-size: 112px;
         --chats-featured-gap: clamp(88px, 15vw, 150px);
-        --chats-list-max-width: 720px;
+        --chats-list-max-width: 840px;
     }
 
     .chats-reference-topbar {
         width: min(100%, 820px);
         align-self: center;
-        padding-top: 22px;
+        padding-top: 38px;
         padding-bottom: 10px;
     }
 
@@ -3349,6 +3349,43 @@ button.group-private-chat-detail-bubble {
     .chats-featured-status {
         top: 8px;
     }
+
+    .chat-item {
+        min-height: 86px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
+    .chat-item::after {
+        left: 86px;
+    }
+
+    .chat-avatar-wrap {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+        margin-left: 7px;
+        margin-right: 13px;
+    }
+
+    .chat-avatar {
+        width: 52px;
+        height: 52px;
+        font-size: 22px;
+    }
+
+    .chat-name {
+        font-size: 15.75px;
+    }
+
+    .chat-time {
+        font-size: 14px;
+    }
+
+    .chat-message {
+        margin-top: 3px;
+        font-size: 14.5px;
+    }
 }
 
 @media (min-width: 1000px) and (orientation: landscape) {
@@ -3357,12 +3394,12 @@ button.group-private-chat-detail-bubble {
         --chats-inline: 44px;
         --chats-featured-size: 118px;
         --chats-featured-gap: clamp(150px, 20vw, 230px);
-        --chats-list-max-width: 860px;
+        --chats-list-max-width: 1040px;
     }
 
     .chats-reference-topbar {
         width: min(100%, 980px);
-        padding-top: 24px;
+        padding-top: 40px;
     }
 
     .chats-reference-search {
