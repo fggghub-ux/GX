@@ -694,6 +694,21 @@
     object-fit: cover;
 }
 
+#friend-phone-app-music > div:first-child,
+#friend-phone-app-pay > div:first-child,
+#friend-phone-app-game > div:first-child,
+#friend-phone-app-call > div:first-child {
+    border: 0 !important;
+}
+
+#friend-phone-app-music .friend-phone-app-icon,
+#friend-phone-app-pay .friend-phone-app-icon,
+#friend-phone-app-game .friend-phone-app-icon,
+#friend-phone-app-call .friend-phone-app-icon {
+    border-radius: 0;
+    transform: scale(1.08);
+}
+
 #lovers-friend-phone-view > div[style*="grid-template-columns"] > div > div:last-child {
     background: transparent !important;
     color: #111 !important;
