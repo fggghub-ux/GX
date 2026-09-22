@@ -500,13 +500,17 @@ function renderChatBackBadge(page, value = getChatBackBadgeValue()) {
     const normalized = String(value == null ? '' : value).trim();
     const badge = page?.querySelector?.('.im-chat-back-count');
     const backButton = page?.querySelector?.('.im-chat-back-btn');
+    const badgeZone = page?.querySelector?.('.im-chat-back-badge-zone');
     if (badge) {
         badge.textContent = normalized;
         badge.hidden = !normalized;
     }
     if (backButton) {
-        backButton.classList.toggle('is-count-hidden', !normalized);
-        backButton.setAttribute('aria-label', normalized ? `返回，未读 ${normalized}` : '返回');
+        backButton.setAttribute('aria-label', '返回');
+    }
+    if (badgeZone) {
+        badgeZone.classList.toggle('is-empty', !normalized);
+        badgeZone.setAttribute('aria-label', normalized ? `编辑数字 ${normalized}` : '长按编辑数字');
     }
 }
 
@@ -741,7 +745,7 @@ async function openChatTab(friend) {
                         <i class="fas fa-chevron-left" style="pointer-events: none; margin-right: 2px;"></i>
                    </div>`
                 : isCharChat
-                    ? `<div class="chat-back-btn im-chat-back-btn" role="button"><svg class="im-chat-back-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L8.5 12 L15 18"></path></svg><span class="im-chat-back-count"></span></div>`
+                    ? `<div class="chat-back-btn im-chat-back-btn" role="button"><svg class="im-chat-back-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L8.5 12 L15 18"></path></svg></div><div class="im-chat-back-badge-zone" role="button"><span class="im-chat-back-count"></span></div>`
                     : `<div class="chat-back-btn im-chat-back-btn"><i class="fas fa-chevron-left" style="pointer-events: none;"></i></div>`;
 
             let topBarHtml = '';
@@ -832,11 +836,11 @@ async function openChatTab(friend) {
             if (backBtn) {
                 if (isCharChat) {
                     renderChatBackBadge(page);
-                    const badge = backBtn.querySelector('.im-chat-back-count');
-                    badge?.addEventListener('click', (event) => {
+                    const badgeZone = page.querySelector('.im-chat-back-badge-zone');
+                    badgeZone?.addEventListener('click', (event) => {
                         event.preventDefault();
                         event.stopPropagation();
-                        openChatBackBadgeEditor(page);
+                        if (!badgeZone.classList.contains('is-empty')) openChatBackBadgeEditor(page);
                     });
 
                     let longPressTimer = null;
@@ -845,26 +849,26 @@ async function openChatTab(friend) {
                         if (longPressTimer) window.clearTimeout(longPressTimer);
                         longPressTimer = null;
                     };
-                    backBtn.addEventListener('pointerdown', () => {
-                        if (!backBtn.classList.contains('is-count-hidden')) return;
+                    badgeZone?.addEventListener('pointerdown', () => {
+                        if (!badgeZone.classList.contains('is-empty')) return;
                         longPressTriggered = false;
                         longPressTimer = window.setTimeout(() => {
                             longPressTriggered = true;
                             openChatBackBadgeEditor(page);
                         }, 3000);
                     });
-                    backBtn.addEventListener('pointerup', () => {
+                    badgeZone?.addEventListener('pointerup', () => {
                         cancelLongPress();
                         if (longPressTriggered) window.setTimeout(() => { longPressTriggered = false; }, 0);
                     });
                     ['pointercancel', 'pointerleave'].forEach((eventName) => {
-                        backBtn.addEventListener(eventName, () => {
+                        badgeZone?.addEventListener(eventName, () => {
                             cancelLongPress();
                             longPressTriggered = false;
                         });
                     });
-                    backBtn.addEventListener('contextmenu', (event) => event.preventDefault());
-                    backBtn.addEventListener('click', (event) => {
+                    badgeZone?.addEventListener('contextmenu', (event) => event.preventDefault());
+                    badgeZone?.addEventListener('click', (event) => {
                         if (!longPressTriggered) return;
                         event.preventDefault();
                         event.stopImmediatePropagation();

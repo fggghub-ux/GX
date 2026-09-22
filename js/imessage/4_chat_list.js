@@ -150,13 +150,126 @@ function buildChatAvatarHtml(friend) {
         return '';
     }
 
+    function buildChatPinnedHtml(isPinned) {
+        return isPinned ? '<span class="chat-pinned-dot" aria-hidden="true"></span>' : '';
+    }
+
+    async function setChatPinnedState(friendId, shouldPin, item) {
+        const liveFriend = (window.imData.friends || []).find(friend => String(friend.id) === String(friendId));
+        if (!liveFriend || !!liveFriend.isPinned === shouldPin) return false;
+        const saved = window.imApp?.commitFriendChange
+            ? await window.imApp.commitFriendChange(friendId, (targetFriend) => {
+                if (targetFriend) targetFriend.isPinned = shouldPin;
+            }, { silent: true, metaOnly: true })
+            : false;
+        item?.classList.remove('is-pin-gesture');
+        if (!saved) {
+            window.showToast?.('置顶状态保存失败');
+            return false;
+        }
+        const latestFriend = (window.imData.friends || []).find(friend => String(friend.id) === String(friendId)) || liveFriend;
+        window.imChat.renderChatsList?.();
+        window.showToast?.(shouldPin ? `Pinned ${latestFriend.nickname || latestFriend.realName || 'Char'}` : 'Unpinned');
+        return true;
+    }
+
+    function bindChatPinGesture(item) {
+        if (!item || item.dataset.pinGestureBound === 'true') return;
+        item.dataset.pinGestureBound = 'true';
+        let pointerId = null;
+        let startX = 0;
+        let startY = 0;
+        let deltaX = 0;
+        let armed = false;
+        let longPressTimer = null;
+
+        const clearLongPress = () => {
+            if (longPressTimer) window.clearTimeout(longPressTimer);
+            longPressTimer = null;
+        };
+        const reset = () => {
+            clearLongPress();
+            pointerId = null;
+            deltaX = 0;
+            armed = false;
+            item.classList.remove('is-pin-gesture');
+            item.style.transform = '';
+        };
+
+        item.addEventListener('pointerdown', (event) => {
+            if (event.button != null && event.button !== 0) return;
+            pointerId = event.pointerId;
+            startX = event.clientX;
+            startY = event.clientY;
+            deltaX = 0;
+            armed = false;
+            clearLongPress();
+            longPressTimer = window.setTimeout(() => {
+                armed = true;
+                item.classList.add('is-pin-gesture');
+                navigator.vibrate?.(20);
+                item.setPointerCapture?.(pointerId);
+            }, 480);
+        });
+
+        item.addEventListener('pointermove', (event) => {
+            if (pointerId !== event.pointerId) return;
+            const nextX = event.clientX - startX;
+            const nextY = event.clientY - startY;
+            if (!armed) {
+                if (Math.abs(nextX) > 10 || Math.abs(nextY) > 10) reset();
+                return;
+            }
+            if (Math.abs(nextY) > Math.abs(nextX) + 16) {
+                reset();
+                return;
+            }
+            deltaX = Math.max(-34, Math.min(34, nextX));
+            item.style.transform = `translateX(${deltaX}px)`;
+            event.preventDefault();
+        });
+
+        item.addEventListener('pointerup', (event) => {
+            if (pointerId !== event.pointerId) return;
+            clearLongPress();
+            const friendId = item.dataset.friendId || '';
+            const liveFriend = (window.imData.friends || []).find(friend => String(friend.id) === String(friendId));
+            const shouldPin = !!liveFriend && !liveFriend.isPinned && deltaX <= -24;
+            const shouldUnpin = !!liveFriend?.isPinned && deltaX >= 24;
+            if (shouldPin || shouldUnpin) {
+                item._suppressChatOpenUntil = Date.now() + 700;
+                item.style.transition = 'transform .18s cubic-bezier(.2,.8,.2,1)';
+                item.style.transform = `translateX(${shouldPin ? -18 : 18}px)`;
+                window.setTimeout(() => {
+                    item.style.transform = '';
+                    window.setTimeout(() => { item.style.transition = ''; }, 190);
+                }, 90);
+                void setChatPinnedState(friendId, shouldPin, item);
+            } else {
+                reset();
+            }
+            pointerId = null;
+            armed = false;
+        });
+
+        item.addEventListener('pointercancel', reset);
+        item.addEventListener('contextmenu', event => event.preventDefault());
+    }
+
     function createChatListItem(friend, isPinned) {
         const item = document.createElement('div');
         item.className = isPinned ? 'chat-item pinned' : 'chat-item';
         item.dataset.friendId = String(friend.id);
-        item.addEventListener('click', () => {
-            window.imChat.openChatTab(friend);
+        item.addEventListener('click', (event) => {
+            if (Date.now() < Number(item._suppressChatOpenUntil || 0)) {
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+            const liveFriend = (window.imData.friends || []).find(entry => String(entry.id) === String(item.dataset.friendId)) || friend;
+            window.imChat.openChatTab(liveFriend);
         });
+        bindChatPinGesture(item);
         return item;
     }
 
@@ -171,6 +284,7 @@ function buildChatAvatarHtml(friend) {
             ? `${friend.nickname}, ${friend.unreadCount} unread`
             : friend.nickname);
         item.innerHTML = `
+            ${buildChatPinnedHtml(isPinned)}
             ${buildChatUnreadHtml(friend)}
             <div class="chat-avatar-wrap">
                 <div class="chat-avatar">${buildChatAvatarHtml(friend)}</div>

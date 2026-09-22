@@ -823,14 +823,13 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
                             </div>
                             <div style="min-width:0;">
                                 <div class="pay-transfer-detail-name" style="font-size:17px; font-weight:700; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">付款人</div>
-                                <div class="pay-transfer-detail-action-text" style="font-size:12px; color:#8e8e93; margin-top:3px;">向你转账</div>
                             </div>
                         </div>
                         <div class="pay-transfer-detail-amount" style="font-size:34px; line-height:1.1; font-weight:800; color:#111; text-align:center; margin:8px 0 10px;">$0.00</div>
-                        <div class="pay-transfer-detail-desc" style="font-size:14px; color:#666; text-align:center; line-height:1.5; min-height:21px; margin-bottom:18px;">转账说明</div>
+                        <div class="pay-transfer-detail-desc" style="display:none; font-size:14px; color:#666; text-align:center; line-height:1.5; min-height:21px; margin-bottom:18px;"></div>
                         <div style="border-radius:18px; background:#f7f7fa; padding:12px 14px; margin-bottom:16px;">
                             <div style="font-size:12px; color:#8e8e93; margin-bottom:6px;">转账详情</div>
-                            <div class="pay-transfer-detail-summary" style="font-size:14px; color:#222; line-height:1.5;">付款人向你转账</div>
+                            <div class="pay-transfer-detail-summary" style="display:none; font-size:14px; color:#222; line-height:1.5;"></div>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <button type="button" class="pay-transfer-detail-reject-btn" style="flex:1; height:46px; border:none; border-radius:16px; background:#f2f2f7; color:#666; font-size:16px; font-weight:600; cursor:pointer;">退回</button>
@@ -879,22 +878,15 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
 
             if (transferDetailName) transferDetailName.textContent = payerName;
             if (transferDetailAmount) transferDetailAmount.textContent = `$${amount.toFixed(2)}`;
-            if (transferDetailDesc) transferDetailDesc.textContent = description;
-            if (transferDetailSummary) transferDetailSummary.textContent = isFamilyCard ? `备注：${description}` : `${payerName} 向 ${payeeName} 转账，备注：${description}`;
-
-            const transferDetailActionText = page.querySelector('.pay-transfer-detail-action-text');
-            if (transferDetailActionText) {
-                if (isFamilyCard) {
-                    transferDetailActionText.textContent = '';
-                } else if (status === 'claimed') {
-                    transferDetailActionText.textContent = `${payeeName}已收款`;
-                } else if (status === 'rejected') {
-                    transferDetailActionText.textContent = '已退还';
-                } else if (canCurrentUserClaim) {
-                    transferDetailActionText.textContent = '向你转账';
-                } else {
-                    transferDetailActionText.textContent = `转账给 ${payeeName}`;
-                }
+            const visibleDescription = String(description || '').trim();
+            const hasCustomDescription = !!visibleDescription && visibleDescription !== '转账' && visibleDescription !== '转账说明';
+            if (transferDetailDesc) {
+                transferDetailDesc.textContent = hasCustomDescription ? visibleDescription : '';
+                transferDetailDesc.style.display = hasCustomDescription ? 'block' : 'none';
+            }
+            if (transferDetailSummary) {
+                transferDetailSummary.textContent = hasCustomDescription ? `备注：${visibleDescription}` : '';
+                transferDetailSummary.style.display = hasCustomDescription ? 'block' : 'none';
             }
 
             if (transferDetailAvatar) {

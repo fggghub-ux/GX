@@ -399,7 +399,7 @@ function createAttachmentSheet(page) {
                     </div>
 
                     <!-- More View -->
-                    <div class="sheet-view view-more" style="position: absolute; inset: 0; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-start; background: #fff; padding: 20px 18px 120px; gap: 14px;">
+                    <div class="sheet-view view-more" style="position: absolute; inset: 0; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-start; background: #fff; padding: 20px 18px 120px; gap: 14px; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scrollbar-width: none; box-sizing: border-box;">
                         <div class="attachment-more-icon-grid">
                             <div class="attachment-more-call-entry" style="display:none;">
                                 <div class="attachment-more-call-icon">
