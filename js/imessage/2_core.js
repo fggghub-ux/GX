@@ -1594,17 +1594,17 @@ window.imApp.formatMessageForApiContext = function(message, friend, options = {}
         const payTarget = normalizedMessage.targetName || normalizedFriend.nickname || '对方';
 
         if (normalizedMessage.payKind === 'user_to_char') {
-            apiContent = `[用户刚刚向你转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}，对象：${payTarget}。你可以收下这笔钱，也可以退回，或者正常回复。]`;
+            apiContent = `[用户刚刚向你转账 $${payAmount.toFixed(2)}，备注：${payDesc}，对象：${payTarget}。你可以收下这笔钱，也可以退回，或者正常回复。]`;
         } else if (normalizedMessage.payKind === 'char_received') {
-            apiContent = `[你刚刚收下了用户的一笔转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}。]`;
+            apiContent = `[你刚刚收下了用户的一笔转账 $${payAmount.toFixed(2)}，备注：${payDesc}。]`;
         } else if (normalizedMessage.payKind === 'char_to_user_pending') {
-            apiContent = `[你刚刚向用户发起了一笔转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}，等待用户领取。]`;
+            apiContent = `[你刚刚向用户发起了一笔转账 $${payAmount.toFixed(2)}，备注：${payDesc}，等待用户领取。]`;
         } else if (normalizedMessage.payKind === 'char_to_user_claimed' || normalizedMessage.payKind === 'user_received_from_char') {
-            apiContent = `[用户已领取你的转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}。]`;
+            apiContent = `[用户已领取你的转账 $${payAmount.toFixed(2)}，备注：${payDesc}。]`;
         } else if (normalizedMessage.payKind === 'user_rejected_from_char') {
-            apiContent = `[用户退回了你的转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}。]`;
+            apiContent = `[用户退回了你的转账 $${payAmount.toFixed(2)}，备注：${payDesc}。]`;
         } else if (normalizedMessage.payKind === 'char_to_user_rejected' || normalizedMessage.payKind === 'user_to_char_rejected') {
-            apiContent = `[你刚刚退回了用户的转账 ¥${payAmount.toFixed(2)}，备注：${payDesc}。]`;
+            apiContent = `[你刚刚退回了用户的转账 $${payAmount.toFixed(2)}，备注：${payDesc}。]`;
         }
     }
 
@@ -4717,12 +4717,17 @@ window.addEventListener('pagehide', () => {
 
     function renderModalImageComposer(composer) {
         currentModalImageComposer = composer || null;
-        const imageUrl = String(composer?.imageUrl || '');
+        const imageUrls = Array.isArray(composer?.images)
+            ? composer.images.map(item => String(item || '')).filter(Boolean)
+            : [];
+        const imageUrl = imageUrls[0] || String(composer?.imageUrl || '');
+        const imageCount = imageUrls.length || (imageUrl ? 1 : 0);
         const previewImage = modalImageComposerPreview?.querySelector('img');
         const previewIcon = modalImageComposerPreview?.querySelector('i');
+        if (modalImageComposerInput) modalImageComposerInput.multiple = composer?.multiple === true;
         if (modalImageComposerGroup) modalImageComposerGroup.style.display = composer ? 'block' : 'none';
         if (modalImageComposerStatus) modalImageComposerStatus.textContent = imageUrl
-            ? (composer?.fileName || '已选择图片')
+            ? (imageCount > 1 ? `已选择 ${imageCount} 张图片` : (composer?.fileName || '已选择图片'))
             : '未选择图片时发送虚拟图片';
         if (modalImageComposerUploadBtn) modalImageComposerUploadBtn.textContent = imageUrl ? '更换' : '上传';
         if (modalImageComposerRemoveBtn) modalImageComposerRemoveBtn.style.display = imageUrl ? '' : 'none';
@@ -4910,6 +4915,12 @@ window.addEventListener('pagehide', () => {
             referenceImage: currentModalReferenceFace?.imageUrl || '',
             uploadedImage: currentModalImageComposer?.imageUrl || '',
             uploadedFileName: currentModalImageComposer?.fileName || '',
+            uploadedImages: Array.isArray(currentModalImageComposer?.images)
+                ? currentModalImageComposer.images.slice()
+                : (currentModalImageComposer?.imageUrl ? [currentModalImageComposer.imageUrl] : []),
+            uploadedFileNames: Array.isArray(currentModalImageComposer?.fileNames)
+                ? currentModalImageComposer.fileNames.slice()
+                : (currentModalImageComposer?.fileName ? [currentModalImageComposer.fileName] : []),
             charAppearance: modalGenerationCharAppearance?.value || '',
             userAppearance: modalGenerationUserAppearance?.value || '',
             artistPrompt: modalGenerationArtistPrompt?.value || '',
@@ -4998,13 +5009,27 @@ window.addEventListener('pagehide', () => {
 
     modalImageComposerUploadBtn?.addEventListener('click', () => modalImageComposerInput?.click());
     modalImageComposerInput?.addEventListener('change', async (event) => {
-        const file = event.target.files?.[0];
+        const files = Array.from(event.target.files || []);
         event.target.value = '';
-        if (!file || typeof currentModalImageComposer?.onUpload !== 'function') return;
+        if (!files.length || typeof currentModalImageComposer?.onUpload !== 'function') return;
         try {
             modalImageComposerUploadBtn.disabled = true;
-            const result = await currentModalImageComposer.onUpload(file);
-            if (result?.imageUrl) renderModalImageComposer({ ...currentModalImageComposer, ...result });
+            if (currentModalImageComposer?.multiple === true) {
+                const results = await Promise.all(files.map(file => currentModalImageComposer.onUpload(file)));
+                const validResults = results.filter(result => result?.imageUrl);
+                if (validResults.length) {
+                    renderModalImageComposer({
+                        ...currentModalImageComposer,
+                        imageUrl: validResults[0].imageUrl,
+                        fileName: validResults[0].fileName || files[0]?.name || '',
+                        images: validResults.map(result => result.imageUrl),
+                        fileNames: validResults.map((result, index) => result.fileName || files[index]?.name || '')
+                    });
+                }
+            } else {
+                const result = await currentModalImageComposer.onUpload(files[0]);
+                if (result?.imageUrl) renderModalImageComposer({ ...currentModalImageComposer, ...result });
+            }
         } catch (error) {
             window.showToast?.(error?.message || '图片处理失败');
         } finally {
@@ -5012,7 +5037,7 @@ window.addEventListener('pagehide', () => {
         }
     });
     modalImageComposerRemoveBtn?.addEventListener('click', () => {
-        renderModalImageComposer({ ...currentModalImageComposer, imageUrl: '', fileName: '' });
+        renderModalImageComposer({ ...currentModalImageComposer, imageUrl: '', fileName: '', images: [], fileNames: [] });
     });
     modalImageComposerRecognizeBtn?.addEventListener('click', async () => {
         if (!currentModalImageComposer?.imageUrl || typeof currentModalImageComposer?.onRecognize !== 'function') return;

@@ -1146,6 +1146,63 @@ function renderMessageBubble(msg, friend, container, timestamp = Date.now()) {
         return true;
     }
 
+function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now()) {
+        const safeMessages = Array.isArray(messages) ? messages.filter(Boolean) : [];
+        if (safeMessages.length < 2) {
+            if (safeMessages[0]) renderMessageBubble(safeMessages[0], friend, container, timestamp);
+            return;
+        }
+
+        const first = safeMessages[0];
+        const groupId = String(first.imageGroupId || first.id || timestamp);
+        const isUser = first.role === 'user';
+        const expandedGroups = container._imExpandedPhotoGroups || new Set();
+        container._imExpandedPhotoGroups = expandedGroups;
+        const isExpanded = expandedGroups.has(groupId);
+
+        const summary = document.createElement('div');
+        summary.className = `photo-batch-summary ${isUser ? 'is-user' : 'is-char'}${isExpanded ? ' is-expanded' : ''}`;
+        summary.dataset.photoGroupId = groupId;
+        summary.innerHTML = `
+            <div class="photo-batch-content">
+                <div class="photo-batch-label"><i class="fas fa-th-large" aria-hidden="true"></i><span>${safeMessages.length} photos</span></div>
+                <div class="photo-batch-stack" aria-label="${safeMessages.length} photos">
+                    <img src="${escapeHtml(first.content || window.imChat.CHAT_IMAGE_PLACEHOLDER_URL || '')}" alt="">
+                </div>
+            </div>
+            <button type="button" class="photo-batch-toggle" aria-label="${isExpanded ? '收起图片' : '展开图片'}" aria-expanded="${isExpanded ? 'true' : 'false'}">
+                <i class="fas fa-download" aria-hidden="true"></i>
+            </button>
+        `;
+        container.appendChild(summary);
+
+        const memberRows = [];
+        safeMessages.forEach((message) => {
+            window.imChat.ensureMessageId(message, 'img');
+            renderImageBubble(message, friend, container, message.timestamp || timestamp);
+            const row = container.lastElementChild;
+            if (row?.classList?.contains('chat-row')) {
+                row.classList.add('photo-batch-member');
+                row.dataset.photoGroupId = groupId;
+                row.hidden = !isExpanded;
+                memberRows.push(row);
+            }
+        });
+
+        const toggle = summary.querySelector('.photo-batch-toggle');
+        toggle?.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const expanded = !summary.classList.contains('is-expanded');
+            summary.classList.toggle('is-expanded', expanded);
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            toggle.setAttribute('aria-label', expanded ? '收起图片' : '展开图片');
+            memberRows.forEach(row => { row.hidden = !expanded; });
+            if (expanded) expandedGroups.add(groupId);
+            else expandedGroups.delete(groupId);
+        });
+    }
+
 function renderChatHistory(friend, container, options = {}) {
         if (!friend || !container) return;
         syncGroupUserAvatarState(friend, container);
@@ -1170,8 +1227,14 @@ function renderChatHistory(friend, container, options = {}) {
             renderLoadMoreHistoryControl(friend, container, messages, state);
 
             if (messages.length > 0) {
-                messages.slice(state.visibleStartIndex).forEach(msg => {
+                const visibleMessages = messages.slice(state.visibleStartIndex);
+                const renderedPhotoGroups = new Set();
+                visibleMessages.forEach(msg => {
                     window.imChat.ensureMessageId(msg, msg.type === 'pay_transfer' ? 'pay' : 'msg');
+                    const photoGroupId = msg.type === 'image' && Number(msg.imageGroupCount) > 1
+                        ? String(msg.imageGroupId || '')
+                        : '';
+                    if (photoGroupId && renderedPhotoGroups.has(photoGroupId)) return;
                     const msgTime = msg.timestamp || 0;
                     if (!previousMessageTime || msgTime - previousMessageTime >= TIMESTAMP_SEPARATOR_INTERVAL_MS) {
                         window.imChat.renderTimestamp(msgTime, container);
@@ -1180,7 +1243,15 @@ function renderChatHistory(friend, container, options = {}) {
                     if (msg === recallAnchorMessage && window.imChat.renderMemoryRecallPresentation) {
                         window.imChat.renderMemoryRecallPresentation(friend, container, recallPresentation);
                     }
-                    renderMessageBubble(msg, friend, container, msgTime);
+                    if (photoGroupId) {
+                        renderedPhotoGroups.add(photoGroupId);
+                        const photoMessages = messages
+                            .filter(item => item?.type === 'image' && String(item.imageGroupId || '') === photoGroupId)
+                            .sort((left, right) => Number(left.imageGroupIndex || 0) - Number(right.imageGroupIndex || 0));
+                        renderPhotoBatchGroup(photoMessages, friend, container, msgTime);
+                    } else {
+                        renderMessageBubble(msg, friend, container, msgTime);
+                    }
                 });
             }
         } finally {
@@ -1730,31 +1801,23 @@ function renderPayTransferBubble(msg, friend, container, timestamp = Date.now())
         setGroupUserRowIdentity(row, friend, msg);
 
         const amount = Number(msg.amount) || 0;
-        const amountText = `¥${amount.toFixed(2)}`;
+        const amountText = `$${amount.toFixed(2)}`;
         const description = msg.description || '转账';
         const parties = resolvePayTransferParties(msg, friend);
-        const { payKind, status, payerName, payeeName } = parties;
+        const { status } = parties;
 
         const isOfficialReceipt = msg.targetName === 'Payment' || msg.cardTitle === '收款通知' || msg.cardTitle === '支付凭证';
         const familyCardText = `${msg.paymentAction || ''} ${msg.cardTitle || ''} ${msg.description || ''} ${msg.content || ''}`;
         const isFamilyCard = msg.paymentAction === 'family_card'
             || msg.paymentAction === 'family_card_increase'
             || familyCardText.includes('亲属卡');
-        let cardTitle = msg.cardTitle || 'Payment';
-        let subtitle = `${payerName} 向 ${payeeName} 转账`;
         let extraClass = '';
 
         if (status === 'claimed') {
-            cardTitle = msg.cardTitle || `${payeeName}已收款`;
-            subtitle = `${payeeName}已收取 ${payerName} 的转账`;
-            extraClass = payKind === 'char_received' ? ' is-received' : ' is-income';
+            extraClass = ' is-claimed';
         } else if (status === 'rejected') {
-            cardTitle = msg.cardTitle || '已退还';
-            subtitle = `${payeeName}已退还 ${payerName} 的转账`;
             extraClass = ' is-rejected';
-        } else if (payKind === 'char_to_user_pending') {
-            cardTitle = msg.cardTitle || '转账';
-            subtitle = `${payerName} 向 ${payeeName} 转账`;
+        } else {
             extraClass = ' is-pending';
         }
 
@@ -1772,7 +1835,7 @@ function renderPayTransferBubble(msg, friend, container, timestamp = Date.now())
                     <div style="width:100%; display:flex; justify-content:center; padding:10px 0;">
                     <div class="im-card-content pay-receipt-card" style="width:280px; background:#fff; border-radius:12px; padding:16px;  display:flex; flex-direction:column; align-items:center;">
                         <div style="font-size:14px; color:#111; margin-bottom:8px;">${description}</div>
-                        <div style="font-size:28px; font-weight:bold; color:#111; margin-bottom:12px;">${sign}¥${amount.toFixed(2)}</div>
+                        <div style="font-size:28px; font-weight:bold; color:#111; margin-bottom:12px;">${sign}$${amount.toFixed(2)}</div>
                           <div style="background:#f2f2f7; border-radius:16px; padding:4px 12px; font-size:12px; color:#8e8e93; margin-bottom:16px;">
                               ${timeStr}
                           </div>
@@ -1784,17 +1847,16 @@ function renderPayTransferBubble(msg, friend, container, timestamp = Date.now())
                 </div>
             `;
         } else {
+            const statusSymbol = status === 'claimed' ? '✓' : (status === 'rejected' ? '×' : '↗');
             const contentHtml = `
                 <div class="pay-transfer-card im-card-content${extraClass}">
                     <div class="pay-transfer-card-top">
-                        <div class="pay-transfer-card-icon"><i class="fas fa-wallet"></i></div>
-                        <div class="pay-transfer-card-meta">
-                            <div class="pay-transfer-card-title">${cardTitle}</div>
-                            ${isFamilyCard ? '' : `<div class="pay-transfer-card-subtitle">${subtitle}</div>`}
-                        </div>
+                        <div class="pay-transfer-card-brand"><span class="pay-transfer-apple-mark"></span><span>Apple Cash</span></div>
                     </div>
-                    <div class="pay-transfer-card-amount">${amountText}</div>
-                    <div class="pay-transfer-card-desc">${description}</div>
+                    <div class="pay-transfer-card-bottom">
+                        <div class="pay-transfer-card-amount">${amountText}</div>
+                        <div class="pay-transfer-card-status" aria-label="${status}">${statusSymbol}</div>
+                    </div>
                 </div>
             `;
 
@@ -1837,7 +1899,7 @@ function renderPayTransferBubble(msg, friend, container, timestamp = Date.now())
         container.appendChild(row);
 
         // 允许用户向AI转账时，以及AI向用户转账时，都可以点击打开弹窗
-        if (payKind === 'char_to_user_pending' || payKind === 'user_to_char') {
+        if (!isOfficialReceipt && !isFamilyCard) {
             const clickableBubble = row.querySelector('.chat-bubble.pay-transfer-bubble') || row.querySelector('.pay-transfer-card');
             if (clickableBubble) {
                 clickableBubble.style.cursor = 'pointer';

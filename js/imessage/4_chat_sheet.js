@@ -401,6 +401,12 @@ function createAttachmentSheet(page) {
                     <!-- More View -->
                     <div class="sheet-view view-more" style="position: absolute; inset: 0; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-start; background: #fff; padding: 20px 18px 120px; gap: 14px;">
                         <div class="attachment-more-icon-grid">
+                            <div class="attachment-more-call-entry" style="display:none;">
+                                <div class="attachment-more-call-icon">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div class="attachment-more-call-label">通话</div>
+                            </div>
                             <div class="attachment-more-regenerate-entry">
                                 <div class="attachment-more-regenerate-icon">
                                     <i class="fas fa-rotate-left"></i>
@@ -459,6 +465,7 @@ function createAttachmentSheet(page) {
                         #chat-attachment-sheet ::-webkit-scrollbar { display: none; }
 
                         .attachment-more-pay-entry,
+                        .attachment-more-call-entry,
                         .attachment-more-link-entry,
                         .attachment-more-voice-entry,
                         .attachment-more-listen-entry,
@@ -473,6 +480,7 @@ function createAttachmentSheet(page) {
                             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
                         }
                         .attachment-more-pay-entry:active,
+                        .attachment-more-call-entry:active,
                         .attachment-more-link-entry:active,
                         .attachment-more-voice-entry:active,
                         .attachment-more-listen-entry:active,
@@ -717,6 +725,7 @@ function createAttachmentSheet(page) {
         const tabsContainer = attachmentSheet.querySelector('.sheet-tabs-container');
         const tabItems = attachmentSheet.querySelectorAll('.sheet-tab-item');
         const payEntry = attachmentSheet.querySelector('.attachment-more-pay-entry');
+        const callEntry = attachmentSheet.querySelector('.attachment-more-call-entry');
         const linkEntry = attachmentSheet.querySelector('.attachment-more-link-entry');
         const regenerateEntry = attachmentSheet.querySelector('.attachment-more-regenerate-entry');
         const voiceEntry = attachmentSheet.querySelector('.attachment-more-voice-entry');
@@ -2606,7 +2615,7 @@ function createAttachmentSheet(page) {
                             <div class="pay-bank-type" style="font-size: 11px; margin-top: 4px; opacity: 0.8;">${c.cardType} - ${c.number}</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 15px; font-weight: 600;">¥${c.balance.toFixed(2)}</div>
+                            <div style="font-size: 15px; font-weight: 600;">$${c.balance.toFixed(2)}</div>
                             ${isInsufficient ? '<div style="font-size: 11px; color: #ff3b30; margin-top: 4px;">余额不足</div>' : ''}
                         </div>
                     </div>
@@ -7856,7 +7865,7 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
                     targetMemberId: isGroupChat ? selectedRecipientId : null,
                     cardTitle: isGroupChat ? '群转账' : 'Pay 转账',
                     payStatus: 'completed',
-                    content: `[用户转账] ${description} ¥${amount.toFixed(2)}`,
+                    content: `[用户转账] ${description} $${amount.toFixed(2)}`,
                     timestamp: now
                 };
 
@@ -7897,6 +7906,14 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
         if (payEntry) {
             payEntry.addEventListener('click', () => {
                 openPayTransferForm();
+            });
+        }
+
+        if (callEntry) {
+            callEntry.addEventListener('click', () => {
+                const targetFriend = getAttachmentTargetFriend();
+                closeSheet();
+                if (targetFriend) window.imChat.openChatCallChooser?.(targetFriend);
             });
         }
 
@@ -8154,7 +8171,7 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
             });
         }
 
-        const getAttachmentTargetFriend = () => {
+        function getAttachmentTargetFriend() {
             const friendId = attachmentSheet.dataset.friendId;
             if (friendId != null && friendId !== '') {
                 const storedFriend = window.imApp?.getFriendById?.(friendId)
@@ -8164,7 +8181,7 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
                 if (storedFriend) return storedFriend;
             }
             return window.imData.currentActiveFriend || null;
-        };
+        }
 
         async function generateAndSendChatImage(prompt, targetFriend, referenceImage = '', promptConfig = {}) {
             const friendId = targetFriend?.id;
@@ -8236,6 +8253,9 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
                     imageComposer: {
                         imageUrl: '',
                         fileName: '',
+                        images: [],
+                        fileNames: [],
+                        multiple: true,
                         onUpload: async (file) => {
                             if (!/^image\//i.test(file?.type || '')) throw new Error('请选择图片文件');
                             const imageUrl = window.imApp?.compressImageFile
@@ -8257,13 +8277,17 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
                             window.showToast?.('请填写图片内容或使用识图生成');
                             return false;
                         }
-                        const imageUrl = modalState.uploadedImage || getChatImagePlaceholderUrl();
-                        window.imChat.sendImageMessage(
-                            imageUrl,
+                        const selectedImages = Array.isArray(modalState.uploadedImages) && modalState.uploadedImages.length
+                            ? modalState.uploadedImages
+                            : [modalState.uploadedImage || getChatImagePlaceholderUrl()];
+                        window.imChat.sendImageMessagesBatch(
+                            selectedImages.map((imageUrl, index) => ({
+                                imageUrl,
+                                fileName: modalState.uploadedFileNames?.[index] || modalState.uploadedFileName || ''
+                            })),
                             description,
                             {
                                 imageSource: modalState.uploadedImage ? 'real' : 'virtual',
-                                fileName: modalState.uploadedFileName || '',
                                 friendId: targetFriend.id
                             }
                         );
@@ -8527,6 +8551,64 @@ async function sendImageMessage(imgUrl, description, options = {}) {
         return true;
     }
 
+async function sendImageMessagesBatch(items, description, options = {}) {
+        const safeItems = (Array.isArray(items) ? items : [])
+            .map(item => typeof item === 'string' ? { imageUrl: item, fileName: '' } : item)
+            .filter(item => String(item?.imageUrl || '').trim());
+        if (safeItems.length <= 1) {
+            const first = safeItems[0];
+            return first
+                ? sendImageMessage(first.imageUrl, description, { ...options, fileName: first.fileName || '' })
+                : false;
+        }
+
+        const friendId = options.friendId ?? window.imData.currentActiveFriend?.id;
+        const friend = friendId != null
+            ? (window.imApp?.getFriendById?.(friendId)
+                || (window.imData.friends || []).find(item => String(item.id) === String(friendId)))
+            : null;
+        if (!friend) {
+            window.showToast?.('未找到当前聊天对象，图片发送失败');
+            return false;
+        }
+
+        const now = Date.now();
+        const groupId = `photo-group-${now}-${Math.random().toString(36).slice(2, 8)}`;
+        const messages = safeItems.map((item, index) => ({
+            id: window.imChat.createMessageId('img'),
+            role: options.role === 'assistant' ? 'assistant' : 'user',
+            type: 'image',
+            content: item.imageUrl,
+            text: description,
+            description,
+            imageSource: options.imageSource || 'real',
+            fileName: item.fileName || '',
+            senderName: options.senderName || '',
+            senderAvatarUrl: options.senderAvatarUrl || '',
+            senderAvatarAssetId: options.senderAvatarAssetId || '',
+            imageGroupId: groupId,
+            imageGroupIndex: index,
+            imageGroupCount: safeItems.length,
+            timestamp: now
+        }));
+        messages.forEach(message => window.imApp.captureGroupUserIdentity?.(friend, message));
+
+        const saved = await commitSheetFriendChange(friend, (targetFriend) => {
+            if (!Array.isArray(targetFriend.messages)) targetFriend.messages = [];
+            targetFriend.messages.push(...messages);
+        }, { silent: true });
+        if (!saved) {
+            window.showToast?.('图片消息保存失败');
+            return false;
+        }
+
+        const page = document.getElementById(`chat-interface-${friend.id}`);
+        const container = page?.querySelector('.ins-chat-messages');
+        const latestFriend = window.imApp?.getFriendById?.(friend.id) || friend;
+        if (container) window.imChat.rerenderChatContainer?.(latestFriend, container, { scroll: true });
+        return true;
+    }
+
 async function sendStickerMessage(sticker) {
         if (!window.imData.currentActiveFriend) return;
         const friend = window.imData.currentActiveFriend;
@@ -8679,10 +8761,15 @@ function openAttachmentSheet() {
         const dynamicLabel = sheet.querySelector('.attachment-more-dynamic-action-label');
         const listenEntry = sheet.querySelector('.attachment-more-listen-entry');
         const listenLabel = sheet.querySelector('.attachment-more-listen-label');
+        const callEntry = sheet.querySelector('.attachment-more-call-entry');
         const activeFriend = window.imData.currentActiveFriend;
         const isOffline = !!window.imData.currentActiveFriend?.offlineMeetEnabled;
         const isDynamicActionEnabled = !!window.imData.currentActiveFriend?.dynamicActionNarrationEnabled;
         const canListenTogether = activeFriend?.type === 'char';
+        const canStartDirectCall = !!activeFriend
+            && activeFriend.type !== 'group'
+            && activeFriend.type !== 'npc'
+            && activeFriend.type !== 'official';
         const isListeningTogether = canListenTogether && !!window.libraryApp?.getTogetherListeningSnapshot?.(activeFriend.id);
         if (label) label.textContent = isOffline ? '退出线下' : '线下';
         if (entry) entry.classList.toggle('active', isOffline);
@@ -8693,9 +8780,11 @@ function openAttachmentSheet() {
             listenEntry.classList.toggle('active', isListeningTogether);
         }
         if (listenLabel) listenLabel.textContent = isListeningTogether ? '退出一起听' : '一起听';
+        if (callEntry) callEntry.style.display = canStartDirectCall ? 'flex' : 'none';
     };
     window.imChat.identifyChatImage = identifyChatImage;
     window.imChat.sendImageMessage = sendImageMessage;
+    window.imChat.sendImageMessagesBatch = sendImageMessagesBatch;
     window.imChat.sendStickerMessage = sendStickerMessage;
     window.imChat.sendVoiceMessage = sendVoiceMessage;
     window.imChat.openAttachmentSheet = openAttachmentSheet;

@@ -826,7 +826,7 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
                                 <div class="pay-transfer-detail-action-text" style="font-size:12px; color:#8e8e93; margin-top:3px;">向你转账</div>
                             </div>
                         </div>
-                        <div class="pay-transfer-detail-amount" style="font-size:34px; line-height:1.1; font-weight:800; color:#111; text-align:center; margin:8px 0 10px;">¥0.00</div>
+                        <div class="pay-transfer-detail-amount" style="font-size:34px; line-height:1.1; font-weight:800; color:#111; text-align:center; margin:8px 0 10px;">$0.00</div>
                         <div class="pay-transfer-detail-desc" style="font-size:14px; color:#666; text-align:center; line-height:1.5; min-height:21px; margin-bottom:18px;">转账说明</div>
                         <div style="border-radius:18px; background:#f7f7fa; padding:12px 14px; margin-bottom:16px;">
                             <div style="font-size:12px; color:#8e8e93; margin-bottom:6px;">转账详情</div>
@@ -878,7 +878,7 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
                 || familyCardText.includes('亲属卡');
 
             if (transferDetailName) transferDetailName.textContent = payerName;
-            if (transferDetailAmount) transferDetailAmount.textContent = `¥${amount.toFixed(2)}`;
+            if (transferDetailAmount) transferDetailAmount.textContent = `$${amount.toFixed(2)}`;
             if (transferDetailDesc) transferDetailDesc.textContent = description;
             if (transferDetailSummary) transferDetailSummary.textContent = isFamilyCard ? `备注：${description}` : `${payerName} 向 ${payeeName} 转账，备注：${description}`;
 
@@ -1066,7 +1066,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 targetName: senderName,
                 cardTitle: '收款',
                 payStatus: 'completed',
-                content: `[收款] ${description} ¥${amount.toFixed(2)}`,
+                content: `[收款] ${description} $${amount.toFixed(2)}`,
                 timestamp: receiveTimestamp,
                 apiRunId: options.apiRunId || null,
                 rollbackSourceMessage: sourceMessageSnapshot
@@ -1088,7 +1088,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 targetName: senderName,
                 cardTitle: `${receiverName}已收款`,
                 payStatus: 'completed',
-                content: `[对方已收款] ${description} ¥${amount.toFixed(2)}`,
+                content: `[对方已收款] ${description} $${amount.toFixed(2)}`,
                 timestamp: receiveTimestamp,
                 apiRunId: options.apiRunId || null,
                 rollbackSourceMessage: sourceMessageSnapshot
@@ -1117,7 +1117,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[对方转账已领取] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[对方转账已领取] ${description} $${amount.toFixed(2)}`;
                 } else {
                     targetMsg.payKind = 'char_received';
                     targetMsg.payDirection = transferModel.direction;
@@ -1127,7 +1127,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[对方转账已领取] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[对方转账已领取] ${description} $${amount.toFixed(2)}`;
                 }
                 updatedMsg = targetMsg;
             }, { silent: true });
@@ -1152,7 +1152,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[对方转账已领取] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[对方转账已领取] ${description} $${amount.toFixed(2)}`;
                 } else {
                     targetMsg.payKind = 'char_received';
                     targetMsg.payDirection = transferModel.direction;
@@ -1162,7 +1162,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[对方转账已领取] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[对方转账已领取] ${description} $${amount.toFixed(2)}`;
                 }
 
                 if (!targetFriend.messages) targetFriend.messages = [];
@@ -1286,7 +1286,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 targetName: senderName,
                 cardTitle: '已退还',
                 payStatus: 'completed',
-                content: `[已退还] ${description} ¥${amount.toFixed(2)}`,
+                content: `[已退还] ${description} $${amount.toFixed(2)}`,
                 timestamp: rejectTimestamp,
                 apiRunId: options.apiRunId || null,
                 rollbackSourceMessage: sourceMessageSnapshot
@@ -1307,7 +1307,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                 targetName: senderName,
                 cardTitle: '已退还',
                 payStatus: 'completed',
-                content: `[对方已退还] ${description} ¥${amount.toFixed(2)}`,
+                content: `[对方已退还] ${description} $${amount.toFixed(2)}`,
                 timestamp: rejectTimestamp,
                 apiRunId: options.apiRunId || null,
                 rollbackSourceMessage: sourceMessageSnapshot
@@ -1336,7 +1336,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[转账已退还] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[转账已退还] ${description} $${amount.toFixed(2)}`;
                 } else {
                     targetMsg.payKind = 'user_to_char_rejected'; // 原始卡片状态更新
                     targetMsg.payDirection = transferModel.direction;
@@ -1346,7 +1346,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[转账已退还] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[转账已退还] ${description} $${amount.toFixed(2)}`;
                 }
                 updatedMsg = targetMsg;
             }, { silent: true });
@@ -1371,7 +1371,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[转账已退还] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[转账已退还] ${description} $${amount.toFixed(2)}`;
                 } else {
                     targetMsg.payKind = 'user_to_char_rejected';
                     targetMsg.payDirection = transferModel.direction;
@@ -1381,7 +1381,7 @@ async function claimIncomingTransfer(friend, msg, options = {}) {
                     targetMsg.payeeName = receiverName;
                     targetMsg.senderName = senderName;
                     targetMsg.receiverName = receiverName;
-                    targetMsg.content = `[转账已退还] ${description} ¥${amount.toFixed(2)}`;
+                    targetMsg.content = `[转账已退还] ${description} $${amount.toFixed(2)}`;
                 }
 
                 if (!targetFriend.messages) targetFriend.messages = [];

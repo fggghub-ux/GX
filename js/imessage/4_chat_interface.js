@@ -488,6 +488,104 @@
     };
 
 const IM_CHAT_PAGE_CACHE_LIMIT = 6;
+const IM_CHAT_BACK_BADGE_STORAGE_KEY = 'imessage_chat_back_badge';
+const IM_CHAT_BACK_BADGE_DEFAULT = '2991';
+
+function getChatBackBadgeValue() {
+    const stored = window.appStorage?.loadLegacyKey?.(IM_CHAT_BACK_BADGE_STORAGE_KEY, null);
+    return stored == null ? IM_CHAT_BACK_BADGE_DEFAULT : String(stored);
+}
+
+function renderChatBackBadge(page, value = getChatBackBadgeValue()) {
+    const normalized = String(value == null ? '' : value).trim();
+    const badge = page?.querySelector?.('.im-chat-back-count');
+    const backButton = page?.querySelector?.('.im-chat-back-btn');
+    if (badge) {
+        badge.textContent = normalized;
+        badge.hidden = !normalized;
+    }
+    if (backButton) {
+        backButton.classList.toggle('is-count-hidden', !normalized);
+        backButton.setAttribute('aria-label', normalized ? `返回，未读 ${normalized}` : '返回');
+    }
+}
+
+function openChatBackBadgeEditor(page) {
+    if (!window.showCustomModal) return;
+    const overlay = document.getElementById('custom-modal-overlay');
+    const modalInput = document.getElementById('modal-input');
+    const clearModalClass = () => {
+        overlay?.classList.remove('im-chat-back-count-modal');
+        if (modalInput) modalInput.inputMode = 'text';
+    };
+    overlay?.classList.add('im-chat-back-count-modal');
+    window.showCustomModal({
+        type: 'prompt',
+        title: 'STATUS',
+        defaultValue: getChatBackBadgeValue(),
+        placeholder: '2991',
+        confirmText: '确认',
+        onCancel: clearModalClass,
+        onConfirm: (value) => {
+            const normalized = String(value == null ? '' : value).trim();
+            window.appStorage?.saveLegacyKey?.(IM_CHAT_BACK_BADGE_STORAGE_KEY, normalized);
+            document.querySelectorAll('.active-chat-interface.im-chat-char').forEach((chatPage) => {
+                renderChatBackBadge(chatPage, normalized);
+            });
+            clearModalClass();
+        }
+    });
+    if (modalInput) modalInput.inputMode = 'numeric';
+}
+
+function openChatCallChooser(friend) {
+    let callOverlay = document.getElementById('custom-call-overlay');
+    if (!callOverlay) {
+        callOverlay = document.createElement('div');
+        callOverlay.id = 'custom-call-overlay';
+        Object.assign(callOverlay.style, {
+            position: 'fixed', inset: '0', backgroundColor: 'rgba(0,0,0,0.4)', zIndex: '10000',
+            display: 'flex', alignItems: 'flex-end', justifyContent: 'center'
+        });
+
+        const sheet = document.createElement('div');
+        Object.assign(sheet.style, {
+            width: '100%', backgroundColor: 'transparent', padding: '10px', boxSizing: 'border-box',
+            paddingBottom: 'max(10px, env(safe-area-inset-bottom))'
+        });
+        const menuGroup = document.createElement('div');
+        Object.assign(menuGroup.style, { backgroundColor: '#fff', borderRadius: '14px', overflow: 'hidden' });
+        const makeCallButton = (label, withDivider, action) => {
+            const button = document.createElement('div');
+            button.innerText = label;
+            Object.assign(button.style, {
+                padding: '18px 0', textAlign: 'center', fontSize: '20px', color: '#007aff', cursor: 'pointer',
+                borderBottom: withDivider ? '1px solid #e5e5ea' : ''
+            });
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                callOverlay.style.display = 'none';
+                action();
+            });
+            return button;
+        };
+        menuGroup.appendChild(makeCallButton('视频通话', true, () => window.showToast?.('视频通话功能开发中...')));
+        menuGroup.appendChild(makeCallButton('语音通话', false, () => {
+            const activeFriend = window.imData?.currentActiveFriend || friend;
+            if (window.imChat?.openVoiceCall) window.imChat.openVoiceCall(activeFriend);
+            else window.showToast?.('语音通话准备中...');
+        }));
+        sheet.appendChild(menuGroup);
+        callOverlay.appendChild(sheet);
+        document.body.appendChild(callOverlay);
+        callOverlay.addEventListener('click', (event) => {
+            if (event.target === callOverlay) callOverlay.style.display = 'none';
+        });
+    }
+    callOverlay.style.display = 'flex';
+}
+
+window.imChat.openChatCallChooser = openChatCallChooser;
 
 function touchChatPageCache(page) {
     if (page) page.dataset.imChatCacheUsedAt = String(Date.now());
@@ -552,7 +650,8 @@ async function openChatTab(friend) {
         let page = document.getElementById(pageId);
         const isGroupChat = friend.type === 'group';
         const isNpcChat = friend.type === 'npc';
-        const interfaceClassName = `active-chat-interface im-chat-interface ${isGroupChat ? 'im-chat-group' : (isNpcChat ? 'im-chat-npc' : 'im-chat-single')}`;
+        const isCharChat = !isGroupChat && !isNpcChat && friend.type !== 'official';
+        const interfaceClassName = `active-chat-interface im-chat-interface ${isGroupChat ? 'im-chat-group' : (isNpcChat ? 'im-chat-npc' : 'im-chat-single')}${isCharChat ? ' im-chat-char' : ''}`;
         const isSleeping = window.imApp.isCharacterSleeping(friend);
         const statusLabel = formatStatusLabel(isSleeping ? 'offline' : 'online', isSleeping);
         const statusColor = isSleeping ? '#8e8e93' : '#34c759';
@@ -620,7 +719,6 @@ async function openChatTab(friend) {
                    </div>
                    <div class="im-chat-title-wrap">
                         <div class="ins-chat-name">${friend.nickname}</div>
-                        <div class="ins-chat-sign"><div class="im-chat-status-dot"></div><span>${statusLabel}</span></div>
                    </div>`;
             }
 
@@ -635,15 +733,16 @@ async function openChatTab(friend) {
             } else if (isNpcChat) {
                 groupRightAvatarHtml = `<div class="chat-menu-btn im-chat-icon-btn"><i class="fas fa-bars"></i></div>`;
             } else {
-                groupRightAvatarHtml = `<div class="chat-call-btn im-chat-icon-btn"><i class="fas fa-phone-alt"></i></div>
-                   <div class="chat-menu-btn im-chat-icon-btn"><i class="fas fa-bars"></i></div>`;
+                groupRightAvatarHtml = `<div class="chat-menu-btn im-chat-icon-btn" aria-label="Chat Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg></div>`;
             }
 
             const backBtnHtml = isGroupChat
                 ? `<div class="chat-back-btn" style="cursor: pointer; width: 36px; height: 36px; background: rgba(242, 242, 247, 0.85);   border-radius: 50%;  display: flex; justify-content: center; align-items: center; pointer-events: auto;">
                         <i class="fas fa-chevron-left" style="pointer-events: none; margin-right: 2px;"></i>
                    </div>`
-                : `<div class="chat-back-btn im-chat-back-btn"><i class="fas fa-chevron-left" style="pointer-events: none;"></i></div>`;
+                : isCharChat
+                    ? `<div class="chat-back-btn im-chat-back-btn" role="button"><svg class="im-chat-back-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L8.5 12 L15 18"></path></svg><span class="im-chat-back-count"></span></div>`
+                    : `<div class="chat-back-btn im-chat-back-btn"><i class="fas fa-chevron-left" style="pointer-events: none;"></i></div>`;
 
             let topBarHtml = '';
             if (isGroupChat) {
@@ -703,10 +802,10 @@ async function openChatTab(friend) {
                     </div>
                     <div class="ins-chat-input-wrapper">
                         ${isNpcChat ? '' : '<div class="ins-input-icon plus-btn"><i class="fas fa-plus"></i></div>'}
-                        <input type="text" placeholder="Message" class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
+                        <input type="text" placeholder="${isCharChat ? 'iMessage' : 'Message'}" class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
                         <div class="im-chat-input-actions">
                             <div class="send-btn-icon send-btn"><i class="fas fa-paper-plane"></i></div>
-                            <div class="send-btn-icon mic-btn"><i class="fas fa-arrow-down"></i></div>
+                            <div class="send-btn-icon mic-btn"><i class="fas fa-microphone"></i></div>
                         </div>
                     </div>
                     ${isGroupChat ? `
@@ -731,6 +830,47 @@ async function openChatTab(friend) {
 
             const backBtn = page.querySelector('.chat-back-btn');
             if (backBtn) {
+                if (isCharChat) {
+                    renderChatBackBadge(page);
+                    const badge = backBtn.querySelector('.im-chat-back-count');
+                    badge?.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        openChatBackBadgeEditor(page);
+                    });
+
+                    let longPressTimer = null;
+                    let longPressTriggered = false;
+                    const cancelLongPress = () => {
+                        if (longPressTimer) window.clearTimeout(longPressTimer);
+                        longPressTimer = null;
+                    };
+                    backBtn.addEventListener('pointerdown', () => {
+                        if (!backBtn.classList.contains('is-count-hidden')) return;
+                        longPressTriggered = false;
+                        longPressTimer = window.setTimeout(() => {
+                            longPressTriggered = true;
+                            openChatBackBadgeEditor(page);
+                        }, 3000);
+                    });
+                    backBtn.addEventListener('pointerup', () => {
+                        cancelLongPress();
+                        if (longPressTriggered) window.setTimeout(() => { longPressTriggered = false; }, 0);
+                    });
+                    ['pointercancel', 'pointerleave'].forEach((eventName) => {
+                        backBtn.addEventListener(eventName, () => {
+                            cancelLongPress();
+                            longPressTriggered = false;
+                        });
+                    });
+                    backBtn.addEventListener('contextmenu', (event) => event.preventDefault());
+                    backBtn.addEventListener('click', (event) => {
+                        if (!longPressTriggered) return;
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
+                        longPressTriggered = false;
+                    }, true);
+                }
                 backBtn.addEventListener('click', () => {
                     if (profilePanelOverlay) {
                         const latestFriend = window.imApp.getFriendById(friend) || friend;
@@ -745,7 +885,6 @@ async function openChatTab(friend) {
 
             const cancelBatchBtn = page.querySelector('.chat-cancel-batch-btn');
             const menuBtn = page.querySelector('.chat-menu-btn');
-            const callBtn = page.querySelector('.chat-call-btn');
             const batchForwardBtn = page.querySelector('.batch-forward-btn');
             const batchDeleteBtn = page.querySelector('.batch-delete-btn');
 
@@ -755,80 +894,6 @@ async function openChatTab(friend) {
 
             window.imChat.ensureTransferDetailOverlayForExistingPage(page, friend);
             window.imChat.ensureRedPacketDetailOverlayForExistingPage(page, friend);
-
-            if (callBtn) {
-                callBtn.addEventListener('click', () => {
-                    let callOverlay = document.getElementById('custom-call-overlay');
-                    if (!callOverlay) {
-                        callOverlay = document.createElement('div');
-                        callOverlay.id = 'custom-call-overlay';
-                        callOverlay.style.position = 'fixed';
-                        callOverlay.style.inset = '0';
-                        callOverlay.style.backgroundColor = 'rgba(0,0,0,0.4)';
-                        callOverlay.style.zIndex = '10000';
-                        callOverlay.style.display = 'flex';
-                        callOverlay.style.alignItems = 'flex-end';
-                        callOverlay.style.justifyContent = 'center';
-                        
-                        const sheet = document.createElement('div');
-                        sheet.style.width = '100%';
-                        sheet.style.backgroundColor = 'transparent';
-                        sheet.style.padding = '10px';
-                        sheet.style.boxSizing = 'border-box';
-                        sheet.style.paddingBottom = 'max(10px, env(safe-area-inset-bottom))';
-                        
-                        const menuGroup = document.createElement('div');
-                        menuGroup.style.backgroundColor = '#fff';
-                        menuGroup.style.borderRadius = '14px';
-                        menuGroup.style.overflow = 'hidden';
-                        
-                        const videoBtn = document.createElement('div');
-                        videoBtn.innerText = '视频通话';
-                        videoBtn.style.padding = '18px 0';
-                        videoBtn.style.textAlign = 'center';
-                        videoBtn.style.fontSize = '20px';
-                        videoBtn.style.color = '#007aff';
-                        videoBtn.style.borderBottom = '1px solid #e5e5ea';
-                        videoBtn.style.cursor = 'pointer';
-                        videoBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            callOverlay.style.display = 'none';
-                            if(window.showToast) window.showToast('视频通话功能开发中...');
-                        });
-                        
-                        const voiceBtn = document.createElement('div');
-                        voiceBtn.innerText = '语音通话';
-                        voiceBtn.style.padding = '18px 0';
-                        voiceBtn.style.textAlign = 'center';
-                        voiceBtn.style.fontSize = '20px';
-                        voiceBtn.style.color = '#007aff';
-                        voiceBtn.style.cursor = 'pointer';
-                        voiceBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            callOverlay.style.display = 'none';
-                            if (window.imChat && window.imChat.openVoiceCall) {
-                                window.imChat.openVoiceCall(friend);
-                            } else {
-                                if(window.showToast) window.showToast('语音通话准备中...');
-                            }
-                        });
-                        
-                        menuGroup.appendChild(videoBtn);
-                        menuGroup.appendChild(voiceBtn);
-                        sheet.appendChild(menuGroup);
-                        callOverlay.appendChild(sheet);
-                        
-                        document.body.appendChild(callOverlay);
-                        
-                        callOverlay.addEventListener('click', (e) => {
-                            if (e.target === callOverlay) {
-                                callOverlay.style.display = 'none';
-                            }
-                        });
-                    }
-                    callOverlay.style.display = 'flex';
-                });
-            }
 
             if (cancelBatchBtn) {
                 cancelBatchBtn.addEventListener('click', () => {
