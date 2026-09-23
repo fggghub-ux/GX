@@ -742,18 +742,11 @@
                         <div style="background: #111; color: #fff; padding: 6px 12px; border-radius: 16px; font-size: 13px; font-weight: 600;">Gift</div>
                     `;
                     
-                    el.addEventListener('click', async () => {
-                        const success = await this.sendGiftMessage(friend, order);
-                        if (success) {
-                            if (orderIndex !== undefined && this.orders[orderIndex]) {
-                                this.orders[orderIndex].gifted = true;
-                                this.saveOrders();
-                                this.renderOrders();
-                            }
-                        }
+                    el.addEventListener('click', () => {
                         this.charSelectionModal.style.display = 'none';
                         this.charSelectionModal.classList.remove('active');
                         this.charSelectionModal.querySelector('.wb-centered-modal-title').textContent = originalTitle;
+                        this.openGiftComposer(friend, order, orderIndex);
                     });
                     
                     this.charList.appendChild(el);
@@ -774,21 +767,48 @@
                 this.charSelectionModal.classList.add('active');
             });
         }
-        
-        async sendGiftMessage(friend, order) {
-            const itemNames = order.items.map(i => i.name).join(', ');
-            const msgText = `Pay for me\n: ${itemNames}\n Price: $${order.total.toFixed(2)}\n Payment Method: ${order.method}`;
-            
-            const htmlCard = `
-                <div style="background: #fff0f3; border-radius: 16px; padding: 16px; min-width: 220px; max-width: 280px; color: #111111; border: 1px solid rgba(255,155,179,0.3); display: inline-block;">
-                    <div style="font-size: 12px; color: #ff9bb3; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; font-weight: 700;">
-                        <i class="fas fa-gift"></i> Gift Received
+
+        openGiftComposer(friend, order, orderIndex) {
+            document.querySelector('.shopping-gift-compose-overlay')?.remove();
+            const overlay = document.createElement('div');
+            overlay.className = 'shopping-gift-compose-overlay';
+            overlay.innerHTML = `
+                <div class="shopping-gift-compose-card" role="dialog" aria-modal="true" aria-label="Gift">
+                    <div class="shopping-gift-compose-title">Gift</div>
+                    <div class="shopping-gift-compose-label">Description</div>
+                    <input class="shopping-gift-compose-input" type="text" maxlength="180" placeholder="e.g. : miss" autocomplete="off">
+                    <div class="shopping-gift-compose-actions">
+                        <button type="button" class="shopping-gift-compose-cancel">取消</button>
+                        <button type="button" class="shopping-gift-compose-submit">发送</button>
                     </div>
-                    <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; white-space: normal; word-break: break-word; line-height: 1.4;">${itemNames}</div>
-                    <div style="font-size: 13px; color: #73706a; margin-top: 8px;">Value $${order.total.toFixed(2)}</div>
-                    <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Paid via ${order.method}</div>
-                </div>
-            `;
+                </div>`;
+            document.body.appendChild(overlay);
+            overlay.style.display = 'flex';
+            const input = overlay.querySelector('.shopping-gift-compose-input');
+            const close = () => overlay.remove();
+            overlay.querySelector('.shopping-gift-compose-cancel')?.addEventListener('click', close);
+            overlay.addEventListener('click', event => { if (event.target === overlay) close(); });
+            overlay.querySelector('.shopping-gift-compose-submit')?.addEventListener('click', async () => {
+                const submit = overlay.querySelector('.shopping-gift-compose-submit');
+                if (submit.disabled) return;
+                submit.disabled = true;
+                const success = await this.sendGiftMessage(friend, order, input?.value || '');
+                submit.disabled = false;
+                if (!success) return;
+                if (orderIndex !== undefined && this.orders[orderIndex]) {
+                    this.orders[orderIndex].gifted = true;
+                    this.saveOrders();
+                    this.renderOrders();
+                }
+                close();
+            });
+            requestAnimationFrame(() => input?.focus());
+        }
+        
+        async sendGiftMessage(friend, order, description = '') {
+            const itemNames = order.items.map(i => i.name).join(', ');
+            const cleanDescription = String(description || '').trim();
+            const msgText = `Gift: ${itemNames}\nValue $${order.total.toFixed(2)}${cleanDescription ? `\nDescription: ${cleanDescription}` : ''}`;
 
             let success = false;
             if (window.imApp && window.imApp.appendFriendMessage) {
@@ -799,9 +819,14 @@
 
                     const newMsg = {
                         role: 'user',
-                        type: 'html',
+                        type: 'gift',
                         text: msgText,
-                        content: htmlCard,
+                        content: msgText,
+                        giftName: itemNames,
+                        giftValue: Number(order.total) || 0,
+                        giftDescription: cleanDescription,
+                        giftStatus: 'pending',
+                        giftPaymentMethod: order.method || '',
                         timestamp: Date.now()
                     };
                     
@@ -810,7 +835,7 @@
                     const aiMsg = {
                         role: 'system',
                         type: 'text',
-                        text: `Gift Received: ${itemNames}。Value $${order.total.toFixed(2)}。Pald via: ${order.method}。请根据你的角色人设对这份礼物做出真实的反应（感谢、惊喜或者失神等）。`,
+                        text: `[Gift event] User sent ${itemNames}. Value $${order.total.toFixed(2)}.${cleanDescription ? ` Description: ${cleanDescription}.` : ''} Paid via ${order.method}. 请理解礼物描述的含义，并根据你的角色人设对这份礼物做出真实反应。`,
                         timestamp: Date.now() + 1
                     };
                     await window.imApp.appendFriendMessage(friend.id, aiMsg, { silent: true });
@@ -1242,7 +1267,7 @@
                     <div class="shopping-order-footer">
                         <div class="shopping-order-method">${order.method}</div>
                         <div class="shopping-order-price-wrap">
-                            <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #ff9bb3; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Gift</button>
+                            <button class="shopping-order-gift-btn" data-index="${index}" style="margin-right: 8px; background: #000; color: #fff; border: none; border-radius: 12px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Gift</button>
                             <button class="shopping-order-comment-btn" data-product="${order.items.length > 0 ? order.items[0].name : ''}">Review</button>
                             <div class="shopping-order-price">$${order.total.toFixed(2)}</div>
                         </div>

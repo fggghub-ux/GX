@@ -12889,6 +12889,112 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
+/* Final iMessage parity fixes: keep the composer at the attachment's native size. */
+.im-chat-char .ins-chat-input-container {
+    padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.im-chat-char .ins-chat-input-wrapper {
+    min-height: 42px !important;
+    gap: 10px !important;
+}
+
+.im-chat-char .ins-chat-input-wrapper::before {
+    left: 52px !important;
+    border-radius: 25px !important;
+    background-color: rgba(255,255,255,.15) !important;
+    -webkit-backdrop-filter: blur(5px) saturate(200%) !important;
+    backdrop-filter: blur(5px) saturate(200%) !important;
+    box-shadow: inset 0 1px 1px -.5px rgba(255,255,255,.6), inset 0 -.5px 1px -.5px rgba(255,255,255,.1), 0 0 0 .7px rgba(255,255,255,.2), 0 2px 6px rgba(0,0,0,.06) !important;
+}
+
+.im-chat-char .ins-input-icon { width: 39px !important; height: 39px !important; font-size: 24px !important; }
+.im-chat-char .ins-message-input { height: 42px !important; padding-left: 18px !important; font-size: 16px !important; }
+.im-chat-char .send-btn-icon { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
+.im-chat-char .mic-btn::after { width: 20px !important; height: 20px !important; }
+.im-chat-char .im-chat-input-actions { gap: 3px !important; padding-right: 7px !important; }
+
+/* Voice content owns the bubble's size; custom themes cannot stretch it. */
+.im-chat-char .chat-row .voice-message-bubble,
+#msg-context-bubble-clone .msg-context-row-clone .voice-message-bubble {
+    width: max-content !important;
+    min-width: 0 !important;
+    max-width: min(77%, 240px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 8px 12px !important;
+    flex: 0 0 auto !important;
+    align-self: flex-end !important;
+    box-sizing: border-box !important;
+}
+
+.im-chat-char .voice-message-bubble-inner,
+#msg-context-bubble-clone .voice-message-bubble-inner {
+    width: max-content !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex: 0 0 auto !important;
+}
+
+.photo-batch-toggle { position: relative; left: 6px; }
+
+/* Blue gift cards adapted to the compact WeChat gift proportions. */
+.chat-row .chat-bubble.gift-message-bubble {
+    width: 213px !important;
+    min-width: 213px !important;
+    max-width: 213px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+}
+
+.gift-message-card {
+    position: relative;
+    width: 213px;
+    height: 85px;
+    box-sizing: border-box;
+    overflow: visible;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3159a9 0%, #23478f 100%);
+    color: rgba(255,255,255,.92);
+    box-shadow: 0 3px 9px rgba(29,65,135,.16);
+    cursor: pointer;
+}
+
+.gift-message-card.is-received { background: linear-gradient(135deg, #798db9 0%, #657ba8 100%); }
+.gift-message-card::after { content:''; position:absolute; top:19px; width:10px; height:16px; background:inherit; transform:rotate(45deg); z-index:-1; }
+.user-row .gift-message-card::after { right:-5px; }
+.ai-row .gift-message-card::after { left:-5px; }
+.gift-message-main { height:64px; display:flex; align-items:center; gap:12px; padding:8px 13px 5px; box-sizing:border-box; }
+.gift-message-bow { width:40px; height:46px; flex:0 0 40px; color:#f7ecd0; }
+.gift-message-copy { min-width:0; flex:1; }
+.gift-message-title { font-size:14px; font-weight:650; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.gift-message-status { margin-top:4px; font-size:11px; color:rgba(255,255,255,.78); }
+.gift-message-footer { height:21px; padding:3px 13px 0; box-sizing:border-box; border-top:1px solid rgba(255,255,255,.16); font-size:10px; color:rgba(255,255,255,.68); }
+
+.gift-detail-overlay { position:absolute; inset:0; z-index:260; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,.28); box-sizing:border-box; }
+.gift-detail-card { width:min(88%, 348px); border-radius:30px; background:rgba(255,255,255,.98); padding:22px 18px 20px; box-sizing:border-box; box-shadow:0 16px 40px rgba(0,0,0,.12); }
+.gift-detail-sender { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.gift-detail-avatar { width:52px; height:52px; border-radius:50%; object-fit:cover; background:#e5e5ea; }
+.gift-detail-sender-name { font-size:18px; font-weight:750; color:#111; }
+.gift-detail-name { color:#111; font-size:34px; font-weight:800; line-height:1.12; text-align:center; word-break:break-word; }
+.gift-detail-value { margin-top:12px; color:#6e6e73; font-size:16px; font-weight:650; text-align:center; }
+.gift-detail-info { margin-top:22px; padding:15px; border-radius:20px; background:#f7f7fa; }
+.gift-detail-info-label { color:#8e8e93; font-size:13px; font-weight:650; }
+.gift-detail-info-text { margin-top:8px; color:#111; font-size:15px; font-weight:650; line-height:1.4; word-break:break-word; }
+
+.shopping-gift-compose-overlay { position:fixed; inset:0; z-index:10050; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,.28); box-sizing:border-box; }
+.shopping-gift-compose-card { width:100%; max-width:348px; border-radius:30px; background:rgba(255,255,255,.98); padding:18px 16px 16px; box-sizing:border-box; }
+.shopping-gift-compose-title { color:#111; font-size:18px; font-weight:800; text-align:center; padding-bottom:16px; border-bottom:1px solid rgba(0,0,0,.08); }
+.shopping-gift-compose-label { margin:22px 0 8px; color:#8e8e93; font-size:13px; font-weight:650; }
+.shopping-gift-compose-input { width:100%; height:48px; border:0; outline:0; border-radius:18px; background:#f7f7fa; padding:0 14px; box-sizing:border-box; color:#111; font-family:inherit; font-size:15px; font-weight:600; }
+.shopping-gift-compose-actions { display:flex; gap:8px; margin-top:24px; }
+.shopping-gift-compose-actions button { flex:1; height:44px; border:0; border-radius:16px; font-size:15px; font-weight:750; cursor:pointer; }
+.shopping-gift-compose-cancel { background:#f2f2f7; color:#666; }
+.shopping-gift-compose-submit { background:#111; color:#fff; }
+
 /* Offline recap and incremental-summary archive */
 .offline-chat-recap {
     margin-top: 14px;
@@ -14532,6 +14638,26 @@ input:checked + .slider:before {
     transform-origin: top center;
 }
 
+/* Keep these overrides after the tablet block above. */
+.im-chat-char .ins-chat-input-container { padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important; }
+.im-chat-char .ins-chat-input-wrapper { min-height: 42px !important; gap: 10px !important; }
+.im-chat-char .ins-chat-input-wrapper::before { left: 52px !important; border-radius: 25px !important; }
+.im-chat-char .ins-input-icon { width: 39px !important; height: 39px !important; font-size: 24px !important; }
+.im-chat-char .ins-message-input { height: 42px !important; padding-left: 18px !important; font-size: 16px !important; }
+.im-chat-char .send-btn-icon { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
+.im-chat-char .mic-btn::after { width: 20px !important; height: 20px !important; }
+.im-chat-char .im-chat-input-actions { gap: 3px !important; padding-right: 7px !important; }
+.im-chat-char .chat-row .voice-message-bubble,
+#msg-context-bubble-clone .msg-context-row-clone .voice-message-bubble {
+    width: max-content !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex: 0 0 auto !important;
+}
+.photo-batch-toggle { position: relative; left: 6px; }
+
 /* Apple Cash card */
 .chat-row .chat-bubble.pay-transfer-bubble {
     width: min(52vw, 220px) !important;
@@ -14701,4 +14827,32 @@ input:checked + .slider:before {
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
+}
+
+.im-chat-char .im-chat-back-restore-hotspot { left:59px !important; width:104px !important; z-index:80 !important; pointer-events:auto !important; }
+
+#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble)::before,
+#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble)::after { content:none !important; display:none !important; }
+#msg-context-bubble-clone .msg-context-row-clone:not(.has-next) .chat-bubble:not(.im-card-bubble)::after {
+    content:'' !important; display:block !important; position:absolute !important; width:17px !important; height:17px !important;
+    bottom:-6px !important; background:currentColor !important; background-image:none !important; clip-path:polygon(0 0,100% 0,100% 100%) !important;
+}
+#msg-context-bubble-clone .msg-context-row-clone.user-row:not(.has-next) .chat-bubble:not(.im-card-bubble)::after { right:1px !important; color:#a0a0a0 !important; transform:rotate(18deg) !important; }
+#msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble)::after { left:1px !important; color:#e9e9ea !important; transform:scaleX(-1) rotate(18deg) !important; }
+
+.chat-row .chat-bubble.pay-transfer-bubble { width:min(52vw,219px) !important; min-width:min(52vw,219px) !important; max-width:min(52vw,219px) !important; }
+.pay-transfer-card { min-height:107px !important; border-color:rgba(0,0,0,.07) !important; background:linear-gradient(145deg,#fff 0%,#fafafa 100%) !important; box-shadow:0 7px 16px rgba(0,0,0,.09) !important; }
+.pay-transfer-card.is-rejected { background:#000 !important; }
+
+@media (min-width: 768px) {
+    .im-chat-char .ins-chat-input-container { padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important; }
+    .im-chat-char .ins-chat-input-wrapper { min-height: 42px !important; gap: 10px !important; }
+    .im-chat-char .ins-chat-input-wrapper::before { left: 52px !important; border-radius: 25px !important; }
+    .im-chat-char .ins-input-icon { width: 39px !important; height: 39px !important; font-size: 24px !important; }
+    .im-chat-char .ins-message-input { height: 42px !important; padding-left: 18px !important; font-size: 16px !important; }
+    .im-chat-char .send-btn-icon { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
+    .im-chat-char .mic-btn::after { width: 20px !important; height: 20px !important; }
+    .im-chat-char .im-chat-input-actions { gap: 3px !important; padding-right: 7px !important; }
+    .im-chat-char .im-chat-back-restore-hotspot { left:78px !important; width:124px !important; }
+    .chat-row .chat-bubble.pay-transfer-bubble { width: min(42vw, 251px) !important; min-width: min(42vw, 251px) !important; max-width: min(42vw, 251px) !important; }
 }
