@@ -828,6 +828,7 @@ function renderGroupRedPacketBubble(msg, friend, container, timestamp = Date.now
 
 function renderMessageBubble(msg, friend, container, timestamp = Date.now()) {
         if (!msg || !container) return false;
+        if (msg.role === 'system' || msg.type === 'hidden_context') return false;
 
         if (friend && typeof friend === 'object') renderMessageContextByFriend.set(friend, msg);
         window.imChat.ensureMessageId(msg, msg.type === 'pay_transfer' ? 'pay' : 'msg');
@@ -920,6 +921,23 @@ function renderMessageBubble(msg, friend, container, timestamp = Date.now()) {
                 msg.offlineAction || null,
                 msg.speakerMemberId || msg.senderMemberId || null
             );
+            const acceptedGift = findGiftAcceptedByAssistant(msg, friend);
+            if (acceptedGift) {
+                const acceptanceId = `gift-accepted-${acceptedGift.id || acceptedGift.timestamp}`;
+                const alreadyRendered = Array.from(container.querySelectorAll('.chat-row[data-message-id]'))
+                    .some(row => String(row.dataset.messageId || '') === acceptanceId);
+                if (!alreadyRendered) {
+                    window.imChat.renderGiftBubble({
+                        ...acceptedGift,
+                        id: acceptanceId,
+                        role: 'assistant',
+                        giftStatus: 'received',
+                        status: 'received',
+                        syntheticGiftAcceptance: true,
+                        timestamp: msgTime
+                    }, friend, container, msgTime);
+                }
+            }
             return finalizeRenderedMessage(msg, friend, container);
         }
 
@@ -1080,6 +1098,7 @@ function renderMessageBubble(msg, friend, container, timestamp = Date.now()) {
 
     function appendMessageToContainer(friend, container, msg, options = {}) {
         if (!friend || !container || !msg) return false;
+        if (msg.role === 'system' || msg.type === 'hidden_context') return false;
 
         const msgTime = msg.timestamp || Date.now();
         const rows = Array.from(container.children);
@@ -1441,6 +1460,27 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
         };
     }
 
+    function findGiftAcceptedByAssistant(assistantMessage, friend) {
+        if (!assistantMessage || assistantMessage.role !== 'assistant') return null;
+        const messages = Array.isArray(friend?.messages) ? friend.messages : [];
+        let assistantIndex = messages.findIndex(message => message === assistantMessage);
+        if (assistantIndex < 0 && assistantMessage.id != null) {
+            assistantIndex = messages.findIndex(message => String(message?.id || '') === String(assistantMessage.id));
+        }
+        if (assistantIndex < 0) {
+            assistantIndex = messages.findIndex(message => Number(message?.timestamp) === Number(assistantMessage.timestamp));
+        }
+        if (assistantIndex < 0) return null;
+
+        for (let index = assistantIndex - 1; index >= 0; index -= 1) {
+            const candidate = messages[index];
+            if (!candidate || candidate.role === 'system' || candidate.type === 'hidden_context') continue;
+            if (candidate.role === 'assistant') return null;
+            if (candidate.type === 'gift' && candidate.role === 'user') return candidate;
+        }
+        return null;
+    }
+
     function openGiftDetailOverlay(msg, friend, anchor) {
         const page = anchor?.closest?.('.active-chat-interface');
         if (!page) return;
@@ -1461,7 +1501,7 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
                 </div>
                 <div class="gift-detail-name">${escapeHtml(data.name)}</div>
                 <div class="gift-detail-value">Value $${data.value.toFixed(2)}</div>
-                ${data.description ? `<div class="gift-detail-info"><div class="gift-detail-info-label">Gift</div><div class="gift-detail-info-text">${escapeHtml(data.description)}</div></div>` : ''}
+                <div class="gift-detail-info"><div class="gift-detail-info-label">Details</div>${data.description ? `<div class="gift-detail-info-text">${escapeHtml(data.description)}</div>` : ''}</div>
             </div>`;
         page.appendChild(overlay);
         overlay.style.display = 'flex';
@@ -1499,6 +1539,7 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
         cardEl?.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); openGiftDetailOverlay(msg, friend, cardEl); });
         cardEl?.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openGiftDetailOverlay(msg, friend, cardEl); } });
         container.appendChild(row);
+        decorateMessageRowAvatar(row, friend, msg);
         window.imChat.scrollToBottom(container);
     }
 
@@ -1576,7 +1617,8 @@ function renderChatHistory(friend, container, options = {}) {
             renderLoadMoreHistoryControl(friend, container, messages, state);
 
             if (messages.length > 0) {
-                const visibleMessages = messages.slice(state.visibleStartIndex);
+                const visibleMessages = messages.slice(state.visibleStartIndex)
+                    .filter(message => message?.role !== 'system' && message?.type !== 'hidden_context');
                 const renderedPhotoGroups = new Set();
                 const photoBatchLookup = buildPhotoBatchLookup(messages);
                 visibleMessages.forEach(msg => {
@@ -2475,7 +2517,38 @@ function renderVoiceMessageBubble(msg, friend, container, timestamp = Date.now()
             </div>
         `;
 
-        const toggle = row.querySelector('.voice-message-bubble-inner');
+        const voiceBubble = row.querySelector('.voice-message-bubble');
+        const voiceInner = row.querySelector('.voice-message-bubble-inner');
+        if (voiceBubble) {
+            const forcedBubbleStyle = {
+                display: 'inline-flex',
+                flexDirection: 'column',
+                width: 'max-content',
+                minWidth: '0',
+                maxWidth: 'min(77%, 240px)',
+                height: 'auto',
+                minHeight: '0',
+                maxHeight: 'none',
+                aspectRatio: 'auto',
+                flex: '0 0 auto',
+                padding: '8px 12px',
+                boxSizing: 'border-box'
+            };
+            Object.entries(forcedBubbleStyle).forEach(([property, value]) => {
+                const cssProperty = property.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+                voiceBubble.style.setProperty(cssProperty, value, 'important');
+            });
+        }
+        if (voiceInner) {
+            voiceInner.style.setProperty('display', 'inline-flex', 'important');
+            voiceInner.style.setProperty('width', 'max-content', 'important');
+            voiceInner.style.setProperty('height', 'auto', 'important');
+            voiceInner.style.setProperty('min-height', '0', 'important');
+            voiceInner.style.setProperty('max-height', 'none', 'important');
+            voiceInner.style.setProperty('aspect-ratio', 'auto', 'important');
+        }
+
+        const toggle = voiceInner;
         const transcriptEl = row.querySelector('.voice-message-transcript');
         if (toggle && transcriptEl) {
             toggle.addEventListener('click', async (e) => {

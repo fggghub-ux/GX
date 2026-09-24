@@ -99,18 +99,33 @@ function getDisplayNameByMemberId(group, memberId) {
         return member ? (member.nickname || member.realName || '群成员') : '群成员';
     }
 
-function getPayUserName() {
-        const currentUserState = window.userState || userState || {};
-        return currentUserState.name || currentUserState.realName || currentUserState.nickname || 'User';
+function getPayUserProfile(friend = null) {
+        const boundAccount = window.imApp?.getBoundAccountByFriend
+            ? window.imApp.getBoundAccountByFriend(friend)
+            : null;
+        const currentAccountId = typeof window.getCurrentAccountId === 'function'
+            ? window.getCurrentAccountId()
+            : null;
+        const currentAccount = typeof window.getAccounts === 'function'
+            ? (window.getAccounts() || []).find(account => String(account?.id) === String(currentAccountId))
+            : null;
+        const source = boundAccount || currentAccount || window.userState || userState || {};
+        return {
+            name: source.name || source.realName || source.nickname || 'User',
+            avatarUrl: source.avatarUrl || source.avatar || ''
+        };
+}
+
+function getPayUserName(friend = null) {
+        return getPayUserProfile(friend).name;
     }
 
 function getPayFriendName(friend, fallback = '') {
         return fallback || friend?.nickname || friend?.realName || friend?.name || 'Char';
     }
 
-function getPayUserAvatar() {
-        const currentUserState = window.userState || userState || {};
-        return currentUserState.avatarUrl || currentUserState.avatar || '';
+function getPayUserAvatar(friend = null) {
+        return getPayUserProfile(friend).avatarUrl;
     }
 
 function getPayFriendAvatar(friend) {
@@ -119,7 +134,7 @@ function getPayFriendAvatar(friend) {
 
 function normalizePayTransferMessage(msg = {}, friend = null) {
         const payKind = msg.payKind || (msg.role === 'user' ? 'user_to_char' : 'char_received');
-        const userName = getPayUserName();
+        const userName = getPayUserName(friend);
         const charName = getPayFriendName(friend, msg.speaker || msg.charName || '');
         const targetName = msg.targetName || '';
         const charToUserKinds = ['char_to_user_pending', 'char_to_user_claimed', 'user_received_from_char', 'user_rejected_from_char'];
@@ -156,8 +171,8 @@ function normalizePayTransferMessage(msg = {}, friend = null) {
             payeeName,
             payerType,
             payeeType,
-            payerAvatar: payerType === 'user' ? getPayUserAvatar() : getPayFriendAvatar(friend),
-            payeeAvatar: payeeType === 'user' ? getPayUserAvatar() : getPayFriendAvatar(friend),
+            payerAvatar: payerType === 'user' ? getPayUserAvatar(friend) : getPayFriendAvatar(friend),
+            payeeAvatar: payeeType === 'user' ? getPayUserAvatar(friend) : getPayFriendAvatar(friend),
             canCurrentUserClaim: direction === 'char_to_user' && status === 'pending' && !msg.claimed,
             senderName: payerName,
             receiverName: payeeName,
@@ -828,7 +843,7 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
                         <div class="pay-transfer-detail-amount" style="font-size:34px; line-height:1.1; font-weight:800; color:#111; text-align:center; margin:8px 0 10px;">$0.00</div>
                         <div class="pay-transfer-detail-desc" style="display:none; font-size:14px; color:#666; text-align:center; line-height:1.5; min-height:21px; margin-bottom:18px;"></div>
                         <div style="border-radius:18px; background:#f7f7fa; padding:12px 14px; margin-bottom:16px;">
-                            <div style="font-size:12px; color:#8e8e93; margin-bottom:6px;">转账详情</div>
+                            <div style="font-size:12px; color:#8e8e93; margin-bottom:6px;">Details</div>
                             <div class="pay-transfer-detail-summary" style="display:none; font-size:14px; color:#222; line-height:1.5;"></div>
                         </div>
                         <div style="display:flex; gap:10px;">

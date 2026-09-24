@@ -1978,6 +1978,7 @@ window.imApp.markStickersLoaded = function(loaded = true) {
 
 window.imApp.getFriendMessagePreview = function(message) {
     const targetMessage = message || {};
+    if (targetMessage.role === 'system' || targetMessage.type === 'hidden_context') return '';
     if (targetMessage.type === 'chat_record_forward') {
         return window.imApp.getChatRecordPreview
             ? window.imApp.getChatRecordPreview(targetMessage)
@@ -2006,6 +2007,9 @@ window.imApp.getFriendMessagePreview = function(message) {
     }
     if (targetMessage.type === 'pay_transfer') {
         return `[转账] ${targetMessage.description || ''}`.trim();
+    }
+    if (targetMessage.type === 'gift') {
+        return `[Gift] ${targetMessage.giftName || targetMessage.text || ''}`.trim();
     }
     if (targetMessage.type === 'group_red_packet') {
         return `[群红包] ${targetMessage.description || ''}`.trim();

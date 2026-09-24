@@ -48,11 +48,20 @@ function getFriendChatSummary(friend) {
         }
 
         const loadedMessages = Array.isArray(friend.messages) ? friend.messages : [];
-        const lastLoadedMsg = loadedMessages.length > 0 ? loadedMessages[loadedMessages.length - 1] : null;
+        const visibleLoadedMessages = loadedMessages.filter(message => {
+            if (message?.role === 'system' || message?.type === 'hidden_context') return false;
+            return window.imApp.getFriendMessagePreview
+                ? !!window.imApp.getFriendMessagePreview(message)
+                : !!(message?.content || message?.text);
+        });
+        const lastLoadedMsg = visibleLoadedMessages.length > 0
+            ? visibleLoadedMessages[visibleLoadedMessages.length - 1]
+            : null;
 
         let preview = typeof friend.lastMessagePreview === 'string' ? friend.lastMessagePreview : '';
         let timestamp = Number(friend.lastMessageTimestamp) || 0;
         let count = Number(friend.messageCount) || 0;
+        if (/^\s*\[Gift event\]/i.test(preview)) preview = '[Gift]';
 
         if (lastLoadedMsg) {
             preview = window.imApp.getFriendMessagePreview
@@ -145,7 +154,8 @@ function buildChatAvatarHtml(friend) {
 
     function buildChatUnreadHtml(friend) {
         if (friend.unreadCount && friend.unreadCount > 0) {
-            return '<span class="chat-unread-dot" aria-hidden="true"></span>';
+            const unreadText = friend.unreadCount > 99 ? '99+' : String(friend.unreadCount);
+            return `<span class="chat-unread-dot" aria-hidden="true">${unreadText}</span>`;
         }
         return '';
     }
@@ -285,9 +295,9 @@ function buildChatAvatarHtml(friend) {
             : friend.nickname);
         item.innerHTML = `
             ${buildChatPinnedHtml(isPinned)}
-            ${buildChatUnreadHtml(friend)}
             <div class="chat-avatar-wrap">
                 <div class="chat-avatar">${buildChatAvatarHtml(friend)}</div>
+                ${buildChatUnreadHtml(friend)}
             </div>
             <div class="chat-info">
                 <div class="chat-row-top">

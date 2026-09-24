@@ -2295,7 +2295,8 @@
 
     async function buildFriendMessageSummary(messages) {
         const list = Array.isArray(messages) ? messages : [];
-        const lastMessage = list.length > 0 ? list[list.length - 1] : null;
+        const visibleList = list.filter(message => message?.role !== 'system' && message?.type !== 'hidden_context');
+        const lastMessage = visibleList.length > 0 ? visibleList[visibleList.length - 1] : null;
 
         let previewText = '';
         if (lastMessage) {
@@ -2309,6 +2310,8 @@
                 previewText = '[朋友圈]';
             } else if (lastMessage.type === 'pay_transfer') {
                 previewText = `[转账] ${lastMessage.description || ''}`.trim();
+            } else if (lastMessage.type === 'gift') {
+                previewText = `[Gift] ${lastMessage.giftName || lastMessage.text || ''}`.trim();
             } else if (lastMessage.type === 'group_red_packet') {
                 previewText = `[群红包] ${lastMessage.description || ''}`.trim();
             } else if (lastMessage.type === 'group_poll') {

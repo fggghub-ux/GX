@@ -3209,20 +3209,28 @@ button.group-private-chat-detail-bubble {
 }
 
 .chat-item.pinned .chat-unread-dot {
-    left: calc(18px * var(--chats-ui-scale));
-    width: calc(8px * var(--chats-ui-scale));
-    height: calc(8px * var(--chats-ui-scale));
+    left: auto;
 }
 
 .chat-unread-dot {
     position: absolute;
-    left: calc(5px * var(--chats-ui-scale));
-    top: 50%;
-    width: calc(11px * var(--chats-ui-scale));
-    height: calc(11px * var(--chats-ui-scale));
+    right: calc(-3px * var(--chats-ui-scale));
+    bottom: calc(-3px * var(--chats-ui-scale));
+    min-width: calc(18px * var(--chats-ui-scale));
+    height: calc(18px * var(--chats-ui-scale));
+    padding: 0 calc(4px * var(--chats-ui-scale));
+    box-sizing: border-box;
     border-radius: 50%;
-    background: #e1c0c4;
-    transform: translateY(-50%);
+    border: calc(2px * var(--chats-ui-scale)) solid #fff;
+    background: #000;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px * var(--chats-ui-scale));
+    font-weight: 800;
+    line-height: 1;
+    z-index: 3;
 }
 
 .chat-avatar-wrap {
@@ -4471,7 +4479,8 @@ button.group-private-chat-detail-bubble {
 .im-message-avatar {
     display: none;
     position: absolute;
-    bottom: 0;
+    top: 0;
+    bottom: auto;
     width: var(--im-message-avatar-size, 32px);
     height: var(--im-message-avatar-size, 32px);
     border-radius: var(--im-message-avatar-radius, 50%);
@@ -4484,7 +4493,7 @@ button.group-private-chat-detail-bubble {
 }
 
 .im-chat-char .ins-chat-messages.avatar-mode-two {
-    --im-message-avatar-size: 32px;
+    --im-message-avatar-size: 37px;
     --im-message-avatar-gap: 8px;
     --im-message-avatar-radius: 50%;
 }
@@ -4613,29 +4622,43 @@ button.group-private-chat-detail-bubble {
     position: relative;
 }
 
-/* Timestamp Outside Logic */
-.active-chat-interface.timestamp-outside .chat-bubble {
-    overflow: visible; /* Allow timestamp to break out */
-}
+/* Attachment parity: outside timestamps live below the last sent bubble. */
+.active-chat-interface.timestamp-outside .chat-bubble { overflow: visible; }
 
-.active-chat-interface.timestamp-outside .user-row .bubble-meta {
-    position: absolute;
-    left: 0;
-    bottom: 4px;
-    transform: translateX(-100%);
-    margin-left: -6px;
-    margin-top: 0;
-    color: #8e8e93;
-}
-
+.active-chat-interface.timestamp-outside .bubble-meta,
 .active-chat-interface.timestamp-outside .ai-row .bubble-meta {
+    display: none !important;
+}
+
+.active-chat-interface.timestamp-outside .user-row:not(:has(~ .user-row)) {
+    position: relative;
+    padding-bottom: 24px;
+    margin-bottom: 8px;
+}
+
+.active-chat-interface.timestamp-outside .user-row:not(:has(~ .user-row)) .bubble-meta {
+    display: inline-flex !important;
     position: absolute;
-    right: 0;
-    bottom: 4px;
-    transform: translateX(100%);
-    margin-right: -6px;
-    margin-top: 0;
+    right: 15px;
+    bottom: -19px;
+    left: auto;
+    transform: none;
+    margin: 0;
     color: #8e8e93;
+    background: transparent;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 1;
+}
+
+.active-chat-interface.timestamp-outside .user-row:not(:has(~ .user-row)) .bubble-read-icon {
+    display: none;
+}
+
+.active-chat-interface.timestamp-outside .user-row:not(:has(~ .user-row)) .bubble-meta::after {
+    content: 'Delivered';
+    margin-left: 4px;
 }
 
 /* Offline Chat Fullscreen View */
@@ -5584,8 +5607,8 @@ button.group-private-chat-detail-bubble {
 
 .im-chat-char .ai-row:not(.has-next) .voice-message-bubble::after,
 #msg-context-bubble-clone .ai-row:not(.has-next) .voice-message-bubble::after {
-    left: -7px;
-    bottom: -10px;
+    left: 7px;
+    bottom: -5px;
     transform: rotate(-16deg) scaleX(-1);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23e9e9ea'/%3E%3C/svg%3E");
 }
@@ -12964,23 +12987,25 @@ input:checked + .slider:before {
 }
 
 .gift-message-card.is-received { background: linear-gradient(135deg, #798db9 0%, #657ba8 100%); }
-.gift-message-card::after { content:''; position:absolute; top:19px; width:10px; height:16px; background:inherit; transform:rotate(45deg); z-index:-1; }
-.user-row .gift-message-card::after { right:-5px; }
-.ai-row .gift-message-card::after { left:-5px; }
-.gift-message-main { height:64px; display:flex; align-items:center; gap:12px; padding:8px 13px 5px; box-sizing:border-box; }
+.gift-message-card::after { content:''; position:absolute; top:19px; width:0; height:0; background:none; transform:none; z-index:0; }
+.user-row .gift-message-card::after { right:-10px; border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:10px solid #23478f; }
+.ai-row .gift-message-card::after { left:-10px; border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:10px solid #3159a9; }
+.user-row .gift-message-card.is-received::after { border-left-color:#657ba8; }
+.ai-row .gift-message-card.is-received::after { border-right-color:#798db9; }
+.gift-message-main { position:relative; z-index:1; height:64px; display:flex; align-items:center; gap:12px; padding:8px 13px 5px; box-sizing:border-box; }
 .gift-message-bow { width:40px; height:46px; flex:0 0 40px; color:#f7ecd0; }
 .gift-message-copy { min-width:0; flex:1; }
 .gift-message-title { font-size:14px; font-weight:650; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .gift-message-status { margin-top:4px; font-size:11px; color:rgba(255,255,255,.78); }
-.gift-message-footer { height:21px; padding:3px 13px 0; box-sizing:border-box; border-top:1px solid rgba(255,255,255,.16); font-size:10px; color:rgba(255,255,255,.68); }
+.gift-message-footer { position:relative; z-index:1; height:21px; padding:3px 13px 0; box-sizing:border-box; border-top:1px solid rgba(255,255,255,.16); font-size:10px; color:rgba(255,255,255,.68); }
 
 .gift-detail-overlay { position:absolute; inset:0; z-index:260; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,.28); box-sizing:border-box; }
 .gift-detail-card { width:min(88%, 348px); border-radius:30px; background:rgba(255,255,255,.98); padding:22px 18px 20px; box-sizing:border-box; box-shadow:0 16px 40px rgba(0,0,0,.12); }
 .gift-detail-sender { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
 .gift-detail-avatar { width:52px; height:52px; border-radius:50%; object-fit:cover; background:#e5e5ea; }
 .gift-detail-sender-name { font-size:18px; font-weight:750; color:#111; }
-.gift-detail-name { color:#111; font-size:34px; font-weight:800; line-height:1.12; text-align:center; word-break:break-word; }
-.gift-detail-value { margin-top:12px; color:#6e6e73; font-size:16px; font-weight:650; text-align:center; }
+.gift-detail-name { color:#111; font-size:23px; font-weight:760; line-height:1.18; text-align:center; word-break:break-word; }
+.gift-detail-value { margin-top:8px; color:#6e6e73; font-size:14px; font-weight:650; text-align:center; }
 .gift-detail-info { margin-top:22px; padding:15px; border-radius:20px; background:#f7f7fa; }
 .gift-detail-info-label { color:#8e8e93; font-size:13px; font-weight:650; }
 .gift-detail-info-text { margin-top:8px; color:#111; font-size:15px; font-weight:650; line-height:1.4; word-break:break-word; }
@@ -14343,8 +14368,8 @@ input:checked + .slider:before {
 }
 
 #msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    left: -7px;
-    bottom: -10px;
+    left: 7px;
+    bottom: -5px;
     transform: rotate(-16deg) scaleX(-1);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23e9e9ea'/%3E%3C/svg%3E");
 }
@@ -14829,30 +14854,126 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
-.im-chat-char .im-chat-back-restore-hotspot { left:59px !important; width:104px !important; z-index:80 !important; pointer-events:auto !important; }
+.im-chat-field-shell { display: contents; }
 
-#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble)::before,
-#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble)::after { content:none !important; display:none !important; }
-#msg-context-bubble-clone .msg-context-row-clone:not(.has-next) .chat-bubble:not(.im-card-bubble)::after {
-    content:'' !important; display:block !important; position:absolute !important; width:17px !important; height:17px !important;
-    bottom:-6px !important; background:currentColor !important; background-image:none !important; clip-path:polygon(0 0,100% 0,100% 100%) !important;
+/* The attachment puts the glass on the real input field, not on a white footer. */
+.im-chat-char .ins-chat-input-container {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    flex: 0 0 auto !important;
+    padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
+    background: transparent !important;
 }
-#msg-context-bubble-clone .msg-context-row-clone.user-row:not(.has-next) .chat-bubble:not(.im-card-bubble)::after { right:1px !important; color:#a0a0a0 !important; transform:rotate(18deg) !important; }
-#msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble)::after { left:1px !important; color:#e9e9ea !important; transform:scaleX(-1) rotate(18deg) !important; }
+
+.im-chat-char .ins-chat-messages { padding-bottom: 12px !important; }
+
+.im-chat-char .ins-chat-input-wrapper {
+    min-height: 42px !important;
+    padding: 0 !important;
+    gap: 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.im-chat-char .ins-chat-input-wrapper::before { display: none !important; }
+
+.im-chat-char .im-chat-field-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    height: 42px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 0;
+    border-radius: 25px;
+    background-color: rgba(255,255,255,.15) !important;
+    -webkit-backdrop-filter: blur(5px) saturate(200%) !important;
+    backdrop-filter: blur(5px) saturate(200%) !important;
+    box-shadow: inset 0 1px 1px -.5px rgba(255,255,255,.6), inset 0 -.5px 1px -.5px rgba(255,255,255,.1), 0 0 0 .7px rgba(255,255,255,.2), 0 2px 6px rgba(0,0,0,.06) !important;
+}
+
+.im-chat-char .ins-input-icon {
+    width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 42px !important;
+    font-size: 28px !important;
+}
+
+.im-chat-char .ins-message-input {
+    width: 100% !important;
+    height: 42px !important;
+    min-width: 0 !important;
+    padding: 0 8px 0 18px !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    border-radius: 25px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 16px !important;
+}
+
+.im-chat-char .im-chat-input-actions {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 0 !important;
+    padding-right: 12px !important;
+}
+
+.im-chat-char .send-btn { display: none !important; }
+.im-chat-char .mic-btn { width:24px !important; height:24px !important; flex:0 0 24px !important; }
+.im-chat-char .mic-btn::after { width:20px !important; height:20px !important; }
+
+.im-chat-char .im-chat-back-restore-hotspot {
+    left: 59px !important;
+    width: 38px !important;
+    z-index: 80 !important;
+    pointer-events: auto !important;
+}
+
+/* Long-press preview reuses the existing message-tail SVG, mirrored for Char. */
+#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::before,
+#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
+    content: none !important;
+    display: none !important;
+}
+
+#msg-context-bubble-clone .msg-context-row-clone:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    width: 15px !important;
+    height: 15px !important;
+    bottom: -5px !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+}
+
+#msg-context-bubble-clone .msg-context-row-clone.user-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
+    right: 7px !important;
+    transform-origin: bottom left !important;
+    transform: rotate(16deg) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23a0a0a0'/%3E%3C/svg%3E") !important;
+}
+
+#msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
+    left: 7px !important;
+    transform-origin: bottom right !important;
+    transform: rotate(-16deg) scaleX(-1) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23e9e9ea'/%3E%3C/svg%3E") !important;
+}
 
 .chat-row .chat-bubble.pay-transfer-bubble { width:min(52vw,219px) !important; min-width:min(52vw,219px) !important; max-width:min(52vw,219px) !important; }
 .pay-transfer-card { min-height:107px !important; border-color:rgba(0,0,0,.07) !important; background:linear-gradient(145deg,#fff 0%,#fafafa 100%) !important; box-shadow:0 7px 16px rgba(0,0,0,.09) !important; }
 .pay-transfer-card.is-rejected { background:#000 !important; }
 
 @media (min-width: 768px) {
-    .im-chat-char .ins-chat-input-container { padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important; }
-    .im-chat-char .ins-chat-input-wrapper { min-height: 42px !important; gap: 10px !important; }
-    .im-chat-char .ins-chat-input-wrapper::before { left: 52px !important; border-radius: 25px !important; }
-    .im-chat-char .ins-input-icon { width: 39px !important; height: 39px !important; font-size: 24px !important; }
-    .im-chat-char .ins-message-input { height: 42px !important; padding-left: 18px !important; font-size: 16px !important; }
-    .im-chat-char .send-btn-icon { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
-    .im-chat-char .mic-btn::after { width: 20px !important; height: 20px !important; }
-    .im-chat-char .im-chat-input-actions { gap: 3px !important; padding-right: 7px !important; }
-    .im-chat-char .im-chat-back-restore-hotspot { left:78px !important; width:124px !important; }
+    .im-chat-char .im-chat-back-restore-hotspot { left:70px !important; width:42px !important; }
     .chat-row .chat-bubble.pay-transfer-bubble { width: min(42vw, 251px) !important; min-width: min(42vw, 251px) !important; max-width: min(42vw, 251px) !important; }
 }
