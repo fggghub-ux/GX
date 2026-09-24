@@ -831,7 +831,7 @@
                     };
                     
                     success = await window.imApp.appendFriendMessage(friend.id, newMsg, { silent: false });
-                    const giftContextText = `[Gift event] User sent ${itemNames}. Value $${order.total.toFixed(2)}.${cleanDescription ? ` Description: ${cleanDescription}.` : ''} Paid via ${order.method}. 请理解礼物描述的含义，并根据你的角色人设对这份礼物做出真实反应。`;
+                    const giftContextText = `[Gift event] User sent ${itemNames}. Value $${order.total.toFixed(2)}.${cleanDescription ? ` Description: ${cleanDescription}.` : ''} Paid via ${order.method}. 理解礼物描述含义，并根据你的角色人设对这份礼物做出真实的反应（感谢、意外或者失神等）。`;
                     const aiMsg = {
                         role: 'system',
                         type: 'text',
