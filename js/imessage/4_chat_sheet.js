@@ -3243,7 +3243,7 @@ function createAttachmentSheet(page) {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'offline-chat-history-card';
-            button.innerHTML = `<i class="fas fa-history"></i><span>查看历史见面</span>`;
+            button.innerHTML = `<i class="fas fa-history"></i><span>Forever romance</span>`;
             button.addEventListener('click', () => renderOfflineHistoryList(activeFriend));
             contentArea.appendChild(button);
         };
@@ -3377,7 +3377,7 @@ function createAttachmentSheet(page) {
             if (messages.length === 0 && normalizeOfflineMeetingSessions(activeFriend).length === 0) {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'offline-chat-placeholder';
-                placeholder.textContent = '开始一次线下见面';
+                placeholder.textContent = 'Notification Center';
                 fragment.appendChild(placeholder);
             }
             contentArea.appendChild(fragment);
@@ -3395,7 +3395,7 @@ function createAttachmentSheet(page) {
             const backBtn = document.createElement('button');
             backBtn.type = 'button';
             backBtn.className = 'offline-chat-history-back';
-            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> 返回当前见面';
+            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> First encounter';
             backBtn.addEventListener('click', () => renderOfflineCurrentMessages(activeFriend));
             contentArea.appendChild(backBtn);
 
