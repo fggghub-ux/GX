@@ -1501,7 +1501,7 @@ function renderPhotoBatchGroup(messages, friend, container, timestamp = Date.now
                 </div>
                 <div class="gift-detail-name">${escapeHtml(data.name)}</div>
                 <div class="gift-detail-value">Value $${data.value.toFixed(2)}</div>
-                <div class="gift-detail-info"><div class="gift-detail-info-label">Details</div>${data.description ? `<div class="gift-detail-info-text">${escapeHtml(data.description)}</div>` : ''}</div>
+                <div class="gift-detail-info"><div class="gift-detail-info-label">Details</div>${data.description ? `<div class="gift-detail-info-text">Note：${escapeHtml(data.description)}</div>` : ''}</div>
             </div>`;
         page.appendChild(overlay);
         overlay.style.display = 'flex';
