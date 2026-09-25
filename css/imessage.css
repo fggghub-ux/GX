@@ -14854,60 +14854,6 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
-/* Restored previous composer structure; attachment sizes and vertical offset. */
-.im-chat-char .ins-chat-input-container {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: calc(5px + env(safe-area-inset-bottom, 0px)) !important;
-    flex: 0 0 auto !important;
-    padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
-    background: transparent !important;
-}
-
-.im-chat-char .ins-chat-input-wrapper {
-    min-height: 42px !important;
-    padding: 0 !important;
-    gap: 10px !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-.im-chat-char .ins-chat-input-wrapper::before {
-    display: block !important;
-    left: 52px !important;
-    border-radius: 25px !important;
-    background-color: rgba(255,255,255,.15) !important;
-    -webkit-backdrop-filter: blur(5px) saturate(200%) !important;
-    backdrop-filter: blur(5px) saturate(200%) !important;
-    box-shadow: inset 0 1px 1px -.5px rgba(255,255,255,.6), inset 0 -.5px 1px -.5px rgba(255,255,255,.1), 0 0 0 .7px rgba(255,255,255,.2), 0 2px 6px rgba(0,0,0,.06) !important;
-}
-
-.im-chat-char .ins-input-icon {
-    width: 39px !important;
-    height: 39px !important;
-    flex: 0 0 39px !important;
-    font-size: 28px !important;
-}
-
-.im-chat-char .ins-message-input {
-    height: 42px !important;
-    min-width: 0 !important;
-    padding: 0 6px 0 18px !important;
-    background: transparent !important;
-    font-size: 16px !important;
-}
-
-.im-chat-char .im-chat-input-actions {
-    gap: 3px !important;
-    padding-right: 7px !important;
-}
-
-.im-chat-char .send-btn-icon { width:24px !important; height:24px !important; flex:0 0 24px !important; }
-.im-chat-char .send-btn { display:inline-flex !important; opacity:0; }
-.im-chat-char .mic-btn::after { width:20px !important; height:20px !important; }
-
 .im-chat-char .im-chat-back-restore-hotspot {
     left: 59px !important;
     width: 38px !important;
@@ -14920,6 +14866,14 @@ input:checked + .slider:before {
 .pay-transfer-card.is-rejected { background:#000 !important; }
 
 @media (min-width: 768px) {
+    .im-chat-char .ins-chat-input-container { padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important; }
+    .im-chat-char .ins-chat-input-wrapper { min-height: 42px !important; gap: 10px !important; }
+    .im-chat-char .ins-chat-input-wrapper::before { left: 52px !important; border-radius: 25px !important; }
+    .im-chat-char .ins-input-icon { width: 39px !important; height: 39px !important; font-size: 24px !important; }
+    .im-chat-char .ins-message-input { height: 42px !important; padding-left: 18px !important; font-size: 16px !important; }
+    .im-chat-char .send-btn-icon { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
+    .im-chat-char .mic-btn::after { width: 20px !important; height: 20px !important; }
+    .im-chat-char .im-chat-input-actions { gap: 3px !important; padding-right: 7px !important; }
     .im-chat-char .im-chat-back-restore-hotspot { left:70px !important; width:42px !important; }
     .chat-row .chat-bubble.pay-transfer-bubble { width: min(42vw, 251px) !important; min-width: min(42vw, 251px) !important; max-width: min(42vw, 251px) !important; }
 }
