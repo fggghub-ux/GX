@@ -900,7 +900,7 @@ function ensureTransferDetailOverlayForExistingPage(page, friend) {
                 transferDetailDesc.style.display = hasCustomDescription ? 'block' : 'none';
             }
             if (transferDetailSummary) {
-                transferDetailSummary.textContent = hasCustomDescription ? `备注：${visibleDescription}` : '';
+                transferDetailSummary.textContent = hasCustomDescription ? `Note：${visibleDescription}` : '';
                 transferDetailSummary.style.display = hasCustomDescription ? 'block' : 'none';
             }
 
