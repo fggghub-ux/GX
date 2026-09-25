@@ -807,12 +807,10 @@ async function openChatTab(friend) {
                     </div>
                     <div class="ins-chat-input-wrapper">
                         ${isNpcChat ? '' : '<div class="ins-input-icon plus-btn"><i class="fas fa-plus"></i></div>'}
-                        <div class="im-chat-field-shell">
-                            <input type="text" placeholder="${isCharChat ? 'iMessage' : 'Message'}" class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
-                            <div class="im-chat-input-actions">
-                                <div class="send-btn-icon send-btn"><i class="fas fa-paper-plane"></i></div>
-                                <div class="send-btn-icon mic-btn"><i class="fas fa-microphone"></i></div>
-                            </div>
+                        <input type="text" placeholder="${isCharChat ? 'iMessage' : 'Message'}" class="ins-message-input chat-input" inputmode="text" enterkeyhint="send" autocomplete="off">
+                        <div class="im-chat-input-actions">
+                            <div class="send-btn-icon send-btn"><i class="fas fa-paper-plane"></i></div>
+                            <div class="send-btn-icon mic-btn"><i class="fas fa-microphone"></i></div>
                         </div>
                     </div>
                     ${isGroupChat ? `

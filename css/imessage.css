@@ -13007,8 +13007,8 @@ input:checked + .slider:before {
 .gift-detail-name { color:#111; font-size:23px; font-weight:760; line-height:1.18; text-align:center; word-break:break-word; }
 .gift-detail-value { margin-top:8px; color:#6e6e73; font-size:14px; font-weight:650; text-align:center; }
 .gift-detail-info { margin-top:22px; padding:15px; border-radius:20px; background:#f7f7fa; }
-.gift-detail-info-label { color:#8e8e93; font-size:13px; font-weight:650; }
-.gift-detail-info-text { margin-top:8px; color:#111; font-size:15px; font-weight:650; line-height:1.4; word-break:break-word; }
+.gift-detail-info-label { color:#8e8e93; font-size:12px; font-weight:400; margin-bottom:6px; }
+.gift-detail-info-text { margin-top:0; color:#222; font-size:14px; font-weight:400; line-height:1.5; word-break:break-word; }
 
 .shopping-gift-compose-overlay { position:fixed; inset:0; z-index:10050; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,.28); box-sizing:border-box; }
 .shopping-gift-compose-card { width:100%; max-width:348px; border-radius:30px; background:rgba(255,255,255,.98); padding:18px 16px 16px; box-sizing:border-box; }
@@ -14368,8 +14368,8 @@ input:checked + .slider:before {
 }
 
 #msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    left: 7px;
-    bottom: -5px;
+    left: -7px;
+    bottom: -10px;
     transform: rotate(-16deg) scaleX(-1);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23e9e9ea'/%3E%3C/svg%3E");
 }
@@ -14854,20 +14854,16 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
-.im-chat-field-shell { display: contents; }
-
-/* The attachment puts the glass on the real input field, not on a white footer. */
+/* Restored previous composer structure; attachment sizes and vertical offset. */
 .im-chat-char .ins-chat-input-container {
     position: relative !important;
     left: auto !important;
     right: auto !important;
-    bottom: auto !important;
+    bottom: calc(5px + env(safe-area-inset-bottom, 0px)) !important;
     flex: 0 0 auto !important;
     padding: 10px 15px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
     background: transparent !important;
 }
-
-.im-chat-char .ins-chat-messages { padding-bottom: 12px !important; }
 
 .im-chat-char .ins-chat-input-wrapper {
     min-height: 42px !important;
@@ -14878,20 +14874,10 @@ input:checked + .slider:before {
     box-shadow: none !important;
 }
 
-.im-chat-char .ins-chat-input-wrapper::before { display: none !important; }
-
-.im-chat-char .im-chat-field-shell {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex: 1 1 auto;
-    min-width: 0;
-    width: auto;
-    height: 42px;
-    box-sizing: border-box;
-    overflow: hidden;
-    border: 0;
-    border-radius: 25px;
+.im-chat-char .ins-chat-input-wrapper::before {
+    display: block !important;
+    left: 52px !important;
+    border-radius: 25px !important;
     background-color: rgba(255,255,255,.15) !important;
     -webkit-backdrop-filter: blur(5px) saturate(200%) !important;
     backdrop-filter: blur(5px) saturate(200%) !important;
@@ -14899,35 +14885,27 @@ input:checked + .slider:before {
 }
 
 .im-chat-char .ins-input-icon {
-    width: 42px !important;
-    height: 42px !important;
-    flex: 0 0 42px !important;
+    width: 39px !important;
+    height: 39px !important;
+    flex: 0 0 39px !important;
     font-size: 28px !important;
 }
 
 .im-chat-char .ins-message-input {
-    width: 100% !important;
     height: 42px !important;
     min-width: 0 !important;
-    padding: 0 8px 0 18px !important;
-    box-sizing: border-box !important;
-    border: 0 !important;
-    border-radius: 25px !important;
+    padding: 0 6px 0 18px !important;
     background: transparent !important;
-    box-shadow: none !important;
     font-size: 16px !important;
 }
 
 .im-chat-char .im-chat-input-actions {
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto;
-    gap: 0 !important;
-    padding-right: 12px !important;
+    gap: 3px !important;
+    padding-right: 7px !important;
 }
 
-.im-chat-char .send-btn { display: none !important; }
-.im-chat-char .mic-btn { width:24px !important; height:24px !important; flex:0 0 24px !important; }
+.im-chat-char .send-btn-icon { width:24px !important; height:24px !important; flex:0 0 24px !important; }
+.im-chat-char .send-btn { display:inline-flex !important; opacity:0; }
 .im-chat-char .mic-btn::after { width:20px !important; height:20px !important; }
 
 .im-chat-char .im-chat-back-restore-hotspot {
@@ -14935,38 +14913,6 @@ input:checked + .slider:before {
     width: 38px !important;
     z-index: 80 !important;
     pointer-events: auto !important;
-}
-
-/* Long-press preview reuses the existing message-tail SVG, mirrored for Char. */
-#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::before,
-#msg-context-bubble-clone .msg-context-row-clone .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    content: none !important;
-    display: none !important;
-}
-
-#msg-context-bubble-clone .msg-context-row-clone:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    content: '' !important;
-    display: block !important;
-    position: absolute !important;
-    width: 15px !important;
-    height: 15px !important;
-    bottom: -5px !important;
-    background-repeat: no-repeat !important;
-    background-size: contain !important;
-}
-
-#msg-context-bubble-clone .msg-context-row-clone.user-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    right: 7px !important;
-    transform-origin: bottom left !important;
-    transform: rotate(16deg) !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23a0a0a0'/%3E%3C/svg%3E") !important;
-}
-
-#msg-context-bubble-clone .msg-context-row-clone.ai-row:not(.has-next) .chat-bubble:not(.im-card-bubble):not(.voice-message-bubble)::after {
-    left: 7px !important;
-    transform-origin: bottom right !important;
-    transform: rotate(-16deg) scaleX(-1) !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M14.385 165.341h723.828s-102.718 111.789 136.16 498.070c199.609 111.789 29.591 144.852-58.757 137.075-97.893-15.633-301.441-20.846-861.266-208.137z' fill='%23e9e9ea'/%3E%3C/svg%3E") !important;
 }
 
 .chat-row .chat-bubble.pay-transfer-bubble { width:min(52vw,219px) !important; min-width:min(52vw,219px) !important; max-width:min(52vw,219px) !important; }

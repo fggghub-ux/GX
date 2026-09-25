@@ -162,6 +162,8 @@ function normalizePayTransferMessage(msg = {}, friend = null) {
 
         const payerType = direction === 'user_to_char' ? 'user' : 'char';
         const payeeType = direction === 'user_to_char' ? 'char' : 'user';
+        if (payerType === 'user') payerName = userName;
+        if (payeeType === 'user') payeeName = userName;
 
         return {
             payKind,
