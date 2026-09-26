@@ -3577,7 +3577,7 @@ function createAttachmentSheet(page) {
             const backBtn = document.createElement('button');
             backBtn.type = 'button';
             backBtn.className = 'offline-chat-history-back';
-            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Mostly Cloudy';
+            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> First encounter';
             backBtn.addEventListener('click', () => renderOfflineCurrentMessages(activeFriend));
             contentArea.appendChild(backBtn);
 
