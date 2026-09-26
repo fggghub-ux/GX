@@ -97,28 +97,50 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
 
     function getOfflineCharProfile(friend) {
         const name = String(friend?.realName || friend?.name || friend?.nickname || 'Char').trim() || 'Char';
+        const rawSignature = String(friend?.signature || '').trim();
         return {
             name,
             handle: makeOfflineProfileHandle(friend?.handle || friend?.username || friend?.account, name),
             avatarUrl: friend?.avatarUrl || friend?.avatar || '',
-            signature: String(friend?.signature || '').trim()
+            signature: /^No Signature$/i.test(rawSignature) ? '' : rawSignature
         };
     }
 
-    const OFFLINE_PROFILE_STATS = Object.freeze({
-        user: Object.freeze({ following: '8', followers: '279K' }),
-        assistant: Object.freeze({ following: '1', followers: '1.2M' }),
-        likes: '17K',
-        bookmarks: '1.9K',
-        views: '5M '
+    const OFFLINE_PROFILE_DEFAULTS = Object.freeze({
+        user: Object.freeze({ following: '8', followers: '279K', views: '5M', likes: '17K', favorite: '1.9K' }),
+        assistant: Object.freeze({ following: '1', followers: '1.2M', views: '5M', likes: '17K', favorite: '1.9K' })
     });
+
+    function normalizeOfflineProfileStat(value, fallback) {
+        const clean = String(value == null ? '' : value).trim().replace(/\s+/g, ' ').slice(0, 18);
+        return clean || String(fallback || '0');
+    }
+
+    function getOfflineEditableProfile(friend, isUser) {
+        const role = isUser ? 'user' : 'assistant';
+        const base = isUser ? getOfflineEffectiveUserProfile(friend) : getOfflineCharProfile(friend);
+        const stored = friend?.[isUser ? 'offlineUserProfile' : 'offlineCharProfile'];
+        const saved = stored && typeof stored === 'object' ? stored : {};
+        const defaults = OFFLINE_PROFILE_DEFAULTS[role];
+        const name = String(saved.name || base.name || (isUser ? 'User' : 'Char')).trim() || (isUser ? 'User' : 'Char');
+        return {
+            ...base,
+            name,
+            handle: makeOfflineProfileHandle(saved.handle, base.handle || name),
+            following: normalizeOfflineProfileStat(saved.following, defaults.following),
+            followers: normalizeOfflineProfileStat(saved.followers, defaults.followers),
+            views: normalizeOfflineProfileStat(saved.views, defaults.views),
+            likes: normalizeOfflineProfileStat(saved.likes, defaults.likes),
+            favorite: normalizeOfflineProfileStat(saved.favorite, defaults.favorite)
+        };
+    }
 
     function refreshOfflineUserIdentity(friendOrId) {
         const requestedId = typeof friendOrId === 'object' && friendOrId !== null ? friendOrId.id : friendOrId;
         const activeFriend = window.imData?.currentActiveFriend;
         if (!activeFriend || activeFriend.type === 'group' || String(activeFriend.id) !== String(requestedId)) return false;
         const friend = window.imApp?.getFriendById?.(requestedId) || activeFriend;
-        const profile = getOfflineEffectiveUserProfile(friend);
+        const profile = getOfflineEditableProfile(friend, true);
         const contentArea = document.getElementById('offline-chat-content');
         if (!contentArea) return false;
 
@@ -2826,20 +2848,6 @@ function createAttachmentSheet(page) {
             return result;
         }
 
-        const getOfflineChatActionButtonsHtml = (isUser, actionsDisabled = false, message = null) => {
-            if (actionsDisabled) return '';
-            if (isOfflineAutoImageMessage(message)) {
-                return '<div class="offline-chat-bubble-actions"><button type="button" class="offline-chat-action-btn" data-offline-action="save-image" title="保存到本地" aria-label="保存到本地"><i class="fas fa-download"></i></button><button type="button" class="offline-chat-action-btn danger" data-offline-action="delete" title="删除" aria-label="删除"><i class="fas fa-trash"></i></button></div>';
-            }
-            return `
-                <div class="offline-chat-bubble-actions">
-                    <button type="button" class="offline-chat-action-btn" data-offline-action="edit" title="编辑" aria-label="编辑"><i class="fas fa-pen"></i></button>
-                    ${!isUser ? '<button type="button" class="offline-chat-action-btn" data-offline-action="reroll" title="重回" aria-label="重回"><i class="fas fa-redo"></i></button>' : ''}
-                    <button type="button" class="offline-chat-action-btn danger" data-offline-action="delete" title="删除" aria-label="删除"><i class="fas fa-trash"></i></button>
-                </div>
-            `;
-        };
-
         const bindOfflineChatBubbleActions = (bubbleDiv, message) => {
             if (!bubbleDiv || !message?.id) return;
             bubbleDiv.querySelectorAll('[data-offline-action]').forEach((button) => {
@@ -2931,28 +2939,17 @@ function createAttachmentSheet(page) {
             const text = String(sourceText || '').trim();
             if (!text) return '';
             if (isLikelyChineseText(text) && !/[A-Za-z]{4,}/.test(text)) return text;
-            const currentApiConfig = window.getApiConfig ? window.getApiConfig() : (window.apiConfig || {});
-            if (!currentApiConfig.endpoint || !currentApiConfig.apiKey) throw new Error('请先配置 API');
-            const endpoint = window.u2Api.resolveChatCompletionsEndpoint(currentApiConfig.endpoint);
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: window.u2Api.buildApiHeaders(currentApiConfig),
-                body: JSON.stringify({
-                    model: currentApiConfig.model || '',
-                    temperature: 0.1,
-                    stream: false,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'Translate the complete supplied text into natural Simplified Chinese. Preserve paragraph breaks, quotation marks, section headings, and option-line structure. Output only the translated text. Do not explain, summarize, omit, or add content.'
-                        },
-                        { role: 'user', content: text }
-                    ]
-                })
+            const result = await requestOfflineAssistantReply([
+                {
+                    role: 'system',
+                    content: 'Translate the complete supplied text into natural Simplified Chinese. Preserve paragraph breaks, quotation marks, section headings, and option-line structure. Output only the translated text. Do not explain, summarize, omit, or add content.'
+                },
+                { role: 'user', content: text }
+            ], null, {
+                stream: false,
+                requestReasoning: false
             });
-            if (!response.ok) throw new Error(`翻译请求失败 (${response.status})`);
-            const data = await response.json();
-            return String(data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || '').trim();
+            return String(result?.content || '').trim();
         };
 
         const renderOfflineTranslationState = (bubbleDiv, message, friend, options, translated) => {
@@ -2972,31 +2969,139 @@ function createAttachmentSheet(page) {
             bindOfflineChatTextControls(bubbleDiv, { ...message, content: display }, friend, options.floor);
         };
 
-        const bindOfflineProfileCardControls = (bubbleDiv, message, friend, options) => {
-            const banner = bubbleDiv.querySelector('.offline-chat-banner');
-            banner?.addEventListener('click', () => chooseOfflineProfileBanner(friend, options.isUser));
-
-            const moreActions = bubbleDiv.querySelector('.offline-chat-more-actions');
-            moreActions?.addEventListener('click', () => {
-                const actions = bubbleDiv.querySelector('.offline-chat-maintenance-actions');
-                actions?.classList.toggle('is-open');
+        const updateOfflineProfileCards = (role, profile) => {
+            const contentArea = document.getElementById('offline-chat-content');
+            if (!contentArea) return;
+            contentArea.querySelectorAll(`.offline-chat-bubble[data-profile-role="${role}"]`).forEach((bubble) => {
+                const assignments = [
+                    ['.offline-chat-name', profile.name],
+                    ['.offline-chat-handle', profile.handle],
+                    ['.offline-profile-following-value', profile.following],
+                    ['.offline-profile-followers-value', profile.followers],
+                    ['.offline-profile-views-value', profile.views],
+                    ['.offline-profile-likes-value', profile.likes],
+                    ['.offline-profile-favorite-value', profile.favorite]
+                ];
+                assignments.forEach(([selector, value]) => {
+                    const node = bubble.querySelector(selector);
+                    if (node) node.textContent = value;
+                });
             });
+        };
 
-            const followButton = bubbleDiv.querySelector('.offline-chat-follow-btn');
-            followButton?.addEventListener('click', async () => {
-                if (followButton.disabled || options.isAutoImage) return;
+        let offlineProfileEditorContext = null;
+
+        const closeOfflineProfileEditor = () => {
+            const overlay = document.getElementById('offline-profile-editor');
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+            offlineProfileEditorContext = null;
+        };
+
+        const ensureOfflineProfileEditor = () => {
+            let overlay = document.getElementById('offline-profile-editor');
+            if (overlay) return overlay;
+            overlay = document.createElement('div');
+            overlay.id = 'offline-profile-editor';
+            overlay.className = 'offline-profile-editor';
+            overlay.setAttribute('aria-hidden', 'true');
+            overlay.innerHTML = `
+                <section class="offline-profile-editor-sheet" role="dialog" aria-modal="true" aria-labelledby="offline-profile-editor-title">
+                    <div class="offline-profile-editor-handle" aria-hidden="true"></div>
+                    <header class="offline-profile-editor-header">
+                        <button type="button" class="offline-profile-editor-cancel">Cancel</button>
+                        <strong id="offline-profile-editor-title">Edit profile</strong>
+                        <button type="button" class="offline-profile-editor-save">Save</button>
+                    </header>
+                    <div class="offline-profile-editor-fields">
+                        ${[
+                            ['name', 'Name'],
+                            ['handle', '@ Account'],
+                            ['following', 'Following'],
+                            ['followers', 'Followers'],
+                            ['views', 'Views'],
+                            ['likes', 'Likes'],
+                            ['favorite', 'Favorite']
+                        ].map(([field, label]) => `<label class="offline-profile-editor-field"><span>${label}</span><input type="text" data-offline-profile-field="${field}" maxlength="32" autocomplete="off"></label>`).join('')}
+                    </div>
+                </section>
+            `;
+            document.getElementById('offline-chat-view')?.appendChild(overlay);
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) closeOfflineProfileEditor();
+            });
+            overlay.querySelector('.offline-profile-editor-cancel')?.addEventListener('click', closeOfflineProfileEditor);
+            overlay.querySelector('.offline-profile-editor-save')?.addEventListener('click', async () => {
+                const context = offlineProfileEditorContext;
+                if (!context?.friend?.id) return;
+                const saveButton = overlay.querySelector('.offline-profile-editor-save');
+                const read = (field) => String(overlay.querySelector(`[data-offline-profile-field="${field}"]`)?.value || '').trim();
+                const name = read('name');
+                if (!name) {
+                    window.showToast?.('Name 不能为空');
+                    overlay.querySelector('[data-offline-profile-field="name"]')?.focus();
+                    return;
+                }
+                const nextProfile = {
+                    name: name.slice(0, 32),
+                    handle: makeOfflineProfileHandle(read('handle'), name),
+                    following: normalizeOfflineProfileStat(read('following'), context.profile.following),
+                    followers: normalizeOfflineProfileStat(read('followers'), context.profile.followers),
+                    views: normalizeOfflineProfileStat(read('views'), context.profile.views),
+                    likes: normalizeOfflineProfileStat(read('likes'), context.profile.likes),
+                    favorite: normalizeOfflineProfileStat(read('favorite'), context.profile.favorite)
+                };
+                const field = context.isUser ? 'offlineUserProfile' : 'offlineCharProfile';
+                if (saveButton) saveButton.disabled = true;
+                try {
+                    const saved = await commitSheetFriendChange(context.friend.id, (targetFriend) => {
+                        targetFriend[field] = nextProfile;
+                    }, { silent: true, metaOnly: true });
+                    if (!saved) throw new Error('Profile save failed');
+                    updateOfflineProfileCards(context.isUser ? 'user' : 'assistant', nextProfile);
+                    closeOfflineProfileEditor();
+                } catch (error) {
+                    console.error('Offline profile save failed', error);
+                    window.showToast?.('资料保存失败');
+                } finally {
+                    if (saveButton) saveButton.disabled = false;
+                }
+            });
+            return overlay;
+        };
+
+        const openOfflineProfileEditor = (friend, isUser) => {
+            const overlay = ensureOfflineProfileEditor();
+            const latestFriend = window.imApp?.getFriendById?.(friend?.id) || friend;
+            if (!overlay || !latestFriend) return;
+            const profile = getOfflineEditableProfile(latestFriend, isUser);
+            offlineProfileEditorContext = { friend: latestFriend, isUser, profile };
+            ['name', 'handle', 'following', 'followers', 'views', 'likes', 'favorite'].forEach((field) => {
+                const input = overlay.querySelector(`[data-offline-profile-field="${field}"]`);
+                if (input) input.value = profile[field] || '';
+            });
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+        };
+
+        const bindOfflineTranslationControl = (bubbleDiv, message, friend, options) => {
+            const quotesButton = bubbleDiv.querySelector('.offline-chat-quotes-btn');
+            if (!quotesButton || message.role !== 'assistant' || options.isAutoImage) return;
+            quotesButton.addEventListener('click', async () => {
+                if (quotesButton.disabled) return;
                 const activeFriend = window.imApp?.getFriendById?.(friend?.id) || window.imData?.currentActiveFriend || friend;
                 const messages = normalizeOfflineMessagesForFriend(activeFriend);
                 const liveMessage = messages.find(item => String(item.id) === String(message.id)) || message;
-                const isTranslated = followButton.getAttribute('aria-pressed') === 'true';
+                const isTranslated = quotesButton.getAttribute('aria-pressed') === 'true';
                 if (isTranslated) {
-                    followButton.setAttribute('aria-pressed', 'false');
-                    followButton.classList.remove('is-translated');
+                    quotesButton.setAttribute('aria-pressed', 'false');
+                    quotesButton.classList.remove('is-translated');
                     renderOfflineTranslationState(bubbleDiv, liveMessage, activeFriend, options, false);
                     return;
                 }
-                followButton.disabled = true;
-                followButton.classList.add('is-loading');
+                quotesButton.disabled = true;
+                quotesButton.classList.add('is-loading');
                 try {
                     let translationZh = String(liveMessage.translationZh || '').trim();
                     if (!translationZh) {
@@ -3008,26 +3113,45 @@ function createAttachmentSheet(page) {
                             : item);
                         await persistOfflineMessages(activeFriend, nextMessages);
                     }
-                    followButton.setAttribute('aria-pressed', 'true');
-                    followButton.classList.add('is-translated');
+                    quotesButton.setAttribute('aria-pressed', 'true');
+                    quotesButton.classList.add('is-translated');
                     renderOfflineTranslationState(bubbleDiv, liveMessage, activeFriend, options, true);
                 } catch (error) {
                     console.error('Offline translation failed', error);
                     window.showToast?.(error?.message || '翻译失败，请稍后重试');
                 } finally {
-                    followButton.disabled = false;
-                    followButton.classList.remove('is-loading');
+                    quotesButton.disabled = false;
+                    quotesButton.classList.remove('is-loading');
                 }
             });
         };
 
+        const bindOfflineProfileCardControls = (bubbleDiv, message, friend, options) => {
+            const banner = bubbleDiv.querySelector('.offline-chat-banner');
+            banner?.addEventListener('click', () => chooseOfflineProfileBanner(friend, options.isUser));
+
+            const followButton = bubbleDiv.querySelector('.offline-chat-follow-btn');
+            followButton?.addEventListener('click', () => openOfflineProfileEditor(friend, options.isUser));
+            bindOfflineTranslationControl(bubbleDiv, message, friend, options);
+        };
+
         const enableOfflineChatBubbleActions = (bubbleDiv, message) => {
-            const footer = bubbleDiv?.querySelector?.('.offline-chat-bubble-footer');
-            if (!footer || !message?.id) return;
-            const maintenance = footer.querySelector('.offline-chat-maintenance-actions');
-            if (!maintenance) return;
-            maintenance.innerHTML = getOfflineChatActionButtonsHtml(message.role === 'user', false, message);
+            if (!bubbleDiv || !message?.id) return;
+            bubbleDiv.querySelectorAll('.offline-chat-social-action[data-offline-action]').forEach((button) => {
+                button.disabled = false;
+            });
             bindOfflineChatBubbleActions(bubbleDiv, message);
+        };
+
+        const renderOfflineSocialIcon = (name) => {
+            const paths = {
+                comment: '<path d="M21 11.5c0 4.15-4.25 7.5-9.5 7.5-1.12 0-2.19-.15-3.18-.44L3.5 21l1.46-4.09C3.11 15.55 2 13.65 2 11.5 2 7.35 6.25 4 11.5 4S21 7.35 21 11.5Z"/>',
+                repost: '<path d="M17 2.5 21 6.5 17 10.5"/><path d="M3 11V9.5a3 3 0 0 1 3-3h15"/><path d="m7 21.5-4-4 4-4"/><path d="M21 13v1.5a3 3 0 0 1-3 3H3"/>',
+                heart: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/>',
+                bookmark: '<path d="M5 3.75A1.75 1.75 0 0 1 6.75 2h10.5A1.75 1.75 0 0 1 19 3.75V22l-7-4-7 4Z"/>',
+                share: '<path d="M12 16V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12H3.75A1.75 1.75 0 0 0 2 13.75v6.5A1.75 1.75 0 0 0 3.75 22h16.5A1.75 1.75 0 0 0 22 20.25v-6.5A1.75 1.75 0 0 0 20.25 12H19"/>'
+            };
+            return `<svg class="offline-chat-social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${paths[name] || ''}</svg>`;
         };
 
         const renderOfflineChatBubble = (messageOrText, isUser = true, options = {}) => {
@@ -3058,15 +3182,14 @@ function createAttachmentSheet(page) {
             isUser = message.role === 'user';
             const isAutoImage = isOfflineAutoImageMessage(message);
 
-            const offlineUserProfile = getOfflineEffectiveUserProfile(friend);
-            const offlineCharProfile = getOfflineCharProfile(friend);
+            const offlineUserProfile = getOfflineEditableProfile(friend, true);
+            const offlineCharProfile = getOfflineEditableProfile(friend, false);
             const displayProfile = isUser ? offlineUserProfile : offlineCharProfile;
             const userName = displayProfile.name;
             const userHandle = displayProfile.handle;
             const userSign = displayProfile.signature;
             const userAvatar = displayProfile.avatarUrl;
             const bannerUrl = String((isUser ? friend?.offlineUserBannerUrl : friend?.offlineCharBannerUrl) || '').trim();
-            const profileStats = isUser ? OFFLINE_PROFILE_STATS.user : OFFLINE_PROFILE_STATS.assistant;
             const floor = Number(options.floor) || 1;
             const depth = Number.isInteger(Number(options.depth)) ? Number(options.depth) : 0;
             const isReadOnly = !!options.readOnly;
@@ -3075,10 +3198,10 @@ function createAttachmentSheet(page) {
             const enableChoicesForMessage = !isUser && isOfflineChoicesPromptEnabled(friend);
             const timeText = formatOfflineBubbleTime(message.timestamp);
             const contentMetric = isAutoImage
-                ? '图片'
+                ? '0'
                 : (isUser
-                    ? `${countOfflineTextCharacters(message.content)}字`
-                    : `${message.tokens || estimateOfflineTextTokens(message.content)} tokens`);
+                    ? `${countOfflineTextCharacters(message.content)}`
+                    : `${message.tokens || estimateOfflineTextTokens(message.content)}`);
 
             const bubbleDiv = document.createElement('div');
             bubbleDiv.className = `offline-chat-bubble ${isUser ? 'user' : 'ai'}`;
@@ -3099,7 +3222,6 @@ function createAttachmentSheet(page) {
             const displayText = applyOfflineRegexText(friend, parsedMessage.content, message.role, depth, 'display');
             const displayThinking = rawThinking ? buildOfflineThinkingHtml(rawThinking, false) : '';
 
-            const actionButtonsHtml = getOfflineChatActionButtonsHtml(isUser, actionsDisabled, message);
             const imageHtml = isAutoImage
                 ? `<figure class="offline-chat-generated-image"><img src="${escapeSheetHtml(message.imageUrl)}" alt="${escapeSheetHtml(message.content || '线下剧情图片')}" loading="lazy"><figcaption>${escapeSheetHtml(message.content || '线下剧情图片')}</figcaption></figure>`
                 : '';
@@ -3116,7 +3238,7 @@ function createAttachmentSheet(page) {
                         <span class="offline-chat-name">${escapeSheetHtml(userName)}</span>
                         <span class="offline-chat-handle">${escapeSheetHtml(userHandle)}</span>
                     </div>
-                    <div class="offline-chat-profile-stats"><span><strong>${profileStats.following}</strong> Following</span><span><strong>${profileStats.followers}</strong> Followers</span></div>
+                    <div class="offline-chat-profile-stats"><span><strong class="offline-profile-following-value">${escapeSheetHtml(displayProfile.following)}</strong> Following</span><span><strong class="offline-profile-followers-value">${escapeSheetHtml(displayProfile.followers)}</strong> Followers</span></div>
                     ${userSign ? `<div class="offline-chat-sign">${escapeSheetHtml(userSign)}</div>` : ''}
                 </div>
                 <div class="offline-chat-bubble-body">
@@ -3129,16 +3251,17 @@ function createAttachmentSheet(page) {
                         enableRecap: !isUser,
                         language: friend?.language || 'zh'
                     })}</div>`}
-                    <div class="offline-chat-view-row"><span><strong>${OFFLINE_PROFILE_STATS.views}</strong>Views</span><span>View quotes &gt;</span></div>
+                    <div class="offline-chat-view-row"><span><strong class="offline-profile-views-value">${escapeSheetHtml(displayProfile.views)}</strong> Views</span><button type="button" class="offline-chat-quotes-btn${isUser || isAutoImage ? ' is-static' : ''}" aria-pressed="false"${isUser || isAutoImage ? ' aria-disabled="true" tabindex="-1"' : ''}>View quotes &gt;</button></div>
                     <div class="offline-chat-bubble-footer">
                         <div class="offline-chat-social-actions">
-                            <span class="offline-chat-social-item" aria-label="楼层"><i class="far fa-comment"></i><span>#${floor}</span></span>
-                            <span class="offline-chat-social-item" aria-label="字数或 Token"><i class="fas fa-retweet"></i><span class="offline-chat-content-metric">${escapeSheetHtml(contentMetric)}</span></span>
-                            <span class="offline-chat-social-item" aria-label="点赞"><i class="far fa-heart"></i><span>${OFFLINE_PROFILE_STATS.likes}</span></span>
-                            <span class="offline-chat-social-item" aria-label="收藏"><i class="far fa-bookmark"></i><span>${OFFLINE_PROFILE_STATS.bookmarks}</span></span>
-                            <button type="button" class="offline-chat-social-item offline-chat-more-actions" aria-label="更多操作"><i class="fas fa-arrow-up-from-bracket"></i></button>
+                            <span class="offline-chat-social-item" aria-label="楼层">${renderOfflineSocialIcon('comment')}<span>${floor}</span></span>
+                            <span class="offline-chat-social-item" aria-label="字数或 Token">${renderOfflineSocialIcon('repost')}<span class="offline-chat-content-metric">${escapeSheetHtml(contentMetric)}</span></span>
+                            ${!isUser && !isAutoImage
+                                ? `<button type="button" class="offline-chat-social-item offline-chat-social-action" data-offline-action="reroll" aria-label="重回" title="重回"${actionsDisabled ? ' disabled' : ''}>${renderOfflineSocialIcon('heart')}<span class="offline-profile-likes-value">${escapeSheetHtml(displayProfile.likes)}</span></button>`
+                                : `<span class="offline-chat-social-item" aria-label="点赞">${renderOfflineSocialIcon('heart')}<span class="offline-profile-likes-value">${escapeSheetHtml(displayProfile.likes)}</span></span>`}
+                            <button type="button" class="offline-chat-social-item offline-chat-social-action" data-offline-action="${isAutoImage ? 'save-image' : 'edit'}" aria-label="${isAutoImage ? '保存图片' : '编辑'}" title="${isAutoImage ? '保存图片' : '编辑'}"${actionsDisabled ? ' disabled' : ''}>${renderOfflineSocialIcon('bookmark')}<span class="offline-profile-favorite-value">${escapeSheetHtml(displayProfile.favorite)}</span></button>
+                            <button type="button" class="offline-chat-social-item offline-chat-social-action" data-offline-action="delete" aria-label="删除" title="删除"${actionsDisabled ? ' disabled' : ''}>${renderOfflineSocialIcon('share')}</button>
                         </div>
-                        <div class="offline-chat-maintenance-actions">${actionButtonsHtml}</div>
                     </div>
                 </div>
             `;
@@ -3288,7 +3411,7 @@ function createAttachmentSheet(page) {
                 setTokens: (tokens) => {
                     const safeTokens = Math.max(0, Number(tokens) || 0);
                     const metricEl = bubbleDiv.querySelector('.offline-chat-content-metric');
-                    if (metricEl) metricEl.textContent = `${safeTokens || estimateOfflineTextTokens(currentContent)} tokens`;
+                    if (metricEl) metricEl.textContent = `${safeTokens || estimateOfflineTextTokens(currentContent)}`;
                 },
                 enableActions: (finalMessage) => enableOfflineChatBubbleActions(bubbleDiv, finalMessage || message),
                 getResult: () => {
@@ -3530,6 +3653,7 @@ function createAttachmentSheet(page) {
         function renderOfflineCurrentMessages(activeFriend, options = {}) {
             const contentArea = document.getElementById('offline-chat-content');
             if (!contentArea || !activeFriend) return;
+            contentArea.classList.remove('offline-chat-history-list');
             contentArea.innerHTML = '';
             const titleEl = document.querySelector('#offline-chat-view .offline-chat-title');
             if (titleEl) titleEl.textContent = '线下';
@@ -3570,6 +3694,7 @@ function createAttachmentSheet(page) {
             const contentArea = document.getElementById('offline-chat-content');
             if (!contentArea || !activeFriend) return;
             const sessions = normalizeOfflineMeetingSessions(activeFriend).slice().sort((a, b) => Number(b.endedAt) - Number(a.endedAt));
+            contentArea.classList.add('offline-chat-history-list');
             contentArea.innerHTML = '';
             const titleEl = document.querySelector('#offline-chat-view .offline-chat-title');
             if (titleEl) titleEl.textContent = '历史见面';
@@ -3710,6 +3835,7 @@ function createAttachmentSheet(page) {
         function renderOfflineHistoricalSession(activeFriend, session) {
             const contentArea = document.getElementById('offline-chat-content');
             if (!contentArea || !session) return;
+            contentArea.classList.remove('offline-chat-history-list');
             contentArea.innerHTML = '';
             const titleEl = document.querySelector('#offline-chat-view .offline-chat-title');
             if (titleEl) titleEl.textContent = session.title || '历史见面';
@@ -4849,11 +4975,11 @@ ${transcript}`;
             const bubble = Array.from(document.querySelectorAll('.offline-chat-bubble'))
                 .find(item => String(item.getAttribute('data-message-id') || '') === String(messageId));
             const textEl = bubble ? bubble.querySelector('.offline-chat-bubble-text') : null;
-            const metaEl = bubble ? bubble.querySelector('.offline-chat-bubble-meta') : null;
-            const actionsEl = bubble ? bubble.querySelector('.offline-chat-bubble-actions') : null;
+            const metricEl = bubble ? bubble.querySelector('.offline-chat-content-metric') : null;
+            const actionsEl = bubble ? bubble.querySelector('.offline-chat-social-actions') : null;
             const originalHtml = textEl ? textEl.innerHTML : '';
             const originalDisplay = textEl ? textEl.style.display : '';
-            const originalMeta = metaEl ? metaEl.textContent : '';
+            const originalMetric = metricEl ? metricEl.textContent : '';
             const actionButtons = actionsEl ? Array.from(actionsEl.querySelectorAll('button')) : [];
             const rerollTimestamp = Date.now();
 
@@ -4914,9 +5040,9 @@ ${transcript}`;
                     return result;
                 },
                 setTokens: (tokens) => {
-                    if (metaEl) {
+                    if (metricEl) {
                         const safeTokens = Math.max(0, Number(tokens) || 0);
-                        metaEl.textContent = `#${targetIndex + 1} · ${safeTokens || estimateOfflineTextTokens(`${streamReasoning}\n${streamContent}`)} tokens · ${formatOfflineBubbleTime(rerollTimestamp)}`;
+                        metricEl.textContent = `${safeTokens || estimateOfflineTextTokens(`${streamReasoning}\n${streamContent}`)}`;
                     }
                 },
                 getResult: () => getStreamResult(false),
@@ -4954,6 +5080,7 @@ ${transcript}`;
                     ...nextMessages[targetIndex],
                     content: splitOfflineAutoImageMarker(content).content,
                     reasoning: reasoning || undefined,
+                    translationZh: undefined,
                     tokens,
                     timestamp: rerollTimestamp,
                     updatedAt: new Date().toISOString(),
@@ -4980,7 +5107,7 @@ ${transcript}`;
                     });
                     bindOfflineChatTextControls(bubble, originalMessage, activeFriend, targetIndex + 1);
                 }
-                if (metaEl) metaEl.textContent = originalMeta;
+                if (metricEl) metricEl.textContent = originalMetric;
                 renderOfflineCurrentMessages(activeFriend);
                 console.error('Offline reroll failed', error);
                 if (window.showToast) window.showToast(error?.code === 'reasoning_config_unsupported'
@@ -7580,6 +7707,11 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
             }
             
             if (sendBtn && inputField) {
+                const syncOfflineSendTextState = () => {
+                    sendBtn.classList.toggle('has-input', !!inputField.value.trim());
+                };
+                inputField.addEventListener('input', syncOfflineSendTextState);
+                syncOfflineSendTextState();
                 const handleSend = async () => {
                     if (isGenerating) {
                         if (currentGenerationController && !currentGenerationController.signal.aborted) {
@@ -7609,6 +7741,7 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
 
                     {
                         inputField.value = '';
+                        syncOfflineSendTextState();
                         isGenerating = true;
                         const generationController = new AbortController();
                         currentGenerationController = generationController;

@@ -1035,6 +1035,12 @@ button.group-private-chat-detail-bubble {
     background: var(--offline-profile-bg) !important;
 }
 
+#offline-chat-view .offline-chat-content.offline-chat-history-list {
+    align-items: stretch;
+    gap: 20px;
+    padding: 20px 16px;
+}
+
 #offline-chat-view .offline-chat-bubble {
     width: 100%;
     max-width: 480px;
@@ -1085,6 +1091,18 @@ button.group-private-chat-detail-bubble {
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.16));
+    pointer-events: none;
+}
+
+#offline-chat-view .offline-chat-banner:not(.has-image)::after {
+    content: "X";
+    position: absolute;
+    right: 22px;
+    bottom: -26px;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 128px;
+    font-weight: 900;
+    line-height: 1;
     pointer-events: none;
 }
 
@@ -1147,15 +1165,6 @@ button.group-private-chat-detail-bubble {
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-}
-
-#offline-chat-view .offline-chat-follow-btn.is-translated {
-    background: #f1f1f1;
-    color: #1a1a1a;
-}
-
-#offline-chat-view .offline-chat-follow-btn.is-loading {
-    opacity: 0.55;
 }
 
 #offline-chat-view .offline-chat-name-container {
@@ -1305,6 +1314,29 @@ button.group-private-chat-detail-bubble {
     font-weight: 700;
 }
 
+#offline-chat-view .offline-chat-quotes-btn {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--offline-profile-muted);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#offline-chat-view .offline-chat-quotes-btn.is-static {
+    cursor: default;
+}
+
+#offline-chat-view .offline-chat-quotes-btn.is-loading {
+    opacity: 0.5;
+}
+
+#offline-chat-view .offline-chat-quotes-btn.is-translated {
+    color: var(--offline-profile-text);
+}
+
 #offline-chat-view .offline-chat-bubble-footer {
     display: block;
     min-height: 0;
@@ -1315,8 +1347,9 @@ button.group-private-chat-detail-bubble {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     color: var(--offline-profile-muted);
+    font-family: sans-serif;
 }
 
 #offline-chat-view .offline-chat-social-item {
@@ -1325,7 +1358,7 @@ button.group-private-chat-detail-bubble {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 6px;
+    gap: 5px;
     margin: 0;
     padding: 0;
     border: 0;
@@ -1336,37 +1369,35 @@ button.group-private-chat-detail-bubble {
     white-space: nowrap;
 }
 
-#offline-chat-view .offline-chat-social-item i {
-    font-size: 18px;
+#offline-chat-view .offline-chat-social-item:nth-child(2),
+#offline-chat-view .offline-chat-social-item:nth-child(3),
+#offline-chat-view .offline-chat-social-item:nth-child(4) {
+    justify-self: center;
+}
+
+#offline-chat-view .offline-chat-social-item:last-child {
+    justify-self: end;
+}
+
+#offline-chat-view .offline-chat-social-icon {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 #offline-chat-view button.offline-chat-social-item {
     cursor: pointer;
 }
 
-#offline-chat-view .offline-chat-maintenance-actions {
-    display: none;
-    justify-content: flex-end;
-    margin-top: 8px;
-}
-
-#offline-chat-view .offline-chat-maintenance-actions.is-open {
-    display: flex;
-}
-
-#offline-chat-view .offline-chat-maintenance-actions .offline-chat-bubble-actions {
-    display: flex;
-    gap: 6px;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#offline-chat-view .offline-chat-maintenance-actions .offline-chat-action-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background: #f2f2f2;
-    color: #555555;
+#offline-chat-view button.offline-chat-social-item:disabled {
+    cursor: default;
+    opacity: 0.42;
 }
 
 #offline-chat-view .offline-chat-input-area {
@@ -1380,6 +1411,7 @@ button.group-private-chat-detail-bubble {
 #offline-chat-view .offline-chat-input-bar {
     min-height: 48px;
     padding: 4px 6px;
+    align-items: center;
     border: 0;
     border-radius: 24px;
     background: #f5f5f5;
@@ -1387,6 +1419,7 @@ button.group-private-chat-detail-bubble {
 }
 
 #offline-chat-view .offline-chat-attachment {
+    margin-bottom: 0;
     border: 0;
     background: transparent;
     box-shadow: none;
@@ -1394,11 +1427,13 @@ button.group-private-chat-detail-bubble {
 }
 
 #offline-chat-view .offline-chat-input {
+    height: 36px;
+    min-height: 36px;
     padding: 8px 12px;
     border: 0;
     background: transparent;
     color: var(--offline-profile-text);
-    line-height: 1.5;
+    line-height: 20px;
 }
 
 #offline-chat-view .offline-chat-input::placeholder {
@@ -1414,10 +1449,15 @@ button.group-private-chat-detail-bubble {
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: #0a0a0a;
+    margin-bottom: 0;
+    color: #c7c7c7;
     font-size: 15px;
     font-weight: 600;
     line-height: 36px;
+}
+
+#offline-chat-view .offline-chat-send.has-input {
+    color: #0a0a0a;
 }
 
 #offline-chat-view .offline-chat-send:not(.is-generating):not(.is-stopping) i {
@@ -1432,6 +1472,113 @@ button.group-private-chat-detail-bubble {
     color: #ffffff;
 }
 
+#offline-chat-view .offline-profile-editor {
+    position: absolute;
+    inset: 0;
+    z-index: 1120;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.42);
+}
+
+#offline-chat-view .offline-profile-editor.active {
+    display: flex;
+}
+
+#offline-chat-view .offline-profile-editor-sheet {
+    width: 100%;
+    max-width: 620px;
+    max-height: 88%;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 32px 32px 0 0;
+    background: #f2f2f7;
+    color: #050505;
+}
+
+#offline-chat-view .offline-profile-editor-handle {
+    width: 44px;
+    height: 5px;
+    margin: 14px auto 18px;
+    border-radius: 999px;
+    background: #9b9ba1;
+}
+
+#offline-chat-view .offline-profile-editor-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px 16px;
+}
+
+#offline-chat-view .offline-profile-editor-header strong {
+    font-size: 20px;
+    font-weight: 850;
+}
+
+#offline-chat-view .offline-profile-editor-header button {
+    border: 0;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+#offline-chat-view .offline-profile-editor-cancel {
+    justify-self: start;
+    padding: 0;
+    background: transparent;
+    color: #050505;
+}
+
+#offline-chat-view .offline-profile-editor-save {
+    justify-self: end;
+    min-width: 68px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px !important;
+    background: #050505;
+    color: #ffffff;
+}
+
+#offline-chat-view .offline-profile-editor-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: calc(88vh - 110px);
+    padding: 0 16px max(24px, env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+}
+
+#offline-chat-view .offline-profile-editor-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 16px;
+    background: #ffffff;
+}
+
+#offline-chat-view .offline-profile-editor-field span {
+    color: #727277;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+#offline-chat-view .offline-profile-editor-field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #050505;
+    font: inherit;
+    font-size: 16px;
+}
+
 @media (min-width: 768px) {
     #offline-chat-view .offline-chat-content {
         padding-bottom: 36px;
@@ -1441,6 +1588,22 @@ button.group-private-chat-detail-bubble {
         max-width: 720px;
         padding-right: 20px;
         padding-left: 20px;
+    }
+
+    #offline-chat-view .offline-chat-bubble-header {
+        padding-top: 209px;
+    }
+
+    #offline-chat-view .offline-chat-banner {
+        height: 156px;
+    }
+
+    #offline-chat-view .offline-chat-avatar {
+        top: 131px;
+    }
+
+    #offline-chat-view .offline-chat-profile-tools {
+        top: 168px;
     }
 
     #offline-chat-view .offline-chat-input-area {
