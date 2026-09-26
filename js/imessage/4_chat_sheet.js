@@ -82,7 +82,10 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
         return {
             name,
             handle: makeOfflineProfileHandle(source.handle || source.username || source.account, name),
-            avatarUrl: source.avatarUrl || source.avatar || '',
+            avatarUrl: source.avatarUrl
+                || source.avatar
+                || window.U2_DEFAULT_USER_AVATAR_URL
+                || 'assets/default-user-avatar.jpg',
             signature: String(source.signature || '').trim(),
             persona: String(source.persona || '').trim(),
             boundAccountId: boundAccount?.id ?? null
