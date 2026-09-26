@@ -108,9 +108,9 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
     const OFFLINE_PROFILE_STATS = Object.freeze({
         user: Object.freeze({ following: '8', followers: '279K' }),
         assistant: Object.freeze({ following: '1', followers: '1.2M' }),
-        likes: '4632',
-        bookmarks: '612',
-        views: '52w'
+        likes: '17K',
+        bookmarks: '1.9K',
+        views: '5M'
     });
 
     function refreshOfflineUserIdentity(friendOrId) {
@@ -3129,7 +3129,7 @@ function createAttachmentSheet(page) {
                         enableRecap: !isUser,
                         language: friend?.language || 'zh'
                     })}</div>`}
-                    <div class="offline-chat-view-row"><span><strong>${OFFLINE_PROFILE_STATS.views}</strong>次查看</span><span>查看引用 &gt;</span></div>
+                    <div class="offline-chat-view-row"><span><strong>${OFFLINE_PROFILE_STATS.views}</strong>Views</span><span>View quotes &gt;</span></div>
                     <div class="offline-chat-bubble-footer">
                         <div class="offline-chat-social-actions">
                             <span class="offline-chat-social-item" aria-label="楼层"><i class="far fa-comment"></i><span>#${floor}</span></span>
@@ -3577,7 +3577,7 @@ function createAttachmentSheet(page) {
             const backBtn = document.createElement('button');
             backBtn.type = 'button';
             backBtn.className = 'offline-chat-history-back';
-            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> First encounter';
+            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Mostly Cloudy';
             backBtn.addEventListener('click', () => renderOfflineCurrentMessages(activeFriend));
             contentArea.appendChild(backBtn);
 
@@ -3717,7 +3717,7 @@ function createAttachmentSheet(page) {
             const backBtn = document.createElement('button');
             backBtn.type = 'button';
             backBtn.className = 'offline-chat-history-back';
-            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> 返回历史见面';
+            backBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Notification Center';
             backBtn.addEventListener('click', () => renderOfflineHistoryList(activeFriend));
             contentArea.appendChild(backBtn);
 
