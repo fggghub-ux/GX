@@ -2901,9 +2901,11 @@ function createAttachmentSheet(page) {
             const icon = button.querySelector('i');
             if (icon) icon.className = `${active ? 'fas' : 'far'} fa-${type === 'like' ? 'heart' : 'bookmark'}`;
             button.classList.remove('is-popping');
-            void button.offsetWidth;
-            button.classList.add('is-popping');
-            window.setTimeout(() => button.classList.remove('is-popping'), 260);
+            if (type === 'like') {
+                void button.offsetWidth;
+                button.classList.add('is-popping');
+                window.setTimeout(() => button.classList.remove('is-popping'), 260);
+            }
         };
 
         const persistOfflineSocialInteraction = async (messageId, field, active) => {
@@ -2923,48 +2925,98 @@ function createAttachmentSheet(page) {
                     selector: '.offline-chat-like-action',
                     type: 'like',
                     field: 'liked',
-                    doubleAction: !options.isUser && !options.isAutoImage ? 'reroll' : ''
+                    longAction: !options.isUser && !options.isAutoImage ? 'reroll' : ''
                 },
                 {
                     selector: '.offline-chat-favorite-action',
                     type: 'favorite',
                     field: 'saved',
-                    doubleAction: options.isAutoImage ? 'save-image' : 'edit'
+                    longAction: options.isAutoImage ? 'save-image' : 'edit'
                 }
             ];
             bindings.forEach((binding) => {
                 const button = bubbleDiv.querySelector(binding.selector);
                 if (!button || button.dataset.interactionBound === 'true') return;
                 button.dataset.interactionBound = 'true';
-                let clickTimer = null;
+                let holdTimer = null;
+                let pointerId = null;
+                let pointerStartX = 0;
+                let pointerStartY = 0;
+                let pointerMoved = false;
+                let holdTriggered = false;
+                let suppressClickUntil = 0;
+
+                const clearHoldTimer = () => {
+                    if (holdTimer !== null) window.clearTimeout(holdTimer);
+                    holdTimer = null;
+                };
+
+                const toggleInteraction = async () => {
+                    if (button.disabled) return;
+                    const activeClass = binding.type === 'like' ? 'is-liked' : 'is-saved';
+                    const wasActive = button.classList.contains(activeClass);
+                    const nextActive = !wasActive;
+                    setOfflineSocialInteractionVisual(button, binding.type, nextActive);
+                    try {
+                        const saved = await persistOfflineSocialInteraction(message.id, binding.field, nextActive);
+                        if (!saved) throw new Error('Interaction save failed');
+                        if (binding.type === 'favorite') {
+                            window.showToast?.(nextActive ? 'Saved' : 'Removed from favorites');
+                        }
+                    } catch (error) {
+                        console.error('Offline social interaction save failed', error);
+                        setOfflineSocialInteractionVisual(button, binding.type, wasActive);
+                        window.showToast?.('状态保存失败');
+                    }
+                };
+
+                button.addEventListener('pointerdown', (event) => {
+                    if (button.disabled || (event.button !== undefined && event.button !== 0)) return;
+                    pointerId = event.pointerId;
+                    pointerStartX = event.clientX;
+                    pointerStartY = event.clientY;
+                    pointerMoved = false;
+                    holdTriggered = false;
+                    clearHoldTimer();
+                    if (!binding.longAction) return;
+                    holdTimer = window.setTimeout(() => {
+                        holdTimer = null;
+                        holdTriggered = true;
+                        suppressClickUntil = Date.now() + 700;
+                        window.navigator?.vibrate?.(18);
+                        executeOfflineChatAction(binding.longAction, button, message);
+                    }, 800);
+                });
+
+                button.addEventListener('pointermove', (event) => {
+                    if (event.pointerId !== pointerId) return;
+                    if (Math.hypot(event.clientX - pointerStartX, event.clientY - pointerStartY) <= 10) return;
+                    pointerMoved = true;
+                    clearHoldTimer();
+                });
+
+                button.addEventListener('pointerup', (event) => {
+                    if (event.pointerId !== pointerId) return;
+                    clearHoldTimer();
+                    pointerId = null;
+                    suppressClickUntil = Date.now() + 700;
+                    if (!holdTriggered && !pointerMoved) toggleInteraction();
+                    holdTriggered = false;
+                });
+
+                button.addEventListener('pointercancel', () => {
+                    clearHoldTimer();
+                    pointerId = null;
+                    pointerMoved = false;
+                    holdTriggered = false;
+                });
+
+                button.addEventListener('contextmenu', (event) => event.preventDefault());
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    if (button.disabled) return;
-                    if (clickTimer !== null) {
-                        window.clearTimeout(clickTimer);
-                        clickTimer = null;
-                        if (binding.doubleAction) executeOfflineChatAction(binding.doubleAction, button, message);
-                        return;
-                    }
-                    clickTimer = window.setTimeout(async () => {
-                        clickTimer = null;
-                        const activeClass = binding.type === 'like' ? 'is-liked' : 'is-saved';
-                        const wasActive = button.classList.contains(activeClass);
-                        const nextActive = !wasActive;
-                        setOfflineSocialInteractionVisual(button, binding.type, nextActive);
-                        try {
-                            const saved = await persistOfflineSocialInteraction(message.id, binding.field, nextActive);
-                            if (!saved) throw new Error('Interaction save failed');
-                            if (binding.type === 'favorite') {
-                                window.showToast?.(nextActive ? 'Saved' : 'Removed from favorites');
-                            }
-                        } catch (error) {
-                            console.error('Offline social interaction save failed', error);
-                            setOfflineSocialInteractionVisual(button, binding.type, wasActive);
-                            window.showToast?.('状态保存失败');
-                        }
-                    }, 250);
+                    if (Date.now() < suppressClickUntil) return;
+                    toggleInteraction();
                 });
             });
         };
@@ -3447,8 +3499,8 @@ function createAttachmentSheet(page) {
                         <div class="offline-chat-social-actions">
                             <span class="offline-chat-social-item" aria-label="楼层">${renderOfflineSocialIcon('comment')}<span>${floor}</span></span>
                             <span class="offline-chat-social-item" aria-label="字数或 Token">${renderOfflineSocialIcon('repost')}<span class="offline-chat-content-metric">${escapeSheetHtml(contentMetric)}</span></span>
-                            <button type="button" class="offline-chat-social-item offline-chat-like-action${message.liked ? ' is-liked' : ''}" aria-label="点赞${!isUser && !isAutoImage ? '；双击重回' : ''}" aria-pressed="${message.liked ? 'true' : 'false'}"${actionsDisabled ? ' disabled' : ''}><i class="${message.liked ? 'fas' : 'far'} fa-heart" aria-hidden="true"></i><span class="offline-profile-likes-value">${escapeSheetHtml(displayProfile.likes)}</span></button>
-                            <button type="button" class="offline-chat-social-item offline-chat-favorite-action${message.saved ? ' is-saved' : ''}" aria-label="收藏；双击${isAutoImage ? '保存图片' : '编辑'}" aria-pressed="${message.saved ? 'true' : 'false'}"${actionsDisabled ? ' disabled' : ''}><i class="${message.saved ? 'fas' : 'far'} fa-bookmark" aria-hidden="true"></i><span class="offline-profile-favorite-value">${escapeSheetHtml(displayProfile.favorite)}</span></button>
+                            <button type="button" class="offline-chat-social-item offline-chat-like-action${message.liked ? ' is-liked' : ''}" aria-label="点赞${!isUser && !isAutoImage ? '；长按重回' : ''}" aria-pressed="${message.liked ? 'true' : 'false'}"${actionsDisabled ? ' disabled' : ''}><i class="${message.liked ? 'fas' : 'far'} fa-heart" aria-hidden="true"></i><span class="offline-profile-likes-value">${escapeSheetHtml(displayProfile.likes)}</span></button>
+                            <button type="button" class="offline-chat-social-item offline-chat-favorite-action${message.saved ? ' is-saved' : ''}" aria-label="收藏；长按${isAutoImage ? '保存图片' : '编辑'}" aria-pressed="${message.saved ? 'true' : 'false'}"${actionsDisabled ? ' disabled' : ''}><i class="${message.saved ? 'fas' : 'far'} fa-bookmark" aria-hidden="true"></i><span class="offline-profile-favorite-value">${escapeSheetHtml(displayProfile.favorite)}</span></button>
                             <button type="button" class="offline-chat-social-item offline-chat-social-action offline-chat-share-action" data-offline-action="delete" aria-label="删除" title="删除"${actionsDisabled ? ' disabled' : ''}>${renderOfflineSocialIcon('share')}</button>
                             <span class="offline-chat-inline-edit-actions" aria-hidden="true"><button type="button" data-inline-edit-action="save" title="保存" aria-label="保存"><i class="fas fa-check"></i></button><button type="button" data-inline-edit-action="cancel" title="取消" aria-label="取消"><i class="fas fa-times"></i></button></span>
                         </div>

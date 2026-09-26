@@ -1344,8 +1344,9 @@ button.group-private-chat-detail-bubble {
 
 #offline-chat-view .offline-chat-social-actions {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, max-content) 22px;
     align-items: center;
+    justify-content: space-between;
     width: calc(100% - 22px);
     gap: 0;
     color: var(--offline-profile-muted);
@@ -1369,10 +1370,12 @@ button.group-private-chat-detail-bubble {
     white-space: nowrap;
 }
 
-#offline-chat-view .offline-chat-social-item:nth-child(2),
-#offline-chat-view .offline-chat-social-item:nth-child(3),
+#offline-chat-view .offline-chat-social-item:nth-child(2) {
+    transform: translateX(-3px);
+}
+
 #offline-chat-view .offline-chat-social-item:nth-child(4) {
-    justify-self: center;
+    transform: translateX(3px);
 }
 
 #offline-chat-view .offline-chat-social-item:last-child {
@@ -1400,12 +1403,25 @@ button.group-private-chat-detail-bubble {
 
 #offline-chat-view .offline-chat-social-item > i {
     width: 22px;
+    height: 22px;
     flex: 0 0 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: inherit;
     font-size: 18px;
     line-height: 1;
     text-align: center;
     transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#offline-chat-view .offline-chat-social-item:nth-child(2) .offline-chat-social-icon {
+    width: 23px;
+    height: 23px;
+}
+
+#offline-chat-view .offline-chat-like-action > i {
+    font-size: 19px;
 }
 
 #offline-chat-view .offline-chat-like-action.is-liked > i {
@@ -1547,8 +1563,8 @@ button.group-private-chat-detail-bubble {
     inset: 0;
     z-index: 1120;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: flex-end;
     background: rgba(0, 0, 0, 0.4);
     color: #050505;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -1609,7 +1625,7 @@ button.group-private-chat-detail-bubble {
     color: #050505;
 }
 
-#offline-chat-view .offline-profile-editor-save {
+#offline-chat-view .offline-profile-editor-header .offline-profile-editor-save {
     height: 32px;
     padding: 0 14px;
     border-radius: 999px !important;
