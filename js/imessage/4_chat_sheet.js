@@ -78,14 +78,40 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
         const fallback = currentUserState || (window.getUserState ? window.getUserState() : (window.userState || userState || {}));
         const boundAccount = getOfflineBoundAccountForFriend(friend);
         const source = boundAccount || fallback || {};
+        const name = String(source.name || source.realName || source.nickname || 'User').trim() || 'User';
         return {
-            name: String(source.name || source.realName || source.nickname || 'User').trim() || 'User',
+            name,
+            handle: makeOfflineProfileHandle(source.handle || source.username || source.account, name),
             avatarUrl: source.avatarUrl || source.avatar || '',
             signature: String(source.signature || '').trim(),
             persona: String(source.persona || '').trim(),
             boundAccountId: boundAccount?.id ?? null
         };
     }
+
+    function makeOfflineProfileHandle(value, fallbackName = 'user') {
+        const source = String(value || fallbackName || 'user').trim().replace(/^@+/, '');
+        const compact = source.replace(/\s+/g, '').replace(/[^\p{L}\p{N}_.-]/gu, '').slice(0, 32) || 'user';
+        return `@${compact}`;
+    }
+
+    function getOfflineCharProfile(friend) {
+        const name = String(friend?.realName || friend?.name || friend?.nickname || 'Char').trim() || 'Char';
+        return {
+            name,
+            handle: makeOfflineProfileHandle(friend?.handle || friend?.username || friend?.account, name),
+            avatarUrl: friend?.avatarUrl || friend?.avatar || '',
+            signature: String(friend?.signature || '').trim()
+        };
+    }
+
+    const OFFLINE_PROFILE_STATS = Object.freeze({
+        user: Object.freeze({ following: '8', followers: '279K' }),
+        assistant: Object.freeze({ following: '1', followers: '1.2M' }),
+        likes: '4632',
+        bookmarks: '612',
+        views: '52w'
+    });
 
     function refreshOfflineUserIdentity(friendOrId) {
         const requestedId = typeof friendOrId === 'object' && friendOrId !== null ? friendOrId.id : friendOrId;
@@ -99,6 +125,8 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
         contentArea.querySelectorAll('.offline-chat-bubble.user').forEach((bubble) => {
             const nameEl = bubble.querySelector('.offline-chat-name');
             if (nameEl) nameEl.textContent = profile.name;
+            const handleEl = bubble.querySelector('.offline-chat-handle');
+            if (handleEl) handleEl.textContent = profile.handle;
 
             const avatarEl = bubble.querySelector('.offline-chat-avatar');
             if (avatarEl) {
@@ -125,8 +153,7 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
                 signEl = document.createElement('div');
                 signEl.className = 'offline-chat-sign';
                 signEl.textContent = profile.signature;
-                const nameContainer = header.querySelector('.offline-chat-name-container');
-                header.insertBefore(signEl, nameContainer?.nextSibling || header.firstChild);
+                header.appendChild(signEl);
             }
         });
         return true;
@@ -805,9 +832,6 @@ function createAttachmentSheet(page) {
         const isLikelyChineseText = (value) => /[\u3400-\u9fff]/.test(String(value || ''));
 
         const parseOfflineBilingualDialogue = (value, language) => {
-            if (window.imDataUtils?.parseBilingualDialogue) {
-                return window.imDataUtils.parseBilingualDialogue(value, language);
-            }
             return { original: String(value || '').trim(), translation: '' };
         };
 
@@ -826,11 +850,7 @@ function createAttachmentSheet(page) {
 
         const getOfflineSpeechDisplayText = (original, translation = '') => {
             const source = String(original || '').trim();
-            const translated = String(translation || '').trim();
             if (!source) return '';
-            if (translated && translated !== source && !isLikelyChineseText(source)) {
-                return `${wrapOfflineSpeechDisplayText(source)}\n${translated}`;
-            }
             return wrapOfflineSpeechDisplayText(source);
         };
 
@@ -1111,27 +1131,13 @@ function createAttachmentSheet(page) {
             // Keep corner quotes readable for existing history while accepting the
             // straight/curly double quotes used by the current offline prompts.
             const quoteRegex = /"([^"\n]{1,180})"|“([^”\n]{1,180})”|「([^」\n]{1,180})」/g;
-            const normalizedLanguage = window.imDataUtils?.normalizeChatLanguage
-                ? window.imDataUtils.normalizeChatLanguage(language)
-                : String(language || 'zh').toLowerCase();
             let html = '';
             let lastIndex = 0;
             let match = null;
             while ((match = quoteRegex.exec(text)) !== null) {
                 const original = String(match[1] ?? match[2] ?? match[3] ?? '').trim();
-                let matchEnd = match.index + match[0].length;
-                let translation = '';
-                if (normalizedLanguage !== 'zh') {
-                    const translationMatch = text.slice(matchEnd).match(/^\n([^\n]+)(?=\n|$)/);
-                    const candidate = String(translationMatch?.[1] || '').trim();
-                    if (candidate && isLikelyChineseText(candidate)) {
-                        translation = candidate;
-                        matchEnd += translationMatch[0].length;
-                    }
-                }
-                const bilingual = translation
-                    ? { original, translation }
-                    : parseOfflineBilingualDialogue(original, language);
+                const matchEnd = match.index + match[0].length;
+                const bilingual = parseOfflineBilingualDialogue(original, language);
                 if (!bilingual.original) continue;
                 html += escapeSheetHtml(text.slice(lastIndex, match.index)).replace(/\n/g, '<br>');
                 const speechIndex = speechItems.length;
@@ -1141,8 +1147,7 @@ function createAttachmentSheet(page) {
                     ? ` data-offline-speech-index="${speechIndex}" role="button" tabindex="0" title="播放语音" aria-label="播放这段对话" aria-busy="false"`
                     : '';
                 const dialogueHtml = escapeSheetHtml(match[0]);
-                const translationHtml = translation ? `<br>${escapeSheetHtml(translation)}` : '';
-                html += `<span class="offline-chat-speech offline-chat-dialogue${playableClass}"${playableAttrs}>${dialogueHtml}${translationHtml}</span>`;
+                html += `<span class="offline-chat-speech offline-chat-dialogue${playableClass}"${playableAttrs}>${dialogueHtml}</span>`;
                 lastIndex = matchEnd;
                 quoteRegex.lastIndex = matchEnd;
             }
@@ -1238,7 +1243,7 @@ function createAttachmentSheet(page) {
                 ? `<button type="button" class="offline-chat-barrage-btn offline-chat-barrage-final-btn" data-offline-barrage-index="0" title="查看弹幕" aria-label="查看弹幕"><i class="fas fa-comment-dots"></i><span>${allBarrageItems.length}</span></button>`
                 : '';
             const choiceHtml = enableChoices && choices.length > 0
-                ? `<div class="offline-chat-choice-list">${choices.map((choice, index) => `<button type="button" class="offline-chat-choice-btn" data-offline-choice-index="${index}"><span class="offline-chat-choice-index">${index + 1}</span><span class="offline-chat-choice-text">${escapeSheetHtml(choice)}</span></button>`).join('')}</div>`
+                ? `<section class="offline-chat-choice-panel"><div class="offline-chat-choice-toggle">Related</div><div class="offline-chat-choice-list">${choices.map((choice, index) => `<button type="button" class="offline-chat-choice-btn" data-offline-choice-index="${index}"><span class="offline-chat-choice-text">${escapeSheetHtml(choice)}</span></button>`).join('')}</div></section>`
                 : '';
             const recapHtml = recapExtraction.recap
                 ? `<section class="offline-chat-recap"><div class="offline-chat-recap-title">【回顾】</div><div class="offline-chat-recap-content">${escapeSheetHtml(recapExtraction.recap.replace(/^【回顾】\s*/, '')).replace(/\n/g, '<br>')}</div></section>`
@@ -1401,6 +1406,7 @@ function createAttachmentSheet(page) {
                 type: isSummary ? OFFLINE_SUMMARY_MESSAGE_TYPE : (isAutoImage ? OFFLINE_AUTO_IMAGE_MESSAGE_TYPE : undefined),
                 content: parsed.content,
                 reasoning: role === 'assistant' && parsed.reasoning ? parsed.reasoning : undefined,
+                translationZh: String(message?.translationZh || '').trim() || undefined,
                 timestamp: Number(message?.timestamp) || Date.now() + index,
                 tokens: role === 'assistant' ? Math.max(0, Number(message?.tokens) || estimateOfflineTextTokens(parsed.content)) : undefined,
                 imageUrl: isAutoImage ? String(message?.imageUrl || message?.url || '').trim() : '',
@@ -1453,6 +1459,7 @@ function createAttachmentSheet(page) {
             type: message.type || '',
             content: message.content,
             reasoning: message.reasoning || '',
+            translationZh: message.translationZh || '',
             timestamp: message.timestamp,
             tokens: message.tokens || 0,
             imageUrl: message.imageUrl || '',
@@ -2870,11 +2877,156 @@ function createAttachmentSheet(page) {
             });
         };
 
+        const renderOfflineProfileBanner = (role, imageUrl) => {
+            const contentArea = document.getElementById('offline-chat-content');
+            if (!contentArea) return;
+            contentArea.querySelectorAll(`.offline-chat-bubble[data-profile-role="${role}"] .offline-chat-banner`).forEach((banner) => {
+                const value = String(imageUrl || '').trim();
+                banner.classList.toggle('has-image', !!value);
+                banner.style.backgroundImage = value ? `url("${value.replace(/(["\\])/g, '\\$1')}")` : '';
+            });
+        };
+
+        const chooseOfflineProfileBanner = (friend, isUser) => {
+            if (!friend || typeof FileReader === 'undefined') return;
+            const picker = document.createElement('input');
+            picker.type = 'file';
+            picker.accept = 'image/*';
+            picker.hidden = true;
+            document.body.appendChild(picker);
+            const cleanup = () => picker.remove();
+            picker.addEventListener('change', async () => {
+                const file = picker.files?.[0];
+                if (!file) {
+                    cleanup();
+                    return;
+                }
+                try {
+                    if (file.type && !file.type.startsWith('image/')) throw new Error('Not an image');
+                    const imageUrl = window.imApp?.compressImageFile
+                        ? await window.imApp.compressImageFile(file, { maxWidth: 2048, maxHeight: 2048, quality: 0.9, mimeType: 'image/jpeg' })
+                        : await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(String(reader.result || ''));
+                            reader.onerror = () => reject(new Error('Unsupported image'));
+                            reader.readAsDataURL(file);
+                        });
+                    const field = isUser ? 'offlineUserBannerUrl' : 'offlineCharBannerUrl';
+                    const saved = await commitSheetFriendChange(friend.id, (targetFriend) => {
+                        targetFriend[field] = imageUrl;
+                    }, { silent: true, metaOnly: true });
+                    if (saved) renderOfflineProfileBanner(isUser ? 'user' : 'assistant', imageUrl);
+                    else window.showToast?.('背景图保存失败');
+                } catch (error) {
+                    console.error('Offline profile background update failed', error);
+                    window.showToast?.('无法读取这张图片');
+                } finally {
+                    cleanup();
+                }
+            }, { once: true });
+            picker.click();
+        };
+
+        const requestOfflineChineseTranslation = async (sourceText) => {
+            const text = String(sourceText || '').trim();
+            if (!text) return '';
+            if (isLikelyChineseText(text) && !/[A-Za-z]{4,}/.test(text)) return text;
+            const currentApiConfig = window.getApiConfig ? window.getApiConfig() : (window.apiConfig || {});
+            if (!currentApiConfig.endpoint || !currentApiConfig.apiKey) throw new Error('请先配置 API');
+            const endpoint = window.u2Api.resolveChatCompletionsEndpoint(currentApiConfig.endpoint);
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: window.u2Api.buildApiHeaders(currentApiConfig),
+                body: JSON.stringify({
+                    model: currentApiConfig.model || '',
+                    temperature: 0.1,
+                    stream: false,
+                    messages: [
+                        {
+                            role: 'system',
+                            content: 'Translate the complete supplied text into natural Simplified Chinese. Preserve paragraph breaks, quotation marks, section headings, and option-line structure. Output only the translated text. Do not explain, summarize, omit, or add content.'
+                        },
+                        { role: 'user', content: text }
+                    ]
+                })
+            });
+            if (!response.ok) throw new Error(`翻译请求失败 (${response.status})`);
+            const data = await response.json();
+            return String(data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || '').trim();
+        };
+
+        const renderOfflineTranslationState = (bubbleDiv, message, friend, options, translated) => {
+            const textEl = bubbleDiv.querySelector('.offline-chat-bubble-text');
+            if (!textEl || options.isAutoImage) return;
+            const source = translated ? String(message.translationZh || '') : String(message.content || '');
+            const display = applyOfflineRegexText(friend, source, message.role, options.depth, 'display');
+            textEl.innerHTML = buildOfflineChatTextHtml(display, {
+                messageId: message.id,
+                enableVoice: message.role === 'assistant' && isTtsEnabledForFriend(friend),
+                enableBarrage: options.enableBarrage,
+                enableChoices: options.enableChoices,
+                enableRecap: message.role === 'assistant',
+                language: translated ? 'zh' : (friend?.language || 'zh')
+            });
+            textEl.style.display = display ? '' : 'none';
+            bindOfflineChatTextControls(bubbleDiv, { ...message, content: display }, friend, options.floor);
+        };
+
+        const bindOfflineProfileCardControls = (bubbleDiv, message, friend, options) => {
+            const banner = bubbleDiv.querySelector('.offline-chat-banner');
+            banner?.addEventListener('click', () => chooseOfflineProfileBanner(friend, options.isUser));
+
+            const moreActions = bubbleDiv.querySelector('.offline-chat-more-actions');
+            moreActions?.addEventListener('click', () => {
+                const actions = bubbleDiv.querySelector('.offline-chat-maintenance-actions');
+                actions?.classList.toggle('is-open');
+            });
+
+            const followButton = bubbleDiv.querySelector('.offline-chat-follow-btn');
+            followButton?.addEventListener('click', async () => {
+                if (followButton.disabled || options.isAutoImage) return;
+                const activeFriend = window.imApp?.getFriendById?.(friend?.id) || window.imData?.currentActiveFriend || friend;
+                const messages = normalizeOfflineMessagesForFriend(activeFriend);
+                const liveMessage = messages.find(item => String(item.id) === String(message.id)) || message;
+                const isTranslated = followButton.getAttribute('aria-pressed') === 'true';
+                if (isTranslated) {
+                    followButton.setAttribute('aria-pressed', 'false');
+                    followButton.classList.remove('is-translated');
+                    renderOfflineTranslationState(bubbleDiv, liveMessage, activeFriend, options, false);
+                    return;
+                }
+                followButton.disabled = true;
+                followButton.classList.add('is-loading');
+                try {
+                    let translationZh = String(liveMessage.translationZh || '').trim();
+                    if (!translationZh) {
+                        translationZh = await requestOfflineChineseTranslation(liveMessage.content);
+                        if (!translationZh) throw new Error('翻译结果为空');
+                        liveMessage.translationZh = translationZh;
+                        const nextMessages = messages.map(item => String(item.id) === String(liveMessage.id)
+                            ? { ...item, translationZh }
+                            : item);
+                        await persistOfflineMessages(activeFriend, nextMessages);
+                    }
+                    followButton.setAttribute('aria-pressed', 'true');
+                    followButton.classList.add('is-translated');
+                    renderOfflineTranslationState(bubbleDiv, liveMessage, activeFriend, options, true);
+                } catch (error) {
+                    console.error('Offline translation failed', error);
+                    window.showToast?.(error?.message || '翻译失败，请稍后重试');
+                } finally {
+                    followButton.disabled = false;
+                    followButton.classList.remove('is-loading');
+                }
+            });
+        };
+
         const enableOfflineChatBubbleActions = (bubbleDiv, message) => {
             const footer = bubbleDiv?.querySelector?.('.offline-chat-bubble-footer');
             if (!footer || !message?.id) return;
-            footer.querySelector('.offline-chat-bubble-actions')?.remove();
-            footer.insertAdjacentHTML('beforeend', getOfflineChatActionButtonsHtml(message.role === 'user', false, message));
+            const maintenance = footer.querySelector('.offline-chat-maintenance-actions');
+            if (!maintenance) return;
+            maintenance.innerHTML = getOfflineChatActionButtonsHtml(message.role === 'user', false, message);
             bindOfflineChatBubbleActions(bubbleDiv, message);
         };
 
@@ -2893,6 +3045,7 @@ function createAttachmentSheet(page) {
                 type: rawMessage.type || '',
                 content: String(rawMessage.content || ''),
                 reasoning: rawMessage.role === 'assistant' ? String(rawMessage.reasoning || '') : '',
+                translationZh: String(rawMessage.translationZh || '').trim(),
                 timestamp: Number(rawMessage.timestamp) || Date.now(),
                 tokens: Number(rawMessage.tokens) || 0,
                 imageUrl: String(rawMessage.imageUrl || '').trim(),
@@ -2906,9 +3059,14 @@ function createAttachmentSheet(page) {
             const isAutoImage = isOfflineAutoImageMessage(message);
 
             const offlineUserProfile = getOfflineEffectiveUserProfile(friend);
-            const userName = isUser ? offlineUserProfile.name : (friend?.nickname || friend?.realName || 'TA');
-            const userSign = isUser ? offlineUserProfile.signature : (friend?.signature || '');
-            const userAvatar = isUser ? offlineUserProfile.avatarUrl : (friend?.avatarUrl || '');
+            const offlineCharProfile = getOfflineCharProfile(friend);
+            const displayProfile = isUser ? offlineUserProfile : offlineCharProfile;
+            const userName = displayProfile.name;
+            const userHandle = displayProfile.handle;
+            const userSign = displayProfile.signature;
+            const userAvatar = displayProfile.avatarUrl;
+            const bannerUrl = String((isUser ? friend?.offlineUserBannerUrl : friend?.offlineCharBannerUrl) || '').trim();
+            const profileStats = isUser ? OFFLINE_PROFILE_STATS.user : OFFLINE_PROFILE_STATS.assistant;
             const floor = Number(options.floor) || 1;
             const depth = Number.isInteger(Number(options.depth)) ? Number(options.depth) : 0;
             const isReadOnly = !!options.readOnly;
@@ -2916,16 +3074,17 @@ function createAttachmentSheet(page) {
             const enableBarrageForMessage = !isUser && isOfflineBarragePromptEnabled(friend);
             const enableChoicesForMessage = !isUser && isOfflineChoicesPromptEnabled(friend);
             const timeText = formatOfflineBubbleTime(message.timestamp);
-            const metaText = isAutoImage
-                ? `图片 · ${timeText}`
-                : isUser
-                ? `#${floor} · ${countOfflineTextCharacters(message.content)}字 · ${timeText}`
-                : `#${floor} · ${message.tokens || estimateOfflineTextTokens(message.content)} tokens · ${timeText}`;
+            const contentMetric = isAutoImage
+                ? '图片'
+                : (isUser
+                    ? `${countOfflineTextCharacters(message.content)}字`
+                    : `${message.tokens || estimateOfflineTextTokens(message.content)} tokens`);
 
             const bubbleDiv = document.createElement('div');
             bubbleDiv.className = `offline-chat-bubble ${isUser ? 'user' : 'ai'}`;
             bubbleDiv.setAttribute('data-message-id', message.id);
             bubbleDiv.setAttribute('data-floor', String(floor));
+            bubbleDiv.setAttribute('data-profile-role', isUser ? 'user' : 'assistant');
             
             let avatarHtml = `<div class="offline-chat-avatar"><i class="fas fa-user"></i></div>`;
             if (userAvatar) {
@@ -2947,10 +3106,17 @@ function createAttachmentSheet(page) {
 
             bubbleDiv.innerHTML = `
                 <div class="offline-chat-bubble-header">
+                    <button type="button" class="offline-chat-banner${bannerUrl ? ' has-image' : ''}" aria-label="更换背景图"></button>
                     ${avatarHtml}
+                    <div class="offline-chat-profile-tools">
+                        <time class="offline-chat-timestamp" datetime="${new Date(message.timestamp).toISOString()}">${escapeSheetHtml(timeText)}</time>
+                        <button type="button" class="offline-chat-follow-btn" aria-pressed="false">Follow</button>
+                    </div>
                     <div class="offline-chat-name-container">
                         <span class="offline-chat-name">${escapeSheetHtml(userName)}</span>
+                        <span class="offline-chat-handle">${escapeSheetHtml(userHandle)}</span>
                     </div>
+                    <div class="offline-chat-profile-stats"><span><strong>${profileStats.following}</strong> Following</span><span><strong>${profileStats.followers}</strong> Followers</span></div>
                     ${userSign ? `<div class="offline-chat-sign">${escapeSheetHtml(userSign)}</div>` : ''}
                 </div>
                 <div class="offline-chat-bubble-body">
@@ -2963,16 +3129,34 @@ function createAttachmentSheet(page) {
                         enableRecap: !isUser,
                         language: friend?.language || 'zh'
                     })}</div>`}
+                    <div class="offline-chat-view-row"><span><strong>${OFFLINE_PROFILE_STATS.views}</strong>次查看</span><span>查看引用 &gt;</span></div>
                     <div class="offline-chat-bubble-footer">
-                        <div class="offline-chat-bubble-meta">${escapeSheetHtml(metaText)}</div>
-                        ${actionButtonsHtml}
+                        <div class="offline-chat-social-actions">
+                            <span class="offline-chat-social-item" aria-label="楼层"><i class="far fa-comment"></i><span>#${floor}</span></span>
+                            <span class="offline-chat-social-item" aria-label="字数或 Token"><i class="fas fa-retweet"></i><span class="offline-chat-content-metric">${escapeSheetHtml(contentMetric)}</span></span>
+                            <span class="offline-chat-social-item" aria-label="点赞"><i class="far fa-heart"></i><span>${OFFLINE_PROFILE_STATS.likes}</span></span>
+                            <span class="offline-chat-social-item" aria-label="收藏"><i class="far fa-bookmark"></i><span>${OFFLINE_PROFILE_STATS.bookmarks}</span></span>
+                            <button type="button" class="offline-chat-social-item offline-chat-more-actions" aria-label="更多操作"><i class="fas fa-arrow-up-from-bracket"></i></button>
+                        </div>
+                        <div class="offline-chat-maintenance-actions">${actionButtonsHtml}</div>
                     </div>
                 </div>
             `;
 
+            const bannerEl = bubbleDiv.querySelector('.offline-chat-banner');
+            if (bannerEl && bannerUrl) bannerEl.style.backgroundImage = `url("${bannerUrl.replace(/(["\\])/g, '\\$1')}")`;
+
             if (!isAutoImage) bindOfflineThinkingToggle(bubbleDiv);
             bindOfflineChatBubbleActions(bubbleDiv, message);
             if (!isAutoImage) bindOfflineChatTextControls(bubbleDiv, { ...message, content: displayText, reasoning: rawThinking || undefined }, friend, floor);
+            bindOfflineProfileCardControls(bubbleDiv, { ...message, content: displayText, reasoning: rawThinking || undefined }, friend, {
+                floor,
+                depth,
+                isUser,
+                isAutoImage,
+                enableBarrage: enableBarrageForMessage,
+                enableChoices: enableChoicesForMessage
+            });
 
             const container = options.container || contentArea;
             container.appendChild(bubbleDiv);
@@ -3103,10 +3287,8 @@ function createAttachmentSheet(page) {
                 },
                 setTokens: (tokens) => {
                     const safeTokens = Math.max(0, Number(tokens) || 0);
-                    const metaEl = bubbleDiv.querySelector('.offline-chat-bubble-meta');
-                    if (metaEl) {
-                        metaEl.textContent = `#${Number(options.floor) || 1} · ${safeTokens || estimateOfflineTextTokens(currentContent)} tokens · ${formatOfflineBubbleTime(message.timestamp)}`;
-                    }
+                    const metricEl = bubbleDiv.querySelector('.offline-chat-content-metric');
+                    if (metricEl) metricEl.textContent = `${safeTokens || estimateOfflineTextTokens(currentContent)} tokens`;
                 },
                 enableActions: (finalMessage) => enableOfflineChatBubbleActions(bubbleDiv, finalMessage || message),
                 getResult: () => {
@@ -3933,9 +4115,9 @@ function createAttachmentSheet(page) {
                     content: `<offline_language_guard priority="final">
 Current Chat Settings Default Language: ${defaultLanguage}.
 This setting is authoritative. Do not infer or reuse a language from online history, previous replies, user input, or scene atmosphere.
-All narration, actions, descriptions, and non-dialogue prose must be Simplified Chinese.
-Only Char's spoken words use ${defaultLanguage}, and every spoken line must be enclosed in double quotation marks.
-If ${defaultLanguage} is not Chinese, put an unquoted Simplified Chinese translation on the immediately following line. If it is Chinese, do not add a duplicate translation.
+Write the complete response in ${defaultLanguage}: narration, actions, descriptions, transitions, and spoken dialogue.
+Do not append a Chinese translation or any second-language duplicate; the interface translates on demand.
+Put every spoken line in double quotation marks and in its own paragraph, with a blank line separating it from narration.
 </offline_language_guard>`
                 });
             }
@@ -4855,6 +5037,7 @@ ${transcript}`;
             '语言和字数': 'length_words',
             '字数要求': 'length_words',
             '双语对话': 'bilingual_dialogue',
+            '文本格式': 'bilingual_dialogue',
             'NSFW': 'nsfw',
             '文风基调': 'style_baimiao',
             '文风-白描': 'style_baimiao',
@@ -4886,11 +5069,11 @@ ${transcript}`;
                 id: 'role_identity',
                 name: '身份定义',
                 enabled: true,
-                presetVersion: 3,
+                presetVersion: 4,
                 content: `<role_setting>
 You are U2, not a character inside the story. You are a skilled editor and director creating a fictional cinematic roleplay scene.
 {{user}} is the viewpoint center of the scene. {{char}} is the participating Char identity in a private scene, or the complete list of participating Char identities in a group scene.
-Output language: Simplified Chinese (plain text).
+Output the complete reply in the language currently selected in Chat Settings for {{char}}. That selected Default Language applies equally to narration, actions, descriptions, transitions, and spoken dialogue.
 Preserve their identities, relationship history, boundaries, and current emotional momentum. In a group scene, never treat the group itself as one speaking character.
 Write as narrative fiction, not as a real-world assistant. Do not explain your process, policies, or system messages in the final prose.
 Keep every scene grounded in concrete action, visible behavior, sensory detail, and continuity from the mounted context.
@@ -4936,29 +5119,18 @@ System managed. Mounted world books, User persona, Char persona, and recent onli
             },
             {
                 id: 'bilingual_dialogue',
-                name: '双语对话',
+                name: '文本格式',
                 enabled: true,
-                presetVersion: 2,
-                content: `<bilingual_dialogue>
-Language source of truth: Chat Settings currently sets {{char}}'s Default Language to {{default_language}}. This current setting overrides online-chat history, previous replies, the user's input language, scene atmosphere, and every inferred language preference. Never guess or infer another language from context.
+                presetVersion: 3,
+                content: `<offline_text_format>
+Chat Settings currently sets {{char}}'s Default Language to {{default_language}}. This current setting is authoritative and overrides the language of online history, previous replies, the user's input, and the scene atmosphere.
 
-Write all narration, actions, descriptions, transitions, and non-dialogue prose only in Simplified Chinese. The selected Default Language applies only to words spoken aloud by Char; it must never turn the narration into that language.
+Write the entire response in {{default_language}}, including narration, actions, descriptions, transitions, and every spoken line. Do not append a Chinese translation or a second-language duplicate. The Follow control in the interface handles translation separately.
 
-Every spoken line must be visibly enclosed in double quotation marks. When {{default_language}} is not Chinese, use exactly this two-line format for every spoken line:
-"Dialogue written only in {{default_language}}."
-对应的简体中文翻译。
+Keep ordinary prose in natural paragraphs with one blank line between paragraphs. Put every spoken line from Char inside straight or curly double quotation marks. A spoken line must occupy its own paragraph, separated from surrounding narration by a blank line. Do not place narration and quoted dialogue on the same line.
 
-The default-language dialogue must appear on the first line. Its Chinese translation must appear immediately on the next line, with exactly one line break between them and no blank line.
-
-Example:
-"Good night."
-晚安。
-
-The text inside the double quotation marks must contain only {{default_language}} dialogue. The following line must contain only its Simplified Chinese translation and must not use quotation marks. Do not place narration inside quotation marks.
-When {{default_language}} is Chinese, output only Chinese spoken dialogue in Chinese double quotation marks, for example: “晚安。” Do not append a duplicate translation.
-
-Before returning the final prose, verify all three conditions: narration is Simplified Chinese; every spoken line is quoted; every quoted line uses exactly {{default_language}} and, when non-Chinese, is followed immediately by an unquoted Simplified Chinese translation.
-</bilingual_dialogue>`,
+Return plain narrative text only. Do not output Markdown code fences or explain the formatting rules.
+</offline_text_format>`,
                 editable: true,
                 deletable: false
             },
@@ -5249,8 +5421,8 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
                 id: 'cot_language_check',
                 name: 'cot-语言检查',
                 enabled: false,
-                presetVersion: 3,
-                content: `是否按照角色默认语言书写台词；非中文台词是否紧跟准确的中文翻译，并使用规定的双引号。`,
+                presetVersion: 4,
+                content: `是否将整段正文、旁白、动作和台词全部使用 Chat Settings 当前设置的角色默认语言；是否没有附加中文翻译；台词是否独立成段并使用规定的双引号。`,
                 editable: true,
                 deletable: false
             },
@@ -5422,7 +5594,7 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
                     item.name = rawName && !item.systemManaged ? rawName : defaultPrompt.name;
                     const targetPresetVersion = Math.max(0, Number(defaultPrompt.presetVersion) || 0);
                     const sourcePresetVersion = Math.max(0, Number(prompt.presetVersion) || 0);
-                    const refreshBuiltInContent = (id === 'style_creative_guidance' || id === 'bilingual_dialogue' || fullCotIds.includes(id))
+                    const refreshBuiltInContent = (id === 'role_identity' || id === 'style_creative_guidance' || id === 'bilingual_dialogue' || fullCotIds.includes(id))
                         && sourcePresetVersion < targetPresetVersion;
                     if (refreshBuiltInContent) item.name = defaultPrompt.name;
                     item.content = item.systemManaged || refreshBuiltInContent
@@ -5636,7 +5808,6 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
 
 :scope {
   --offline-chat-narrative-color: #111111;
-  --offline-chat-dialogue-color: #8B8B8B;
   background: #ffffff;
   color: #111111;
 }
@@ -5702,7 +5873,7 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
 }
 .offline-chat-dialogue,
 .offline-chat-speech {
-  color: var(--offline-chat-dialogue-color);
+  color: inherit;
 }
 .offline-chat-thinking {
   width: fit-content;
@@ -5914,7 +6085,6 @@ If a <thinking> block is produced for the frontend, put it before the prose and 
                 const view = document.getElementById(id);
                 if (!view) return;
                 view.style.setProperty('--offline-chat-narrative-color', theme.narrativeColor);
-                view.style.setProperty('--offline-chat-dialogue-color', theme.dialogueColor);
             });
             const styleTag = ensureOfflineThemeStyleTag();
             styleTag.textContent = theme.customCssEnabled && theme.customCss.trim()
@@ -6931,11 +7101,10 @@ ${sections.length > 0 ? sections.join('\n\n') : 'No active vectorized character 
 
             const colorCard = document.createElement('section');
             colorCard.className = 'offline-theme-card';
-            colorCard.appendChild(createHeading('聊天文字', 'TEXT COLORS', '控制 AI 叙述与对话文字颜色，并随主题预设一起保存。'));
+            colorCard.appendChild(createHeading('聊天文字', 'TEXT COLORS', '控制线下正文文字颜色，并随主题预设一起保存。'));
 
             [
                 { field: 'narrativeColor', label: '普通文本', detail: 'AI 叙述正文' },
-                { field: 'dialogueColor', label: '对话文本', detail: '"" 和 “” 包裹的对话及紧随其后的中文翻译' }
             ].forEach(({ field, label, detail }) => {
                 const row = document.createElement('label');
                 row.className = 'offline-theme-color-row';
