@@ -110,7 +110,7 @@ async function commitSheetFriendChange(friendOrId, mutator, options = {}) {
         assistant: Object.freeze({ following: '1', followers: '1.2M' }),
         likes: '17K',
         bookmarks: '1.9K',
-        views: '5M'
+        views: '5M '
     });
 
     function refreshOfflineUserIdentity(friendOrId) {
