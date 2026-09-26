@@ -22,7 +22,7 @@
 .cgpt-icon-read{background-image:var(--cgpt-icon-read)}.cgpt-icon-share{background-image:var(--cgpt-icon-share)}
 .cgpt-sidebar{position:absolute;z-index:12;top:max(10px,env(safe-area-inset-top,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));left:10px;
  width:calc(var(--cgpt-sidebar-width) - 18px);overflow:hidden;border:1px solid rgba(0,0,0,.025);border-radius:30px;
- background:rgba(255,255,255,.96);box-shadow:0 4px 28px rgba(0,0,0,.055);transform:translate3d(calc(-100% - 16px),0,0);
+ background:rgba(255,255,255,.90);box-shadow:0 4px 28px rgba(0,0,0,.055);transform:translate3d(calc(-100% - 16px),0,0);
  transition:transform 400ms cubic-bezier(.22,1,.36,1);will-change:transform}
 .cgpt-shell.is-sidebar-open .cgpt-sidebar{transform:translate3d(0,0,0)}
 .cgpt-sidebar-header{position:absolute;z-index:4;inset:0 0 auto;height:92px;display:flex;align-items:flex-start;justify-content:space-between;
@@ -48,21 +48,17 @@
  background:transparent;text-align:left;font:400 16px/23px -apple-system,BlinkMacSystemFont,Helvetica,Arial,"Nimbus Sans",sans-serif;
  letter-spacing:-.2px;white-space:nowrap;text-overflow:ellipsis}
 .cgpt-conversation-item.is-active{color:#111;font-weight:400}.cgpt-conversation-item:active{background:rgba(0,0,0,.035)}
-.cgpt-sidebar-bottom-blur{position:absolute;z-index:3;left:20px;right:20px;bottom:10px;height:104px;pointer-events:none;border-radius:30px;
- background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.5) 40%,rgba(255,255,255,.84));
- -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 42%,#000);
- mask-image:linear-gradient(to bottom,transparent,#000 42%,#000)}
+.cgpt-sidebar-bottom-blur{position:absolute;z-index:3;left:0;right:0;bottom:0;height:152px;pointer-events:none;
+ background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.4) 24%,rgba(255,255,255,.74) 58%,rgba(255,255,255,.9))}
 .cgpt-sidebar-footer{position:absolute;z-index:5;left:28px;right:24px;bottom:max(30px,calc(env(safe-area-inset-bottom,0px) + 14px));
  height:50px;display:flex;align-items:center;justify-content:space-between}
 .cgpt-sidebar-new-chat{width:116px;height:50px;border:0;border-radius:25px;display:flex;align-items:center;justify-content:center;gap:10px;
  padding:0 17px;color:#fff;background:#111;font:600 17px/1 -apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}
 .cgpt-sidebar-new-chat .cgpt-icon{width:22px;height:22px;filter:brightness(0) invert(1)}
 .cgpt-sidebar-settings{width:50px;height:50px;font-size:23px}
-.cgpt-top-blur{position:absolute;z-index:8;inset:0 0 auto;height:calc(max(0px,env(safe-area-inset-top,0px)) + 99px);pointer-events:none;
- background:linear-gradient(to bottom,rgba(255,255,255,.83),rgba(255,255,255,.67) 57%,rgba(255,255,255,.22) 84%,transparent);
- -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
- -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 56%,rgba(0,0,0,.54) 78%,transparent 100%);
- mask-image:linear-gradient(to bottom,#000 0%,#000 56%,rgba(0,0,0,.54) 78%,transparent 100%)}
+.cgpt-sidebar-settings i{color:#fff;-webkit-text-stroke:1.5px #111;paint-order:stroke fill}
+.cgpt-top-blur{position:absolute;z-index:8;inset:0 0 auto;height:calc(max(0px,env(safe-area-inset-top,0px)) + 104px);pointer-events:none;
+ background:linear-gradient(to bottom,rgba(255,255,255,.9),rgba(255,255,255,.74) 42%,rgba(255,255,255,.4) 76%,rgba(255,255,255,0))}
 .cgpt-header{position:absolute;z-index:14;top:calc(max(12px,env(safe-area-inset-top,0px) + 8px));left:18px;right:18px;height:42px;
  display:flex;align-items:center;justify-content:space-between;pointer-events:none}
 .cgpt-header button{pointer-events:auto;touch-action:manipulation}
@@ -93,21 +89,21 @@
 @keyframes cgpt-typing{0%,65%,100%{opacity:.3;transform:translateY(0)}32%{opacity:1;transform:translateY(-3px)}}
 .cgpt-bottom-blur{position:absolute;z-index:7;left:0;right:0;bottom:0;height:calc(104px + env(safe-area-inset-bottom,0px));pointer-events:none;
  background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.4) 24%,rgba(255,255,255,.74) 58%,rgba(255,255,255,.9))}
-.cgpt-composer{position:absolute;z-index:10;left:36px;right:36px;bottom:max(34px,calc(env(safe-area-inset-bottom,0px) + 14px));min-height:48px;
- display:grid;grid-template-columns:32px minmax(0,1fr) 36px 36px;align-items:end;gap:7px;padding:4px 6px 4px 7px;
- border:1px solid rgba(255,255,255,.94);border-radius:25px;background:rgba(255,255,255,.78);
+.cgpt-composer{position:absolute;z-index:10;left:40px;right:40px;bottom:max(34px,calc(env(safe-area-inset-bottom,0px) + 14px));min-height:44px;
+ display:grid;grid-template-columns:30px minmax(0,1fr) 32px 32px;align-items:end;gap:6px;padding:3px 5px 3px 7px;
+ border:1px solid rgba(255,255,255,.94);border-radius:23px;background:rgba(255,255,255,.78);
  -webkit-backdrop-filter:blur(15px) saturate(105%);backdrop-filter:blur(15px) saturate(105%);
  box-shadow:inset 0 0 0 .5px rgba(255,255,255,.95),0 5px 24px rgba(0,0,0,.055)}
 .cgpt-composer button{border:0;display:grid;place-items:center;padding:0;color:#111;background:transparent}
-.cgpt-composer-plus{width:32px;height:40px;font-size:22px}
-.cgpt-composer-send-only{width:36px;height:36px;align-self:end}
-.cgpt-icon-microphone{width:23px;height:30px}
-#cgpt-input{width:100%;height:40px;max-height:120px;resize:none;overflow-y:auto;border:0;outline:0;padding:9px 3px 7px;color:#111;
- background:transparent;font:400 16px/22px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
+.cgpt-composer-plus{width:30px;height:36px;font-size:21px}
+.cgpt-composer-send-only{width:32px;height:32px;align-self:end}
+.cgpt-icon-microphone{width:30px;height:30px}
+#cgpt-input{width:100%;height:36px;max-height:120px;resize:none;overflow-y:auto;border:0;outline:0;padding:7px 3px 7px;color:#111;
+ background:transparent;font:400 15.5px/22px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
 #cgpt-input::placeholder{color:#8b8b8f;opacity:1}
-.cgpt-composer-api{width:36px;height:36px;align-self:end;border-radius:50%!important;color:#fff!important;background:#050505!important}
+.cgpt-composer-api{width:32px;height:32px;align-self:end;border-radius:50%!important;color:#fff!important;background:#050505!important}
 .cgpt-composer-api:disabled{opacity:.58}
-.cgpt-icon-voice{position:relative;width:32px;height:32px;overflow:hidden;border-radius:50%}
+.cgpt-icon-voice{position:relative;width:30px;height:30px;overflow:hidden;border-radius:50%}
 .cgpt-icon-voice::after{content:"";position:absolute;z-index:1;inset:7px 6px;border-radius:7px;background:#050505}
 .cgpt-voice-bars{position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;gap:2.2px}
 .cgpt-voice-bars i{width:2px;border-radius:2px;background:#fff}
@@ -120,12 +116,12 @@
  .chatgpt-view{--cgpt-sidebar-width:82vw}.cgpt-sidebar{left:6px;top:max(6px,env(safe-area-inset-top,0px));bottom:max(6px,env(safe-area-inset-bottom,0px));
  width:calc(var(--cgpt-sidebar-width) - 12px);border-radius:28px}
  .cgpt-sidebar-header{padding-left:24px;padding-right:21px}.cgpt-sidebar-scroll{padding-left:24px;padding-right:19px}
- .cgpt-sidebar-footer{left:24px;right:19px}.cgpt-composer{left:34px;right:34px}
+ .cgpt-sidebar-footer{left:24px;right:19px}.cgpt-composer{left:38px;right:38px}
 }
 @media(min-width:700px){
  .chatgpt-view{--cgpt-sidebar-width:min(62vw,560px)}.cgpt-sidebar{left:18px;top:max(18px,env(safe-area-inset-top,0px));
  bottom:max(18px,env(safe-area-inset-bottom,0px));width:calc(var(--cgpt-sidebar-width) - 30px);border-radius:34px}
- .cgpt-header{left:24px;right:24px}.cgpt-composer{left:max(38px,calc((100% - 700px)/2));right:max(38px,calc((100% - 700px)/2))}
+ .cgpt-header{left:24px;right:24px}.cgpt-composer{left:max(40px,calc((100% - 660px)/2));right:max(40px,calc((100% - 660px)/2))}
  .cgpt-messages{padding-left:max(30px,calc((100% - 780px)/2));padding-right:max(30px,calc((100% - 780px)/2))}
  .cgpt-sidebar-header{padding-top:31px;padding-left:38px;padding-right:32px}.cgpt-sidebar-scroll{padding-left:38px;padding-right:32px}
  .cgpt-sidebar-footer{left:38px;right:32px}

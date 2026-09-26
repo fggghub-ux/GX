@@ -288,8 +288,8 @@
     function resizeInput() {
         const input = elements.input;
         if (!input) return;
-        input.style.height = '40px';
-        input.style.height = `${Math.min(120, Math.max(40, input.scrollHeight))}px`;
+        input.style.height = '36px';
+        input.style.height = `${Math.min(120, Math.max(36, input.scrollHeight))}px`;
     }
 
     function setRequestingUi(requesting) {
