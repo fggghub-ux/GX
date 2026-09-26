@@ -1508,6 +1508,10 @@ async function openChatTab(friend) {
         const screenRect = screenEl.getBoundingClientRect();
         const sourceBubbleRect = bubble.getBoundingClientRect();
         const isUserRow = row.classList.contains('user-row');
+        const siblingRows = Array.from(row.parentElement?.children || []);
+        const laterRows = siblingRows.slice(siblingRows.indexOf(row) + 1);
+        const isLastUserMessage = isUserRow
+            && !laterRows.some(candidate => candidate.classList?.contains('user-row'));
         const isCardBubble = bubble.classList.contains('im-card-bubble')
             || !!bubble.querySelector('.chat-link-card, .chat-fake-link-card, .pay-transfer-card, .voice-call-record-card');
         
@@ -1527,7 +1531,8 @@ async function openChatTab(friend) {
                 'msg-context-row-clone',
                 isUserRow ? 'user-row' : 'ai-row',
                 row.classList.contains('has-prev') ? 'has-prev' : '',
-                row.classList.contains('has-next') ? 'has-next' : ''
+                row.classList.contains('has-next') ? 'has-next' : '',
+                isLastUserMessage ? 'is-last-user-preview' : 'preview-shift-down'
             ].filter(Boolean).join(' ');
             const clonedBubble = bubble.cloneNode(true);
             clonedBubble.style.margin = '0';
