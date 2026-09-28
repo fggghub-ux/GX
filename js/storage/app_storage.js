@@ -9,7 +9,7 @@
     const OPTIMIZATION_SHADOW_DB_NAME = 'iiso_app_storage_optimization_shadow_v10';
     const IMPORT_SHADOW_DB_NAME = 'iiso_app_storage_import_shadow_v10';
     const IMPORT_ROLLBACK_DB_NAME = 'iiso_app_storage_import_rollback_v10';
-    const DB_VERSION = 10;
+    const DB_VERSION = 9;
     const STORAGE_SCHEMA_VERSION = 10;
     const BACKUP_APP_NAME = 'u2phone';
 
