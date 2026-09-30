@@ -539,7 +539,6 @@
         const dataManagementBtn = document.getElementById('data-management-btn');
         const dataManagementSheet = document.getElementById('data-management-sheet');
         const dataManagementCloseBtn = document.getElementById('data-management-close-btn');
-        const authSignOutBtn = document.getElementById('u2-auth-sign-out-btn');
         
         if (dataManagementBtn && dataManagementSheet) {
             dataManagementBtn.addEventListener('click', () => {
@@ -549,17 +548,6 @@
         if (dataManagementCloseBtn && dataManagementSheet) {
             dataManagementCloseBtn.addEventListener('click', () => closeView(dataManagementSheet));
         }
-        authSignOutBtn?.addEventListener('click', async () => {
-            authSignOutBtn.disabled = true;
-            try {
-                if (dataManagementSheet) closeView(dataManagementSheet);
-                await window.u2Auth?.logout();
-            } catch (error) {
-                console.error('[auth] Failed to sign out:', error);
-            } finally {
-                authSignOutBtn.disabled = false;
-            }
-        });
 
         // Apple ID / Profile View
         const appleIdTrigger = document.getElementById('apple-id-trigger');
