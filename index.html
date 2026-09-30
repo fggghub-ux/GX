@@ -50,7 +50,6 @@
         })();
     </script>
     <link rel="stylesheet" href="css/global.css?v=20260721-mobile-input-layout-v1-android-focus-scope-v1&assistive=20260801-no-blur-v3&home-swipe=20260801-scrollend-v2&no-glass=20260803-v1">
-    <link rel="stylesheet" href="css/login.css?v=20260731-login-gate-focus-v2">
     <link rel="stylesheet" href="css/home.css?v=20260731-ios-swipe-icon-flicker-v1&layout=20260801-fixed-grid-v1&performance=20260801-v1">
     <link rel="stylesheet" href="css/worldbook.css?no-glass=20260803-v1&notes-ios26=20260812-v6">
     <link rel="stylesheet" href="css/imessage.css?imessage-polish=20260927-v1&home-ui=20260914-v7&chats-ui=20260922-v5&v=20260721-status-prompt-v3-group-poll-v3&cot=20260725-single-chat-cot-v1&status=20260802-three-line-thought-v1&cotui=20260725-pill-v1&link=20260726-light-link-theatre-v1&relationship=20260801-static-preview-v3&android-keyboard=20260801-v1&group-user-avatar=20260802-v1&game=20260803-anonymous-qa-v7-context-layout&image-assets=20260803-v1&offline-stream-performance=20260805-v1&vector-memory=20260807-local-v1&theme-import-android-v1&moment-visibility=20260811-v1&offline-summary-archive=20260811-v1&offline-meeting-delete=20260811-v1&offline-summary-memory=20260811-v1&offline-chat-rename=20260811-v1&offline-auto-image=20260813-v2&offline-txt-export=20260813-v1&memory-recall-promotion=20260813-v1&memory-action-loading=20260813-v1&theme-surfaces=20260814-v1&theme-avatar-hooks=20260814-v2&chat-record-forward=20260815-v3&offline-profile-feed=20260926-v4">
@@ -93,9 +92,8 @@
         </style>
     </div>
     <script>
-        // 开屏层同时等待主界面首次渲染和登录校验，绝不在应用未接管前露出静态默认界面。
+        // 开屏层只等待主界面首次渲染，绝不在应用未接管前露出静态默认界面.
         var splashRemovalRequested = false;
-        var authGateSettled = false;
         var appShellReady = false;
         var splashRemovalStarted = false;
         window.u2SplashScreenRemoved = false;
@@ -112,7 +110,7 @@
 
         window.removeSplashScreen = function() {
             splashRemovalRequested = true;
-            if (!authGateSettled || !appShellReady || splashRemovalStarted) return;
+            if (!appShellReady || splashRemovalStarted) return;
 
             var splash = document.getElementById('app-splash-screen');
             if (splash && splash.style.opacity !== '0') {
@@ -123,15 +121,14 @@
                         if (splash.parentNode) splash.remove();
                         window.u2SplashScreenRemoved = true;
                         window.dispatchEvent(new CustomEvent('u2:splash-screen-removed'));
+                        window.dispatchEvent(new CustomEvent('u2:main-interface-ready', {
+                            detail: { username: '' }
+                        }));
                     }, 240);
                 });
             }
         };
 
-        window.markAuthGateSettled = function() {
-            authGateSettled = true;
-            if (splashRemovalRequested) window.removeSplashScreen();
-        };
 
         window.markAppShellReady = function() {
             appShellReady = true;
@@ -140,11 +137,8 @@
 
         // 这只是提示加载缓慢，不能再以超时为由强行露出尚未初始化的默认主页。
         setTimeout(function() {
-            if (authGateSettled && appShellReady) return;
-            var message = !appShellReady
-                ? '加载较慢，正在准备应用资源…'
-                : '正在确认登录状态，请稍候…';
-            showSplashDelayState(message);
+            if (appShellReady) return;
+            showSplashDelayState('加载较慢，正在准备应用资源…');
         }, 5000);
 
         // 资源下载或启动脚本失败时保持保护屏，并给用户明确的恢复入口。
@@ -155,62 +149,6 @@
             }
         }, true);
     </script>
-    <div id="u2-login-screen" class="u2-login-screen is-checking" aria-hidden="true" inert>
-        <div class="u2-login-shell">
-            <main class="u2-login-panel" aria-labelledby="u2-login-title">
-                <section class="u2-login-brand">
-                    <div class="u2-login-mark" aria-hidden="true">
-                        <span class="u2-login-rabbit">
-                            <span class="u2-login-rabbit-ear u2-login-rabbit-ear-left"></span>
-                            <span class="u2-login-rabbit-ear u2-login-rabbit-ear-right"></span>
-                            <span class="u2-login-rabbit-head"></span>
-                        </span>
-                    </div>
-                    <h1 class="u2-login-title" id="u2-login-title">欢迎回来</h1>
-                </section>
-
-                <div class="u2-login-mode-switch" role="tablist" aria-label="登录方式">
-                    <button type="button" id="u2-login-mode-signin" class="is-active" role="tab" aria-selected="true">登录</button>
-                    <button type="button" id="u2-login-mode-register" role="tab" aria-selected="false">注册</button>
-                </div>
-
-                <form class="u2-login-form" id="u2-login-form" novalidate>
-                    <div class="u2-login-fields">
-                        <label class="u2-login-field" id="u2-login-account-field" for="u2-login-account">
-                            <span class="u2-login-input-row">
-                                <input class="u2-login-input" id="u2-login-account" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="24" aria-label="账号" placeholder="账号">
-                            </span>
-                        </label>
-                        <label class="u2-login-field" id="u2-login-password-field" for="u2-login-password">
-                            <span class="u2-login-input-row">
-                                <input class="u2-login-input" id="u2-login-password" name="password" type="password" autocomplete="current-password" maxlength="72" aria-label="密码" placeholder="密码">
-                                <button class="u2-login-password-toggle" id="u2-login-password-toggle" type="button" aria-label="显示密码"><i class="fas fa-eye" aria-hidden="true"></i></button>
-                            </span>
-                        </label>
-                        <label class="u2-login-field u2-login-register-only" id="u2-login-confirm-field" for="u2-login-confirm">
-                            <span class="u2-login-input-row">
-                                <input class="u2-login-input" id="u2-login-confirm" name="confirmPassword" type="password" autocomplete="new-password" maxlength="72" aria-label="确认密码" placeholder="确认密码">
-                            </span>
-                        </label>
-                        <label class="u2-login-field u2-login-register-only" id="u2-login-code-field" for="u2-login-code">
-                            <span class="u2-login-input-row">
-                                <input class="u2-login-input u2-login-code-input" id="u2-login-code" name="activationCode" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="22" aria-label="激活码" placeholder="输入激活码">
-                            </span>
-                        </label>
-                    </div>
-                    <div class="u2-login-notice u2-login-register-only" id="u2-login-notice-row">
-                        <input id="u2-login-notice-accepted" name="noticeAccepted" type="checkbox" aria-describedby="u2-login-error">
-                        <label for="u2-login-notice-accepted">我已知晓《</label><button type="button" id="u2-login-notice-link">IHG入住声明</button><span>》</span>
-                    </div>
-                    <div class="u2-login-error" id="u2-login-error" role="status" aria-live="polite"></div>
-                    <button class="u2-login-submit" id="u2-login-submit" type="submit">
-                        <span id="u2-login-submit-label">登录</span>
-                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                </form>
-            </main>
-        </div>
-    </div>
     <div id="app">
         <!-- Pages Container for Swipe -->
         <div class="pages-container" id="pages-container">
@@ -3008,15 +2946,7 @@
                             <span class="data-management-action-icon danger"><i class="fas fa-trash-alt"></i></span>
                             <span class="data-management-action-copy">
                                 <strong>清空用户数据</strong>
-                                <small>保留登录授权，重启后恢复默认状态</small>
-                            </span>
-                            <i class="fas fa-chevron-right data-management-action-chevron" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="data-management-action" id="u2-auth-sign-out-btn">
-                            <span class="data-management-action-icon neutral"><i class="fas fa-arrow-right-from-bracket"></i></span>
-                            <span class="data-management-action-copy">
-                                <strong>退出登录</strong>
-                                <small>保留本机数据，下次使用账号密码登录</small>
+                                <small>清空应用数据后，重启恢复默认状态</small>
                             </span>
                             <i class="fas fa-chevron-right data-management-action-chevron" aria-hidden="true"></i>
                         </button>
@@ -8545,7 +8475,6 @@
     <script src="js/image_understanding.js?v=20260811-v1"></script>
     <script src="js/export_file.js?v=20260718-ios-pwa-export-v1"></script>
     <script src="js/about_info_modal.js?v=20260815-changelog-v1"></script>
-    <script src="js/login.js?v=20260801-resume-recovery-v1&changelog-notice=20260815-v1"></script>
 <script src="js/mobile_input_compat.js?v=20260713-bstage-enter-v1-android-focus-scope-v1&guard=20260801-v3&theme-import-android-v1&enter-blur=20260807-v1&global-scope=20260807-v1&call-viewport-owner=20260811-v1&bottom-sheet-y=20260811-v1"></script>
     <script src="js/background_activity.js"></script>
     <script src="js/system_notifications.js?v=20260721-storage-hydration-v1-custom-sound-v1&image-assets=20260803-v1"></script>
